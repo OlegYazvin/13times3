@@ -1,0 +1,226 @@
+@font-face {
+  font-family: Archivo;
+  src: url("./fonts/archivo-latin-400-normal.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Archivo;
+  src: url("./fonts/archivo-latin-700-normal.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Ojuju;
+  src: url("./fonts/ojuju-latin-600-normal.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+:root {
+  --ink: #404e67;
+  --paper: #fff;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Archivo, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+
+.skip-link {
+  position: absolute;
+  z-index: 20;
+  top: -5rem;
+  left: 1rem;
+  padding: .75rem 1rem;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+}
+
+.skip-link:focus { top: 1rem; }
+
+.site-header {
+  min-height: 104px;
+  padding: 1.7rem 4vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.site-header a { text-decoration: none; }
+
+.site-title {
+  font-family: Ojuju, Archivo, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+}
+
+.site-header nav a {
+  font-size: .93rem;
+  line-height: 1.4;
+}
+
+.site-header a:hover,
+.site-header a:focus-visible { text-decoration: underline; }
+
+.intro {
+  min-height: 360px;
+  display: grid;
+  place-items: center;
+  padding: 5rem 7vw;
+  text-align: center;
+}
+
+.intro h1 {
+  max-width: 1060px;
+  margin: 0;
+  font-family: Ojuju, Archivo, sans-serif;
+  font-size: clamp(1.9rem, 2.6vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -.02em;
+}
+
+.achievement-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+}
+
+.grid-item {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: #eee;
+}
+
+.grid-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.grid-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgb(255 255 255 / 64%);
+  opacity: 0;
+  transition: opacity .2s ease;
+  text-align: center;
+}
+
+.grid-overlay span {
+  font-family: Ojuju, Archivo, sans-serif;
+  font-size: clamp(1.5rem, 2.6vw, 2.6rem);
+  font-weight: 600;
+  letter-spacing: -.02em;
+}
+
+.grid-item:hover .grid-overlay,
+.grid-item:focus-visible .grid-overlay { opacity: 1; }
+
+.grid-item:focus-visible { outline: 4px solid var(--ink); outline-offset: -4px; }
+
+.achievement-detail {
+  min-height: 560px;
+  display: grid;
+  place-items: center;
+  padding: 5rem max(6vw, 1.5rem);
+  text-align: center;
+}
+
+.detail-content { max-width: 1000px; }
+.detail-content :empty { display: none; }
+
+.detail-content h4 {
+  margin: 0 0 2rem;
+  font-family: Ojuju, Archivo, sans-serif;
+  font-size: clamp(1.45rem, 2.2vw, 2.25rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -.02em;
+}
+
+.detail-content h2 {
+  margin: 0;
+  font-family: Ojuju, Archivo, sans-serif;
+  font-size: clamp(2rem, 3.5vw, 3.9rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -.02em;
+}
+
+.detail-content p { margin: 1.5rem 0 0; }
+
+.item-navigation {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 2rem 4vw 4rem;
+}
+
+.item-navigation-link {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  min-width: 8rem;
+  text-decoration: none;
+}
+
+.item-navigation-link span { font-size: .8rem; }
+.item-navigation-link strong { font-family: Ojuju, Archivo, sans-serif; font-size: 1.45rem; }
+.item-navigation-link.next { text-align: right; }
+.item-navigation-link:hover strong,
+.item-navigation-link:focus-visible strong { text-decoration: underline; }
+
+.not-found { min-height: 60vh; padding: 7rem 6vw; text-align: center; }
+.not-found h1 { font-family: Ojuju, Archivo, sans-serif; font-size: clamp(2rem, 5vw, 4rem); }
+
+@media (max-width: 900px) {
+  .achievement-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .intro { min-height: 300px; }
+}
+
+@media (max-width: 640px) {
+  .site-header { min-height: 80px; padding: 1.2rem 5vw; }
+  .site-title { font-size: 1.45rem; }
+  .site-header nav a { font-size: .8rem; }
+  .intro { min-height: 280px; padding: 4rem 6vw; }
+  .achievement-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .achievement-detail { min-height: 66vh; padding-block: 4rem; }
+}
+
+@media (hover: none) {
+  .grid-overlay { opacity: 1; }
+}
+
+@media (max-width: 380px) {
+  .site-header { align-items: flex-start; }
+  .site-header nav { text-align: right; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .grid-overlay { transition: none; }
+}

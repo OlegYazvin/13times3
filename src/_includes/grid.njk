@@ -1,0 +1,11 @@
+<section class="intro" aria-label="Introduction">
+  <h1>{{ site.intro }}</h1>
+</section>
+<section class="achievement-grid" aria-label="{{ site.navTitle }}">
+  {% for item in site.achievements %}
+    <a class="grid-item" href="{{ item.path | url }}" aria-label="{{ item.title }}">
+      <img src="{{ item.image | url }}" alt="" loading="{% if loop.index <= 4 %}eager{% else %}lazy{% endif %}" decoding="async">
+      <span class="grid-overlay"><span>{{ item.title }}</span></span>
+    </a>
+  {% endfor %}
+</section>
