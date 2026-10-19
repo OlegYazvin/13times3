@@ -13,14 +13,15 @@ The gallery has 41 stable frame IDs. The 39 original achievement pages are a sep
 | `05` | Planned | “Jane moved offices” | Jane; office management | An intentionally abstract treatment of a painful move, including Jane standing up for herself against poor management | Oleg's idea, 2026-10-19 |
 | `06` | Planned | “Jane ended breast feeding” | Jane | The end of breastfeeding; the scene's treatment and other participants are still to be defined | Oleg's idea, 2026-10-19 |
 | `07` | Planned | “The time we went blueberry picking” | Oleg, Jane; other participants unconfirmed | Blueberry-picking outing; location and exact moment are still to be defined | Oleg's idea, 2026-10-19 |
+| `08` | Planned | “Chicago Open house” | Jane, Oleg; other participants unconfirmed | Use the places on Jane's itinerary from another conversation, **excluding the stops up north**. The itinerary is not available in this project yet, so exact venues are unverified and must be added before authoring. | Oleg's idea, 2026-10-19; Jane's itinerary pending |
 
-Frames `02`–`07` are reserved ideas only: they have no model, preview, or enterable room. Frames `08`–`41` remain unassigned blank portals. Frame `01` is the only published walkable room as of 2026-10-19.
+Frames `02`–`08` are reserved ideas only: they have no model, preview, or enterable room. Frames `09`–`41` remain unassigned blank portals. Frame `01` is the only published walkable room as of 2026-10-19.
 
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.
 
-For planned frames, also flag these likely overlaps: helping Oleg get a job (`02`); Charlize becoming Zephrine's best friend (`03`); Zephrine's “blue car” (`04`); Jane's office move or standing up to management during it (`05`); ending breastfeeding (`06`); and the blueberry-picking trip (`07`). Ask whether an overlap is a revision or a distinct later moment before assigning another frame.
+For planned frames, also flag these likely overlaps: helping Oleg get a job (`02`); Charlize becoming Zephrine's best friend (`03`); Zephrine's “blue car” (`04`); Jane's office move or standing up to management during it (`05`); ending breastfeeding (`06`); the blueberry-picking trip (`07`); and Open House Chicago or Jane's Chicago architectural itinerary (`08`). Ask whether an overlap is a revision or a distinct later moment before assigning another frame.
 
 ## When adding a scene
 
