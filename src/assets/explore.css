@@ -36,7 +36,7 @@ a { color: inherit; }
   height: 100dvh;
   min-height: 420px;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 45%, #284357, #0a1522 75%);
+  background: radial-gradient(circle at 50% 45%, #ddc8bd, #a9939b 80%);
 }
 
 .scene, .scene canvas { width: 100%; height: 100%; }
@@ -46,7 +46,7 @@ a { color: inherit; }
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(ellipse, transparent 38%, rgb(4 10 19 / 41%) 100%);
+  background: radial-gradient(ellipse, transparent 48%, rgb(64 46 56 / 19%) 100%);
 }
 .portal-glow {
   position: absolute;
@@ -54,7 +54,7 @@ a { color: inherit; }
   inset: -20%;
   pointer-events: none;
   opacity: 0;
-  background: radial-gradient(circle, rgb(239 244 255 / 93%) 0%, rgb(154 199 230 / 64%) 22%, transparent 70%);
+  background: radial-gradient(circle, rgb(255 247 223 / 91%) 0%, rgb(240 204 173 / 58%) 22%, transparent 70%);
   transition: opacity .38s ease;
 }
 .portal-glow.active { opacity: 1; }
@@ -70,7 +70,7 @@ a { color: inherit; }
   justify-content: space-between;
   gap: 1rem;
   padding: max(1rem, env(safe-area-inset-top)) max(1.15rem, env(safe-area-inset-right)) 1rem max(1.15rem, env(safe-area-inset-left));
-  background: linear-gradient(rgb(4 10 19 / 70%), transparent);
+  background: linear-gradient(rgb(53 43 51 / 42%), transparent);
 }
 .site-link {
   font-family: Ojuju, Archivo, sans-serif;

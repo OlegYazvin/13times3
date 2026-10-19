@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { crossesPortal, nearestFrame, PLAYER_RADIUS } from "./layout.mjs";
+import { crossesPortal, nearestFrame, PLAYER_RADIUS, FRAME_WIDTH, FRAME_HEIGHT } from "./layout.mjs";
 
 const wait = (milliseconds) => new Promise((resolve) => window.setTimeout(resolve, milliseconds));
 
@@ -142,10 +142,10 @@ export class RoomManager {
       scene.add(gltf.scene);
 
       const view = frame.room.previewCamera;
-      const previewCamera = new THREE.PerspectiveCamera(view.fov || 65, 2.45 / 3.12, .05, 40);
+      const previewCamera = new THREE.PerspectiveCamera(view.fov || 65, FRAME_WIDTH / FRAME_HEIGHT, .05, 40);
       previewCamera.position.fromArray(view.position);
       previewCamera.lookAt(...view.target);
-      const target = new THREE.WebGLRenderTarget(384, 489, { depthBuffer: true });
+      const target = new THREE.WebGLRenderTarget(384, Math.round(384 * FRAME_HEIGHT / FRAME_WIDTH), { depthBuffer: true });
       const previewMaterial = new THREE.MeshBasicMaterial({ map: previewTexture });
       const liveMaterial = new THREE.MeshBasicMaterial({ map: target.texture, transparent: true, opacity: 0, depthWrite: false });
       const frameMesh = this.gallery.frameMeshes.get(frame.id);

@@ -1,18 +1,18 @@
 // All dimensions are meters. The route is deliberately fixed so frame IDs stay put.
-export const HALL_WIDTH = 4.4;
-export const HALL_HEIGHT = 3.9;
-export const FRAME_WIDTH = 2.45;
-export const FRAME_HEIGHT = 3.12;
+export const HALL_WIDTH = 5.8;
+export const HALL_HEIGHT = 4.8;
+export const FRAME_WIDTH = 2.95;
+export const FRAME_HEIGHT = 3.75;
 export const EYE_HEIGHT = 1.65;
 export const PLAYER_RADIUS = 0.32;
 
 export const PATH = Object.freeze([
   { x: 0, z: 0 },
-  { x: 0, z: -18 },
-  { x: 18, z: -18 },
-  { x: 18, z: 2 },
-  { x: 40, z: 2 },
-  { x: 40, z: -20 },
+  { x: 0, z: -22 },
+  { x: 22, z: -22 },
+  { x: 22, z: 0 },
+  { x: 44, z: 0 },
+  { x: 44, z: -26 },
 ]);
 
 const dot = (a, b) => a.x * b.x + a.z * b.z;
@@ -75,7 +75,9 @@ export function buildLayout(manifest) {
       Boolean(record.room.previewImage) !== Boolean(record.room.modelUrl)) {
       throw new Error(`Frame ${record.id} has incomplete room metadata.`);
     }
-    const along = 2.8 + record.bay * ((section.length - 5.6) / Math.max(1, baysOnSide - 1));
+    // Keep the full painting inside the straight wall at each turn.
+    const endMargin = HALL_WIDTH / 2 + FRAME_WIDTH / 2 + .4;
+    const along = endMargin + record.bay * ((section.length - 2 * endMargin) / Math.max(1, baysOnSide - 1));
     const center = add(add(section.start, multiply(section.forward, along)), multiply(section.right, side * HALL_WIDTH / 2));
     sectionCounts[record.section] += 1;
     return { ...record, sectionData: section, sideSign: side, along, center };

@@ -89,7 +89,10 @@ async function checkViewport(name, options) {
   }
 
   if (name === "desktop") {
-    for (const [section, x, z] of [[1, 0, -9], [2, 9, -18], [3, 18, -8], [4, 29, 2], [5, 40, -9]]) {
+    await page.evaluate(() => window.__galleryTestPose(0, -18, 0));
+    await page.waitForTimeout(150);
+    await page.screenshot({path:".cache/gallery-first-turn.png"});
+    for (const [section, x, z] of [[1, 0, -11], [2, 11, -22], [3, 22, -11], [4, 33, 0], [5, 44, -13]]) {
       await page.evaluate(([px, pz]) => window.__galleryTestPose(px, pz, 0), [x, z]);
       await page.waitForFunction((number) => document.querySelector("#section-status").textContent === `Gallery ${number} / 5`, section);
       assert.match(await statusText(page), new RegExp(`Gallery ${section} / 5`));
@@ -136,11 +139,11 @@ try {
   roomPage.on("pageerror", (error) => roomErrors.push(error.message));
   await roomPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
   await roomPage.getByRole("button", { name: /begin walking/i }).click();
-  await roomPage.evaluate(() => window.__galleryTestPose(-.4, -2.8, -Math.PI / 2));
+  await roomPage.evaluate(() => window.__galleryTestPose(-1, -4.775, -Math.PI / 2));
   await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === "01", null, { timeout: 12000 });
   await roomPage.waitForTimeout(120);
   await roomPage.screenshot({path:".cache/room01-framed.png"});
-  await roomPage.evaluate(() => window.__galleryTestPose(-1.75, -2.8, -Math.PI / 2));
+  await roomPage.evaluate(() => window.__galleryTestPose(-2.45, -4.775, -Math.PI / 2));
   await roomPage.keyboard.down("w");
   await roomPage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
   await roomPage.keyboard.up("w");
@@ -171,7 +174,7 @@ try {
   phonePage.on("pageerror", error => phoneErrors.push(error.message));
   await phonePage.goto(`${base}/explore/`, {waitUntil:"networkidle"});
   await phonePage.getByRole("button", {name:/begin walking/i}).click();
-  await phonePage.evaluate(() => window.__galleryTestPose(-1.75,-2.8,-Math.PI/2));
+  await phonePage.evaluate(() => window.__galleryTestPose(-2.45,-4.775,-Math.PI/2));
   await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "01",null,{timeout:12000});
   const ring = await phonePage.locator(".joystick-ring").boundingBox();
   const phoneTouch = await phoneContext.newCDPSession(phonePage);

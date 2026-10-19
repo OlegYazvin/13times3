@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import {
-  buildLayout, crossesPortal, HALL_WIDTH, isWalkable,
+  buildLayout, crossesPortal, FRAME_WIDTH, HALL_WIDTH, isWalkable,
   moveWithCollision, nearestSection, PATH, PLAYER_RADIUS,
 } from "../client/explore/layout.mjs";
 import { moveWithinRoom, roomIsReady } from "../client/explore/rooms.mjs";
@@ -16,6 +16,12 @@ test("41 stable frame slots follow five connected winding sections", () => {
   assert.deepEqual(layout.sections.map((section) => section.index), [0, 1, 2, 3, 4]);
   for (let index = 1; index < PATH.length - 1; index += 1) {
     assert.equal(isWalkable(PATH[index], layout), true, `turn ${index} must connect`);
+  }
+  for (const frame of layout.frames) {
+    assert.ok(frame.along - FRAME_WIDTH / 2 > HALL_WIDTH / 2,
+      `frame ${frame.id} must clear the preceding turn`);
+    assert.ok(frame.along + FRAME_WIDTH / 2 < frame.sectionData.length - HALL_WIDTH / 2,
+      `frame ${frame.id} must clear the following turn`);
   }
 });
 

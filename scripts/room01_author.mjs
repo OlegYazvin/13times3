@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import gallery from "../src/_data/gallery.json";
+import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
 
 // Frame 01 is authored once as a scene. Its GLB and painting use this same root
 // and the camera stored in gallery.json.
@@ -148,11 +149,11 @@ export async function authorRoom() {
   const fill = new THREE.DirectionalLight(0xb7c7ff,.7); fill.position.set(-2,2,-1); scene.add(fill);
   scene.add(root);
   const view = gallery.frames[0].room.previewCamera;
-  const camera = new THREE.PerspectiveCamera(view.fov,2.45/3.12,.05,30);
+  const camera = new THREE.PerspectiveCamera(view.fov,FRAME_WIDTH/FRAME_HEIGHT,.05,30);
   camera.position.fromArray(view.position); camera.lookAt(...view.target);
   const renderer = new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.setPixelRatio(1); renderer.setSize(735,936);
+  renderer.setPixelRatio(1); renderer.setSize(735,Math.round(735*FRAME_HEIGHT/FRAME_WIDTH));
   document.body.append(renderer.domElement);
   renderer.render(scene,camera);
   const preview = renderer.domElement.toDataURL("image/webp",.88);
