@@ -1,12 +1,12 @@
 # GitHub Pages and Cloudflare cutover
 
-The code and source media can be prepared and verified without changing the live domain. Keep the Squarespace website subscription active until the final site and all media work on the new host.
+The site source is published at [OlegYazvin/13times3](https://github.com/OlegYazvin/13times3). GitHub Pages has deployed it at [the staging URL](https://olegyazvin.github.io/13times3/). All 41 public routes and a sample image returned successfully on October 19, 2026. Keep the Squarespace website subscription active until the custom domain and all media work on the new host.
 
 ## 1. GitHub staging
 
-1. Create a **public** repository named `13times3` in the `OlegYazvin` account with a README so `main` exists. Grant the connected GitHub app access to it if GitHub asks.
-2. Upload this project to `main`. In **Settings → Pages**, choose **GitHub Actions** as the publishing source. The workflow builds and checks every captured route before deployment.
-3. Visit `https://olegyazvin.github.io/13times3/` and verify the grid, several detail pages, mobile layout, images, and navigation. The staging build is marked `noindex`.
+1. **Done:** Created the public repository, pushed `main`, and enabled GitHub Pages with GitHub Actions. The workflow builds and checks every captured route before deployment.
+2. **Done:** Checked all 41 routes and an image at the staging URL. The staging pages are marked `noindex`.
+3. Review the staging grid, detail pages, and mobile layout visually before switching DNS.
 
 ## 2. Prepare the custom domain
 
