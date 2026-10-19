@@ -1,5 +1,8 @@
 <section class="intro" aria-label="Introduction">
-  <h1>{{ site.intro }}</h1>
+  <div class="intro-inner">
+    <h1>{{ site.intro }}</h1>
+    <a class="explore-entry" href="{{ '/explore/' | url }}">Enter the gallery <span aria-hidden="true">↗</span></a>
+  </div>
 </section>
 <section class="achievement-grid" aria-label="{{ site.navTitle }}">
   {% for item in site.achievements %}

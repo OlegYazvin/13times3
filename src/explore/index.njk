@@ -1,0 +1,64 @@
+---
+permalink: explore/index.html
+eleventyExcludeFromCollections: true
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#101c2a">
+    <title>The Gallery — {{ site.title }}</title>
+    <meta name="description" content="A winding gallery of 41 frames for Jane.">
+    {% if isStaging %}<meta name="robots" content="noindex, nofollow">{% endif %}
+    <link rel="canonical" href="{{ site.canonicalOrigin }}/explore/">
+    <link rel="stylesheet" href="{{ '/assets/explore.css' | url }}">
+  </head>
+  <body>
+    <main class="experience" id="experience" data-base-path="{{ '/' | url }}">
+      <div class="scene" id="scene" aria-hidden="true"></div>
+      <div class="vignette" aria-hidden="true"></div>
+      <div class="portal-glow" id="portal-glow" aria-hidden="true"></div>
+
+      <div class="topbar">
+        <a class="site-link" href="{{ '/' | url }}" aria-label="Return to 13 Times 3">13 Times 3</a>
+        <div class="topbar-right">
+          <span class="section-status" id="section-status" aria-live="polite">Gallery 1 / 5</span>
+          <button class="icon-button" id="help-button" type="button" aria-label="Show instructions">?</button>
+        </div>
+      </div>
+
+      <div class="reticle" aria-hidden="true"></div>
+      <div class="look-hint" id="look-hint" aria-hidden="true">Drag to look</div>
+      <div class="joystick" id="joystick" aria-label="Move through the gallery">
+        <div class="joystick-ring"><div class="joystick-knob" id="joystick-knob"></div></div>
+        <span>Move</span>
+      </div>
+
+      <div class="overlay" id="welcome" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+        <div class="welcome-card">
+          <p class="eyebrow">For Jane · forty-one frames</p>
+          <h1 id="welcome-title">Step into the in-between.</h1>
+          <p>A winding hallway is waiting. Its paintings have yet to become worlds, but you can walk among their frames now.</p>
+          <p class="control-note"><strong>On your phone:</strong> move with your left thumb and drag the right side to look. <strong>On a computer:</strong> use W A S D or arrow keys and drag to look.</p>
+          <button class="primary-button" id="begin-button" type="button">Begin walking <span aria-hidden="true">→</span></button>
+          <a class="back-link" href="{{ '/' | url }}">Back to the site</a>
+        </div>
+      </div>
+
+      <div class="fallback" id="fallback" hidden>
+        <div class="fallback-card">
+          <p class="eyebrow">The gallery</p>
+          <h1>Forty-one frames are waiting.</h1>
+          <p>This browser could not open the 3D hallway. The frames are still here, and the rest of the site is available.</p>
+          <ol class="frame-list">{% for frame in gallery.frames %}<li>{{ frame.label }}</li>{% endfor %}</ol>
+          <button class="retry-button" type="button" onclick="window.location.reload()">Try again</button>
+          <a class="primary-button" href="{{ '/' | url }}">Return to 13 Times 3</a>
+        </div>
+      </div>
+      <span class="sr-only" id="announcement" aria-live="polite"></span>
+    </main>
+    <script type="application/json" id="gallery-data">{{ gallery | serializeJson | safe }}</script>
+    <script type="module" src="{{ '/assets/explore/app.js' | url }}"></script>
+  </body>
+</html>

@@ -3,13 +3,21 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "eleventy",
-    "dev": "eleventy --serve",
-    "check": "python3 scripts/check_site.py"
+    "build:client": "esbuild client/explore/main.mjs --bundle --format=esm --target=es2020 --minify --outfile=src/assets/explore/app.js",
+    "build": "npm run build:client && node scripts/clean_output.mjs && eleventy",
+    "dev": "npm run build:client && concurrently -k \"esbuild client/explore/main.mjs --bundle --format=esm --target=es2020 --outfile=src/assets/explore/app.js --watch\" \"eleventy --serve\"",
+    "check": "python3 scripts/check_site.py && node --test tests/*.test.mjs",
+    "check:browser": "node scripts/browser_check.mjs"
   },
   "devDependencies": {
     "@11ty/eleventy": "3.1.7",
     "@fontsource/archivo": "5.3.0",
-    "@fontsource/ojuju": "5.3.0"
+    "@fontsource/ojuju": "5.3.0",
+    "concurrently": "^10.0.6",
+    "esbuild": "^0.28.2",
+    "playwright": "^1.64.1"
+  },
+  "dependencies": {
+    "three": "^0.186.1"
   }
 }

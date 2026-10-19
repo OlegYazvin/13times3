@@ -1,5 +1,7 @@
 node_modules/
 _site/
+src/assets/explore/app.js
+src/assets/explore/app.js.map
 .cache/
 .DS_Store
 __pycache__/

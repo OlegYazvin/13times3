@@ -3,6 +3,13 @@ module.exports = function (eleventyConfig) {
     "isStaging",
     Boolean(process.env.SITE_BASE_PATH && process.env.SITE_BASE_PATH !== "/"),
   );
+  eleventyConfig.addFilter("serializeJson", (value) =>
+    JSON.stringify(value)
+      .replace(/&/g, "\\u0026")
+      .replace(/</g, "\\u003c")
+      .replace(/>/g, "\\u003e"),
+  );
+  eleventyConfig.addWatchTarget("src/assets/explore/app.js");
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   eleventyConfig.addPassthroughCopy("src/robots.txt");
   eleventyConfig.addPassthroughCopy({

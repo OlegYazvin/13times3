@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "_site"
 DATA = json.loads((ROOT / "src" / "_data" / "site.json").read_text())
+GALLERY = json.loads((ROOT / "src" / "_data" / "gallery.json").read_text())
 MANIFEST = json.loads((ROOT / "audit" / "source-manifest.json").read_text())
 BASE_PATH = os.environ.get("SITE_BASE_PATH", "/").rstrip("/")
 
@@ -40,6 +41,7 @@ def main() -> None:
 
     for route in ("/", "/achievements"):
         page = parse(source_path(route))
+        assert page.select_one("a.explore-entry").get("href") == expected_href("/explore/")
         cards = page.select("a.grid-item")
         assert len(cards) == 39, f"{route}: wrong card count"
         assert [card.get("href") for card in cards] == [expected_href(item["path"]) for item in entries]
@@ -68,19 +70,38 @@ def main() -> None:
     for item in entries:
         media_path = OUTPUT / item["image"].lstrip("/")
         assert media_path.is_file() and media_path.stat().st_size > 0, f"Missing image: {media_path}"
+
+    frames = GALLERY["frames"]
+    assert GALLERY["sectionCounts"] == [8, 8, 8, 8, 9]
+    assert len(frames) == 41
+    assert [frame["id"] for frame in frames] == [f"{index:02d}" for index in range(1, 42)]
+    assert [frame["label"] for frame in frames] == [frame["id"] for frame in frames]
+    assert [sum(frame["section"] == section for frame in frames) for section in range(5)] == GALLERY["sectionCounts"]
+    assert all(not frame["room"]["previewImage"] and not frame["room"]["modelUrl"] for frame in frames)
+    explore = parse(source_path("/explore"))
+    assert explore.select_one("#welcome-title") is not None
+    assert explore.select_one("#joystick") is not None
+    assert explore.select_one("#fallback") is not None
+    assert explore.select_one("script#gallery-data") is not None
+    assert len(explore.select(".frame-list li")) == 41
+    assert explore.select_one("script[src]").get("src") == expected_href("/assets/explore/app.js")
+    assert explore.select_one('link[rel="stylesheet"]').get("href") == expected_href("/assets/explore.css")
+    assert explore.select_one("link[rel=canonical]").get("href") == DATA["canonicalOrigin"] + "/explore/"
+    for asset in ("assets/explore/app.js", "assets/explore.css"):
+        assert (OUTPUT / asset).is_file() and (OUTPUT / asset).stat().st_size > 0
     for font_name in ("archivo-latin-400-normal.woff2", "archivo-latin-700-normal.woff2", "ojuju-latin-600-normal.woff2"):
         assert (OUTPUT / "assets" / "fonts" / font_name).is_file(), f"Missing font: {font_name}"
 
     sitemap = ET.parse(OUTPUT / "sitemap.xml").getroot()
     published_urls = {node.text for node in sitemap.findall(".//{*}loc")}
-    expected_urls = {DATA["canonicalOrigin"] + "/"} | {DATA["canonicalOrigin"] + item["path"] for item in entries}
+    expected_urls = {DATA["canonicalOrigin"] + "/", DATA["canonicalOrigin"] + "/explore/"} | {DATA["canonicalOrigin"] + item["path"] for item in entries}
     assert published_urls == expected_urls, "Generated sitemap is incomplete"
     assert (OUTPUT / "404.html").is_file()
     assert (OUTPUT / "robots.txt").is_file()
 
     total_bytes = sum(path.stat().st_size for path in OUTPUT.rglob("*") if path.is_file())
     assert total_bytes < 1_000_000_000, "GitHub Pages published-site limit exceeded"
-    print(f"Verified 39 detail pages, 2 grid routes, 25 unique images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
+    print(f"Verified 39 detail pages, 2 grid routes, 41 gallery frames, 25 unique images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
 
 
 if __name__ == "__main__":

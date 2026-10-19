@@ -88,6 +88,27 @@ a { color: inherit; }
   text-align: center;
 }
 
+.intro-inner { display: grid; justify-items: center; gap: 2rem; }
+
+.explore-entry {
+  display: inline-flex;
+  align-items: center;
+  gap: .8rem;
+  padding: .95rem 1.35rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background .2s ease, color .2s ease, transform .2s ease;
+}
+
+.explore-entry:hover,
+.explore-entry:focus-visible {
+  background: var(--ink);
+  color: var(--paper);
+  transform: translateY(-2px);
+}
+
 .intro h1 {
   max-width: 1060px;
   margin: 0;
@@ -223,4 +244,5 @@ a { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .grid-overlay { transition: none; }
+  .explore-entry { transition: none; }
 }

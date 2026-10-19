@@ -1,0 +1,211 @@
+import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { crossesPortal, nearestFrame, PLAYER_RADIUS } from "./layout.mjs";
+
+const wait = (milliseconds) => new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+
+export function roomIsReady(frame) {
+  return Boolean(frame.room?.previewImage && frame.room?.modelUrl);
+}
+
+function disposeScene(scene) {
+  const geometries = new Set();
+  const materials = new Set();
+  const textures = new Set();
+  const images = new Set();
+  scene.traverse((object) => {
+    if (object.geometry) geometries.add(object.geometry);
+    const list = Array.isArray(object.material) ? object.material : [object.material];
+    for (const material of list) if (material) materials.add(material);
+  });
+  for (const material of materials) {
+    for (const value of Object.values(material)) if (value?.isTexture) textures.add(value);
+    material.dispose();
+  }
+  for (const texture of textures) {
+    texture.dispose();
+    if (texture.image?.close) images.add(texture.image);
+  }
+  for (const image of images) image.close();
+  for (const geometry of geometries) geometry.dispose();
+}
+
+export function disposeRoom(room) {
+  if (!room) return;
+  disposeScene(room.scene);
+  room.previewTexture?.dispose();
+  room.previewMaterial?.dispose();
+  room.liveMaterial?.dispose();
+  room.target?.dispose();
+  room.liveSurface?.parent?.remove(room.liveSurface);
+  if (room.surface) room.surface.material = room.originalMaterial;
+}
+
+export class RoomManager {
+  constructor({ renderer, gallery, camera, controls, player, glow, announce, assetBase, onModeChange }) {
+    Object.assign(this, { renderer, gallery, camera, controls, player, glow, announce, assetBase, onModeChange });
+    this.mode = "hall";
+    this.active = null;
+    this.loadingFrame = null;
+    this.generation = 0;
+    this.pendingEntry = null;
+    this.lastPreviewRender = 0;
+    this.hallPose = null;
+    this.loader = new GLTFLoader();
+    this.textureLoader = new THREE.TextureLoader();
+  }
+
+  assetUrl(path) {
+    return this.assetBase + path.replace(/^\//, "");
+  }
+
+  get scene() {
+    return this.mode === "room" || this.mode === "leaving" ? this.active?.scene : this.gallery.scene;
+  }
+
+  updateHall(time) {
+    if (this.mode !== "hall") return;
+    const nearest = nearestFrame(this.player, this.gallery.layout.frames, 5);
+    if (!nearest || !roomIsReady(nearest.frame)) {
+      if (this.active) this.clearActive();
+      if (this.loadingFrame) this.generation += 1;
+      this.loadingFrame = null;
+      return;
+    }
+    const frame = nearest.frame;
+    if (this.active?.frame.id !== frame.id && this.loadingFrame !== frame.id) this.load(frame);
+    if (!this.active || this.active.frame.id !== frame.id) return;
+
+    const strength = Math.max(0, Math.min(.94, (3 - nearest.distance) / 1.7));
+    this.active.liveMaterial.opacity = strength;
+    if (strength > 0 && time - this.lastPreviewRender > 1 / 15) {
+      const previousTarget = this.renderer.getRenderTarget();
+      this.renderer.setRenderTarget(this.active.target);
+      this.renderer.render(this.active.scene, this.active.previewCamera);
+      this.renderer.setRenderTarget(previousTarget);
+      this.lastPreviewRender = time;
+    }
+  }
+
+  async load(frame) {
+    const generation = ++this.generation;
+    this.loadingFrame = frame.id;
+    if (this.active) this.clearActive();
+    try {
+      const [previewTexture, gltf] = await Promise.all([
+        this.textureLoader.loadAsync(this.assetUrl(frame.room.previewImage)),
+        this.loader.loadAsync(this.assetUrl(frame.room.modelUrl)),
+      ]);
+      if (generation !== this.generation) {
+        previewTexture.dispose();
+        disposeScene(gltf.scene);
+        return;
+      }
+      previewTexture.colorSpace = THREE.SRGBColorSpace;
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x101726);
+      scene.add(new THREE.AmbientLight(0xffffff, 1.7));
+      scene.add(gltf.scene);
+
+      const view = frame.room.previewCamera;
+      const previewCamera = new THREE.PerspectiveCamera(view.fov || 65, 2.45 / 3.12, .05, 40);
+      previewCamera.position.fromArray(view.position);
+      previewCamera.lookAt(...view.target);
+      const target = new THREE.WebGLRenderTarget(384, 512, { depthBuffer: true });
+      const previewMaterial = new THREE.MeshBasicMaterial({ map: previewTexture });
+      const liveMaterial = new THREE.MeshBasicMaterial({ map: target.texture, transparent: true, opacity: 0, depthWrite: false });
+      const frameMesh = this.gallery.frameMeshes.get(frame.id);
+      const originalMaterial = frameMesh.surface.material;
+      frameMesh.surface.material = previewMaterial;
+      const liveSurface = new THREE.Mesh(frameMesh.surface.geometry, liveMaterial);
+      liveSurface.position.z = .105;
+      frameMesh.root.add(liveSurface);
+      this.active = {
+        frame, scene, previewCamera, target, previewTexture, previewMaterial,
+        liveMaterial, liveSurface, surface: frameMesh.surface, originalMaterial,
+      };
+      this.loadingFrame = null;
+      if (this.pendingEntry === frame.id) {
+        this.pendingEntry = null;
+        this.enter();
+      }
+    } catch (error) {
+      if (generation === this.generation) {
+        this.loadingFrame = null;
+        this.pendingEntry = null;
+        this.announce(`Room ${frame.label} could not be loaded. Please try again later.`);
+      }
+      console.error("Room load failed", error);
+    }
+  }
+
+  attemptPortal(previous, intended) {
+    if (this.mode !== "hall") return false;
+    const nearest = nearestFrame(previous, this.gallery.layout.frames, 2.2);
+    if (!nearest || !roomIsReady(nearest.frame) || !crossesPortal(previous, intended, nearest.frame)) return false;
+    if (this.active?.frame.id === nearest.frame.id) this.enter();
+    else {
+      this.pendingEntry = nearest.frame.id;
+      this.announce(`Preparing room ${nearest.frame.label}.`);
+      if (this.loadingFrame !== nearest.frame.id) this.load(nearest.frame);
+    }
+    return true;
+  }
+
+  async enter() {
+    if (!this.active || this.mode !== "hall") return;
+    this.mode = "entering";
+    this.hallPose = { x: this.player.x, y: this.player.y, z: this.player.z, yaw: this.controls.yaw, pitch: this.controls.pitch };
+    this.controls.setEnabled(false);
+    this.glow.classList.add("active");
+    this.onModeChange("entering", this.active.frame);
+    await wait(360);
+    const pose = this.active.frame.room.entryPose;
+    this.player.x = pose.position[0];
+    this.player.y = pose.position[1];
+    this.player.z = pose.position[2];
+    this.controls.yaw = pose.yaw || 0;
+    this.controls.pitch = 0;
+    this.mode = "room";
+    this.onModeChange("room", this.active.frame);
+    await wait(380);
+    this.glow.classList.remove("active");
+    this.controls.setEnabled(true);
+  }
+
+  moveInRoom(intended) {
+    const size = this.active.frame.room.dimensionsM;
+    const halfX = size[0] / 2 - PLAYER_RADIUS;
+    const halfZ = size[2] / 2 - PLAYER_RADIUS;
+    if (intended.z > halfZ) {
+      this.leave();
+      return;
+    }
+    this.player.x = Math.max(-halfX, Math.min(halfX, intended.x));
+    this.player.z = Math.max(-halfZ, Math.min(halfZ, intended.z));
+  }
+
+  async leave() {
+    if (this.mode !== "room") return;
+    this.mode = "leaving";
+    this.controls.setEnabled(false);
+    this.glow.classList.add("active");
+    this.onModeChange("leaving", this.active.frame);
+    await wait(360);
+    Object.assign(this.player, { x: this.hallPose.x, y: this.hallPose.y, z: this.hallPose.z });
+    this.controls.yaw = this.hallPose.yaw;
+    this.controls.pitch = this.hallPose.pitch;
+    this.mode = "hall";
+    this.onModeChange("hall", this.active.frame);
+    await wait(380);
+    this.glow.classList.remove("active");
+    this.clearActive();
+    this.controls.setEnabled(true);
+  }
+
+  clearActive() {
+    if (!this.active) return;
+    disposeRoom(this.active);
+    this.active = null;
+  }
+}

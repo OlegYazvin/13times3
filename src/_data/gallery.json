@@ -1,0 +1,1528 @@
+{
+  "sectionCounts": [
+    8,
+    8,
+    8,
+    8,
+    9
+  ],
+  "frames": [
+    {
+      "id": "01",
+      "label": "01",
+      "section": 0,
+      "side": "left",
+      "bay": 0,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "02",
+      "label": "02",
+      "section": 0,
+      "side": "right",
+      "bay": 0,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "03",
+      "label": "03",
+      "section": 0,
+      "side": "left",
+      "bay": 1,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "04",
+      "label": "04",
+      "section": 0,
+      "side": "right",
+      "bay": 1,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "05",
+      "label": "05",
+      "section": 0,
+      "side": "left",
+      "bay": 2,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "06",
+      "label": "06",
+      "section": 0,
+      "side": "right",
+      "bay": 2,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "07",
+      "label": "07",
+      "section": 0,
+      "side": "left",
+      "bay": 3,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "08",
+      "label": "08",
+      "section": 0,
+      "side": "right",
+      "bay": 3,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "09",
+      "label": "09",
+      "section": 1,
+      "side": "left",
+      "bay": 0,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "10",
+      "label": "10",
+      "section": 1,
+      "side": "right",
+      "bay": 0,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "11",
+      "label": "11",
+      "section": 1,
+      "side": "left",
+      "bay": 1,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "12",
+      "label": "12",
+      "section": 1,
+      "side": "right",
+      "bay": 1,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "13",
+      "label": "13",
+      "section": 1,
+      "side": "left",
+      "bay": 2,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "14",
+      "label": "14",
+      "section": 1,
+      "side": "right",
+      "bay": 2,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "15",
+      "label": "15",
+      "section": 1,
+      "side": "left",
+      "bay": 3,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "16",
+      "label": "16",
+      "section": 1,
+      "side": "right",
+      "bay": 3,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "17",
+      "label": "17",
+      "section": 2,
+      "side": "left",
+      "bay": 0,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "18",
+      "label": "18",
+      "section": 2,
+      "side": "right",
+      "bay": 0,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "19",
+      "label": "19",
+      "section": 2,
+      "side": "left",
+      "bay": 1,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "20",
+      "label": "20",
+      "section": 2,
+      "side": "right",
+      "bay": 1,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "21",
+      "label": "21",
+      "section": 2,
+      "side": "left",
+      "bay": 2,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "22",
+      "label": "22",
+      "section": 2,
+      "side": "right",
+      "bay": 2,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "23",
+      "label": "23",
+      "section": 2,
+      "side": "left",
+      "bay": 3,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "24",
+      "label": "24",
+      "section": 2,
+      "side": "right",
+      "bay": 3,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "25",
+      "label": "25",
+      "section": 3,
+      "side": "left",
+      "bay": 0,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "26",
+      "label": "26",
+      "section": 3,
+      "side": "right",
+      "bay": 0,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "27",
+      "label": "27",
+      "section": 3,
+      "side": "left",
+      "bay": 1,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "28",
+      "label": "28",
+      "section": 3,
+      "side": "right",
+      "bay": 1,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "29",
+      "label": "29",
+      "section": 3,
+      "side": "left",
+      "bay": 2,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "30",
+      "label": "30",
+      "section": 3,
+      "side": "right",
+      "bay": 2,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "31",
+      "label": "31",
+      "section": 3,
+      "side": "left",
+      "bay": 3,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "32",
+      "label": "32",
+      "section": 3,
+      "side": "right",
+      "bay": 3,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "33",
+      "label": "33",
+      "section": 4,
+      "side": "left",
+      "bay": 0,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "34",
+      "label": "34",
+      "section": 4,
+      "side": "right",
+      "bay": 0,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "35",
+      "label": "35",
+      "section": 4,
+      "side": "left",
+      "bay": 1,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "36",
+      "label": "36",
+      "section": 4,
+      "side": "right",
+      "bay": 1,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "37",
+      "label": "37",
+      "section": 4,
+      "side": "left",
+      "bay": 2,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "38",
+      "label": "38",
+      "section": 4,
+      "side": "right",
+      "bay": 2,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "39",
+      "label": "39",
+      "section": 4,
+      "side": "left",
+      "bay": 3,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "40",
+      "label": "40",
+      "section": 4,
+      "side": "right",
+      "bay": 3,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    },
+    {
+      "id": "41",
+      "label": "41",
+      "section": 4,
+      "side": "left",
+      "bay": 4,
+      "room": {
+        "previewImage": null,
+        "modelUrl": null,
+        "dimensionsM": [
+          3.048,
+          3.048,
+          3.048
+        ],
+        "entryPose": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "yaw": 0
+        },
+        "previewCamera": {
+          "position": [
+            0,
+            1.65,
+            1.15
+          ],
+          "target": [
+            0,
+            1.55,
+            -1
+          ],
+          "fov": 65
+        }
+      }
+    }
+  ]
+}
