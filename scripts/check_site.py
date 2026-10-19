@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import hashlib
 import os
+import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -78,6 +79,18 @@ def main() -> None:
     assert [frame["id"] for frame in frames] == [f"{index:02d}" for index in range(1, 42)]
     assert [frame["label"] for frame in frames] == [frame["id"] for frame in frames]
     assert [sum(frame["section"] == section for frame in frames) for section in range(5)] == GALLERY["sectionCounts"]
+    registry = (ROOT / "docs" / "scene-registry.md").read_text(encoding="utf-8")
+    registry_rows = re.findall(r"^\| `([0-9]{2})` \| (Planned|Published|Retired) \|([^\n]+)$", registry, re.MULTILINE)
+    registry_ids = [frame_id for frame_id, _, _ in registry_rows]
+    assert len(registry_ids) == len(set(registry_ids)), "The scene registry repeats a frame ID"
+    assert set(registry_ids) <= {frame["id"] for frame in frames}, "The scene registry has an unknown frame ID"
+    live_ids = {frame["id"] for frame in frames if frame["room"]["modelUrl"]}
+    published_ids = {frame_id for frame_id, status, _ in registry_rows if status == "Published"}
+    assert published_ids == live_ids, "Published scenes in the registry must match live room models"
+    for frame_id, status, details in registry_rows:
+        if status == "Published":
+            title = frames[int(frame_id) - 1]["room"]["title"]
+            assert title in details, f"Registry title differs from frame {frame_id}"
     first_room = frames[0]["room"]
     assert first_room["title"] == "You signed Zephrine up for dance and acting classes!"
     assert first_room["dimensionsM"] == [5.4, 3.6, 5.4]

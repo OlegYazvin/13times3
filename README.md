@@ -19,6 +19,8 @@ Frame IDs, labels, positions, and room details live in `src/_data/gallery.json`.
 
 The client source is in `client/explore/`. `npm run build:client` generates `src/assets/explore/app.js` before Eleventy copies it into the site. That generated file is ignored by Git. A browser without WebGL receives a text fallback listing all 41 frames.
 
+Before making another room, check the [scene registry](docs/scene-registry.md) for overlap and follow the [scene guide](docs/scene-guide.md). The registry records what each frame depicts; update it when reserving or publishing a scene.
+
 ## Local commands
 
 ```sh
