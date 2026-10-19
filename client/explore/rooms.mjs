@@ -84,6 +84,8 @@ export function disposeRoom(room) {
   room.nearTarget?.dispose();
   room.nearQuad?.geometry?.dispose();
   room.nearQuad?.material?.dispose();
+  room.returnTarget?.dispose();
+  room.returnSurface?.parent?.remove(room.returnSurface);
 }
 
 export class RoomManager {
@@ -97,6 +99,7 @@ export class RoomManager {
     this.hallPose = null;
     this.suppressFrameId = null;
     this.nearOpacity = 0;
+    this.returnOpacity = 0;
     this.loader = new GLTFLoader();
     this.readyFrames = gallery.layout.frames.filter(roomIsReady);
   }
@@ -106,7 +109,7 @@ export class RoomManager {
   }
 
   get scene() {
-    return this.mode === "room" || this.mode === "entering" || this.mode === "leaving"
+    return this.mode === "room" || this.mode === "entering"
       ? this.active?.scene : this.gallery.scene;
   }
 
@@ -180,13 +183,21 @@ export class RoomManager {
   }
 
   renderNearFull() {
-    if (this.mode !== "hall" || this.nearOpacity < .999 || !this.active) return false;
-    this.renderer.render(this.active.scene, this.active.nearCamera);
+    if (!this.active) return false;
+    if (this.mode === "hall" && this.nearOpacity >= .999) {
+      this.renderer.render(this.active.scene, this.active.nearCamera);
+      return true;
+    }
+    if (this.mode !== "leaving" && (this.mode !== "room" || this.returnOpacity < .999)) return false;
+    this.renderer.render(this.gallery.scene, this.active.returnNearCamera);
     return true;
   }
 
   renderNearOverlay() {
-    if (this.mode !== "hall" || this.nearOpacity <= 0 || !this.active) return;
+    if (!this.active) return;
+    const entering = this.mode === "hall" && this.nearOpacity > 0;
+    const returning = this.mode === "room" && this.returnOpacity > 0;
+    if (!entering && !returning) return;
     const active = this.active;
     const size = this.renderer.getDrawingBufferSize(new THREE.Vector2());
     if (active.nearTarget.width !== size.x || active.nearTarget.height !== size.y) {
@@ -194,13 +205,48 @@ export class RoomManager {
     }
     const previousTarget = this.renderer.getRenderTarget();
     this.renderer.setRenderTarget(active.nearTarget);
-    this.renderer.render(active.scene, active.nearCamera);
+    this.renderer.render(entering ? active.scene : this.gallery.scene,
+      entering ? active.nearCamera : active.returnNearCamera);
     this.renderer.setRenderTarget(previousTarget);
-    active.nearQuad.material.opacity = this.nearOpacity;
+    active.nearQuad.material.opacity = entering ? this.nearOpacity : this.returnOpacity;
     this.renderer.autoClear = false;
     this.renderer.clearDepth();
     this.renderer.render(active.nearScene, active.nearScreenCamera);
     this.renderer.autoClear = true;
+  }
+
+  updateRoom(time) {
+    if ((this.mode !== "room" && this.mode !== "entering") || !this.active || !this.hallPose) return;
+    const active = this.active;
+    const frame = active.frame;
+    const outward = frame.sectionData.right;
+    const inwardX = -outward.x * frame.sideSign;
+    const inwardZ = -outward.z * frame.sideSign;
+    const distance = frame.room.dimensionsM[2] / 2 - this.player.z;
+    const depth = Math.max(0, Math.min(.4, (distance - 1.15) * .25));
+    const lateral = Math.max(-.7, Math.min(.7, this.player.x)) * .6;
+    const x = this.hallPose.x + frame.sectionData.forward.x * lateral + inwardX * depth;
+    const z = this.hallPose.z + frame.sectionData.forward.z * lateral + inwardZ * depth;
+    const hallDirectionX = inwardX + frame.sectionData.forward.x;
+    const hallDirectionZ = inwardZ + frame.sectionData.forward.z;
+    const outwardYaw = Math.atan2(hallDirectionX, -hallDirectionZ);
+    active.returnCamera.position.set(x, this.player.y, z);
+    active.returnCamera.rotation.set(0, -outwardYaw, 0, "YXZ");
+    active.returnNearCamera.position.copy(active.returnCamera.position);
+    active.returnNearCamera.rotation.order = "YXZ";
+    active.returnNearCamera.rotation.y = -(this.controls.yaw + outwardYaw - Math.PI);
+    active.returnNearCamera.rotation.x = this.controls.pitch;
+    const facing = Math.max(0, -Math.cos(this.controls.yaw));
+    const close = Math.max(0, Math.min(1, (1.4 - distance) / .25));
+    const centered = Math.max(0, Math.min(1, (facing - .45) / .3));
+    this.returnOpacity = this.mode === "room" ? close * close * (3 - 2 * close) * centered : 0;
+    if (time - active.lastReturnRender < 1 / 12 && active.hasReturnRender) return;
+    const previousTarget = this.renderer.getRenderTarget();
+    this.renderer.setRenderTarget(active.returnTarget);
+    this.renderer.render(this.gallery.scene, active.returnCamera);
+    this.renderer.setRenderTarget(previousTarget);
+    active.lastReturnRender = time;
+    active.hasReturnRender = true;
   }
 
   async load(frame) {
@@ -247,9 +293,18 @@ export class RoomManager {
       const nearScene = new THREE.Scene();
       nearScene.add(nearQuad);
       const nearScreenCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+      const returnCamera = new THREE.PerspectiveCamera(75, 1.72 / 2.78, .05, 120);
+      const returnNearCamera = new THREE.PerspectiveCamera(75, this.camera.aspect, .05, 120);
+      const returnTarget = new THREE.WebGLRenderTarget(640, 1034, { depthBuffer: true });
+      const returnSurface = new THREE.Mesh(new THREE.PlaneGeometry(1.72, 2.78),
+        new THREE.MeshBasicMaterial({ map: returnTarget.texture, side: THREE.DoubleSide }));
+      returnSurface.position.set(0, 1.43, 2.68);
+      returnSurface.rotation.y = Math.PI;
+      scene.add(returnSurface);
       this.active = {
         frame, scene, previewCamera, target, liveMaterial, liveSurface, nearCamera, nearTarget,
-        nearQuad, nearScene, nearScreenCamera, hasLiveRender: false,
+        nearQuad, nearScene, nearScreenCamera, returnCamera, returnNearCamera, returnTarget,
+        returnSurface, hasLiveRender: false, hasReturnRender: false, lastReturnRender: 0,
         colliders: modelColliders.length ? modelColliders : frame.room.colliders,
         modelColliderCount: modelColliders.length,
         lastOffset: 0, lastDepth: 0, lastRenderTime: 0,
@@ -285,6 +340,7 @@ export class RoomManager {
   async enter() {
     if (!this.active || this.mode !== "hall") return;
     this.mode = "entering";
+    this.nearOpacity = 0;
     this.hallPose = { x: this.player.x, y: this.player.y, z: this.player.z, yaw: this.controls.yaw, pitch: this.controls.pitch };
     this.controls.setEnabled(false);
     this.glow.classList.add("active");
@@ -315,18 +371,24 @@ export class RoomManager {
 
   async leave() {
     if (this.mode !== "room") return;
+    const returnView = this.active.returnNearCamera;
+    const returnPose = {
+      x: returnView.position.x, y: returnView.position.y, z: returnView.position.z,
+      yaw: -returnView.rotation.y, pitch: returnView.rotation.x,
+    };
     this.mode = "leaving";
     this.controls.setEnabled(false);
     this.glow.classList.add("active");
     this.onModeChange("leaving", this.active.frame);
-    await wait(95);
-    Object.assign(this.player, { x: this.hallPose.x, y: this.hallPose.y, z: this.hallPose.z });
-    this.controls.yaw = this.hallPose.yaw;
-    this.controls.pitch = this.hallPose.pitch;
+    await wait(75);
+    Object.assign(this.player, { x: returnPose.x, y: returnPose.y, z: returnPose.z });
+    this.controls.yaw = returnPose.yaw;
+    this.controls.pitch = returnPose.pitch;
     this.suppressFrameId = this.active.frame.id;
+    this.returnOpacity = 0;
     this.mode = "hall";
     this.onModeChange("hall", this.active.frame);
-    await wait(110);
+    await wait(80);
     this.glow.classList.remove("active");
     this.clearActive();
     this.controls.setEnabled(true);
@@ -337,5 +399,6 @@ export class RoomManager {
     disposeRoom(this.active);
     this.active = null;
     this.nearOpacity = 0;
+    this.returnOpacity = 0;
   }
 }

@@ -194,10 +194,24 @@ try {
   await roomPage.keyboard.up("s");
   assert.ok((await roomPage.evaluate(() => window.__galleryDebug().z)) < -.28,
     "Jane's 3D figure should block walking through her");
-  await roomPage.evaluate(() => window.__galleryTestPose(0, 2.20, 0));
-  await roomPage.keyboard.down("s");
+  await roomPage.evaluate(() => window.__galleryTestPose(0, .2, Math.PI));
+  await roomPage.waitForFunction(() => window.__galleryDebug().returnOpacity === 0, null, { timeout: 12000 });
+  await roomPage.screenshot({path:".cache/room01-return-doorway.png"});
+  await roomPage.evaluate(() => window.__galleryTestPose(0, 1.55, Math.PI));
+  await roomPage.waitForFunction(() => window.__galleryDebug().returnOpacity > .99, null, { timeout: 12000 });
+  await roomPage.screenshot({path:".cache/room01-return-full-before-threshold.png"});
+  const returnView = await roomPage.evaluate(() => window.__galleryDebug());
+  await roomPage.evaluate(() => window.__galleryTestPose(0, 2.20, Math.PI));
+  await roomPage.keyboard.down("w");
   await roomPage.waitForFunction(() => window.__galleryDebug().mode === "hall", null, { timeout: 12000 });
-  await roomPage.keyboard.up("s");
+  await roomPage.keyboard.up("w");
+  const returned = await roomPage.evaluate(() => window.__galleryDebug());
+  assert.ok(Math.abs(returned.x - returnView.returnViewX) < .1 &&
+    Math.abs(returned.z - returnView.returnViewZ) < .1,
+  "return should preserve the live hallway camera position");
+  assert.ok(Math.abs(returned.yaw - Math.PI / 4) < .1,
+    "return should face out into the gallery");
+  await roomPage.screenshot({path:".cache/room01-returned-hall.png"});
   assert.equal(await roomPage.locator("#room-title").isVisible(),false);
   await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === null, null, { timeout: 12000 });
   assert.equal((await roomPage.evaluate(() => window.__galleryDebug())).frame01Painting, true,
@@ -231,9 +245,18 @@ try {
   await phonePage.waitForFunction((start) => window.__galleryDebug().yaw > start + .15,roomYaw,{timeout:5000});
   await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});
   await phonePage.screenshot({path:".cache/room01-mobile-entered.png"});
+  await phonePage.evaluate(() => window.__galleryTestPose(0, 1.55, Math.PI));
+  await phonePage.waitForFunction(() => window.__galleryDebug().returnOpacity > .99,null,{timeout:12000});
+  await phonePage.screenshot({path:".cache/room01-mobile-return-before-threshold.png"});
+  await phonePage.evaluate(() => window.__galleryTestPose(0, 2.20, Math.PI));
+  await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[point]});
+  await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchMove",touchPoints:[{...point,y:point.y-38}]});
+  await phonePage.waitForFunction(() => window.__galleryDebug().mode === "hall",null,{timeout:12000});
+  await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});
+  await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === null,null,{timeout:12000});
   assert.deepEqual(phoneErrors,[]);
   await phoneContext.close();
-  console.log("Phone emulation: left-thumb movement crossed frame 01 and entered the room");
+  console.log("Phone emulation: left-thumb movement crossed frame 01 in both directions");
 } finally {
   await browser.close();
 }

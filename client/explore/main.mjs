@@ -74,6 +74,9 @@ try {
       activeRoom: rooms.active?.frame.id || null,
       livePreviewOpacity: rooms.active?.liveMaterial.opacity || 0,
       nearOpacity: rooms.nearOpacity,
+      returnOpacity: rooms.returnOpacity,
+      returnViewX: rooms.active?.returnNearCamera.position.x ?? null,
+      returnViewZ: rooms.active?.returnNearCamera.position.z ?? null,
       liveViewX: rooms.active?.previewCamera.position.x ?? null,
       liveViewZ: rooms.active?.previewCamera.position.z ?? null,
       modelColliderCount: rooms.active?.modelColliderCount ?? 0,
@@ -100,6 +103,8 @@ try {
       rooms.active.nearCamera.aspect = camera.aspect;
       rooms.active.nearCamera.fov = roomFov(rooms.active.frame);
       rooms.active.nearCamera.updateProjectionMatrix();
+      rooms.active.returnNearCamera.aspect = camera.aspect;
+      rooms.active.returnNearCamera.updateProjectionMatrix();
     }
   }
   resize();
@@ -158,6 +163,13 @@ try {
     camera.rotation.y = -controls.yaw;
     camera.rotation.x = controls.pitch;
     gallery.animate(now / 1000, reducedMotion.matches);
+    rooms.updateRoom(now / 1000);
+    roomTitle.hidden = rooms.mode !== "room" || rooms.returnOpacity > .5;
+    if (rooms.mode === "room") {
+      status.textContent = rooms.returnOpacity > .5
+        ? `Gallery ${nearestSection(rooms.active.returnNearCamera.position, gallery.layout.sections).section.index + 1} / 5`
+        : `Room ${rooms.active.frame.label}`;
+    }
     if (rooms.scene && !rooms.renderNearFull()) {
       renderer.render(rooms.scene, camera);
       rooms.renderNearOverlay();
