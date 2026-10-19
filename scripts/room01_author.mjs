@@ -28,7 +28,29 @@ function paperGrain() {
   texture.colorSpace = THREE.SRGBColorSpace;
   return texture;
 }
+function stonePigment() {
+  const canvas=document.createElement("canvas");canvas.width=canvas.height=512;
+  const context=canvas.getContext("2d"),image=context.createImageData(512,512);
+  let seed=327412;
+  for(let y=0;y<512;y++) for(let x=0;x<512;x++) {
+    seed=(seed*1664525+1013904223)>>>0;
+    const grain=(seed%29)-14;
+    const strata=Math.sin(y*.064+Math.sin(x*.025)*1.7)*12;
+    const tide=Math.sin(x*.024+y*.013+Math.sin(y*.017)*2.1)*10;
+    const broad=Math.sin(x*.008-y*.011)*7;
+    const tone=Math.max(158,Math.min(252,220+strata+tide+broad+grain*.55));
+    const index=(y*512+x)*4;
+    image.data[index]=tone;image.data[index+1]=tone-2;
+    image.data[index+2]=tone-3;image.data[index+3]=255;
+  }
+  context.putImageData(image,0,0);
+  const texture=new THREE.CanvasTexture(canvas);
+  texture.colorSpace=THREE.SRGBColorSpace;
+  texture.wrapS=THREE.RepeatWrapping;texture.wrapT=THREE.RepeatWrapping;
+  return texture;
+}
 const grain = paperGrain();
+const stoneGrain = stonePigment();
 const mat = (color, extra = {}) => new THREE.MeshStandardMaterial({ color, map: grain, roughness: .94, metalness: 0, side: THREE.DoubleSide, ...extra });
 const paper = mat(C.paper);
 const timber = mat(0x755047);
@@ -158,6 +180,154 @@ function waveLine(name,y,z,color,phase=0) {
   }
   line(name,points,.021,color);
 }
+// The cave is a continuous hand-shaped surface, with color and depth carried
+// by its vertices. The stage and figures remain legible inside its opening.
+const caveStone = new THREE.MeshStandardMaterial({
+  map: stoneGrain, vertexColors: true, roughness: 1, side: THREE.DoubleSide,
+});
+const caveIndigo = new THREE.Color(0x376577);
+const caveRose = new THREE.Color(0x93a09a);
+function caveHeight(x,z) {
+  return 3.53 - .22*Math.pow(Math.abs(x)/2.7,1.6) - .07*Math.pow(Math.abs(z)/2.7,2)
+    + .045*Math.sin(x*2.9+z*.8)*Math.cos(z*1.7);
+}
+function caveSurface(name,columns,rows,point,offset=0,palette=[caveIndigo,caveRose]) {
+  const positions=[], colors=[], uvs=[], indices=[];
+  for(let row=0;row<=rows;row++) for(let column=0;column<=columns;column++) {
+    const u=column/columns,v=row/rows;
+    const [x,y,z]=point(u,v);
+    positions.push(x,y,z); uvs.push(u*2,v*2);
+    const vein=.52+.24*Math.sin(x*2.7+y*3.9+z*1.4+offset)
+      +.13*Math.sin(x*7.1-y*5.2+z*4.1);
+    const color=palette[0].clone().lerp(palette[1],Math.max(.08,Math.min(.92,vein)));
+    colors.push(color.r,color.g,color.b);
+  }
+  for(let row=0;row<rows;row++) for(let column=0;column<columns;column++) {
+    const a=row*(columns+1)+column,b=a+1,c=a+columns+1,d=c+1;
+    indices.push(a,c,b,b,c,d);
+  }
+  const geometry=new THREE.BufferGeometry();
+  geometry.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
+  geometry.setAttribute("color",new THREE.Float32BufferAttribute(colors,3));
+  geometry.setAttribute("uv",new THREE.Float32BufferAttribute(uvs,2));
+  geometry.setIndex(indices);geometry.computeVertexNormals();
+  const mesh=new THREE.Mesh(geometry,caveStone);mesh.name=name;root.add(mesh);return mesh;
+}
+function caveShell() {
+  caveSurface("uneven vaulted sea cavern ceiling",22,22,(u,v)=>{
+    const x=-2.7+5.4*u,z=-2.7+5.4*v;
+    return [x,caveHeight(x,z),z];
+  },.8);
+  for(const sign of [-1,1]) caveSurface(`${sign<0?"left":"right"} tide-carved cavern wall`,22,14,(u,v)=>{
+    const z=-2.7+5.4*u,y=3.42*v;
+    const swell=.045*Math.sin(z*2.3+y*2.8+sign)+.02*Math.sin(z*6.2-y*5.1);
+    return [sign*(2.56-swell),y,z];
+  },sign);
+  caveSurface("broad back wall of the grotto",22,14,(u,v)=>{
+    const x=-2.7+5.4*u,y=3.42*v;
+    return [x,y,-2.57+.035*Math.sin(x*2.5+y*2.1)+.02*Math.sin(x*6.4-y*4.7)];
+  },2.2);
+  for(const [from,to] of [[-2.7,-.9],[.9,2.7]]) caveSurface("carved rock beside the return arch",8,13,(u,v)=>{
+    const x=from+(to-from)*u,y=3.42*v;
+    return [x,y,2.58-.025*Math.sin(x*4+y*2.8)];
+  },1.5);
+  caveSurface("stone above the open return doorway",10,3,(u,v)=>{
+    const x=-.9+1.8*u,y=2.96+.47*v;
+    return [x,y,2.58-.025*Math.sin(x*4+y*2.8)];
+  },1.5);
+}
+function stoneRib(name,points,radius,material) {
+  const curve=new THREE.CatmullRomCurve3(points.map((point)=>new THREE.Vector3(...point)));
+  const mesh=new THREE.Mesh(new THREE.TubeGeometry(curve,Math.max(20,points.length*5),radius,6,false),material);
+  mesh.name=name;root.add(mesh);return mesh;
+}
+function stalactite(name,x,z,length,material) {
+  const rings=7,sides=9,positions=[],indices=[];
+  const top=caveHeight(x,z)-.035;
+  for(let row=0;row<=rings;row++) {
+    const t=row/rings,radius=.12*Math.pow(1-t,1.25)+.004;
+    for(let side=0;side<sides;side++) {
+      const angle=side*Math.PI*2/sides;
+      const wobble=1+.16*Math.sin(side*2.4+row*1.9+x*5);
+      positions.push(x+Math.cos(angle)*radius*wobble+.045*t*t,
+        top-length*t+.018*Math.sin(t*11+side),
+        z+Math.sin(angle)*radius*wobble-.025*t);
+    }
+  }
+  for(let row=0;row<rings;row++) for(let side=0;side<sides;side++) {
+    const a=row*sides+side,b=row*sides+(side+1)%sides,c=a+sides,d=b+sides;
+    indices.push(a,c,b,b,c,d);
+  }
+  const geometry=new THREE.BufferGeometry();geometry.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
+  geometry.setIndex(indices);geometry.computeVertexNormals();
+  const mesh=new THREE.Mesh(geometry,material);mesh.name=name;root.add(mesh);
+}
+function kelpBlade(name,side,z,height,material) {
+  const vertices=[],indices=[],segments=14,baseX=side*2.51;
+  for(let i=0;i<=segments;i++) {
+    const t=i/segments,y=.16+height*t;
+    const width=.105*Math.sin(Math.PI*t)*(.65+.35*Math.sin(t*7+z));
+    const offset=.14*Math.sin(t*5+z*2)*t;
+    for(const thickness of [0,.018]) for(const edge of [-1,1]) {
+      vertices.push(baseX-side*(.015+.025*Math.sin(t*8)+thickness),y,z+offset+edge*width);
+    }
+  }
+  for(let i=0;i<segments;i++) {
+    const a=i*4,b=a+4;
+    indices.push(a,b,a+1,a+1,b,b+1,a+2,a+3,b+2,a+3,b+3,b+2);
+    indices.push(a,a+2,b,a+2,b+2,b,a+1,b+1,a+3,a+3,b+1,b+3);
+  }
+  const geometry=new THREE.BufferGeometry();geometry.setAttribute("position",new THREE.Float32BufferAttribute(vertices,3));
+  geometry.setIndex(indices);geometry.computeVertexNormals();
+  const mesh=new THREE.Mesh(geometry,material);mesh.name=name;root.add(mesh);
+  stoneRib(`${name} raised central vein`,Array.from({length:8},(_,i)=>{
+    const t=i/7;return [baseX-side*.038,.16+height*t,z+.14*Math.sin(t*5+z*2)*t];
+  }),.012,seaFoam);
+}
+function seaStar(name,side,y,z,size,material) {
+  const shape=new THREE.Shape();
+  for(let i=0;i<10;i++) {
+    const angle=-Math.PI/2+i*Math.PI/5,r=i%2?size*.43:size;
+    const px=Math.cos(angle)*r,py=Math.sin(angle)*r;
+    if(i===0) shape.moveTo(px,py);else shape.lineTo(px,py);
+  }
+  shape.closePath();
+  const mesh=new THREE.Mesh(new THREE.ExtrudeGeometry(shape,{depth:.035,bevelEnabled:true,bevelSegments:1,steps:1,bevelSize:.013,bevelThickness:.013}),material);
+  mesh.name=name;mesh.position.set(side*2.49,y,z);mesh.rotation.y=side<0?Math.PI/2:-Math.PI/2;
+  mesh.rotation.z=z*.17;root.add(mesh);
+}
+function coralRelief(name,x,z,scale,material) {
+  const stem=(suffix,points,radius)=>stoneRib(`${name} ${suffix}`,
+    points.map(([px,py,pz])=>[x+px*scale,py*scale,z+pz*scale]),radius*scale,material);
+  stem("bending trunk",[[0,.12,0],[-.07,.54,.08],[.04,1.01,.13],[.14,1.5,.08]],.07);
+  stem("left branch",[[-.03,.58,.07],[-.26,.9,.16],[-.43,1.18,.12],[-.53,1.42,.1]],.046);
+  stem("right branch",[[.04,.96,.13],[.31,1.1,.2],[.43,1.39,.17],[.48,1.65,.11]],.042);
+  stem("low outer branch",[[-.15,.83,.1],[-.38,.74,.18],[-.63,.91,.14]],.035);
+  for(const [px,py] of [[-.53,1.42],[.48,1.65],[-.63,.91],[.14,1.5]]) {
+    const shape=new THREE.Shape();shape.moveTo(0,0);
+    shape.quadraticCurveTo(-.11,.18,-.02,.29);
+    shape.quadraticCurveTo(.09,.18,0,0);
+    const leaf=new THREE.Mesh(new THREE.ExtrudeGeometry(shape,{
+      depth:.024,bevelEnabled:true,bevelSize:.009,bevelThickness:.008,bevelSegments:1,
+    }),material);
+    leaf.name=`${name} carved branching tip`;
+    leaf.position.set(x+px*scale,py*scale,z+.11*scale);
+    leaf.rotation.z=px*.43;root.add(leaf);
+  }
+}
+function spiralFossil(name,x,y,z,radius,material) {
+  const points=[];
+  for(let i=0;i<=64;i++) {
+    const t=i/64,angle=t*Math.PI*4.2+.4,r=.028+radius*t;
+    points.push([x+Math.cos(angle)*r,y+Math.sin(angle)*r,z+.02*Math.sin(t*7)]);
+  }
+  stoneRib(name,points,.028,material);
+  for(let i=0;i<9;i++) {
+    const t=.34+i*.07,angle=t*Math.PI*4.2+.4,r=.028+radius*t;
+    stoneRib(`${name} short shell rib`,[[x+Math.cos(angle)*r,y+Math.sin(angle)*r,z+.022],
+      [x+Math.cos(angle+.08)*(r+.11),y+Math.sin(angle+.08)*(r+.11),z+.008]],.012,gold);
+  }
+}
 function face(name, head, skin, iris, options={}) {
   oval(`${name} softly sculpted face`,0,0,0,.18,.215,.16,skin,head);
   oval(`${name} small nose`,0,-.022,.165,.033,.048,.044,skin,head);
@@ -256,8 +426,12 @@ function sculptJane() {
 export async function authorRoom() {
 
   // Architecture: 5.4 m square, tall walls, open central doorway at +Z.
-  box("plank floor",0,-.08,0,5.4,.16,5.4,mat(0xc49278));
-  box("ceiling",0,3.6,0,5.4,.12,5.4,deepSea);
+  box("sandstone under the grotto floor",0,-.08,0,5.4,.16,5.4,mat(0x9a766f));
+  caveSurface("softly undulating sandy cave floor",24,24,(u,v)=>{
+    const x=-2.7+5.4*u,z=-2.7+5.4*v;
+    return [x,.035+.012*Math.sin(x*2.8+z*1.9)+.008*Math.sin(x*6.1-z*3.7),z];
+  },1.7,[new THREE.Color(0xa37f79),new THREE.Color(0xe0b991)]);
+  caveShell();
   box("back wall",0,1.8,-2.7,5.4,3.6,.14,mat(C.wall));
   box("left wall",-2.7,1.8,0,.14,3.6,5.4,mat(0x916177));
   box("right wall",2.7,1.8,0,.14,3.6,5.4,mat(0x916177));
@@ -268,35 +442,55 @@ export async function authorRoom() {
   box("doorway left gilded edge",-.9,1.45,2.59,.055,2.9,.2,gold);
   box("doorway right gilded edge",.9,1.45,2.59,.055,2.9,.2,gold);
   box("doorway gold header",0,2.93,2.59,1.86,.055,.2,gold);
-  sign("way back to the gallery","GALLERY","walk through to return",0,2.96,2.52,1.44,.35,Math.PI);
-  for(let i=0;i<6;i++) {
-    const x=-2.68+i*.9;
-    box("long wooden floorboard joint",x,.002,0,.013,.006,5.36,mat(0x9b6c64));
-    for(let row=0;row<3;row++) {
-      const z=-2.1+row*1.8+(i%2)*.45;
-      box("staggered floorboard join",x+.45,.004,z,.9,.006,.012,mat(0xa67368));
-      for(const edge of [-.38,.38]) sphere("tiny floor nail",x+edge,.011,z,.012,deepInk);
+  sign("way back to the gallery","GALLERY","walk through to return",0,2.55,2.52,1.44,.35,Math.PI);
+  for(const x of [-.64,.64]) stoneRib("short carved hanger for the return sign",
+    [[x,2.9,2.53],[x+.025,2.75,2.53],[x,2.68,2.53]],.012,gold);
+  const paleStone=mat(0x8da6a2);
+  const duskStone=mat(0x806e82);
+  for(const z of [-2.1,-.88,.37,1.68]) {
+    stoneRib("sweeping mineral rib across the vaulted cave roof",Array.from({length:12},(_,i)=>{
+      const x=-2.6+i*5.2/11;
+      return [x,caveHeight(x,z)-.035,z+.045*Math.sin(i*.9+z)];
+    }),.045,z<0?paleStone:duskStone);
+  }
+  for(const side of [-1,1]) {
+    for(const y of [.43,1.19,2.54]) stoneRib("worn tidal stratum along the cave wall",
+      Array.from({length:13},(_,i)=>{
+        const z=-2.5+i*5/12;
+        return [side*(2.50-.02*Math.sin(i*1.8+y)),y+.09*Math.sin(z*2.1+side+y),z];
+      }),y===1.19?.045:.065,y===2.54?paleStone:duskStone);
+    for(const [z,height,lean] of [[-2.12,1.65,.1],[.95,1.96,.16],[1.83,1.35,.2]]) {
+      kelpBlade("broad sculpted kelp growing up the grotto wall",side,z,height,side<0?seaFoam:tide);
+      kelpBlade("smaller layered kelp leaf",side,z+side*.16,height*.74,side<0?tide:seaFoam);
+      stoneRib("branching kelp stem",[[side*2.49,.14,z],[side*2.47,.52,z+lean],[side*2.46,.9,z+lean*.5]],.018,gold);
+    }
+    for(const [z,y,size] of [[-1.86,2.4,.14],[.62,2.76,.18],[1.63,2.18,.13]]) {
+      seaStar("carved five-armed sea star in the cave wall",side,y,z,size,side<0?coral:pearl);
+    }
+    for(const [z,y,scale] of [[-2.18,1.62,.37],[1.72,2.48,.48]]) {
+      const fossil=shellFan("raised scallop fossil in cave stone",side*2.46,y,z,scale,pearl);
+      fossil.rotation.y=side<0?Math.PI/2:-Math.PI/2;
     }
   }
-  for(let i=0;i<12;i++) {
-    const x=-2.34+(i%6)*.85, z=-1.92+Math.floor(i/6)*1.45;
-    sphere("ceiling gold constellation",x,3.45,z,.028+(i%3)*.008,gold);
+  for(const [x,z,length] of [[-2.16,-1.55,.42],[2.11,-.64,.36],[-2.23,1.62,.53],[2.25,1.44,.43],[-1.47,-2.02,.27],[1.61,-2.17,.31]]) {
+    stalactite("uneven limestone dripstone suspended from the cavern roof",x,z,length,
+      x<0?paleStone:duskStone);
   }
-  for(const z of [-1.92,-.47]) {
-    line("fine constellation thread",[[-2.34,3.45,z],[-1.49,3.45,z+.15],[-.64,3.45,z-.12],[.21,3.45,z+.12],[1.06,3.45,z-.12],[1.91,3.45,z]],.007,parchment);
+  for(const [radius,y,z] of [[1.38,.071,1.61],[.95,.072,1.1]]) {
+    stoneRib("winding tide mark inset into the sand",Array.from({length:15},(_,i)=>{
+      const angle=.38+i*Math.PI*1.32/14;
+      return [Math.cos(angle)*radius,y, z+Math.sin(angle)*radius*.47];
+    }),.015,parchment);
   }
-  for(const x of [-2.55,2.55]) {
-    box("painted wall lower panel",x,.58,0,.035,1.0,5.2,mat(0x775064));
-    box("gilt dado rail",x,1.11,0,.06,.055,5.3,gold);
-    box("wall skirting",x,.14,0,.06,.19,5.3,timber);
-  }
-  for(const z of [-2.53,2.53]) box("wall crown moulding",0,3.42,z,5.22,.09,.08,parchment);
+  coralRelief("branching coral grown into the left grotto wall",-2.29,-2.47,.91,mat(0xb88991));
+  coralRelief("pale coral around the acting stage",-.78,-2.45,.84,paleStone);
+  spiralFossil("large pearly nautilus fossil in the cave",-1.02,1.36,-2.39,.37,parchment);
+  spiralFossil("small spiral fossil near the floor",-2.25,.56,-2.42,.19,seaFoam);
 
   // Small raised stage and theater drapery, right and back.
   box("stage base",.9,.19,-1.58,2.65,.38,1.5,mat(C.stage)).userData.solidFootprint = true;
   box("stage gold lip",.9,.4,-.79,2.72,.055,.09,gold);
   box("stage patterned floor",.9,.395,-1.58,2.54,.02,1.38,mat(0x9b8b80));
-  box("stage rear panel",.9,1.7,-2.57,2.75,2.6,.09,deepSea);
   for(const [height,depth,material,phase] of [[.76,-2.47,tide,0],[1.08,-2.42,seaFoam,1.5],[1.36,-2.39,mat(0x9b759b),2.8]]) {
     waveLine("layered underwater storybook wave",height,depth,material,phase);
   }
@@ -362,7 +556,7 @@ export async function authorRoom() {
 
   // The foreground signup desk and Jane's paused pen.
   sculptJane();
-  oval("Jane's soft floor shadow",-1.57,.012,.28,.32,.006,.17,mat(0x604052,{transparent:true,opacity:.22,depthWrite:false}),root);
+  oval("Jane's soft floor shadow",-1.57,.064,.28,.32,.006,.17,mat(0x604052,{transparent:true,opacity:.22,depthWrite:false}),root);
   box("signup desk top",-1.37,.88,.66,1.54,.07,.72,mat(0x9d684f)).userData.solidFootprint = true;
   box("desk carved front apron",-1.37,.77,.96,1.54,.16,.065,mat(0x805344));
   box("desk carved side apron",-2.05,.77,.66,.055,.16,.6,mat(0x805344));
@@ -374,49 +568,50 @@ export async function authorRoom() {
   for(let page=0;page<3;page++) box("script booklet layered pages",-.78,.986+page*.006,.49,.18,.004,.25,paper);
   shellFan("tiny shell paperweight on the desk",-1.95,.96,.48,.18,pearl);
   for(const x of [-1.0,-.9,-.8]) sphere("sea-glass beads by the script",x,.964,.84,.025,bubbleGlass);
-  sign("little mermaid storybook","MERMAID","a favorite story",-2.58,1.74,-.71,.54,.42,Math.PI/2);
+  sign("little mermaid storybook","MERMAID","a favorite story",-2.42,2.15,-.65,.54,.42,Math.PI/2);
   oval("red wax seal on signup",-1.52,.954,.77,.035,.006,.035,rose,root);
   sign("signup card","ZEPHRINE","dance + acting",-1.35,.77,.997,.5,.18);
-  sign("script placard","SCRIPT","a story begins",-2.3,1.57,-.28,.52,.38,Math.PI/2);
 
   // Traces Jane can inspect: masks, footsteps, cards and framed scraps.
   for (const [name,x] of [["comedy",-2.14],["tragedy",-1.45]]) {
-    oval(`${name} sculpted theater mask`,x,2.43,-2.56,.18,.235,.075,parchment,root);
+    oval(`${name} sculpted theater mask`,x,2.43,-2.43,.18,.235,.075,parchment,root);
     for(const side of [-1,1]) {
-      oval(`${name} dark carved eye`,x+side*.075,2.48,-2.484,.027,.016,.009,deepInk,root);
-      oval(`${name} raised mask brow`,x+side*.075,2.545,-2.493,.061,.009,.008,gold,root);
+      oval(`${name} dark carved eye`,x+side*.075,2.48,-2.354,.027,.016,.009,deepInk,root);
+      oval(`${name} raised mask brow`,x+side*.075,2.545,-2.363,.061,.009,.008,gold,root);
     }
-    oval(`${name} mask nose`,x,2.41,-2.472,.028,.047,.017,parchment,root);
-    line(`${name} expression`,[[x-.085,2.34,-2.486],[x,2.34+(name==="comedy"?-.035:.045),-2.471],[x+.085,2.34,-2.486]],.01,deepInk);
+    oval(`${name} mask nose`,x,2.41,-2.342,.028,.047,.017,parchment,root);
+    line(`${name} expression`,[[x-.085,2.34,-2.356],[x,2.34+(name==="comedy"?-.035:.045),-2.341],[x+.085,2.34,-2.356]],.01,deepInk);
   }
-  for(const [x,z] of [[-2.14,-2.57],[-1.45,-2.57]]) {
+  for(const [x,z] of [[-2.14,-2.44],[-1.45,-2.44]]) {
     box("theater mask ribbon",x,2.71,z+.02,.09,.24,.015,paleRose);
-    oval("theater mask cheek",x-.105,2.41,-2.488,.025,.015,.006,paleRose,root);
-    oval("theater mask cheek",x+.105,2.41,-2.488,.025,.015,.006,paleRose,root);
+    oval("theater mask cheek",x-.105,2.41,-2.358,.025,.015,.006,paleRose,root);
+    oval("theater mask cheek",x+.105,2.41,-2.358,.025,.015,.006,paleRose,root);
   }
   for (let i=0;i<4;i++) {
     const x=-.52+i*.34, z=1.36-i*.5;
     const step=new THREE.Group();step.name="golden dance footprint";
-    step.position.set(x,.015,z);step.rotation.y=i%2?.3:-.3;root.add(step);
+    step.position.set(x,.072,z);step.rotation.y=i%2?.3:-.3;root.add(step);
     oval("footprint sole",0,0,0,.078,.007,.145,i%2?gold:parchment,step);
     oval("footprint toe",0,.002,-.12,.087,.007,.06,i%2?gold:parchment,step);
   }
-  sign("left wall class card","DANCE","move with joy",-2.58,1.7,-1.25,.66,.44,Math.PI/2);
-  sign("right wall class card","ACTING","tell a story",2.58,1.7,.3,.66,.44,-Math.PI/2);
-  for(const [x,z] of [[-2.64,-1.25],[2.64,.3]]) {
+  sign("left wall class card","DANCE","move with joy",-2.42,1.7,-1.75,.66,.44,Math.PI/2);
+  sign("right wall class card","ACTING","tell a story",2.42,1.7,.3,.66,.44,-Math.PI/2);
+  for(const [x,z] of [[-2.48,-1.75],[2.48,.3]]) {
     box("class card display backing",x,1.7,z,.07,.64,.92,gold);
   }
-  for(const [x,z,length] of [[-.42,-.5,.36],[.31,-.63,.54],[.96,-.42,.27]]) {
-    line("mobile suspension thread",[[x,3.45,z],[x,3.45-length,z]],.005,parchment);
-    const moon=new THREE.Mesh(new THREE.IcosahedronGeometry(.065,0),mat(x<0?C.blue:C.gold));
-    moon.name="cut-paper star mobile";moon.position.set(x,3.39-length,z);root.add(moon);
+  for(const [x,z,length] of [[-.42,-.5,.36],[.31,-.63,.52],[.96,-.42,.29]]) {
+    const roof=caveHeight(x,z)-.05;
+    stoneRib("curved mineral stem suspending a little shell",[[x,roof,z],[x+.035,roof-length*.48,z+.025],
+      [x+.02,roof-length,z+.04]],.012,paleStone);
+    const hanging=shellFan("small shell hanging in the sea cave",x+.02,roof-length-.1,z+.04,.22,pearl);
+    hanging.rotation.y=.18+x*.14;
   }
   for(const [x,y,z,r] of [[.22,2.62,1.45,.075],[1.21,2.37,1.06,.045],[1.8,2.84,.72,.064],[-.58,2.9,.55,.035]]) {
     sphere("foreground pearly bubble hanging between Jane and the stage",x,y,z,r,bubbleGlass);
     sphere("foreground bubble glimmer",x-r*.32,y+r*.32,z+r*.76,r*.13,pearl);
   }
   for(const y of [2.19,2.48,2.77]) {
-    line("undersea wall relief",[[-2.56,y,1.66],[-2.56,y+.07,1.28],[-2.56,y-.04,.91],[-2.56,y+.05,.54]],.013,y===2.48?seaFoam:gold);
+    line("undersea wall relief",[[-2.44,y,1.66],[-2.44,y+.07,1.28],[-2.44,y-.04,.91],[-2.44,y+.05,.54]],.013,y===2.48?seaFoam:gold);
   }
 
   const scene = new THREE.Scene(); scene.background = new THREE.Color(0x211a30);
