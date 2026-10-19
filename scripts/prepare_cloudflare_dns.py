@@ -157,9 +157,17 @@ def main() -> None:
         if not args.apply:
             print("Run with --apply to create the pending zone. Re-run afterward to review DNS records.")
             return
-        created = cloudflare.request(
-            "POST", "/zones", {"name": DOMAIN, "type": "full", "account": {"id": account["id"]}}
-        )["result"]
+        try:
+            created = cloudflare.request(
+                "POST", "/zones", {"name": DOMAIN, "type": "full", "account": {"id": account["id"]}}
+            )["result"]
+        except RuntimeError as exc:
+            if "com.cloudflare.api.account.zone.create" in str(exc):
+                sys.exit(
+                    "This token cannot create a new zone. Add 13times3.com to Cloudflare "
+                    "on the Free plan in the dashboard, then re-run this script to prepare DNS."
+                )
+            raise
         print("Created pending zone", created["id"])
         print("Assigned nameservers:", ", ".join(created.get("name_servers") or []))
         print("Re-run this script to review imported DNS records before any DNS changes.")
