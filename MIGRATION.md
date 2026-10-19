@@ -22,6 +22,8 @@ The site source is published at [OlegYazvin/13times3](https://github.com/OlegYaz
    | `@` | A | `185.199.111.153` |
    | `www` | CNAME | `olegyazvin.github.io` |
 
+   If using an API token for this step, save it locally as `.secrets/cloudflare-token` (never commit it). Run `python3 scripts/prepare_cloudflare_dns.py` to inspect the zone and proposed changes, then `python3 scripts/prepare_cloudflare_dns.py --apply` to create a missing pending zone or make the reviewed website-record changes. If it creates a zone, run it again to review imported records before applying DNS changes. The script backs up Cloudflare's current DNS records to `.secrets/cloudflare-dns-backup.json`, preserves unrelated records, and stops on unexpected website-record conflicts. It does not change nameservers.
+
 4. Set the GitHub repository variable `SITE_BASE_PATH` to `/` under **Settings → Secrets and variables → Actions → Variables**. Trigger the Pages workflow and confirm it passes. In **Settings → Pages**, set the custom domain to `www.13times3.com`.
 5. At Squarespace Domains, replace the current nameservers with the exact nameservers assigned to this zone by Cloudflare. Wait for Cloudflare to mark the zone active, then verify both `www.13times3.com` and the apex resolve to GitHub Pages. Enable **Enforce HTTPS** in GitHub Pages after the certificate is available. The apex should redirect to `www`.
 
