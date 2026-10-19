@@ -1,6 +1,13 @@
 # GitHub Pages and Cloudflare cutover
 
-The site source is published at [OlegYazvin/13times3](https://github.com/OlegYazvin/13times3). GitHub Pages has deployed it at [the staging URL](https://olegyazvin.github.io/13times3/). All 41 public routes and a sample image returned successfully on October 19, 2026. Keep the Squarespace website subscription active until the custom domain and all media work on the new host.
+The site source is published at [OlegYazvin/13times3](https://github.com/OlegYazvin/13times3). On October 19, 2026, GitHub Pages deployed the root-path build with `www.13times3.com` configured. Cloudflare DNS is active, and Squarespace now delegates to `ainsley.ns.cloudflare.com` and `damien.ns.cloudflare.com`. A direct GitHub origin check returned HTTP 200 for all 41 routes and 25 images. DNS caches may still contain the old Squarespace answer for several hours. Keep the Squarespace website subscription active until HTTPS and the public custom domain work reliably.
+
+## Current remaining work
+
+1. Wait for GitHub Pages to issue the custom-domain certificate, then enable **Enforce HTTPS** and verify both apex and `www` over HTTPS. GitHub says HTTPS may take up to an hour after custom-domain setup, and the control can take up to 24 hours to become available.
+2. Verify `13times3.com` in GitHub account **Settings → Pages**. The TXT challenge has been added to Cloudflare DNS and is publicly visible, but GitHub's first verification attempt did not yet see it.
+3. Finish the Cloudflare Registrar transfer. Squarespace's transfer lock is off and the authorization code has been requested by email. Cloudflare lists the domain as ready and has the transfer form open at the authorization-code step. The displayed transfer charge is $10.46 before tax as of October 19, 2026. Complete checkout and any confirmation email after the code arrives.
+4. After transfer and HTTPS are confirmed, keep an offline backup and cancel the Squarespace website subscription. Revoke the temporary Cloudflare API token.
 
 ## 1. GitHub staging
 
@@ -10,9 +17,9 @@ The site source is published at [OlegYazvin/13times3](https://github.com/OlegYaz
 
 ## 2. Prepare the custom domain
 
-1. In GitHub account **Settings → Pages**, begin verification of `13times3.com` and add its requested TXT record at the current authoritative DNS provider. Wait for GitHub to show the domain as verified.
-2. Add `13times3.com` to Cloudflare on the Free plan. Before changing nameservers, compare Cloudflare's imported DNS records with the full list in Squarespace Domains, including any MX, TXT, CAA, and service records. Preserve any records not related to the Squarespace website.
-3. In Cloudflare DNS, remove the Squarespace website `A` records and `www` CNAME. Create these **DNS only** records for GitHub Pages:
+1. **Done:** Began GitHub account-level verification of `13times3.com` and added its TXT record to Cloudflare DNS.
+2. **Done:** Added `13times3.com` to Cloudflare on the Free plan. Squarespace DNS settings contained only its apex A record, `www` CNAME, and `_domainconnect` CNAME; Cloudflare preserved `_domainconnect`.
+3. **Done:** Removed the Squarespace website records from Cloudflare and created these **DNS only** GitHub Pages records:
 
    | Name | Type | Value |
    | --- | --- | --- |
@@ -22,15 +29,15 @@ The site source is published at [OlegYazvin/13times3](https://github.com/OlegYaz
    | `@` | A | `185.199.111.153` |
    | `www` | CNAME | `olegyazvin.github.io` |
 
-   If using an API token for this step, save it locally as `.secrets/cloudflare-token` (never commit it). Run `python3 scripts/prepare_cloudflare_dns.py` to inspect the zone and proposed changes, then `python3 scripts/prepare_cloudflare_dns.py --apply` to create a missing pending zone or make the reviewed website-record changes. If it creates a zone, run it again to review imported records before applying DNS changes. The script backs up Cloudflare's current DNS records to `.secrets/cloudflare-dns-backup.json`, preserves unrelated records, and stops on unexpected website-record conflicts. It does not change nameservers.
+   If using an API token for this step, save it locally as `.secrets/cloudflare-token` (never commit it). Run `python3 scripts/prepare_cloudflare_dns.py` to inspect the zone and proposed changes, then `python3 scripts/prepare_cloudflare_dns.py --apply` to create a missing pending zone or make the reviewed website-record changes. If it creates a zone, run it again to review imported records before applying DNS changes. The script saves a timestamped snapshot of Cloudflare's current DNS records under `.secrets/`, preserves unrelated records, and stops on unexpected website-record conflicts. It does not change nameservers.
 
-4. Set the GitHub repository variable `SITE_BASE_PATH` to `/` under **Settings → Secrets and variables → Actions → Variables**. Trigger the Pages workflow and confirm it passes. In **Settings → Pages**, set the custom domain to `www.13times3.com`.
-5. At Squarespace Domains, replace the current nameservers with the exact nameservers assigned to this zone by Cloudflare. Wait for Cloudflare to mark the zone active, then verify both `www.13times3.com` and the apex resolve to GitHub Pages. Enable **Enforce HTTPS** in GitHub Pages after the certificate is available. The apex should redirect to `www`.
+4. **Done:** Set `SITE_BASE_PATH=/`, reran the Pages workflow successfully, and set the custom domain to `www.13times3.com`.
+5. **Done:** Replaced Squarespace's nameservers with Cloudflare's assigned pair. Cloudflare marked the zone active at 14:21 UTC on October 19, 2026. Squarespace DNSSEC was off. Both apex and `www` resolve to GitHub Pages through Cloudflare DNS.
 
 The GitHub IP addresses and custom-domain behavior are documented in [GitHub's custom domain guide](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site). Cloudflare recommends reviewing every DNS record before changing nameservers in its [DNS setup guide](https://developers.cloudflare.com/dns/get-started/).
 
 ## 3. Transfer the registration
 
-The domain is registered at Squarespace through October 10, 2027. Public registration data currently lists `client transfer prohibited`, so unlock the domain in Squarespace Domains and request its authorization code when the transfer is eligible. Start the transfer in Cloudflare Registrar after Cloudflare DNS is active. The account owner must complete checkout and any confirmation emails. The transfer can take several days; the website can remain live on GitHub Pages throughout. [Cloudflare transfer guide](https://developers.cloudflare.com/registrar/get-started/transfer-domain-to-cloudflare/)
+The domain is registered at Squarespace. The Squarespace account currently shows its lock off and renewal in September 2027. The authorization code was requested from Squarespace on October 19, 2026; Squarespace says delivery can take up to 24 hours. Cloudflare Registrar marks the domain ready for transfer and awaits that code. The account owner must complete checkout and any confirmation emails. The transfer can take several days; the website can remain live on GitHub Pages throughout. [Cloudflare transfer guide](https://developers.cloudflare.com/registrar/get-started/transfer-domain-to-cloudflare/)
 
 After the transfer completes, confirm Cloudflare is the registrar, DNS remains active, HTTPS works, and all 39 detail URLs work. Keep an offline backup of the site source and media, then cancel the Squarespace website subscription.

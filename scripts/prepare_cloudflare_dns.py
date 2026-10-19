@@ -8,6 +8,7 @@ by Git. This script never changes nameservers or registrar settings.
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import json
 import os
 import sys
@@ -178,9 +179,10 @@ def main() -> None:
     print(f"Zone: {DOMAIN} ({zone_id}), status: {zone['status']}")
     print("Assigned nameservers:", ", ".join(zone.get("name_servers") or []))
     records = cloudflare.list_all(f"/zones/{zone_id}/dns_records")
-    backup_path = ROOT / ".secrets" / "cloudflare-dns-backup.json"
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+    backup_path = ROOT / ".secrets" / f"cloudflare-dns-{stamp}.json"
     backup_path.parent.mkdir(mode=0o700, exist_ok=True)
-    fd = os.open(backup_path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    fd = os.open(backup_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
     with os.fdopen(fd, "w") as stream:
         json.dump(records, stream, indent=2)
     print(f"Saved all {len(records)} current Cloudflare DNS records to {backup_path}")
