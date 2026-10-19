@@ -62,6 +62,6 @@ eleventyExcludeFromCollections: true
       <span class="sr-only" id="announcement" aria-live="polite"></span>
     </main>
     <script type="application/json" id="gallery-data">{{ gallery | serializeJson | safe }}</script>
-    <script type="module" src="{{ '/assets/explore/app.js' | url }}"></script>
+    <script type="module" src="{{ '/assets/explore/app.js' | url }}?v={{ exploreScriptVersion }}"></script>
   </body>
 </html>

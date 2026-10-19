@@ -1,3 +1,6 @@
+const { createHash } = require("node:crypto");
+const { readFileSync } = require("node:fs");
+
 module.exports = function (eleventyConfig) {
   eleventyConfig.addGlobalData(
     "isStaging",
@@ -8,6 +11,10 @@ module.exports = function (eleventyConfig) {
       .replace(/&/g, "\\u0026")
       .replace(/</g, "\\u003c")
       .replace(/>/g, "\\u003e"),
+  );
+  eleventyConfig.addGlobalData(
+    "exploreScriptVersion",
+    createHash("sha256").update(readFileSync("src/assets/explore/app.js")).digest("hex").slice(0, 12),
   );
   eleventyConfig.addWatchTarget("src/assets/explore/app.js");
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });

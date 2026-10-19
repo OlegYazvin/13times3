@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -98,7 +99,8 @@ def main() -> None:
     assert explore.select_one("#room-title") is not None
     assert explore.select_one("script#gallery-data") is not None
     assert len(explore.select(".frame-list li")) == 41
-    assert explore.select_one("script[src]").get("src") == expected_href("/assets/explore/app.js")
+    script_version = hashlib.sha256((OUTPUT / "assets/explore/app.js").read_bytes()).hexdigest()[:12]
+    assert explore.select_one("script[src]").get("src") == expected_href("/assets/explore/app.js") + f"?v={script_version}"
     assert explore.select_one('link[rel="stylesheet"]').get("href") == expected_href("/assets/explore.css")
     assert explore.select_one("link[rel=canonical]").get("href") == DATA["canonicalOrigin"] + "/explore/"
     for asset in ("assets/explore/app.js", "assets/explore.css"):
