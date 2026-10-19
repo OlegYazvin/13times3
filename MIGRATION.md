@@ -1,6 +1,14 @@
 # GitHub Pages and Cloudflare cutover
 
-## Pause checkpoint — October 19, 2026, 16:22 UTC
+## Resumed migration — October 19, 2026, 18:54 UTC
+
+The owner supplied the Squarespace transfer authorization code in `.secrets/domain authorization code`. It was entered into Cloudflare's transfer form successfully without adding it to the repository. The owner approved the **$10.46** checkout charge, and Cloudflare submitted the transfer at about 18:56 UTC. Cloudflare now shows **Pending Transfer**, with unlocking and authorization-code entry complete and the domain awaiting release by Squarespace. The code file is gitignored and has mode `600`.
+
+Both providers sent transfer emails. Squarespace Domains LLC says no response is needed to proceed; unless canceled, the transfer will proceed by **October 24, 2026**. Cloudflare says the registrar may take up to five days to release it. Squarespace's `Review Request` link is for cancellation, not approval, for this registrar, as described in [Squarespace's outgoing-transfer guide](https://support.squarespace.com/hc/en-us/articles/205812338-Transferring-a-domain-away-from-Squarespace). Do not cancel the transfer or the Squarespace website subscription while registration remains pending.
+
+The live site returned HTTP 200 for all 42 checked paths (homepage, `/explore/`, and 40 paths from the Squarespace manifest). GitHub account domain verification was retried and still reported that it could not find the TXT challenge, despite matching answers from Cloudflare's authoritative nameserver and the `1.1.1.1`, `8.8.8.8`, and `9.9.9.9` resolvers. GitHub's Pages API still reports no origin HTTPS certificate. Keep Cloudflare's proxied DNS and Full TLS mode so public HTTPS continues to work; retry GitHub verification after DNS propagation.
+
+## Earlier pause checkpoint — October 19, 2026, 16:22 UTC
 
 The migration is paused at the owner's request. The live site is already deployed from the public GitHub repository through Cloudflare, with all 41 captured routes and 25 local images verified over HTTPS at the last check. The working tree was clean before this checkpoint was written. Leave the current Cloudflare proxy and Full TLS mode in place while GitHub's origin certificate is pending, and keep the Squarespace website subscription active.
 
@@ -16,7 +24,7 @@ The site source is published at [OlegYazvin/13times3](https://github.com/OlegYaz
 
 1. GitHub's own custom-domain certificate remains pending. The current Cloudflare proxy supplies browser HTTPS and connects to GitHub over TLS in **Full** mode; Cloudflare does not validate the origin certificate in this mode. After GitHub issues its certificate, enable **Enforce HTTPS** in GitHub Pages, switch Cloudflare to **Full (strict)**, and consider returning the website DNS records to **DNS only**. GitHub says HTTPS may take up to an hour after custom-domain setup, and the control can take up to 24 hours to become available. If GitHub cannot issue while Cloudflare is proxying, use a maintenance window to return the records to DNS only and retry certificate issuance.
 2. Verify `13times3.com` in GitHub account **Settings → Pages**. The TXT challenge has been added to Cloudflare DNS and is publicly visible, but GitHub's first verification attempt did not yet see it.
-3. Finish the Cloudflare Registrar transfer. Squarespace's transfer lock is off and the authorization code has been requested by email. Cloudflare lists the domain as ready and has the transfer form open at the authorization-code step. The displayed transfer charge is $10.46 before tax as of October 19, 2026. Complete checkout and any confirmation email after the code arrives.
+3. Monitor the Cloudflare Registrar transfer. Checkout was submitted and the transfer is pending release by Squarespace; no email confirmation action is required. Recheck Cloudflare Registrations after October 24 if it has not completed sooner.
 4. After transfer and HTTPS are confirmed, keep an offline backup and cancel the Squarespace website subscription. The temporary Cloudflare API token was revoked and its local file removed on October 19, 2026; later DNS changes can be made in the dashboard.
 
 ## 1. GitHub staging
@@ -48,6 +56,6 @@ The GitHub IP addresses and custom-domain behavior are documented in [GitHub's c
 
 ## 3. Transfer the registration
 
-The domain is registered at Squarespace. The Squarespace account currently shows its lock off and renewal in September 2027. The authorization code was requested from Squarespace on October 19, 2026; Squarespace says delivery can take up to 24 hours. Cloudflare Registrar marks the domain ready for transfer and awaits that code. The account owner must complete checkout and any confirmation emails. The transfer can take several days; the website can remain live on GitHub Pages throughout. [Cloudflare transfer guide](https://developers.cloudflare.com/registrar/get-started/transfer-domain-to-cloudflare/)
+The domain is registered at Squarespace. The Squarespace account currently shows its lock off and renewal in September 2027. The authorization code was requested from Squarespace on October 19, 2026 and supplied later that day. Cloudflare accepted it, checkout was submitted, and the transfer is pending Squarespace's release. The website can remain live on GitHub Pages throughout. [Cloudflare transfer guide](https://developers.cloudflare.com/registrar/get-started/transfer-domain-to-cloudflare/)
 
 After the transfer completes, confirm Cloudflare is the registrar, DNS remains active, HTTPS works, and all 39 detail URLs work. Keep an offline backup of the site source and media, then cancel the Squarespace website subscription.
