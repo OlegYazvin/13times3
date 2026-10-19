@@ -1,6 +1,6 @@
 # 13 Times 3
 
-A static recreation of [13times3.com](https://www.13times3.com), hosted on GitHub Pages. Cloudflare will manage DNS and domain registration after cutover.
+A static recreation of [13times3.com](https://www.13times3.com), hosted on GitHub Pages. Cloudflare manages DNS and currently proxies HTTPS to GitHub Pages. Transfer of domain registration from Squarespace is pending.
 
 ## Contents
 
