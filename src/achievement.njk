@@ -11,9 +11,9 @@ permalink: "achievements/{{ achievement.slug }}/index.html"
 </article>
 <nav class="item-navigation" aria-label="Achievement navigation">
   {% if achievement.previous %}
-    <a class="item-navigation-link previous" href="{{ achievement.previous.path | url }}"><span>Previous</span><strong>{{ achievement.previous.title }}</strong></a>
+    <a class="item-navigation-link previous" href="{{ achievement.previous.path | url }}"><span>Previous</span><strong>{{ achievement.previous.path | achievementHeadingForPath(site.achievements) }}</strong></a>
   {% else %}<span></span>{% endif %}
   {% if achievement.next %}
-    <a class="item-navigation-link next" href="{{ achievement.next.path | url }}"><span>Next</span><strong>{{ achievement.next.title }}</strong></a>
+    <a class="item-navigation-link next" href="{{ achievement.next.path | url }}"><span>Next</span><strong>{{ achievement.next.path | achievementHeadingForPath(site.achievements) }}</strong></a>
   {% else %}<span></span>{% endif %}
 </nav>

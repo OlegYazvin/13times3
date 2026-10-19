@@ -38,6 +38,11 @@ def main() -> None:
     entries = DATA["achievements"]
     audit = MANIFEST["entries"]
     assert len(entries) == len(audit) == 39
+    headings = {
+        item["path"]: BeautifulSoup(item["contentHtml"], "html.parser").find("h4").get_text(strip=True)
+        for item in entries
+    }
+    assert len({item["image"] for item in entries}) == 39, "Each achievement needs its own illustration"
     assert [item["path"] for item in entries] == [item["path"] for item in audit]
     assert set(MANIFEST["sitemapPaths"]) == {"/achievements"} | {item["path"] for item in entries}
 
@@ -47,7 +52,9 @@ def main() -> None:
         cards = page.select("a.grid-item")
         assert len(cards) == 39, f"{route}: wrong card count"
         assert [card.get("href") for card in cards] == [expected_href(item["path"]) for item in entries]
-        assert [card.get("aria-label") for card in cards] == [item["title"] for item in entries]
+        assert [card.get("aria-label") for card in cards] == [headings[item["path"]] for item in entries]
+        assert not page.select(".grid-overlay"), "Image tiles should not show code labels"
+        assert all(not card.get_text(strip=True) for card in cards)
         assert page.select_one("link[rel=canonical]").get("href") == DATA["canonicalOrigin"]
         assert DATA["intro"] in page.get_text(" ", strip=True)
         for card, item in zip(cards, entries):
@@ -58,13 +65,16 @@ def main() -> None:
         content = page.select_one(".detail-content")
         assert content is not None, f"No content: {item['path']}"
         assert content.get_text(" ", strip=True) == record["text"], f"Text mismatch: {item['path']}"
+        assert page.title.get_text(strip=True) == headings[item["path"]] + " — " + DATA["title"]
         assert page.select_one("link[rel=canonical]").get("href") == DATA["canonicalOrigin"] + item["path"]
         if item.get("previous"):
             assert page.select_one("a.previous").get("href") == expected_href(item["previous"]["path"])
+            assert page.select_one("a.previous strong").get_text(strip=True) == headings[item["previous"]["path"]]
         else:
             assert page.select_one("a.previous") is None
         if item.get("next"):
             assert page.select_one("a.next").get("href") == expected_href(item["next"]["path"])
+            assert page.select_one("a.next strong").get_text(strip=True) == headings[item["next"]["path"]]
         else:
             assert page.select_one("a.next") is None
         assert "squarespace" not in str(page).lower(), f"Squarespace reference in {item['path']}"
@@ -139,7 +149,7 @@ def main() -> None:
 
     total_bytes = sum(path.stat().st_size for path in OUTPUT.rglob("*") if path.is_file())
     assert total_bytes < 1_000_000_000, "GitHub Pages published-site limit exceeded"
-    print(f"Verified 39 detail pages, 2 grid routes, 41 gallery frames (room 01 live), 25 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
+    print(f"Verified 39 detail pages, 2 grid routes, 41 gallery frames (room 01 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
 
 
 if __name__ == "__main__":

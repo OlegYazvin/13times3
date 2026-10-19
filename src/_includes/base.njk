@@ -3,12 +3,12 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% if achievement %}{{ achievement.title }} — {% endif %}{{ site.title }}</title>
+    <title>{% if achievement %}{{ achievement | achievementHeading }} — {% endif %}{{ site.title }}</title>
     <meta name="description" content="A celebration of Jane's achievements.">
     {% if isStaging %}<meta name="robots" content="noindex, nofollow">{% endif %}
     <link rel="canonical" href="{{ site.canonicalOrigin }}{% if achievement %}{{ achievement.path }}{% endif %}">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="{% if achievement %}{{ achievement.title }} — {% endif %}{{ site.title }}">
+    <meta property="og:title" content="{% if achievement %}{{ achievement | achievementHeading }} — {% endif %}{{ site.title }}">
     <meta property="og:description" content="A celebration of Jane's achievements.">
     <meta property="og:url" content="{{ site.canonicalOrigin }}{% if achievement %}{{ achievement.path }}{% endif %}">
     <meta property="og:image" content="{{ site.canonicalOrigin }}{% if achievement %}{{ achievement.image }}{% else %}{{ site.achievements[0].image }}{% endif %}">

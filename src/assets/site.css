@@ -140,27 +140,6 @@ a { color: inherit; }
   object-fit: cover;
 }
 
-.grid-overlay {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  background: rgb(255 255 255 / 64%);
-  opacity: 0;
-  transition: opacity .2s ease;
-  text-align: center;
-}
-
-.grid-overlay span {
-  font-family: Ojuju, Archivo, sans-serif;
-  font-size: clamp(1.5rem, 2.6vw, 2.6rem);
-  font-weight: 600;
-  letter-spacing: -.02em;
-}
-
-.grid-item:hover .grid-overlay,
-.grid-item:focus-visible .grid-overlay { opacity: 1; }
-
 .grid-item:focus-visible { outline: 4px solid var(--ink); outline-offset: -4px; }
 
 .achievement-detail {
@@ -205,12 +184,12 @@ a { color: inherit; }
   display: flex;
   flex-direction: column;
   gap: .3rem;
-  min-width: 8rem;
+  max-width: min(42vw, 28rem);
   text-decoration: none;
 }
 
 .item-navigation-link span { font-size: .8rem; }
-.item-navigation-link strong { font-family: Ojuju, Archivo, sans-serif; font-size: 1.45rem; }
+.item-navigation-link strong { font-family: Ojuju, Archivo, sans-serif; font-size: clamp(1rem, 1.7vw, 1.3rem); line-height: 1.3; }
 .item-navigation-link.next { text-align: right; }
 .item-navigation-link:hover strong,
 .item-navigation-link:focus-visible strong { text-decoration: underline; }
@@ -232,10 +211,6 @@ a { color: inherit; }
   .achievement-detail { min-height: 66vh; padding-block: 4rem; }
 }
 
-@media (hover: none) {
-  .grid-overlay { opacity: 1; }
-}
-
 @media (max-width: 380px) {
   .site-header { align-items: flex-start; }
   .site-header nav { text-align: right; }
@@ -243,6 +218,5 @@ a { color: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .grid-overlay { transition: none; }
   .explore-entry { transition: none; }
 }

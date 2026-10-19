@@ -19,6 +19,14 @@ function roomAssetVersion(directory = "src/assets/explore") {
 }
 
 module.exports = function (eleventyConfig) {
+  const achievementHeading = (achievement) => {
+    const match = achievement?.contentHtml?.match(/<h4[^>]*>([\s\S]*?)<\/h4>/i);
+    return match ? match[1].replace(/<[^>]*>/g, "").trim() : "Achievement";
+  };
+  eleventyConfig.addFilter("achievementHeading", achievementHeading);
+  eleventyConfig.addFilter("achievementHeadingForPath", (path, achievements) =>
+    achievementHeading(achievements.find((item) => item.path === path)),
+  );
   eleventyConfig.addGlobalData(
     "isStaging",
     Boolean(process.env.SITE_BASE_PATH && process.env.SITE_BASE_PATH !== "/"),
