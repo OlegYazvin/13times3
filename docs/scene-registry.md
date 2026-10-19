@@ -13,7 +13,7 @@ The gallery has 41 stable frame IDs. The 39 original achievement pages are a sep
 | `05` | Planned | “Jane moved offices” | Jane; office management | An intentionally abstract treatment of a painful move, including Jane standing up for herself against poor management | Oleg's idea, 2026-10-19 |
 | `06` | Planned | “Jane ended breast feeding” | Jane | The end of breastfeeding; the scene's treatment and other participants are still to be defined | Oleg's idea, 2026-10-19 |
 | `07` | Planned | “The time we went blueberry picking” | Oleg, Jane; other participants unconfirmed | Blueberry-picking outing; location and exact moment are still to be defined | Oleg's idea, 2026-10-19 |
-| `08` | Planned | “Chicago Open house” | Jane, Oleg; other participants unconfirmed | Use the places on Jane's itinerary from another conversation, **excluding the stops up north**. The itinerary is not available in this project yet, so exact venues are unverified and must be added before authoring. | Oleg's idea, 2026-10-19; Jane's itinerary pending |
+| `08` | Planned | “Chicago Open house” | Jane, Oleg; other participants unconfirmed | Treat Jane's choices `#4`–`#10` as visited for scene planning; exclude her three northern picks `#1`–`#3`. The [source notes](scene-08-open-house-notes.md) list the venues and explain why the Zen temple remains included. | Oleg's idea, 2026-10-19; [Jane's choice list](scene-08-open-house-notes.md) from the 2026-10-17 Codex conversation |
 
 Frames `02`–`08` are reserved ideas only: they have no model, preview, or enterable room. Frames `09`–`41` remain unassigned blank portals. Frame `01` is the only published walkable room as of 2026-10-19.
 
