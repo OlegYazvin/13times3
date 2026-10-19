@@ -14,9 +14,8 @@ These are decisions and corrections from developing frame `01`. Read them with t
 
 ## Portal and movement behavior
 
-- A scene's painting must be visible from the hallway before its 3D model loads. As Jane approaches, show the live room with parallax from a comfortable distance; do not wait until she is almost touching the frame.
-- About a meter before the threshold, the *full* room view should already fill the screen. Match the near view's composition and camera to the entry pose so crossing causes only a brief glow, not a crop, zoom, or long dissolve. Entry happens by walking through the frame, without a tap.
-- The return doorway follows the same rule: show a live view down the hallway inside the doorway, fill the screen before crossing back, then use the same short handoff. Match the hallway camera and exit pose. Release the room's GPU resources after returning.
+- Keep the painting visible in the hallway and preload only its room model nearby. Walking close to the frame switches straight to the full 3D room. Do not periodically redraw a live image inside the frame, fade a second view over it, or require a tap; those approaches looked cropped and janky up close.
+- Capture a still hallway view for the room's return doorway when Jane enters. Walking close to that doorway switches directly back to the hall and releases the room's GPU resources. Keep the return pose facing into the hall.
 - Collide with walls, stage, desk, and figures. Walking through a character or other solid object breaks the scene. Keep the return opening obvious and traversable while the rest of the boundary is solid.
 - On phones, the left thumb control moves. Holding a finger on either side of the right half continuously turns in that direction; it must not require repeated swipes. Drag vertically there to look. Preserve desktop keyboard and drag controls.
 
@@ -24,6 +23,6 @@ These are decisions and corrections from developing frame `01`. Read them with t
 
 - Use the current Eleventy, Three.js, GitHub Pages, and Cloudflare setup. Keep rooms static-hosted with no backend or paid service. Load one room at a time, and aim for roughly 8 MB or less of downloaded assets per room.
 - A room may be around 10 feet on each side or larger when its scene needs space. Store its dimensions, entry pose, preview camera, model, and preview in `src/_data/gallery.json`.
-- Render the portrait preview from the same 3D scene and intended camera, so it predicts what Jane enters. Compare screenshots from the far hallway, live frame, full view before entry, and entered room. Do the same through the return doorway and after exit.
+- Render the portrait preview from the same 3D scene and intended camera, so it predicts what Jane enters. Compare screenshots from the far hallway, close painting, entered room, return doorway, and after exit.
 - Verify collision, resource cleanup, the WebGL fallback, resize, sustained phone turning, phone movement, and desktop movement. Preserve all 39 achievement URLs and 41 unique frame IDs. Use phone emulation for development, then check feel and performance on a physical iPhone when available; the target is a steady 30 fps there.
 - Inspect screenshots for hidden signs, flat walls, obvious primitive shapes, clipping, mismatched views, and jarring mixed visual styles before publishing.

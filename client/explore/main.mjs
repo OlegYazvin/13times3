@@ -14,7 +14,6 @@ const helpButton = document.getElementById("help-button");
 const status = document.getElementById("section-status");
 const roomTitle = document.getElementById("room-title");
 const announcement = document.getElementById("announcement");
-const glow = document.getElementById("portal-glow");
 const experience = document.getElementById("experience");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -49,21 +48,18 @@ try {
   // Frame 01 should greet Jane immediately, including on a narrow phone view.
   controls.yaw = -.67;
   const rooms = new RoomManager({
-    renderer, gallery, camera, controls, player, glow,
+    renderer, gallery, controls, player,
     assetBase: experience.dataset.basePath,
     assetVersion: experience.dataset.roomVersion,
-    roomFov,
     announce(message) { announcement.textContent = message; },
     onModeChange(mode, frame) {
-      camera.fov = mode === "room" || mode === "entering" ? roomFov(frame) : 75;
+      camera.fov = mode === "room" ? roomFov(frame) : 75;
       camera.updateProjectionMatrix();
       roomTitle.hidden = mode !== "room";
       roomTitle.textContent = mode === "room" ? frame.room.title || `Room ${frame.label}` : "";
       status.textContent = mode === "room"
         ? `Room ${frame.label}`
-        : mode === "hall"
-          ? `Gallery ${nearestSection(player, gallery.layout.sections).section.index + 1} / 5`
-          : "Passing through";
+        : `Gallery ${nearestSection(player, gallery.layout.sections).section.index + 1} / 5`;
     },
   });
   if (["localhost", "127.0.0.1"].includes(window.location.hostname)) {
@@ -72,13 +68,9 @@ try {
       section: nearestSection(player, gallery.layout.sections).section.index + 1,
       mode: rooms.mode,
       activeRoom: rooms.active?.frame.id || null,
-      livePreviewOpacity: rooms.active?.liveMaterial.opacity || 0,
-      nearOpacity: rooms.nearOpacity,
-      returnOpacity: rooms.returnOpacity,
-      returnViewX: rooms.active?.returnNearCamera.position.x ?? null,
-      returnViewZ: rooms.active?.returnNearCamera.position.z ?? null,
-      liveViewX: rooms.active?.previewCamera.position.x ?? null,
-      liveViewZ: rooms.active?.previewCamera.position.z ?? null,
+      returnImageReady: rooms.active?.returnImageReady ?? false,
+      returnViewX: rooms.active?.returnCamera.position.x ?? null,
+      returnViewZ: rooms.active?.returnCamera.position.z ?? null,
       modelColliderCount: rooms.active?.modelColliderCount ?? 0,
       roomColliders: rooms.active?.colliders ?? [],
       frame01Painting: Boolean(gallery.frameMeshes.get("01").surface.material.map?.image?.width),
@@ -97,15 +89,8 @@ try {
     renderer.setPixelRatio(pixelRatio);
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
-    camera.fov = rooms.mode === "room" || rooms.mode === "entering" ? roomFov(rooms.active.frame) : 75;
+    camera.fov = rooms.mode === "room" ? roomFov(rooms.active.frame) : 75;
     camera.updateProjectionMatrix();
-    if (rooms.active?.nearCamera) {
-      rooms.active.nearCamera.aspect = camera.aspect;
-      rooms.active.nearCamera.fov = roomFov(rooms.active.frame);
-      rooms.active.nearCamera.updateProjectionMatrix();
-      rooms.active.returnNearCamera.aspect = camera.aspect;
-      rooms.active.returnNearCamera.updateProjectionMatrix();
-    }
   }
   resize();
   window.addEventListener("resize", resize);
@@ -155,7 +140,7 @@ try {
         status.textContent = `Gallery ${current} / 5`;
         announcement.textContent = `Gallery section ${current} of 5.`;
       }
-      rooms.updateHall(now / 1000);
+      rooms.updateHall();
     }
 
     camera.position.set(player.x, player.y, player.z);
@@ -163,17 +148,11 @@ try {
     camera.rotation.y = -controls.yaw;
     camera.rotation.x = controls.pitch;
     gallery.animate(now / 1000, reducedMotion.matches);
-    rooms.updateRoom(now / 1000);
-    roomTitle.hidden = rooms.mode !== "room" || rooms.returnOpacity > .5;
+    roomTitle.hidden = rooms.mode !== "room";
     if (rooms.mode === "room") {
-      status.textContent = rooms.returnOpacity > .5
-        ? `Gallery ${nearestSection(rooms.active.returnNearCamera.position, gallery.layout.sections).section.index + 1} / 5`
-        : `Room ${rooms.active.frame.label}`;
+      status.textContent = `Room ${rooms.active.frame.label}`;
     }
-    if (rooms.scene && !rooms.renderNearFull()) {
-      renderer.render(rooms.scene, camera);
-      rooms.renderNearOverlay();
-    }
+    if (rooms.scene) renderer.render(rooms.scene, camera);
     requestAnimationFrame(tick);
   }
 
