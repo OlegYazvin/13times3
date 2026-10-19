@@ -15,7 +15,7 @@ eleventyExcludeFromCollections: true
     <link rel="stylesheet" href="{{ '/assets/explore.css' | url }}">
   </head>
   <body>
-    <main class="experience" id="experience" data-base-path="{{ '/' | url }}">
+    <main class="experience" id="experience" data-base-path="{{ '/' | url }}" data-room-version="{{ galleryRoomVersion }}">
       <div class="scene" id="scene" aria-hidden="true"></div>
       <div class="vignette" aria-hidden="true"></div>
       <div class="portal-glow" id="portal-glow" aria-hidden="true"></div>
@@ -53,7 +53,7 @@ eleventyExcludeFromCollections: true
           <p class="eyebrow">The gallery</p>
           <h1>The gallery is waiting.</h1>
           <p>This browser could not open the 3D hallway. Frame 01 is “You signed Zephrine up for dance and acting classes!” and the other forty frames are waiting.</p>
-          <img class="fallback-preview" src="{{ gallery.frames[0].room.previewImage | url }}" alt="Jane at the signup desk while Zephrine dances on a small stage">
+          <img class="fallback-preview" src="{{ gallery.frames[0].room.previewImage | url }}?v={{ galleryRoomVersion }}" alt="Jane at the signup desk while Zephrine dances on a small stage">
           <ol class="frame-list">{% for frame in gallery.frames %}<li>{{ frame.label }}</li>{% endfor %}</ol>
           <button class="retry-button" type="button" onclick="window.location.reload()">Try again</button>
           <a class="primary-button" href="{{ '/' | url }}">Return to 13 Times 3</a>

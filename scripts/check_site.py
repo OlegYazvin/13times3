@@ -90,6 +90,11 @@ def main() -> None:
     model = OUTPUT / first_room["modelUrl"].lstrip("/")
     assert preview.read_bytes()[:4] == b"RIFF"
     assert model.read_bytes()[:4] == b"glTF"
+    glb = model.read_bytes()
+    glb_json_length = int.from_bytes(glb[12:16], "little")
+    glb_json = json.loads(glb[20:20 + glb_json_length])
+    solid_nodes = [node for node in glb_json["nodes"] if node.get("extras", {}).get("solidFootprint")]
+    assert len(solid_nodes) == 4, "Room 01 must carry four model-authored solid footprints"
     assert preview.stat().st_size + model.stat().st_size < 8_000_000
     assert not (OUTPUT / "room_assets").exists(), "Reference artwork should not be published separately"
     explore = parse(source_path("/explore"))
@@ -98,6 +103,8 @@ def main() -> None:
     assert explore.select_one("#fallback") is not None
     assert explore.select_one("#room-title") is not None
     assert explore.select_one("script#gallery-data") is not None
+    assert len(explore.select_one("#experience").get("data-room-version")) == 12
+    assert explore.select_one(".fallback-preview").get("src").endswith("?v=" + explore.select_one("#experience").get("data-room-version"))
     assert len(explore.select(".frame-list li")) == 41
     script_version = hashlib.sha256((OUTPUT / "assets/explore/app.js").read_bytes()).hexdigest()[:12]
     assert explore.select_one("script[src]").get("src") == expected_href("/assets/explore/app.js") + f"?v={script_version}"

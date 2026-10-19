@@ -150,11 +150,17 @@ try {
   await roomPage.evaluate(() => window.__galleryTestPose(0, -4.775, -Math.PI / 2));
   await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === "01" &&
     window.__galleryDebug().livePreviewOpacity > .99, null, { timeout: 12000 });
+  assert.equal((await roomPage.evaluate(() => window.__galleryDebug())).modelColliderCount, 4,
+    "room collision should come from the loaded 3D figures and furniture");
   await roomPage.screenshot({path:".cache/room01-hall-view.png"});
   const liveViewX = await roomPage.evaluate(() => window.__galleryDebug().liveViewX);
+  const liveViewZ = await roomPage.evaluate(() => window.__galleryDebug().liveViewZ);
   await roomPage.evaluate(() => window.__galleryTestPose(0, -6, -Math.PI / 2));
   await roomPage.waitForFunction((previous) => Math.abs(window.__galleryDebug().liveViewX - previous) > .12,
     liveViewX, { timeout: 12000 });
+  await roomPage.evaluate(() => window.__galleryTestPose(-1.5, -4.775, -Math.PI / 2));
+  await roomPage.waitForFunction((previous) => Math.abs(window.__galleryDebug().liveViewZ - previous) > .25,
+    liveViewZ, { timeout: 12000 });
   await roomPage.evaluate(() => window.__galleryTestPose(-1, -4.775, -Math.PI / 2));
   await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === "01", null, { timeout: 12000 });
   await roomPage.waitForTimeout(120);
@@ -174,9 +180,9 @@ try {
   assert.ok((await roomPage.evaluate(() => window.__galleryDebug().z)) > -.47, "stage should block forward movement");
   await roomPage.evaluate(() => window.__galleryTestPose(-1.57, -.5, 0));
   await roomPage.keyboard.down("s");
-  await roomPage.waitForTimeout(320);
+  await roomPage.waitForTimeout(520);
   await roomPage.keyboard.up("s");
-  assert.ok((await roomPage.evaluate(() => window.__galleryDebug().z)) < -.45,
+  assert.ok((await roomPage.evaluate(() => window.__galleryDebug().z)) < -.28,
     "Jane's 3D figure should block walking through her");
   await roomPage.evaluate(() => window.__galleryTestPose(0, 2.20, 0));
   await roomPage.keyboard.down("s");

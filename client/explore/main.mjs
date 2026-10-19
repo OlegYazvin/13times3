@@ -28,7 +28,7 @@ function showFallback(message) {
 
 try {
   const manifest = JSON.parse(document.getElementById("gallery-data").textContent);
-  const gallery = createGalleryScene(manifest, experience.dataset.basePath);
+  const gallery = createGalleryScene(manifest, experience.dataset.basePath, experience.dataset.roomVersion);
   const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
   let pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
   renderer.setPixelRatio(pixelRatio);
@@ -51,6 +51,7 @@ try {
   const rooms = new RoomManager({
     renderer, gallery, camera, controls, player, glow,
     assetBase: experience.dataset.basePath,
+    assetVersion: experience.dataset.roomVersion,
     announce(message) { announcement.textContent = message; },
     onModeChange(mode, frame) {
       camera.fov = mode === "room" ? roomFov(frame) : 75;
@@ -72,6 +73,9 @@ try {
       activeRoom: rooms.active?.frame.id || null,
       livePreviewOpacity: rooms.active?.liveMaterial.opacity || 0,
       liveViewX: rooms.active?.previewCamera.position.x ?? null,
+      liveViewZ: rooms.active?.previewCamera.position.z ?? null,
+      modelColliderCount: rooms.active?.modelColliderCount ?? 0,
+      roomColliders: rooms.active?.colliders ?? [],
       frame01Painting: Boolean(gallery.frameMeshes.get("01").surface.material.map?.image?.width),
       frameCount: gallery.layout.frames.length,
     });

@@ -97,6 +97,12 @@ const aqua = mat(0x76b7b6);
 const paleRose = mat(0xd69a91);
 const parchment = mat(0xf0d3a9);
 const deepInk = mat(0x493b50);
+const deepSea = mat(0x284c63);
+const tide = mat(0x4c9295);
+const seaFoam = mat(0xb8d9ca);
+const coral = mat(0xd98983);
+const pearl = mat(0xf4dfc5,{emissive:0x5c5449,emissiveIntensity:.12});
+const bubbleGlass = mat(0x9bd9d1,{transparent:true,opacity:.5,depthWrite:false});
 
 function oval(name, x, y, z, sx, sy, sz, material, parent) {
   const mesh = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 12), material);
@@ -110,6 +116,47 @@ function limb(name, a, b, startRadius, endRadius, material, parent) {
   mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),direction.normalize());
   parent.add(mesh);
   return mesh;
+}
+function shellFan(name,x,y,z,scale,material=pearl) {
+  const shell = new THREE.Group();shell.name=name;shell.position.set(x,y,z);shell.scale.setScalar(scale);root.add(shell);
+  oval(`${name} scalloped bowl`,0,.18,0,.38,.3,.095,material,shell);
+  oval(`${name} hinge`,0,-.055,.07,.12,.09,.11,gold,shell);
+  for(let rib=-3;rib<=3;rib++) {
+    const tipX=rib*.105;
+    limb(`${name} raised rib`,[0,-.03,.105],[tipX,.38-Math.abs(rib)*.035,.083],.017,.01,gold,shell);
+    oval(`${name} rim pearl`,tipX,.38-Math.abs(rib)*.035,.095,.025,.024,.026,pearl,shell);
+  }
+  return shell;
+}
+function coralFan(name,x,y,z,scale,material=coral) {
+  const group=new THREE.Group();group.name=name;group.position.set(x,y,z);group.scale.setScalar(scale);root.add(group);
+  const branches=[[[0,0,0],[0,.35,0],[.08,.68,0]],[[0,.22,0],[-.2,.47,.02],[-.29,.65,.03]],
+    [[0,.37,0],[.23,.57,.02],[.33,.82,.03]],[[-.18,.45,.02],[-.28,.48,.07],[-.38,.57,.08]]];
+  for(const points of branches) {
+    for(let i=1;i<points.length;i++) limb(`${name} sculpted branch`,points[i-1],points[i],.06-i*.014,.04-i*.008,material,group);
+    const tip=points.at(-1);oval(`${name} soft coral tip`,...tip,.045,.045,.045,material,group);
+  }
+  return group;
+}
+function storybookFish(name,x,y,z,scale,material,faceRight=true) {
+  const fish=new THREE.Group();fish.name=name;fish.position.set(x,y,z);
+  fish.scale.setScalar(scale);fish.rotation.y=faceRight?0:Math.PI;root.add(fish);
+  oval(`${name} rounded body`,0,0,0,.18,.085,.048,material,fish);
+  const tail=new THREE.Mesh(new THREE.ConeGeometry(.09,.19,12),material);
+  tail.name=`${name} folded tail`;tail.rotation.z=Math.PI/2;tail.position.set(-.235,0,0);fish.add(tail);
+  oval(`${name} raised top fin`,-.02,.077,0,.065,.06,.017,material,fish);
+  oval(`${name} pearl eye`,.115,.018,.047,.014,.014,.01,pearl,fish);
+  oval(`${name} dark pupil`,.119,.018,.057,.006,.006,.005,deepInk,fish);
+  for(const cx of [-.06,.015,.08]) oval(`${name} gilt scale`,cx,-.023,.049,.018,.012,.006,gold,fish);
+  return fish;
+}
+function waveLine(name,y,z,color,phase=0) {
+  const points=[];
+  for(let i=0;i<=16;i++) {
+    const x=-.31+i*.153;
+    points.push([x,y+Math.sin(i*.68+phase)*.085,z]);
+  }
+  line(name,points,.021,color);
 }
 function face(name, head, skin, iris, options={}) {
   oval(`${name} softly sculpted face`,0,0,0,.18,.215,.16,skin,head);
@@ -125,6 +172,7 @@ function face(name, head, skin, iris, options={}) {
 }
 function sculptZephrine() {
   const child = new THREE.Group(); child.name="Zephrine — sculpted in the middle of a dance";
+  child.userData.solidFootprint = true;
   child.position.set(1.1,.40,-1.53); child.rotation.y=-.13; root.add(child);
   // Rounded toddler proportions and the rust outfit recall the supplied photos.
   oval("Zephrine rust sweater",0,.72,0,.23,.30,.17,rust,child);
@@ -152,6 +200,12 @@ function sculptZephrine() {
     [-.14,.22,.08],[-.055,.23,.095],[.04,.235,.085],[.135,.21,.085]];
   curls.forEach(([x,y,z],index)=>oval(`Zephrine curl ${index+1}`,x,y,z,.064,.07,.067,index%3?hairZephrine:hairHighlight,head));
   oval("Zephrine hair clip",-.11,.23,.137,.055,.022,.018,parchment,head);
+  oval("Zephrine sea-glass hair jewel",-.11,.23,.152,.028,.023,.018,seaFoam,head);
+  oval("Zephrine aqua ribbon knot",-.45,1.2,.10,.065,.04,.04,tide,child);
+  for(let i=0;i<3;i++) {
+    const ribbon=oval("Zephrine flowing dance ribbon",-.51-i*.095,1.15-i*.035,.11+i*.055,.11,.026,.034,i%2?seaFoam:tide,child);
+    ribbon.rotation.z=-.24-i*.17;
+  }
   for(const side of [-1,1]) {
     oval("Zephrine blushing cheek",side*.119,-.065,.135,.037,.022,.008,paleRose,head);
     oval("Zephrine sweater cuff",side*.47,side<0?1.21:.79,.05,.072,.025,.075,parchment,child);
@@ -161,6 +215,7 @@ function sculptZephrine() {
 }
 function sculptJane() {
   const jane = new THREE.Group(); jane.name="Jane — sculpted at the signup desk";
+  jane.userData.solidFootprint = true;
   jane.position.set(-1.57,0,.28); jane.rotation.y=.09; root.add(jane);
   // A gently tapered dress gives Jane the subtly slimmer silhouette requested.
   const skirt = new THREE.Mesh(new THREE.CylinderGeometry(.19,.31,.62,18),navy);
@@ -191,6 +246,8 @@ function sculptJane() {
     for(let i=0;i<3;i++) oval("Jane freckle",sign*(.055+i*.025),-.052+(i%2)*.018,.153,.006,.006,.004,mat(0xc77b69),head);
   }
   oval("Jane navy dress brooch",-.11,1.21,.145,.033,.033,.018,gold,jane);
+  oval("Jane pearly brooch center",-.11,1.21,.16,.017,.017,.012,pearl,jane);
+  for(let i=0;i<5;i++) oval("Jane small pearl necklace",-.095+i*.047,1.235+Math.abs(i-2)*.009,.135,.013,.013,.012,pearl,jane);
   for(let i=0;i<3;i++) oval("Jane hand finger",.27+i*.027,.932,.42,.012,.017,.041,skinJane,jane);
   for(const x of [-.13,-.07,-.01]) oval("Jane hair wisps",x,.17,.135,.018,.062,.014,hairJane,head);
   return jane;
@@ -200,7 +257,7 @@ export async function authorRoom() {
 
   // Architecture: 5.4 m square, tall walls, open central doorway at +Z.
   box("plank floor",0,-.08,0,5.4,.16,5.4,mat(0xc49278));
-  box("ceiling",0,3.6,0,5.4,.12,5.4,mat(0x443449));
+  box("ceiling",0,3.6,0,5.4,.12,5.4,deepSea);
   box("back wall",0,1.8,-2.7,5.4,3.6,.14,mat(C.wall));
   box("left wall",-2.7,1.8,0,.14,3.6,5.4,mat(0x916177));
   box("right wall",2.7,1.8,0,.14,3.6,5.4,mat(0x916177));
@@ -236,10 +293,23 @@ export async function authorRoom() {
   for(const z of [-2.53,2.53]) box("wall crown moulding",0,3.42,z,5.22,.09,.08,parchment);
 
   // Small raised stage and theater drapery, right and back.
-  box("stage base",.9,.19,-1.58,2.65,.38,1.5,mat(C.stage));
+  box("stage base",.9,.19,-1.58,2.65,.38,1.5,mat(C.stage)).userData.solidFootprint = true;
   box("stage gold lip",.9,.4,-.79,2.72,.055,.09,gold);
-  box("stage patterned floor",.9,.395,-1.58,2.54,.02,1.38,mat(0xbb866c));
-  box("stage rear panel",.9,1.7,-2.57,2.75,2.6,.09,mat(0x453651));
+  box("stage patterned floor",.9,.395,-1.58,2.54,.02,1.38,mat(0x9b8b80));
+  box("stage rear panel",.9,1.7,-2.57,2.75,2.6,.09,deepSea);
+  for(const [height,depth,material,phase] of [[.76,-2.47,tide,0],[1.08,-2.42,seaFoam,1.5],[1.36,-2.39,mat(0x9b759b),2.8]]) {
+    waveLine("layered underwater storybook wave",height,depth,material,phase);
+  }
+  shellFan("large mermaid-story shell behind the stage",.9,1.32,-2.35,1.18,mat(0x85b3ac));
+  coralFan("left coral stage sculpture",-.16,.41,-2.31,.7,coral);
+  coralFan("right coral stage sculpture",2.0,.41,-2.30,.79,mat(0xa971a3));
+  for(const x of [-.19,2.08]) {
+    for(let i=0;i<3;i++) {
+      const y=.62+i*.31;
+      const seaweed=oval("curved seaweed frond",x+(i%2?-.09:.08),y,-2.26,.055,.25,.045,i%2?tide:seaFoam,root);
+      seaweed.rotation.z=(i%2?.24:-.22);
+    }
+  }
   for (const [side,base] of [[-1,-.36],[1,2.14]]) {
     for(let fold=0;fold<3;fold++) {
       const x=base+side*fold*.09;
@@ -257,6 +327,7 @@ export async function authorRoom() {
     scallop.position.set(x,2.88,-2.26); root.add(scallop);
   }
   for(let i=0;i<7;i++) sphere("gold proscenium jewel",-.35+i*.39,3.16,-2.25,.035,gold);
+  for(const x of [-.42,2.18]) shellFan("carved seashell on stage arch",x,3.02,-2.18,.38,parchment);
   const lampStem=new THREE.Mesh(new THREE.CylinderGeometry(.012,.012,.28,10),gold);
   lampStem.name="hanging stage light cord";lampStem.position.set(.9,3.43,-1.62);root.add(lampStem);
   const shade=new THREE.Mesh(new THREE.ConeGeometry(.23,.22,20,1,true),gold);
@@ -276,13 +347,23 @@ export async function authorRoom() {
     oval("stage footprint toe",0,.001,-.1,.064,.005,.043,parchment,mark);
   }
   sculptZephrine();
+  for(const [x,y,z,r] of [[.23,1.73,-1.34,.085],[.44,2.04,-1.98,.057],[1.82,1.96,-1.1,.072],[1.73,2.39,-1.81,.042],[-.08,2.01,-1.76,.047]]) {
+    sphere("suspended sea-glass bubble in front of the stage",x,y,z,r,bubbleGlass);
+    sphere("bubble glint",x-r*.24,y+r*.26,z+r*.82,r*.13,pearl);
+  }
+  for(const [name,x,y,z,size,color,right] of [
+    ["small sea-glass fish behind the dancer",.35,1.91,-2.28,.62,seaFoam,true],
+    ["coral fish in the upper water",1.86,2.16,-2.31,.48,coral,false],
+    ["pearl fish in the middle depth",1.73,1.52,-2.05,.44,pearl,false],
+    ["gold fish before the curtain",-.13,2.14,-1.67,.36,gold,true],
+  ]) storybookFish(name,x,y,z,size,color,right);
   sign("dance card","DANCE","a little first step",.28,2.48,-2.17,.96,.49);
   sign("acting card","ACTING","a story to tell",1.54,2.48,-2.17,.96,.49);
 
   // The foreground signup desk and Jane's paused pen.
   sculptJane();
   oval("Jane's soft floor shadow",-1.57,.012,.28,.32,.006,.17,mat(0x604052,{transparent:true,opacity:.22,depthWrite:false}),root);
-  box("signup desk top",-1.37,.88,.66,1.54,.07,.72,mat(0x9d684f));
+  box("signup desk top",-1.37,.88,.66,1.54,.07,.72,mat(0x9d684f)).userData.solidFootprint = true;
   box("desk carved front apron",-1.37,.77,.96,1.54,.16,.065,mat(0x805344));
   box("desk carved side apron",-2.05,.77,.66,.055,.16,.6,mat(0x805344));
   for(const x of [-2.04,-.7]) for(const z of [.36,.94]) box("desk carved leg",x,.43,z,.09,.86,.09,timber);
@@ -291,6 +372,9 @@ export async function authorRoom() {
   for(let i=0;i<4;i++) box("paper rule",-1.36,.951,.48+i*.07,.39,.002,.009,mat(0xbba08e));
   box("script booklet cover",-.78,.965,.52,.2,.035,.32,mat(0x8a6e8d));
   for(let page=0;page<3;page++) box("script booklet layered pages",-.78,.986+page*.006,.49,.18,.004,.25,paper);
+  shellFan("tiny shell paperweight on the desk",-1.95,.96,.48,.18,pearl);
+  for(const x of [-1.0,-.9,-.8]) sphere("sea-glass beads by the script",x,.964,.84,.025,bubbleGlass);
+  sign("little mermaid storybook","MERMAID","a favorite story",-2.58,1.74,-.71,.54,.42,Math.PI/2);
   oval("red wax seal on signup",-1.52,.954,.77,.035,.006,.035,rose,root);
   sign("signup card","ZEPHRINE","dance + acting",-1.35,.77,.997,.5,.18);
   sign("script placard","SCRIPT","a story begins",-2.3,1.57,-.28,.52,.38,Math.PI/2);
@@ -326,6 +410,13 @@ export async function authorRoom() {
     line("mobile suspension thread",[[x,3.45,z],[x,3.45-length,z]],.005,parchment);
     const moon=new THREE.Mesh(new THREE.IcosahedronGeometry(.065,0),mat(x<0?C.blue:C.gold));
     moon.name="cut-paper star mobile";moon.position.set(x,3.39-length,z);root.add(moon);
+  }
+  for(const [x,y,z,r] of [[.22,2.62,1.45,.075],[1.21,2.37,1.06,.045],[1.8,2.84,.72,.064],[-.58,2.9,.55,.035]]) {
+    sphere("foreground pearly bubble hanging between Jane and the stage",x,y,z,r,bubbleGlass);
+    sphere("foreground bubble glimmer",x-r*.32,y+r*.32,z+r*.76,r*.13,pearl);
+  }
+  for(const y of [2.19,2.48,2.77]) {
+    line("undersea wall relief",[[-2.56,y,1.66],[-2.56,y+.07,1.28],[-2.56,y-.04,.91],[-2.56,y+.05,.54]],.013,y===2.48?seaFoam:gold);
   }
 
   const scene = new THREE.Scene(); scene.background = new THREE.Color(0x211a30);

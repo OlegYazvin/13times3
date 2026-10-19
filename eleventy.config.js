@@ -1,5 +1,22 @@
 const { createHash } = require("node:crypto");
-const { readFileSync } = require("node:fs");
+const { readFileSync, readdirSync } = require("node:fs");
+const { join } = require("node:path");
+
+function roomAssetVersion(directory = "src/assets/explore") {
+  const hash = createHash("sha256");
+  function addFiles(path) {
+    for (const entry of readdirSync(path, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+      const child = join(path, entry.name);
+      if (entry.isDirectory()) addFiles(child);
+      else if (/\.(?:glb|webp)$/i.test(entry.name)) {
+        hash.update(child);
+        hash.update(readFileSync(child));
+      }
+    }
+  }
+  addFiles(directory);
+  return hash.digest("hex").slice(0, 12);
+}
 
 module.exports = function (eleventyConfig) {
   eleventyConfig.addGlobalData(
@@ -16,7 +33,9 @@ module.exports = function (eleventyConfig) {
     "exploreScriptVersion",
     createHash("sha256").update(readFileSync("src/assets/explore/app.js")).digest("hex").slice(0, 12),
   );
+  eleventyConfig.addGlobalData("galleryRoomVersion", roomAssetVersion());
   eleventyConfig.addWatchTarget("src/assets/explore/app.js");
+  eleventyConfig.addWatchTarget("src/assets/explore/room01");
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   eleventyConfig.addPassthroughCopy("src/robots.txt");
   eleventyConfig.addPassthroughCopy({

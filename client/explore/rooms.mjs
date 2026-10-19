@@ -18,18 +18,39 @@ function hitsObstacle(x, z, colliders = []) {
   });
 }
 
-export function moveWithinRoom(previous, intended, room) {
+export function moveWithinRoom(previous, intended, room, colliders = room.colliders) {
   const halfX = room.dimensionsM[0] / 2 - PLAYER_RADIUS;
   const halfZ = room.dimensionsM[2] / 2 - PLAYER_RADIUS;
-  const x = Math.max(-halfX, Math.min(halfX, intended.x));
-  const z = Math.max(-halfZ, Math.min(halfZ, intended.z));
-  // The opening is centered in the +Z wall. Elsewhere it is a solid wall.
-  if (intended.z > halfZ && Math.abs(previous.x) < .55) return { ...previous, exit: true };
   let nextX = previous.x;
   let nextZ = previous.z;
-  if (!hitsObstacle(x, nextZ, room.colliders)) nextX = x;
-  if (!hitsObstacle(nextX, z, room.colliders)) nextZ = z;
+  // Sweep in small steps so a quick movement cannot jump through thin solids.
+  const steps = Math.max(1, Math.ceil(Math.hypot(intended.x - previous.x, intended.z - previous.z) / .075));
+  for (let step = 1; step <= steps; step++) {
+    const x = Math.max(-halfX, Math.min(halfX, previous.x + (intended.x - previous.x) * step / steps));
+    const z = Math.max(-halfZ, Math.min(halfZ, previous.z + (intended.z - previous.z) * step / steps));
+    // The opening is centered in the +Z wall. Elsewhere it is a solid wall.
+    if (previous.z + (intended.z - previous.z) * step / steps > halfZ && Math.abs(nextX) < .55) {
+      return { x: nextX, z: nextZ, exit: true };
+    }
+    if (!hitsObstacle(x, nextZ, colliders)) nextX = x;
+    if (!hitsObstacle(nextX, z, colliders)) nextZ = z;
+  }
   return { x: nextX, z: nextZ, exit: false };
+}
+
+export function collidersFromScene(scene) {
+  const colliders = [];
+  scene.updateMatrixWorld(true);
+  scene.traverse((object) => {
+    if (!object.userData?.solidFootprint) return;
+    const bounds = new THREE.Box3().setFromObject(object);
+    if (bounds.isEmpty()) return;
+    colliders.push({
+      minX: bounds.min.x, maxX: bounds.max.x,
+      minZ: bounds.min.z, maxZ: bounds.max.z,
+    });
+  });
+  return colliders;
 }
 
 function disposeScene(scene) {
@@ -63,8 +84,8 @@ export function disposeRoom(room) {
 }
 
 export class RoomManager {
-  constructor({ renderer, gallery, camera, controls, player, glow, announce, assetBase, onModeChange }) {
-    Object.assign(this, { renderer, gallery, camera, controls, player, glow, announce, assetBase, onModeChange });
+  constructor({ renderer, gallery, camera, controls, player, glow, announce, assetBase, assetVersion, onModeChange }) {
+    Object.assign(this, { renderer, gallery, camera, controls, player, glow, announce, assetBase, assetVersion, onModeChange });
     this.mode = "hall";
     this.active = null;
     this.loadingFrame = null;
@@ -77,7 +98,7 @@ export class RoomManager {
   }
 
   assetUrl(path) {
-    return this.assetBase + path.replace(/^\//, "");
+    return this.assetBase + path.replace(/^\//, "") + (this.assetVersion ? `?v=${this.assetVersion}` : "");
   }
 
   get scene() {
@@ -86,7 +107,7 @@ export class RoomManager {
 
   updateHall(time) {
     if (this.mode !== "hall") return;
-    const nearest = nearestFrame(this.player, this.readyFrames, 8);
+    const nearest = nearestFrame(this.player, this.readyFrames, 12);
     if (this.suppressFrameId) {
       if (nearest?.frame.id === this.suppressFrameId && nearest.distance < 3.5) {
         if (this.active) this.clearActive();
@@ -106,20 +127,20 @@ export class RoomManager {
 
     // Fill the entire frame from a comfortable viewing distance; the stored
     // painting remains visible while the GLB is loading or has been released.
-    const strength = Math.max(0, Math.min(1, (8 - nearest.distance) / 1.5));
+    const strength = Math.max(0, Math.min(1, (12 - nearest.distance) / 2));
     this.active.liveMaterial.opacity = strength;
     const { forward } = frame.sectionData;
     const along = (this.player.x - frame.center.x) * forward.x +
       (this.player.z - frame.center.z) * forward.z;
-    const offset = Math.max(-1.2, Math.min(1.2, -frame.sideSign * along));
-    const depth = Math.max(-.16, Math.min(.16, (nearest.distance - 3) * .055));
+    const offset = Math.max(-1.4, Math.min(1.4, -frame.sideSign * along));
+    const depth = Math.max(-.7, Math.min(.28, (nearest.distance - 2.9) * .3));
     const changed = !this.active.hasLiveRender ||
-      Math.abs(offset - this.active.lastOffset) > .18 ||
-      Math.abs(depth - this.active.lastDepth) > .055;
-    if (strength > 0 && changed && (!this.active.hasLiveRender || time - this.active.lastRenderTime > 1 / 6)) {
+      Math.abs(offset - this.active.lastOffset) > .055 ||
+      Math.abs(depth - this.active.lastDepth) > .045;
+    if (strength > 0 && changed && (!this.active.hasLiveRender || time - this.active.lastRenderTime > 1 / 12)) {
       const view = frame.room.previewCamera;
-      this.active.previewCamera.position.set(view.position[0] + offset * .18, view.position[1], view.position[2] + depth);
-      this.active.previewCamera.lookAt(view.target[0] + offset * .04, view.target[1], view.target[2]);
+      this.active.previewCamera.position.set(view.position[0] + offset * .56, view.position[1], view.position[2] + depth);
+      this.active.previewCamera.lookAt(...view.target);
       const previousTarget = this.renderer.getRenderTarget();
       this.renderer.setRenderTarget(this.active.target);
       this.renderer.render(this.active.scene, this.active.previewCamera);
@@ -151,12 +172,14 @@ export class RoomManager {
       fill.position.set(-2, 2, -1);
       scene.add(fill);
       scene.add(gltf.scene);
+      const modelColliders = collidersFromScene(gltf.scene);
 
       const view = frame.room.previewCamera;
       const previewCamera = new THREE.PerspectiveCamera(view.fov || 65, FRAME_WIDTH / FRAME_HEIGHT, .05, 40);
       previewCamera.position.fromArray(view.position);
       previewCamera.lookAt(...view.target);
-      const previewWidth = Math.max(384, Math.min(640, Math.round(this.renderer.domElement.clientWidth * .75)));
+      const previewWidth = Math.max(640, Math.min(1024,
+        Math.round(this.renderer.domElement.clientWidth * this.renderer.getPixelRatio() * .85)));
       const target = new THREE.WebGLRenderTarget(previewWidth, Math.round(previewWidth * FRAME_HEIGHT / FRAME_WIDTH), { depthBuffer: true });
       const liveMaterial = new THREE.MeshBasicMaterial({ map: target.texture, transparent: true, opacity: 0, depthWrite: false });
       const frameMesh = this.gallery.frameMeshes.get(frame.id);
@@ -165,6 +188,8 @@ export class RoomManager {
       frameMesh.root.add(liveSurface);
       this.active = {
         frame, scene, previewCamera, target, liveMaterial, liveSurface, hasLiveRender: false,
+        colliders: modelColliders.length ? modelColliders : frame.room.colliders,
+        modelColliderCount: modelColliders.length,
         lastOffset: 0, lastDepth: 0, lastRenderTime: 0,
       };
       this.loadingFrame = null;
@@ -217,7 +242,7 @@ export class RoomManager {
   }
 
   moveInRoom(intended) {
-    const next = moveWithinRoom(this.player, intended, this.active.frame.room);
+    const next = moveWithinRoom(this.player, intended, this.active.frame.room, this.active.colliders);
     if (next.exit) {
       this.leave();
       return;
