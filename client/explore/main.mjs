@@ -52,9 +52,10 @@ try {
     renderer, gallery, camera, controls, player, glow,
     assetBase: experience.dataset.basePath,
     assetVersion: experience.dataset.roomVersion,
+    roomFov,
     announce(message) { announcement.textContent = message; },
     onModeChange(mode, frame) {
-      camera.fov = mode === "room" ? roomFov(frame) : 75;
+      camera.fov = mode === "room" || mode === "entering" ? roomFov(frame) : 75;
       camera.updateProjectionMatrix();
       roomTitle.hidden = mode !== "room";
       roomTitle.textContent = mode === "room" ? frame.room.title || `Room ${frame.label}` : "";
@@ -72,6 +73,7 @@ try {
       mode: rooms.mode,
       activeRoom: rooms.active?.frame.id || null,
       livePreviewOpacity: rooms.active?.liveMaterial.opacity || 0,
+      nearOpacity: rooms.nearOpacity,
       liveViewX: rooms.active?.previewCamera.position.x ?? null,
       liveViewZ: rooms.active?.previewCamera.position.z ?? null,
       modelColliderCount: rooms.active?.modelColliderCount ?? 0,
@@ -92,8 +94,13 @@ try {
     renderer.setPixelRatio(pixelRatio);
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
-    camera.fov = rooms.mode === "room" ? roomFov(rooms.active.frame) : 75;
+    camera.fov = rooms.mode === "room" || rooms.mode === "entering" ? roomFov(rooms.active.frame) : 75;
     camera.updateProjectionMatrix();
+    if (rooms.active?.nearCamera) {
+      rooms.active.nearCamera.aspect = camera.aspect;
+      rooms.active.nearCamera.fov = roomFov(rooms.active.frame);
+      rooms.active.nearCamera.updateProjectionMatrix();
+    }
   }
   resize();
   window.addEventListener("resize", resize);
@@ -151,7 +158,10 @@ try {
     camera.rotation.y = -controls.yaw;
     camera.rotation.x = controls.pitch;
     gallery.animate(now / 1000, reducedMotion.matches);
-    if (rooms.scene) renderer.render(rooms.scene, camera);
+    if (rooms.scene && !rooms.renderNearFull()) {
+      renderer.render(rooms.scene, camera);
+      rooms.renderNearOverlay();
+    }
     requestAnimationFrame(tick);
   }
 

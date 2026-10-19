@@ -54,8 +54,8 @@ a { color: inherit; }
   inset: -20%;
   pointer-events: none;
   opacity: 0;
-  background: radial-gradient(circle, rgb(255 247 223 / 91%) 0%, rgb(240 204 173 / 58%) 22%, transparent 70%);
-  transition: opacity .38s ease;
+  background: radial-gradient(ellipse, rgb(255 247 223 / 85%) 0%, rgb(240 204 173 / 56%) 48%, rgb(239 204 180 / 29%) 100%);
+  transition: opacity .11s ease;
 }
 .portal-glow.active { opacity: 1; }
 

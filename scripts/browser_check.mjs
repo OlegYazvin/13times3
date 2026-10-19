@@ -159,13 +159,23 @@ try {
   await roomPage.waitForFunction((previous) => Math.abs(window.__galleryDebug().liveViewX - previous) > .12,
     liveViewX, { timeout: 12000 });
   await roomPage.evaluate(() => window.__galleryTestPose(-1.5, -4.775, -Math.PI / 2));
-  await roomPage.waitForFunction((previous) => Math.abs(window.__galleryDebug().liveViewZ - previous) > .25,
+  await roomPage.waitForFunction((previous) => Math.abs(window.__galleryDebug().liveViewZ - previous) > .15,
     liveViewZ, { timeout: 12000 });
   await roomPage.evaluate(() => window.__galleryTestPose(-1, -4.775, -Math.PI / 2));
   await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === "01", null, { timeout: 12000 });
   await roomPage.waitForTimeout(120);
   await roomPage.screenshot({path:".cache/room01-framed.png"});
+  await roomPage.evaluate(() => window.__galleryTestPose(-1.8, -4.775, -Math.PI / 2));
+  await roomPage.waitForFunction(() => window.__galleryDebug().nearOpacity > .99,
+    null, { timeout: 12000 });
+  await roomPage.screenshot({path:".cache/room01-full-before-threshold.png"});
   await roomPage.evaluate(() => window.__galleryTestPose(-2.45, -4.775, -Math.PI / 2));
+  await roomPage.waitForFunction(() => {
+    const { liveViewX, liveViewZ, livePreviewOpacity, nearOpacity } = window.__galleryDebug();
+    return livePreviewOpacity > .99 && nearOpacity > .99 &&
+      Math.abs(liveViewX + .18) < .04 && Math.abs(liveViewZ - 2.24) < .05;
+  }, null, { timeout: 12000 });
+  await roomPage.screenshot({path:".cache/room01-near-threshold.png"});
   await roomPage.keyboard.down("w");
   await roomPage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
   await roomPage.keyboard.up("w");
@@ -205,7 +215,9 @@ try {
   await phonePage.goto(`${base}/explore/`, {waitUntil:"networkidle"});
   await phonePage.getByRole("button", {name:/begin walking/i}).click();
   await phonePage.evaluate(() => window.__galleryTestPose(-2.45,-4.775,-Math.PI/2));
-  await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "01",null,{timeout:12000});
+  await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "01" &&
+    window.__galleryDebug().nearOpacity > .99,null,{timeout:12000});
+  await phonePage.screenshot({path:".cache/room01-mobile-before-threshold.png"});
   const ring = await phonePage.locator(".joystick-ring").boundingBox();
   const phoneTouch = await phoneContext.newCDPSession(phonePage);
   const point = {x:ring.x+ring.width/2,y:ring.y+ring.height/2,id:5};

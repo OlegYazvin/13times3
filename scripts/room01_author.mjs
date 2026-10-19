@@ -172,6 +172,71 @@ function storybookFish(name,x,y,z,scale,material,faceRight=true) {
   for(const cx of [-.06,.015,.08]) oval(`${name} gilt scale`,cx,-.023,.049,.018,.012,.006,gold,fish);
   return fish;
 }
+function drapedValance(name,x,y,z,width,material) {
+  const positions=[],indices=[],sections=54;
+  for(let i=0;i<=sections;i++) {
+    const t=i/sections,px=x-width/2+width*t;
+    const fold=Math.cos(t*9*Math.PI*2);
+    const bottom=y-.21-.075*(1-fold)/2;
+    for(const depth of [0,.045]) {
+      positions.push(px,y,z+depth+.028*fold);
+      positions.push(px,bottom,z+depth+.028*fold);
+    }
+  }
+  for(let i=0;i<sections;i++) {
+    const a=i*4,b=a+4;
+    indices.push(a,b,a+1,a+1,b,b+1,a+2,a+3,b+2,a+3,b+3,b+2);
+    indices.push(a,a+2,b,a+2,b+2,b,a+1,b+1,a+3,a+3,b+1,b+3);
+  }
+  const geometry=new THREE.BufferGeometry();geometry.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
+  geometry.setIndex(indices);geometry.computeVertexNormals();
+  const mesh=new THREE.Mesh(geometry,material);mesh.name=name;root.add(mesh);
+}
+function stageFrond(name,x,y,z,height,width,material) {
+  const positions=[],indices=[],rows=13;
+  for(let i=0;i<=rows;i++) {
+    const t=i/rows,bend=.11*Math.sin(t*3.8+x)*t;
+    const half=width*Math.sin(Math.PI*t)*(.8+.2*Math.sin(t*7));
+    for(const depth of [0,.018]) for(const sign of [-1,1]) {
+      positions.push(x+bend+sign*half,y+height*t,z+depth+.025*Math.sin(t*7));
+    }
+  }
+  for(let i=0;i<rows;i++) {
+    const a=i*4,b=a+4;
+    indices.push(a,b,a+1,a+1,b,b+1,a+2,a+3,b+2,a+3,b+3,b+2);
+    indices.push(a,a+2,b,a+2,b+2,b,a+1,b+1,a+3,a+3,b+1,b+3);
+  }
+  const geometry=new THREE.BufferGeometry();geometry.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
+  geometry.setIndex(indices);geometry.computeVertexNormals();
+  const mesh=new THREE.Mesh(geometry,material);mesh.name=name;root.add(mesh);
+  stoneRib(`${name} curved vein`,Array.from({length:7},(_,i)=>{
+    const t=i/6;return [x+.11*Math.sin(t*3.8+x)*t,y+height*t,z+.024+.025*Math.sin(t*7)];
+  }),.009,seaFoam);
+}
+function footprintStamp(name,x,y,z,scale,angle,material) {
+  const outline=new THREE.Shape();
+  outline.moveTo(-.035,-.14);
+  outline.bezierCurveTo(-.08,-.13,-.095,-.08,-.07,-.015);
+  outline.bezierCurveTo(-.05,.055,-.1,.1,-.11,.17);
+  outline.bezierCurveTo(-.07,.23,.025,.24,.095,.19);
+  outline.bezierCurveTo(.12,.14,.075,.09,.055,.035);
+  outline.bezierCurveTo(.045,-.02,.075,-.08,.045,-.13);
+  outline.quadraticCurveTo(.005,-.16,-.035,-.14);
+  const mesh=new THREE.Mesh(new THREE.ExtrudeGeometry(outline,{
+    depth:.008,bevelEnabled:true,bevelSize:.004,bevelThickness:.002,bevelSegments:1,curveSegments:8,
+  }),material);
+  mesh.name=name;mesh.rotation.x=-Math.PI/2;mesh.rotation.z=angle;mesh.scale.setScalar(scale);
+  mesh.position.set(x,y,z);root.add(mesh);
+}
+function suspendedBubble(name,x,y,z,radius) {
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(radius,.007,5,20),
+    new THREE.MeshBasicMaterial({color:0xd5f5e5,transparent:true,opacity:.75,side:THREE.DoubleSide}));
+  ring.name=name;ring.position.set(x,y,z);ring.rotation.y=.32+x*.12;ring.rotation.x=.16;
+  root.add(ring);
+  const gleam=new THREE.Mesh(new THREE.TorusGeometry(radius*.73,.004,4,9,Math.PI*.48),
+    new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.82}));
+  gleam.name=`${name} curved glint`;gleam.position.set(x,y,z+.01);gleam.rotation.z=.7;root.add(gleam);
+}
 function waveLine(name,y,z,color,phase=0) {
   const points=[];
   for(let i=0;i<=16;i++) {
@@ -500,8 +565,8 @@ export async function authorRoom() {
   for(const x of [-.19,2.08]) {
     for(let i=0;i<3;i++) {
       const y=.62+i*.31;
-      const seaweed=oval("curved seaweed frond",x+(i%2?-.09:.08),y,-2.26,.055,.25,.045,i%2?tide:seaFoam,root);
-      seaweed.rotation.z=(i%2?.24:-.22);
+      stageFrond("hand-shaped sea grass beside the stage",x+(i%2?-.09:.08),y,-2.25,
+        .32+i*.05,.07,i%2?tide:seaFoam);
     }
   }
   for (const [side,base] of [[-1,-.36],[1,2.14]]) {
@@ -514,19 +579,12 @@ export async function authorRoom() {
     sphere("curtain tassel",base+side*.24,1.49,-2.19,.045,gold);
   }
   box("proscenium top",.88,3.04,-2.42,3.1,.21,.25,gold);
-  for(let i=0;i<9;i++) {
-    const x=-.42+i*.32;
-    const scallop=new THREE.Mesh(new THREE.SphereGeometry(.21,12,8),mat(i%2?0x99516a:0xa75b70));
-    scallop.name="velvet stage valance scallop"; scallop.scale.set(1,.48,.25);
-    scallop.position.set(x,2.88,-2.26); root.add(scallop);
-  }
+  drapedValance("single pleated velvet valance across the stage",.88,2.99,-2.28,3.02,mat(0x99516a));
   for(let i=0;i<7;i++) sphere("gold proscenium jewel",-.35+i*.39,3.16,-2.25,.035,gold);
   for(const x of [-.42,2.18]) shellFan("carved seashell on stage arch",x,3.02,-2.18,.38,parchment);
-  const lampStem=new THREE.Mesh(new THREE.CylinderGeometry(.012,.012,.28,10),gold);
-  lampStem.name="hanging stage light cord";lampStem.position.set(.9,3.43,-1.62);root.add(lampStem);
-  const shade=new THREE.Mesh(new THREE.ConeGeometry(.23,.22,20,1,true),gold);
-  shade.name="hanging stage light shade";shade.position.set(.9,3.19,-1.62);shade.rotation.z=Math.PI;root.add(shade);
-  sphere("warm stage lamp",.9,3.04,-1.62,.14,mat(0xffd9a2,{emissive:0xf7b861,emissiveIntensity:.7}));
+  stoneRib("branching cave stem holding the stage glow",[[.9,3.47,-1.67],[.89,3.3,-1.65],[.9,3.16,-1.61]],.014,gold);
+  shellFan("pearly scallop stage light",.9,3.00,-1.62,.49,
+    mat(0xffe3b7,{emissive:0xf7c887,emissiveIntensity:.85}));
   for(let i=0;i<7;i++) {
     const x=-.18+i*.36;
     box("recessed stage footlight socket",x,.43,-.73,.11,.045,.1,timber);
@@ -535,15 +593,11 @@ export async function authorRoom() {
   oval("soft dance-floor shadow",1.06,.418,-1.53,.43,.006,.2,mat(0x604052,{transparent:true,opacity:.28,depthWrite:false}),root);
   ovalLine("dance circle painted onto stage",[.95,-1.57],.75,.42,.408,parchment,.18,Math.PI*1.7);
   for(const [x,z,turn] of [[.33,-1.64,-.18],[.57,-1.34,.22],[1.72,-1.91,.42]]) {
-    const mark=new THREE.Group();mark.name="small stage dance step";
-    mark.position.set(x,.412,z);mark.rotation.y=turn;root.add(mark);
-    oval("stage footprint sole",0,0,0,.057,.005,.12,parchment,mark);
-    oval("stage footprint toe",0,.001,-.1,.064,.005,.043,parchment,mark);
+    footprintStamp("irregular carved dance step on the stage",x,.414,z,.62,turn,parchment);
   }
   sculptZephrine();
   for(const [x,y,z,r] of [[.23,1.73,-1.34,.085],[.44,2.04,-1.98,.057],[1.82,1.96,-1.1,.072],[1.73,2.39,-1.81,.042],[-.08,2.01,-1.76,.047]]) {
-    sphere("suspended sea-glass bubble in front of the stage",x,y,z,r,bubbleGlass);
-    sphere("bubble glint",x-r*.24,y+r*.26,z+r*.82,r*.13,pearl);
+    suspendedBubble("rim of a suspended bubble before the stage",x,y,z,r);
   }
   for(const [name,x,y,z,size,color,right] of [
     ["small sea-glass fish behind the dancer",.35,1.91,-2.28,.62,seaFoam,true],
@@ -551,8 +605,6 @@ export async function authorRoom() {
     ["pearl fish in the middle depth",1.73,1.52,-2.05,.44,pearl,false],
     ["gold fish before the curtain",-.13,2.14,-1.67,.36,gold,true],
   ]) storybookFish(name,x,y,z,size,color,right);
-  sign("dance card","DANCE","a little first step",.28,2.48,-2.17,.96,.49);
-  sign("acting card","ACTING","a story to tell",1.54,2.48,-2.17,.96,.49);
 
   // The foreground signup desk and Jane's paused pen.
   sculptJane();
@@ -572,32 +624,10 @@ export async function authorRoom() {
   oval("red wax seal on signup",-1.52,.954,.77,.035,.006,.035,rose,root);
   sign("signup card","ZEPHRINE","dance + acting",-1.35,.77,.997,.5,.18);
 
-  // Traces Jane can inspect: masks, footsteps, cards and framed scraps.
-  for (const [name,x] of [["comedy",-2.14],["tragedy",-1.45]]) {
-    oval(`${name} sculpted theater mask`,x,2.43,-2.43,.18,.235,.075,parchment,root);
-    for(const side of [-1,1]) {
-      oval(`${name} dark carved eye`,x+side*.075,2.48,-2.354,.027,.016,.009,deepInk,root);
-      oval(`${name} raised mask brow`,x+side*.075,2.545,-2.363,.061,.009,.008,gold,root);
-    }
-    oval(`${name} mask nose`,x,2.41,-2.342,.028,.047,.017,parchment,root);
-    line(`${name} expression`,[[x-.085,2.34,-2.356],[x,2.34+(name==="comedy"?-.035:.045),-2.341],[x+.085,2.34,-2.356]],.01,deepInk);
-  }
-  for(const [x,z] of [[-2.14,-2.44],[-1.45,-2.44]]) {
-    box("theater mask ribbon",x,2.71,z+.02,.09,.24,.015,paleRose);
-    oval("theater mask cheek",x-.105,2.41,-2.358,.025,.015,.006,paleRose,root);
-    oval("theater mask cheek",x+.105,2.41,-2.358,.025,.015,.006,paleRose,root);
-  }
+  // A trail of little steps connects the signed page to the stage.
   for (let i=0;i<4;i++) {
     const x=-.52+i*.34, z=1.36-i*.5;
-    const step=new THREE.Group();step.name="golden dance footprint";
-    step.position.set(x,.072,z);step.rotation.y=i%2?.3:-.3;root.add(step);
-    oval("footprint sole",0,0,0,.078,.007,.145,i%2?gold:parchment,step);
-    oval("footprint toe",0,.002,-.12,.087,.007,.06,i%2?gold:parchment,step);
-  }
-  sign("left wall class card","DANCE","move with joy",-2.42,1.7,-1.75,.66,.44,Math.PI/2);
-  sign("right wall class card","ACTING","tell a story",2.42,1.7,.3,.66,.44,-Math.PI/2);
-  for(const [x,z] of [[-2.48,-1.75],[2.48,.3]]) {
-    box("class card display backing",x,1.7,z,.07,.64,.92,gold);
+    footprintStamp("sculpted golden dance footprint",x,.075,z,.82,i%2?.3:-.3,i%2?gold:parchment);
   }
   for(const [x,z,length] of [[-.42,-.5,.36],[.31,-.63,.52],[.96,-.42,.29]]) {
     const roof=caveHeight(x,z)-.05;
@@ -607,8 +637,7 @@ export async function authorRoom() {
     hanging.rotation.y=.18+x*.14;
   }
   for(const [x,y,z,r] of [[.22,2.62,1.45,.075],[1.21,2.37,1.06,.045],[1.8,2.84,.72,.064],[-.58,2.9,.55,.035]]) {
-    sphere("foreground pearly bubble hanging between Jane and the stage",x,y,z,r,bubbleGlass);
-    sphere("foreground bubble glimmer",x-r*.32,y+r*.32,z+r*.76,r*.13,pearl);
+    suspendedBubble("fine bubble ring hanging between Jane and the stage",x,y,z,r);
   }
   for(const y of [2.19,2.48,2.77]) {
     line("undersea wall relief",[[-2.44,y,1.66],[-2.44,y+.07,1.28],[-2.44,y-.04,.91],[-2.44,y+.05,.54]],.013,y===2.48?seaFoam:gold);

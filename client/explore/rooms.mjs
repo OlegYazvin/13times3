@@ -81,11 +81,14 @@ export function disposeRoom(room) {
   room.liveMaterial?.dispose();
   room.target?.dispose();
   room.liveSurface?.parent?.remove(room.liveSurface);
+  room.nearTarget?.dispose();
+  room.nearQuad?.geometry?.dispose();
+  room.nearQuad?.material?.dispose();
 }
 
 export class RoomManager {
-  constructor({ renderer, gallery, camera, controls, player, glow, announce, assetBase, assetVersion, onModeChange }) {
-    Object.assign(this, { renderer, gallery, camera, controls, player, glow, announce, assetBase, assetVersion, onModeChange });
+  constructor({ renderer, gallery, camera, controls, player, glow, announce, assetBase, assetVersion, roomFov, onModeChange }) {
+    Object.assign(this, { renderer, gallery, camera, controls, player, glow, announce, assetBase, assetVersion, roomFov, onModeChange });
     this.mode = "hall";
     this.active = null;
     this.loadingFrame = null;
@@ -93,6 +96,7 @@ export class RoomManager {
     this.pendingEntry = null;
     this.hallPose = null;
     this.suppressFrameId = null;
+    this.nearOpacity = 0;
     this.loader = new GLTFLoader();
     this.readyFrames = gallery.layout.frames.filter(roomIsReady);
   }
@@ -102,7 +106,8 @@ export class RoomManager {
   }
 
   get scene() {
-    return this.mode === "room" || this.mode === "leaving" ? this.active?.scene : this.gallery.scene;
+    return this.mode === "room" || this.mode === "entering" || this.mode === "leaving"
+      ? this.active?.scene : this.gallery.scene;
   }
 
   updateHall(time) {
@@ -110,12 +115,14 @@ export class RoomManager {
     const nearest = nearestFrame(this.player, this.readyFrames, 12);
     if (this.suppressFrameId) {
       if (nearest?.frame.id === this.suppressFrameId && nearest.distance < 3.5) {
+        this.nearOpacity = 0;
         if (this.active) this.clearActive();
         return;
       }
       this.suppressFrameId = null;
     }
     if (!nearest || !roomIsReady(nearest.frame)) {
+      this.nearOpacity = 0;
       if (this.active) this.clearActive();
       if (this.loadingFrame) this.generation += 1;
       this.loadingFrame = null;
@@ -123,7 +130,10 @@ export class RoomManager {
     }
     const frame = nearest.frame;
     if (this.active?.frame.id !== frame.id && this.loadingFrame !== frame.id) this.load(frame);
-    if (!this.active || this.active.frame.id !== frame.id) return;
+    if (!this.active || this.active.frame.id !== frame.id) {
+      this.nearOpacity = 0;
+      return;
+    }
 
     // Fill the entire frame from a comfortable viewing distance; the stored
     // painting remains visible while the GLB is loading or has been released.
@@ -132,15 +142,32 @@ export class RoomManager {
     const { forward } = frame.sectionData;
     const along = (this.player.x - frame.center.x) * forward.x +
       (this.player.z - frame.center.z) * forward.z;
-    const offset = Math.max(-1.4, Math.min(1.4, -frame.sideSign * along));
-    const depth = Math.max(-.7, Math.min(.28, (nearest.distance - 2.9) * .3));
+    // Preserve the hallway parallax until the last steps, then land on the
+    // room entry camera so the scene is already composed before crossing.
+    const handoff = Math.max(0, Math.min(1, (nearest.distance - .25) / 1.4));
+    const blend = handoff * handoff * (3 - 2 * handoff);
+    const offset = Math.max(-1.4, Math.min(1.4, -frame.sideSign * along)) * blend;
+    const depth = Math.max(-.35, Math.min(.28, (nearest.distance - 3) * .15)) * blend;
+    const facingX = Math.sin(this.controls.yaw);
+    const facingZ = -Math.cos(this.controls.yaw);
+    const dx = frame.center.x - this.player.x;
+    const dz = frame.center.z - this.player.z;
+    const facing = (facingX * dx + facingZ * dz) / Math.max(.001, Math.hypot(dx, dz));
+    // Keep the dissolve to a short physical step: a long overlap exposes two
+    // differently projected copies of the same room.
+    const close = Math.max(0, Math.min(1, (1.4 - nearest.distance) / .25));
+    const centered = Math.max(0, Math.min(1, (facing - .45) / .3));
+    const reveal = close * close * (3 - 2 * close);
+    this.nearOpacity = reveal * centered;
+    const view = frame.room.previewCamera;
+    this.active.previewCamera.position.set(view.position[0] + offset * .56, view.position[1], view.position[2] + depth);
+    this.active.previewCamera.lookAt(...view.target);
+    this.active.nearCamera.position.copy(this.active.previewCamera.position);
+    this.active.nearCamera.quaternion.copy(this.active.previewCamera.quaternion);
     const changed = !this.active.hasLiveRender ||
       Math.abs(offset - this.active.lastOffset) > .055 ||
       Math.abs(depth - this.active.lastDepth) > .045;
     if (strength > 0 && changed && (!this.active.hasLiveRender || time - this.active.lastRenderTime > 1 / 12)) {
-      const view = frame.room.previewCamera;
-      this.active.previewCamera.position.set(view.position[0] + offset * .56, view.position[1], view.position[2] + depth);
-      this.active.previewCamera.lookAt(...view.target);
       const previousTarget = this.renderer.getRenderTarget();
       this.renderer.setRenderTarget(this.active.target);
       this.renderer.render(this.active.scene, this.active.previewCamera);
@@ -150,6 +177,30 @@ export class RoomManager {
       this.active.lastDepth = depth;
       this.active.lastRenderTime = time;
     }
+  }
+
+  renderNearFull() {
+    if (this.mode !== "hall" || this.nearOpacity < .999 || !this.active) return false;
+    this.renderer.render(this.active.scene, this.active.nearCamera);
+    return true;
+  }
+
+  renderNearOverlay() {
+    if (this.mode !== "hall" || this.nearOpacity <= 0 || !this.active) return;
+    const active = this.active;
+    const size = this.renderer.getDrawingBufferSize(new THREE.Vector2());
+    if (active.nearTarget.width !== size.x || active.nearTarget.height !== size.y) {
+      active.nearTarget.setSize(size.x, size.y);
+    }
+    const previousTarget = this.renderer.getRenderTarget();
+    this.renderer.setRenderTarget(active.nearTarget);
+    this.renderer.render(active.scene, active.nearCamera);
+    this.renderer.setRenderTarget(previousTarget);
+    active.nearQuad.material.opacity = this.nearOpacity;
+    this.renderer.autoClear = false;
+    this.renderer.clearDepth();
+    this.renderer.render(active.nearScene, active.nearScreenCamera);
+    this.renderer.autoClear = true;
   }
 
   async load(frame) {
@@ -186,8 +237,19 @@ export class RoomManager {
       const liveSurface = new THREE.Mesh(frameMesh.surface.geometry, liveMaterial);
       liveSurface.position.z = .105;
       frameMesh.root.add(liveSurface);
+      const nearCamera = new THREE.PerspectiveCamera(this.roomFov(frame), this.camera.aspect, .05, 40);
+      nearCamera.position.fromArray(view.position);
+      nearCamera.lookAt(...view.target);
+      const nearSize = this.renderer.getDrawingBufferSize(new THREE.Vector2());
+      const nearTarget = new THREE.WebGLRenderTarget(nearSize.x, nearSize.y, { depthBuffer: true });
+      const nearQuad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2),
+        new THREE.MeshBasicMaterial({ map: nearTarget.texture, transparent: true, opacity: 0, depthTest: false, depthWrite: false }));
+      const nearScene = new THREE.Scene();
+      nearScene.add(nearQuad);
+      const nearScreenCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
       this.active = {
-        frame, scene, previewCamera, target, liveMaterial, liveSurface, hasLiveRender: false,
+        frame, scene, previewCamera, target, liveMaterial, liveSurface, nearCamera, nearTarget,
+        nearQuad, nearScene, nearScreenCamera, hasLiveRender: false,
         colliders: modelColliders.length ? modelColliders : frame.room.colliders,
         modelColliderCount: modelColliders.length,
         lastOffset: 0, lastDepth: 0, lastRenderTime: 0,
@@ -227,16 +289,16 @@ export class RoomManager {
     this.controls.setEnabled(false);
     this.glow.classList.add("active");
     this.onModeChange("entering", this.active.frame);
-    await wait(360);
     const pose = this.active.frame.room.entryPose;
     this.player.x = pose.position[0];
     this.player.y = pose.position[1];
     this.player.z = pose.position[2];
     this.controls.yaw = pose.yaw || 0;
     this.controls.pitch = pose.pitch || 0;
+    await wait(75);
     this.mode = "room";
     this.onModeChange("room", this.active.frame);
-    await wait(380);
+    await wait(80);
     this.glow.classList.remove("active");
     this.controls.setEnabled(true);
   }
@@ -257,14 +319,14 @@ export class RoomManager {
     this.controls.setEnabled(false);
     this.glow.classList.add("active");
     this.onModeChange("leaving", this.active.frame);
-    await wait(360);
+    await wait(95);
     Object.assign(this.player, { x: this.hallPose.x, y: this.hallPose.y, z: this.hallPose.z });
     this.controls.yaw = this.hallPose.yaw;
     this.controls.pitch = this.hallPose.pitch;
     this.suppressFrameId = this.active.frame.id;
     this.mode = "hall";
     this.onModeChange("hall", this.active.frame);
-    await wait(380);
+    await wait(110);
     this.glow.classList.remove("active");
     this.clearActive();
     this.controls.setEnabled(true);
@@ -274,5 +336,6 @@ export class RoomManager {
     if (!this.active) return;
     disposeRoom(this.active);
     this.active = null;
+    this.nearOpacity = 0;
   }
 }

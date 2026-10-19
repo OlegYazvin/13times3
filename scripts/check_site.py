@@ -95,6 +95,8 @@ def main() -> None:
     glb_json = json.loads(glb[20:20 + glb_json_length])
     solid_nodes = [node for node in glb_json["nodes"] if node.get("extras", {}).get("solidFootprint")]
     assert len(solid_nodes) == 4, "Room 01 must carry four model-authored solid footprints"
+    assert not any("dance card" in node.get("name", "").lower() or "acting card" in node.get("name", "").lower()
+                   for node in glb_json["nodes"]), "Stage labels should not cover the scene"
     assert preview.stat().st_size + model.stat().st_size < 8_000_000
     assert not (OUTPUT / "room_assets").exists(), "Reference artwork should not be published separately"
     explore = parse(source_path("/explore"))
