@@ -27,6 +27,7 @@ eleventyExcludeFromCollections: true
           <button class="icon-button" id="help-button" type="button" aria-label="Show instructions">?</button>
         </div>
       </div>
+      <div class="room-title" id="room-title" hidden></div>
 
       <div class="reticle" aria-hidden="true"></div>
       <div class="look-hint" id="look-hint" aria-hidden="true">Hold &amp; slide to look</div>
@@ -39,7 +40,8 @@ eleventyExcludeFromCollections: true
         <div class="welcome-card">
           <p class="eyebrow">For Jane · forty-one frames</p>
           <h1 id="welcome-title">Step into the in-between.</h1>
-          <p>A winding hallway is waiting. Its paintings have yet to become worlds, but you can walk among their frames now.</p>
+          <p>A winding hallway holds forty-one frames. Walk into frame 01 to visit the moment you signed Zephrine up for dance and acting classes. The other frames are still waiting.</p>
+          <p>Inside the room, explore the frozen scene. Walk back through the gold-edged doorway to return to the gallery.</p>
           <p class="control-note"><strong>On your phone:</strong> move with your left thumb. Hold and slide your right thumb to keep turning; release to stop. <strong>On a computer:</strong> use W A S D or arrow keys and drag to look.</p>
           <button class="primary-button" id="begin-button" type="button">Begin walking <span aria-hidden="true">→</span></button>
           <a class="back-link" href="{{ '/' | url }}">Back to the site</a>
@@ -49,8 +51,9 @@ eleventyExcludeFromCollections: true
       <div class="fallback" id="fallback" hidden>
         <div class="fallback-card">
           <p class="eyebrow">The gallery</p>
-          <h1>Forty-one frames are waiting.</h1>
-          <p>This browser could not open the 3D hallway. The frames are still here, and the rest of the site is available.</p>
+          <h1>The gallery is waiting.</h1>
+          <p>This browser could not open the 3D hallway. Frame 01 is “You signed Zephrine up for dance and acting classes!” and the other forty frames are waiting.</p>
+          <img class="fallback-preview" src="{{ gallery.frames[0].room.previewImage | url }}" alt="Jane at the signup desk while Zephrine dances on a small stage">
           <ol class="frame-list">{% for frame in gallery.frames %}<li>{{ frame.label }}</li>{% endfor %}</ol>
           <button class="retry-button" type="button" onclick="window.location.reload()">Try again</button>
           <a class="primary-button" href="{{ '/' | url }}">Return to 13 Times 3</a>

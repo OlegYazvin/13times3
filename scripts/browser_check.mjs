@@ -1,5 +1,4 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import { mkdir } from "node:fs/promises";
 import { chromium } from "playwright";
 
@@ -130,36 +129,62 @@ try {
   await context.close();
   console.log("WebGL fallback: 41 numbered frames visible");
 
-  // Local-only fixture: the published manifest still has 41 solid frames.
+  // Test the actual published room, its threshold, obstacle, exit, and cleanup.
   const roomContext = await browser.newContext({ viewport: { width: 920, height: 700 } });
-  await roomContext.route("**/explore/", async (route) => {
-    const response = await route.fetch();
-    const original = await response.text();
-    const marker = '"previewImage":null,"modelUrl":null';
-    assert.ok(original.includes(marker));
-    await route.fulfill({ response, body: original.replace(marker, '"previewImage":"/fixtures/painting.png","modelUrl":"/fixtures/empty-room.glb"') });
-  });
-  await roomContext.route("**/fixtures/painting.png", (route) => route.fulfill({ contentType: "image/png", body: readFileSync("tests/fixtures/painting.png") }));
-  await roomContext.route("**/fixtures/empty-room.glb", (route) => route.fulfill({ contentType: "model/gltf-binary", body: readFileSync("tests/fixtures/empty-room.glb") }));
   const roomPage = await roomContext.newPage();
   const roomErrors = [];
   roomPage.on("pageerror", (error) => roomErrors.push(error.message));
   await roomPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
   await roomPage.getByRole("button", { name: /begin walking/i }).click();
-  await roomPage.evaluate(() => window.__galleryTestPose(-1.75, -2.8, -Math.PI / 2));
+  await roomPage.evaluate(() => window.__galleryTestPose(-.4, -2.8, -Math.PI / 2));
   await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === "01", null, { timeout: 12000 });
+  await roomPage.waitForTimeout(120);
+  await roomPage.screenshot({path:".cache/room01-framed.png"});
+  await roomPage.evaluate(() => window.__galleryTestPose(-1.75, -2.8, -Math.PI / 2));
   await roomPage.keyboard.down("w");
   await roomPage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
   await roomPage.keyboard.up("w");
-  await roomPage.waitForTimeout(450);
+  await roomPage.waitForTimeout(500);
+  assert.equal(await roomPage.locator("#room-title").textContent(),"You signed Zephrine up for dance and acting classes!");
+  assert.equal(await roomPage.locator("#room-title").isVisible(),true);
+  await roomPage.screenshot({path:".cache/room01-entered.png"});
+  await roomPage.evaluate(() => window.__galleryTestPose(.1, -.35, 0));
+  await roomPage.keyboard.down("w");
+  await roomPage.waitForTimeout(220);
+  await roomPage.keyboard.up("w");
+  assert.ok((await roomPage.evaluate(() => window.__galleryDebug().z)) > -.47, "stage should block forward movement");
+  await roomPage.evaluate(() => window.__galleryTestPose(0, 2.20, 0));
   await roomPage.keyboard.down("s");
   await roomPage.waitForFunction(() => window.__galleryDebug().mode === "hall", null, { timeout: 12000 });
   await roomPage.keyboard.up("s");
+  assert.equal(await roomPage.locator("#room-title").isVisible(),false);
+  await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === null, null, { timeout: 12000 });
   await roomPage.evaluate(() => window.__galleryTestPose(40, -18, 0));
   await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === null, null, { timeout: 12000 });
   assert.deepEqual(roomErrors, []);
   await roomContext.close();
-  console.log("Portal fixture: near peek loaded, crossing entered, exit returned and released the room");
+  console.log("Room 01: near peek loaded, threshold entered, stage blocked, exit returned and resources released");
+
+  const phoneContext = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true });
+  const phonePage = await phoneContext.newPage();
+  const phoneErrors = [];
+  phonePage.on("pageerror", error => phoneErrors.push(error.message));
+  await phonePage.goto(`${base}/explore/`, {waitUntil:"networkidle"});
+  await phonePage.getByRole("button", {name:/begin walking/i}).click();
+  await phonePage.evaluate(() => window.__galleryTestPose(-1.75,-2.8,-Math.PI/2));
+  await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "01",null,{timeout:12000});
+  const ring = await phonePage.locator(".joystick-ring").boundingBox();
+  const phoneTouch = await phoneContext.newCDPSession(phonePage);
+  const point = {x:ring.x+ring.width/2,y:ring.y+ring.height/2,id:5};
+  await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[point]});
+  await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchMove",touchPoints:[{...point,y:point.y-38}]});
+  await phonePage.waitForFunction(() => window.__galleryDebug().mode === "room",null,{timeout:12000});
+  await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});
+  await phonePage.waitForTimeout(500);
+  await phonePage.screenshot({path:".cache/room01-mobile-entered.png"});
+  assert.deepEqual(phoneErrors,[]);
+  await phoneContext.close();
+  console.log("Phone emulation: left-thumb movement crossed frame 01 and entered the room");
 } finally {
   await browser.close();
 }

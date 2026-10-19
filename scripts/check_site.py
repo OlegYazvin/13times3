@@ -77,11 +77,24 @@ def main() -> None:
     assert [frame["id"] for frame in frames] == [f"{index:02d}" for index in range(1, 42)]
     assert [frame["label"] for frame in frames] == [frame["id"] for frame in frames]
     assert [sum(frame["section"] == section for frame in frames) for section in range(5)] == GALLERY["sectionCounts"]
-    assert all(not frame["room"]["previewImage"] and not frame["room"]["modelUrl"] for frame in frames)
+    first_room = frames[0]["room"]
+    assert first_room["title"] == "You signed Zephrine up for dance and acting classes!"
+    assert first_room["dimensionsM"] == [5.4, 3.6, 5.4]
+    assert first_room["previewImage"] == "/assets/explore/room01/preview.webp"
+    assert first_room["modelUrl"] == "/assets/explore/room01/room.glb"
+    assert len(first_room["colliders"]) == 2
+    assert all(not frame["room"]["previewImage"] and not frame["room"]["modelUrl"] for frame in frames[1:])
+    preview = OUTPUT / first_room["previewImage"].lstrip("/")
+    model = OUTPUT / first_room["modelUrl"].lstrip("/")
+    assert preview.read_bytes()[:4] == b"RIFF"
+    assert model.read_bytes()[:4] == b"glTF"
+    assert preview.stat().st_size + model.stat().st_size < 8_000_000
+    assert not (OUTPUT / "room_assets").exists(), "Painted source assets should not be published separately"
     explore = parse(source_path("/explore"))
     assert explore.select_one("#welcome-title") is not None
     assert explore.select_one("#joystick") is not None
     assert explore.select_one("#fallback") is not None
+    assert explore.select_one("#room-title") is not None
     assert explore.select_one("script#gallery-data") is not None
     assert len(explore.select(".frame-list li")) == 41
     assert explore.select_one("script[src]").get("src") == expected_href("/assets/explore/app.js")
@@ -101,7 +114,7 @@ def main() -> None:
 
     total_bytes = sum(path.stat().st_size for path in OUTPUT.rglob("*") if path.is_file())
     assert total_bytes < 1_000_000_000, "GitHub Pages published-site limit exceeded"
-    print(f"Verified 39 detail pages, 2 grid routes, 41 gallery frames, 25 unique images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
+    print(f"Verified 39 detail pages, 2 grid routes, 41 gallery frames (room 01 live), 25 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
 
 
 if __name__ == "__main__":

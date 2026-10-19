@@ -12,6 +12,7 @@ const fallback = document.getElementById("fallback");
 const beginButton = document.getElementById("begin-button");
 const helpButton = document.getElementById("help-button");
 const status = document.getElementById("section-status");
+const roomTitle = document.getElementById("room-title");
 const announcement = document.getElementById("announcement");
 const glow = document.getElementById("portal-glow");
 const experience = document.getElementById("experience");
@@ -36,6 +37,9 @@ try {
   sceneHost.append(renderer.domElement);
 
   const camera = new THREE.PerspectiveCamera(75, 1, .05, 120);
+  const roomFov = (frame) => camera.aspect < .7
+    ? Math.min(110, frame.room.previewCamera.fov + 25)
+    : frame.room.previewCamera.fov;
   const player = { x: 0, y: EYE_HEIGHT, z: -1.1 };
   const controls = new GalleryControls(
     renderer.domElement,
@@ -47,6 +51,10 @@ try {
     assetBase: experience.dataset.basePath,
     announce(message) { announcement.textContent = message; },
     onModeChange(mode, frame) {
+      camera.fov = mode === "room" ? roomFov(frame) : 75;
+      camera.updateProjectionMatrix();
+      roomTitle.hidden = mode !== "room";
+      roomTitle.textContent = mode === "room" ? frame.room.title || `Room ${frame.label}` : "";
       status.textContent = mode === "room"
         ? `Room ${frame.label}`
         : mode === "hall"
@@ -75,6 +83,7 @@ try {
     renderer.setPixelRatio(pixelRatio);
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
+    camera.fov = rooms.mode === "room" ? roomFov(rooms.active.frame) : 75;
     camera.updateProjectionMatrix();
   }
   resize();

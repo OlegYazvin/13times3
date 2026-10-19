@@ -5,7 +5,7 @@ import {
   buildLayout, crossesPortal, HALL_WIDTH, isWalkable,
   moveWithCollision, nearestSection, PATH, PLAYER_RADIUS,
 } from "../client/explore/layout.mjs";
-import { roomIsReady } from "../client/explore/rooms.mjs";
+import { moveWithinRoom, roomIsReady } from "../client/explore/rooms.mjs";
 
 const manifest = JSON.parse(readFileSync(new URL("../src/_data/gallery.json", import.meta.url)));
 const layout = buildLayout(manifest);
@@ -29,9 +29,10 @@ test("movement stays inside the hallway and slides along its walls", () => {
   assert.equal(nearestSection({ x: 18, z: -10 }, layout.sections).section.index, 2);
 });
 
-test("blank frames are solid; a future room triggers only when crossed from the hall", () => {
+test("frame 01 is enterable only across its threshold; other frames stay solid", () => {
   const frame = layout.frames[0];
-  assert.equal(roomIsReady(frame), false);
+  assert.equal(roomIsReady(frame), true);
+  assert.equal(layout.frames.slice(1).every((record) => !roomIsReady(record)), true);
   const outward = frame.sectionData.right;
   const sign = frame.sideSign;
   const center = frame.center;
@@ -41,6 +42,13 @@ test("blank frames are solid; a future room triggers only when crossed from the 
   assert.equal(crossesPortal(crossing, inside, frame), false);
   const missed = { x: crossing.x + frame.sectionData.forward.x * 2, z: crossing.z + frame.sectionData.forward.z * 2 };
   assert.equal(crossesPortal(inside, missed, frame), false);
-  const fixture = { ...frame, room: { ...frame.room, previewImage: "/fixtures/painting.webp", modelUrl: "/fixtures/room.glb" } };
-  assert.equal(roomIsReady(fixture), true);
+});
+
+test("room 01 walls, doorway, desk, and stage stop movement", () => {
+  const room = layout.frames[0].room;
+  assert.deepEqual(moveWithinRoom({x:0,z:2.2},{x:0,z:2.42},room).exit,true);
+  assert.deepEqual(moveWithinRoom({x:1.5,z:2.2},{x:1.5,z:2.42},room).exit,false);
+  assert.deepEqual(moveWithinRoom({x:-.1,z:.5},{x:-.3,z:.5},room).x,-.1);
+  assert.deepEqual(moveWithinRoom({x:.1,z:-.35},{x:.1,z:-.5},room).z,-.35);
+  assert.ok(Math.abs(moveWithinRoom({x:0,z:2.2},{x:3,z:2.2},room).x-2.38)<1e-9);
 });

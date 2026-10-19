@@ -8,6 +8,26 @@ export function roomIsReady(frame) {
   return Boolean(frame.room?.previewImage && frame.room?.modelUrl);
 }
 
+function hitsObstacle(x, z, colliders = []) {
+  return colliders.some(({ minX, maxX, minZ, maxZ }) =>
+    x > minX - PLAYER_RADIUS && x < maxX + PLAYER_RADIUS &&
+    z > minZ - PLAYER_RADIUS && z < maxZ + PLAYER_RADIUS);
+}
+
+export function moveWithinRoom(previous, intended, room) {
+  const halfX = room.dimensionsM[0] / 2 - PLAYER_RADIUS;
+  const halfZ = room.dimensionsM[2] / 2 - PLAYER_RADIUS;
+  const x = Math.max(-halfX, Math.min(halfX, intended.x));
+  const z = Math.max(-halfZ, Math.min(halfZ, intended.z));
+  // The opening is centered in the +Z wall. Elsewhere it is a solid wall.
+  if (intended.z > halfZ && Math.abs(previous.x) < .55) return { ...previous, exit: true };
+  let nextX = previous.x;
+  let nextZ = previous.z;
+  if (!hitsObstacle(x, nextZ, room.colliders)) nextX = x;
+  if (!hitsObstacle(nextX, z, room.colliders)) nextZ = z;
+  return { x: nextX, z: nextZ, exit: false };
+}
+
 function disposeScene(scene) {
   const geometries = new Set();
   const materials = new Set();
@@ -51,6 +71,7 @@ export class RoomManager {
     this.pendingEntry = null;
     this.lastPreviewRender = 0;
     this.hallPose = null;
+    this.suppressFrameId = null;
     this.loader = new GLTFLoader();
     this.textureLoader = new THREE.TextureLoader();
   }
@@ -66,6 +87,13 @@ export class RoomManager {
   updateHall(time) {
     if (this.mode !== "hall") return;
     const nearest = nearestFrame(this.player, this.gallery.layout.frames, 5);
+    if (this.suppressFrameId) {
+      if (nearest?.frame.id === this.suppressFrameId && nearest.distance < 3.5) {
+        if (this.active) this.clearActive();
+        return;
+      }
+      this.suppressFrameId = null;
+    }
     if (!nearest || !roomIsReady(nearest.frame)) {
       if (this.active) this.clearActive();
       if (this.loadingFrame) this.generation += 1;
@@ -103,15 +131,21 @@ export class RoomManager {
       }
       previewTexture.colorSpace = THREE.SRGBColorSpace;
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x101726);
-      scene.add(new THREE.AmbientLight(0xffffff, 1.7));
+      scene.background = new THREE.Color(0x211a30);
+      scene.add(new THREE.AmbientLight(0xffffff, 1.65));
+      const key = new THREE.DirectionalLight(0xffdfab, 2.1);
+      key.position.set(1.6, 3.2, 1.8);
+      scene.add(key);
+      const fill = new THREE.DirectionalLight(0xb7c7ff, .7);
+      fill.position.set(-2, 2, -1);
+      scene.add(fill);
       scene.add(gltf.scene);
 
       const view = frame.room.previewCamera;
       const previewCamera = new THREE.PerspectiveCamera(view.fov || 65, 2.45 / 3.12, .05, 40);
       previewCamera.position.fromArray(view.position);
       previewCamera.lookAt(...view.target);
-      const target = new THREE.WebGLRenderTarget(384, 512, { depthBuffer: true });
+      const target = new THREE.WebGLRenderTarget(384, 489, { depthBuffer: true });
       const previewMaterial = new THREE.MeshBasicMaterial({ map: previewTexture });
       const liveMaterial = new THREE.MeshBasicMaterial({ map: target.texture, transparent: true, opacity: 0, depthWrite: false });
       const frameMesh = this.gallery.frameMeshes.get(frame.id);
@@ -165,7 +199,7 @@ export class RoomManager {
     this.player.y = pose.position[1];
     this.player.z = pose.position[2];
     this.controls.yaw = pose.yaw || 0;
-    this.controls.pitch = 0;
+    this.controls.pitch = pose.pitch || 0;
     this.mode = "room";
     this.onModeChange("room", this.active.frame);
     await wait(380);
@@ -174,15 +208,13 @@ export class RoomManager {
   }
 
   moveInRoom(intended) {
-    const size = this.active.frame.room.dimensionsM;
-    const halfX = size[0] / 2 - PLAYER_RADIUS;
-    const halfZ = size[2] / 2 - PLAYER_RADIUS;
-    if (intended.z > halfZ) {
+    const next = moveWithinRoom(this.player, intended, this.active.frame.room);
+    if (next.exit) {
       this.leave();
       return;
     }
-    this.player.x = Math.max(-halfX, Math.min(halfX, intended.x));
-    this.player.z = Math.max(-halfZ, Math.min(halfZ, intended.z));
+    this.player.x = next.x;
+    this.player.z = next.z;
   }
 
   async leave() {
@@ -195,6 +227,7 @@ export class RoomManager {
     Object.assign(this.player, { x: this.hallPose.x, y: this.hallPose.y, z: this.hallPose.z });
     this.controls.yaw = this.hallPose.yaw;
     this.controls.pitch = this.hallPose.pitch;
+    this.suppressFrameId = this.active.frame.id;
     this.mode = "hall";
     this.onModeChange("hall", this.active.frame);
     await wait(380);

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "build:room01": "node scripts/build_room_01.mjs",
     "build:client": "esbuild client/explore/main.mjs --bundle --format=esm --target=es2020 --minify --outfile=src/assets/explore/app.js",
     "build": "npm run build:client && node scripts/clean_output.mjs && eleventy",
     "dev": "npm run build:client && concurrently -k \"esbuild client/explore/main.mjs --bundle --format=esm --target=es2020 --outfile=src/assets/explore/app.js --watch\" \"eleventy --serve\"",
