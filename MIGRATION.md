@@ -1,5 +1,15 @@
 # GitHub Pages and Cloudflare cutover
 
+## Pause checkpoint — October 19, 2026, 16:22 UTC
+
+The migration is paused at the owner's request. The live site is already deployed from the public GitHub repository through Cloudflare, with all 41 captured routes and 25 local images verified over HTTPS at the last check. The working tree was clean before this checkpoint was written. Leave the current Cloudflare proxy and Full TLS mode in place while GitHub's origin certificate is pending, and keep the Squarespace website subscription active.
+
+The Squarespace domain transfer is waiting for the authorization-code email requested on October 19 at about 14:22 UTC. A targeted Gmail search at about 14:41 UTC found no code email. The transfer lock is off; Cloudflare showed the domain as ready, with its transfer form at the authorization-code step and a quote of $10.46 before tax. No checkout or payment has occurred. When resuming, search the signed-in Gmail for the Squarespace transfer email, enter the code in Cloudflare if it has arrived, review the final checkout total, then complete any required email confirmation. Do not paste the code into chat or commit it to the repository.
+
+Separately, retry GitHub account **Settings → Pages** verification for `13times3.com`; its Cloudflare TXT challenge was published but GitHub had not recognized it at the last check. Check whether GitHub has issued the custom-domain certificate. If it has, enable **Enforce HTTPS** in GitHub Pages and upgrade Cloudflare from **Full** to **Full (strict)** after verifying origin TLS. The current proxy supplies valid public HTTPS, so preserve it until a replacement has been tested.
+
+Firefox access is available through the existing signed-in X11 session (`DISPLAY=:99.0`, `XAUTHORITY=/run/flatpak/Xauthority`). The browser has Cloudflare, Squarespace, Gmail, and GitHub tabs. Local Xlib automation was installed under `/tmp/xlib-13times3`; it may need to be recreated after a restart. The temporary Cloudflare API token has been revoked and deleted; use the dashboard for DNS changes. This checkpoint contains no transfer code or API token.
+
 The site source is published at [OlegYazvin/13times3](https://github.com/OlegYazvin/13times3). On October 19, 2026, GitHub Pages deployed the root-path build with `www.13times3.com` configured. Cloudflare DNS is active, and Squarespace now delegates to `ainsley.ns.cloudflare.com` and `damien.ns.cloudflare.com`. Cloudflare's active edge certificate and Full encryption mode provide HTTPS while GitHub issues its own certificate. All 41 routes and 25 images returned HTTP 200 through Cloudflare over HTTPS; the apex redirects to `www`, and Cloudflare redirects HTTP to HTTPS. Some DNS caches may still contain the old Squarespace answer for several hours. Keep the Squarespace website subscription active until the public custom domain works reliably everywhere.
 
 ## Current remaining work
