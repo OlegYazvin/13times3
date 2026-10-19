@@ -82,7 +82,8 @@ def main() -> None:
     assert first_room["dimensionsM"] == [5.4, 3.6, 5.4]
     assert first_room["previewImage"] == "/assets/explore/room01/preview.webp"
     assert first_room["modelUrl"] == "/assets/explore/room01/room.glb"
-    assert len(first_room["colliders"]) == 2
+    assert len(first_room["colliders"]) == 4
+    assert sum(collider.get("shape") == "circle" for collider in first_room["colliders"]) == 2
     assert all(not frame["room"]["previewImage"] and not frame["room"]["modelUrl"] for frame in frames[1:])
     preview = OUTPUT / first_room["previewImage"].lstrip("/")
     model = OUTPUT / first_room["modelUrl"].lstrip("/")

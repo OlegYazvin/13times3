@@ -1,8 +1,8 @@
 // All dimensions are meters. The route is deliberately fixed so frame IDs stay put.
 export const HALL_WIDTH = 5.8;
 export const HALL_HEIGHT = 4.8;
-export const FRAME_WIDTH = 2.95;
-export const FRAME_HEIGHT = 3.75;
+export const FRAME_WIDTH = 3.35;
+export const FRAME_HEIGHT = 4.1;
 export const EYE_HEIGHT = 1.65;
 export const PLAYER_RADIUS = 0.32;
 
@@ -74,6 +74,13 @@ export function buildLayout(manifest) {
       !Array.isArray(record.room.previewCamera?.target) ||
       Boolean(record.room.previewImage) !== Boolean(record.room.modelUrl)) {
       throw new Error(`Frame ${record.id} has incomplete room metadata.`);
+    }
+    if (record.room.modelUrl && (!Array.isArray(record.room.colliders) ||
+      !record.room.colliders.every((collider) => collider.shape === "circle"
+        ? [collider.x, collider.z, collider.radius].every(Number.isFinite) && collider.radius > 0
+        : [collider.minX, collider.maxX, collider.minZ, collider.maxZ].every(Number.isFinite) &&
+          collider.minX < collider.maxX && collider.minZ < collider.maxZ))) {
+      throw new Error(`Frame ${record.id} needs valid obstacle footprints for its room.`);
     }
     // Keep the full painting inside the straight wall at each turn.
     const endMargin = HALL_WIDTH / 2 + FRAME_WIDTH / 2 + .4;

@@ -9,9 +9,13 @@ export function roomIsReady(frame) {
 }
 
 function hitsObstacle(x, z, colliders = []) {
-  return colliders.some(({ minX, maxX, minZ, maxZ }) =>
-    x > minX - PLAYER_RADIUS && x < maxX + PLAYER_RADIUS &&
-    z > minZ - PLAYER_RADIUS && z < maxZ + PLAYER_RADIUS);
+  return colliders.some((collider) => {
+    if (collider.shape === "circle") {
+      return Math.hypot(x - collider.x, z - collider.z) < collider.radius + PLAYER_RADIUS;
+    }
+    return x > collider.minX - PLAYER_RADIUS && x < collider.maxX + PLAYER_RADIUS &&
+      z > collider.minZ - PLAYER_RADIUS && z < collider.maxZ + PLAYER_RADIUS;
+  });
 }
 
 export function moveWithinRoom(previous, intended, room) {
@@ -66,10 +70,10 @@ export class RoomManager {
     this.loadingFrame = null;
     this.generation = 0;
     this.pendingEntry = null;
-    this.lastPreviewRender = 0;
     this.hallPose = null;
     this.suppressFrameId = null;
     this.loader = new GLTFLoader();
+    this.readyFrames = gallery.layout.frames.filter(roomIsReady);
   }
 
   assetUrl(path) {
@@ -82,7 +86,7 @@ export class RoomManager {
 
   updateHall(time) {
     if (this.mode !== "hall") return;
-    const nearest = nearestFrame(this.player, this.gallery.layout.frames, 5);
+    const nearest = nearestFrame(this.player, this.readyFrames, 8);
     if (this.suppressFrameId) {
       if (nearest?.frame.id === this.suppressFrameId && nearest.distance < 3.5) {
         if (this.active) this.clearActive();
@@ -100,14 +104,30 @@ export class RoomManager {
     if (this.active?.frame.id !== frame.id && this.loadingFrame !== frame.id) this.load(frame);
     if (!this.active || this.active.frame.id !== frame.id) return;
 
-    const strength = Math.max(0, Math.min(.94, (3 - nearest.distance) / 1.7));
+    // Fill the entire frame from a comfortable viewing distance; the stored
+    // painting remains visible while the GLB is loading or has been released.
+    const strength = Math.max(0, Math.min(1, (8 - nearest.distance) / 1.5));
     this.active.liveMaterial.opacity = strength;
-    if (strength > 0 && time - this.lastPreviewRender > 1 / 15) {
+    const { forward } = frame.sectionData;
+    const along = (this.player.x - frame.center.x) * forward.x +
+      (this.player.z - frame.center.z) * forward.z;
+    const offset = Math.max(-1.2, Math.min(1.2, -frame.sideSign * along));
+    const depth = Math.max(-.16, Math.min(.16, (nearest.distance - 3) * .055));
+    const changed = !this.active.hasLiveRender ||
+      Math.abs(offset - this.active.lastOffset) > .18 ||
+      Math.abs(depth - this.active.lastDepth) > .055;
+    if (strength > 0 && changed && (!this.active.hasLiveRender || time - this.active.lastRenderTime > 1 / 6)) {
+      const view = frame.room.previewCamera;
+      this.active.previewCamera.position.set(view.position[0] + offset * .18, view.position[1], view.position[2] + depth);
+      this.active.previewCamera.lookAt(view.target[0] + offset * .04, view.target[1], view.target[2]);
       const previousTarget = this.renderer.getRenderTarget();
       this.renderer.setRenderTarget(this.active.target);
       this.renderer.render(this.active.scene, this.active.previewCamera);
       this.renderer.setRenderTarget(previousTarget);
-      this.lastPreviewRender = time;
+      this.active.hasLiveRender = true;
+      this.active.lastOffset = offset;
+      this.active.lastDepth = depth;
+      this.active.lastRenderTime = time;
     }
   }
 
@@ -136,14 +156,16 @@ export class RoomManager {
       const previewCamera = new THREE.PerspectiveCamera(view.fov || 65, FRAME_WIDTH / FRAME_HEIGHT, .05, 40);
       previewCamera.position.fromArray(view.position);
       previewCamera.lookAt(...view.target);
-      const target = new THREE.WebGLRenderTarget(384, Math.round(384 * FRAME_HEIGHT / FRAME_WIDTH), { depthBuffer: true });
+      const previewWidth = Math.max(384, Math.min(640, Math.round(this.renderer.domElement.clientWidth * .75)));
+      const target = new THREE.WebGLRenderTarget(previewWidth, Math.round(previewWidth * FRAME_HEIGHT / FRAME_WIDTH), { depthBuffer: true });
       const liveMaterial = new THREE.MeshBasicMaterial({ map: target.texture, transparent: true, opacity: 0, depthWrite: false });
       const frameMesh = this.gallery.frameMeshes.get(frame.id);
       const liveSurface = new THREE.Mesh(frameMesh.surface.geometry, liveMaterial);
       liveSurface.position.z = .105;
       frameMesh.root.add(liveSurface);
       this.active = {
-        frame, scene, previewCamera, target, liveMaterial, liveSurface,
+        frame, scene, previewCamera, target, liveMaterial, liveSurface, hasLiveRender: false,
+        lastOffset: 0, lastDepth: 0, lastRenderTime: 0,
       };
       this.loadingFrame = null;
       if (this.pendingEntry === frame.id) {

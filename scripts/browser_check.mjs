@@ -22,6 +22,8 @@ async function checkViewport(name, options) {
   assert.equal(await page.locator("#scene canvas").isVisible(), true);
   const before = await page.evaluate(() => window.__galleryDebug());
   assert.equal(before.frame01Painting, true, `${name}: frame 01 painting should load on opening`);
+  await page.waitForFunction(() => window.__galleryDebug().activeRoom === "01" &&
+    window.__galleryDebug().livePreviewOpacity > .99, null, { timeout: 12000 });
   await page.keyboard.down("w");
   await page.waitForFunction((startZ) => window.__galleryDebug().z < startZ - .1, before.z, { timeout: 8000 });
   await page.keyboard.up("w");
@@ -62,7 +64,7 @@ async function checkViewport(name, options) {
     await touch.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ ...origin, x: origin.x + 65 }] });
     await page.waitForTimeout(140);
     const turning = await page.evaluate(() => window.__galleryDebug().yaw);
-    await page.waitForTimeout(260);
+    await page.waitForFunction((start) => window.__galleryDebug().yaw > start + .15, turning, { timeout: 5000 });
     const stillTurning = await page.evaluate(() => window.__galleryDebug().yaw);
     assert.ok(stillTurning > turning + .15, "mobile: holding the right drag should keep turning");
     await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
@@ -83,7 +85,7 @@ async function checkViewport(name, options) {
     const reverse = { x: 290, y: 340, id: 4 };
     await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [reverse] });
     await touch.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ ...reverse, x: reverse.x - 65 }] });
-    await page.waitForTimeout(240);
+    await page.waitForFunction((start) => window.__galleryDebug().yaw < start - .15, leftTouch, { timeout: 5000 });
     const turnedLeft = await page.evaluate(() => window.__galleryDebug().yaw);
     assert.ok(turnedLeft < leftTouch - .15, "mobile: holding a left drag should keep turning left");
     await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
@@ -142,6 +144,14 @@ try {
   roomPage.on("pageerror", (error) => roomErrors.push(error.message));
   await roomPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
   await roomPage.getByRole("button", { name: /begin walking/i }).click();
+  await roomPage.evaluate(() => window.__galleryTestPose(0, -4.775, -Math.PI / 2));
+  await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === "01" &&
+    window.__galleryDebug().livePreviewOpacity > .99, null, { timeout: 12000 });
+  await roomPage.screenshot({path:".cache/room01-hall-view.png"});
+  const liveViewX = await roomPage.evaluate(() => window.__galleryDebug().liveViewX);
+  await roomPage.evaluate(() => window.__galleryTestPose(0, -6, -Math.PI / 2));
+  await roomPage.waitForFunction((previous) => Math.abs(window.__galleryDebug().liveViewX - previous) > .12,
+    liveViewX, { timeout: 12000 });
   await roomPage.evaluate(() => window.__galleryTestPose(-1, -4.775, -Math.PI / 2));
   await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === "01", null, { timeout: 12000 });
   await roomPage.waitForTimeout(120);
@@ -159,6 +169,12 @@ try {
   await roomPage.waitForTimeout(220);
   await roomPage.keyboard.up("w");
   assert.ok((await roomPage.evaluate(() => window.__galleryDebug().z)) > -.47, "stage should block forward movement");
+  await roomPage.evaluate(() => window.__galleryTestPose(-1.57, -.5, 0));
+  await roomPage.keyboard.down("s");
+  await roomPage.waitForTimeout(320);
+  await roomPage.keyboard.up("s");
+  assert.ok((await roomPage.evaluate(() => window.__galleryDebug().z)) < -.45,
+    "Jane's 3D figure should block walking through her");
   await roomPage.evaluate(() => window.__galleryTestPose(0, 2.20, 0));
   await roomPage.keyboard.down("s");
   await roomPage.waitForFunction(() => window.__galleryDebug().mode === "hall", null, { timeout: 12000 });

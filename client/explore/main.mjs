@@ -46,6 +46,8 @@ try {
     document.getElementById("joystick"),
     document.getElementById("joystick-knob"),
   );
+  // Frame 01 should greet Jane immediately, including on a narrow phone view.
+  controls.yaw = -.67;
   const rooms = new RoomManager({
     renderer, gallery, camera, controls, player, glow,
     assetBase: experience.dataset.basePath,
@@ -68,6 +70,8 @@ try {
       section: nearestSection(player, gallery.layout.sections).section.index + 1,
       mode: rooms.mode,
       activeRoom: rooms.active?.frame.id || null,
+      livePreviewOpacity: rooms.active?.liveMaterial.opacity || 0,
+      liveViewX: rooms.active?.previewCamera.position.x ?? null,
       frame01Painting: Boolean(gallery.frameMeshes.get("01").surface.material.map?.image?.width),
       frameCount: gallery.layout.frames.length,
     });

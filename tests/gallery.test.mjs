@@ -50,11 +50,13 @@ test("frame 01 is enterable only across its threshold; other frames stay solid",
   assert.equal(crossesPortal(inside, missed, frame), false);
 });
 
-test("room 01 walls, doorway, desk, and stage stop movement", () => {
+test("room 01 walls, doorway, desk, stage, and figures stop movement", () => {
   const room = layout.frames[0].room;
   assert.deepEqual(moveWithinRoom({x:0,z:2.2},{x:0,z:2.42},room).exit,true);
   assert.deepEqual(moveWithinRoom({x:1.5,z:2.2},{x:1.5,z:2.42},room).exit,false);
   assert.deepEqual(moveWithinRoom({x:-.1,z:.5},{x:-.3,z:.5},room).x,-.1);
   assert.deepEqual(moveWithinRoom({x:.1,z:-.35},{x:.1,z:-.5},room).z,-.35);
+  assert.deepEqual(moveWithinRoom({x:-1.57,z:-.5},{x:-1.57,z:-.25},room).z,-.5);
+  assert.deepEqual(moveWithinRoom({x:1.1,z:-.45},{x:1.1,z:-.9},room).z,-.45);
   assert.ok(Math.abs(moveWithinRoom({x:0,z:2.2},{x:3,z:2.2},room).x-2.38)<1e-9);
 });
