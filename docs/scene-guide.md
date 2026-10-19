@@ -17,7 +17,7 @@ These are decisions and corrections from developing frame `01`. Read them with t
 - Keep the painting visible in the hallway and preload only its room model nearby. Walking close to the frame switches straight to the full 3D room. Do not periodically redraw a live image inside the frame, fade a second view over it, or require a tap; those approaches looked cropped and janky up close.
 - Capture a still hallway view for the room's return doorway when Jane enters. Walking close to that doorway switches directly back to the hall and releases the room's GPU resources. Keep the return pose facing into the hall.
 - Collide with walls, stage, desk, and figures. Walking through a character or other solid object breaks the scene. Keep the return opening obvious and traversable while the rest of the boundary is solid.
-- On phones, the left thumb control moves. Holding a finger on either side of the right half continuously turns in that direction; it must not require repeated swipes. Drag vertically there to look. Preserve desktop keyboard and drag controls.
+- On phones, the left thumb joystick moves. A drag begun anywhere else on the scene looks around; holding the displaced finger left or right continuously turns in that direction, without repeated swipes. Drag vertically to look up or down. Preserve desktop keyboard and drag controls.
 
 ## Scale, cost, and checks
 

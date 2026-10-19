@@ -59,11 +59,9 @@ export class GalleryControls {
     canvas.addEventListener("pointerdown", (event) => {
       if (!this.enabled || this.lookPointer !== null) return;
       const touchLook = event.pointerType === "touch";
-      const bounds = canvas.getBoundingClientRect();
-      if (touchLook && event.clientX < bounds.left + bounds.width / 2) return;
       event.preventDefault();
       this.lookPointer = event.pointerId;
-      this.lookOrigin = touchLook ? { y: event.clientY } : null;
+      this.lookOrigin = touchLook ? { x: event.clientX, y: event.clientY } : null;
       this.lookOffset = { x: 0, y: 0 };
       this.lastLook = touchLook ? null : { x: event.clientX, y: event.clientY };
       if (touchLook) this.updateTouchLook(event);
@@ -116,13 +114,10 @@ export class GalleryControls {
   }
 
   updateTouchLook(event) {
-    const bounds = this.canvas.getBoundingClientRect();
-    const center = bounds.left + bounds.width * .75;
-    const halfZone = Math.max(1, bounds.width * .25);
-    // The right half acts as an invisible stick. A stationary thumb away from
-    // its center continues turning; vertical movement remains a relative drag.
+    // A drag anywhere on the canvas acts as an invisible look stick. Holding
+    // the displaced finger keeps turning until it is lifted.
     this.lookOffset = {
-      x: (event.clientX - center) * (LOOK_TRAVEL + LOOK_DEAD_ZONE) / halfZone,
+      x: event.clientX - this.lookOrigin.x,
       y: event.clientY - this.lookOrigin.y,
     };
   }
