@@ -63,18 +63,16 @@ export class GalleryControls {
       if (touchLook && event.clientX < bounds.left + bounds.width / 2) return;
       event.preventDefault();
       this.lookPointer = event.pointerId;
-      this.lookOrigin = touchLook ? { x: event.clientX, y: event.clientY } : null;
+      this.lookOrigin = touchLook ? { y: event.clientY } : null;
       this.lookOffset = { x: 0, y: 0 };
       this.lastLook = touchLook ? null : { x: event.clientX, y: event.clientY };
+      if (touchLook) this.updateTouchLook(event);
       canvas.setPointerCapture(event.pointerId);
     });
     canvas.addEventListener("pointermove", (event) => {
       if (event.pointerId !== this.lookPointer || !this.enabled) return;
       if (this.lookOrigin) {
-        this.lookOffset = {
-          x: event.clientX - this.lookOrigin.x,
-          y: event.clientY - this.lookOrigin.y,
-        };
+        this.updateTouchLook(event);
         return;
       }
       const dx = event.clientX - this.lastLook.x;
@@ -115,6 +113,18 @@ export class GalleryControls {
     this.yaw += lookAxis(this.lookOffset.x) * MAX_TURN_SPEED * dt;
     this.pitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT,
       this.pitch - lookAxis(this.lookOffset.y) * MAX_PITCH_SPEED * dt));
+  }
+
+  updateTouchLook(event) {
+    const bounds = this.canvas.getBoundingClientRect();
+    const center = bounds.left + bounds.width * .75;
+    const halfZone = Math.max(1, bounds.width * .25);
+    // The right half acts as an invisible stick. A stationary thumb away from
+    // its center continues turning; vertical movement remains a relative drag.
+    this.lookOffset = {
+      x: (event.clientX - center) * (LOOK_TRAVEL + LOOK_DEAD_ZONE) / halfZone,
+      y: event.clientY - this.lookOrigin.y,
+    };
   }
 
   clearJoystick() {

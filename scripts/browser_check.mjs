@@ -59,14 +59,18 @@ async function checkViewport(name, options) {
 
   if (options.hasTouch) {
     const touch = await context.newCDPSession(page);
-    const origin = { x: 290, y: 340, id: 2 };
+    const origin = { x: 345, y: 340, id: 2 };
+    const heldStart = await page.evaluate(() => window.__galleryDebug().yaw);
     await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [origin] });
-    await touch.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ ...origin, x: origin.x + 65 }] });
-    await page.waitForTimeout(140);
+    await page.waitForFunction((start) => window.__galleryDebug().yaw > start + .15, heldStart, { timeout: 5000 });
     const turning = await page.evaluate(() => window.__galleryDebug().yaw);
     await page.waitForFunction((start) => window.__galleryDebug().yaw > start + .15, turning, { timeout: 5000 });
     const stillTurning = await page.evaluate(() => window.__galleryDebug().yaw);
-    assert.ok(stillTurning > turning + .15, "mobile: holding the right drag should keep turning");
+    assert.ok(stillTurning > turning + .15, "mobile: a stationary right-side thumb should keep turning");
+    await touch.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ ...origin, x: 225 }] });
+    await page.waitForFunction((start) => window.__galleryDebug().yaw < start - .15, stillTurning, { timeout: 5000 });
+    const turningLeft = await page.evaluate(() => window.__galleryDebug().yaw);
+    await page.waitForFunction((start) => window.__galleryDebug().yaw < start - .15, turningLeft, { timeout: 5000 });
     await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
     await page.waitForTimeout(80);
     const released = await page.evaluate(() => window.__galleryDebug().yaw);
@@ -82,12 +86,11 @@ async function checkViewport(name, options) {
     assert.ok(Math.abs(leftTouch - stopped) < .04, "mobile: the left half should not turn the view");
     await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
 
-    const reverse = { x: 290, y: 340, id: 4 };
+    const reverse = { x: 225, y: 340, id: 4 };
     await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [reverse] });
-    await touch.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ ...reverse, x: reverse.x - 65 }] });
     await page.waitForFunction((start) => window.__galleryDebug().yaw < start - .15, leftTouch, { timeout: 5000 });
     const turnedLeft = await page.evaluate(() => window.__galleryDebug().yaw);
-    assert.ok(turnedLeft < leftTouch - .15, "mobile: holding a left drag should keep turning left");
+    assert.ok(turnedLeft < leftTouch - .15, "mobile: a stationary left-side thumb should keep turning left");
     await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   }
 
@@ -205,6 +208,10 @@ try {
   await phonePage.waitForFunction(() => window.__galleryDebug().mode === "room",null,{timeout:12000});
   await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});
   await phonePage.waitForTimeout(500);
+  const roomYaw = await phonePage.evaluate(() => window.__galleryDebug().yaw);
+  await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:360,y:440,id:6}]});
+  await phonePage.waitForFunction((start) => window.__galleryDebug().yaw > start + .15,roomYaw,{timeout:5000});
+  await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});
   await phonePage.screenshot({path:".cache/room01-mobile-entered.png"});
   assert.deepEqual(phoneErrors,[]);
   await phoneContext.close();
