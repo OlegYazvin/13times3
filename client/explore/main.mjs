@@ -104,6 +104,7 @@ try {
         frameSamples = 0;
       }
     }
+    controls.updateLook(dt);
     const movement = controls.getMovement();
     if (movement.forward || movement.strafe) {
       const sin = Math.sin(controls.yaw);

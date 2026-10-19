@@ -55,6 +55,40 @@ async function checkViewport(name, options) {
   const yawAfter = await page.evaluate(() => window.__galleryDebug().yaw);
   assert.ok(yawAfter > yawBefore, `${name}: drag-to-look failed`);
 
+  if (options.hasTouch) {
+    const touch = await context.newCDPSession(page);
+    const origin = { x: 290, y: 340, id: 2 };
+    await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [origin] });
+    await touch.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ ...origin, x: origin.x + 65 }] });
+    await page.waitForTimeout(140);
+    const turning = await page.evaluate(() => window.__galleryDebug().yaw);
+    await page.waitForTimeout(260);
+    const stillTurning = await page.evaluate(() => window.__galleryDebug().yaw);
+    assert.ok(stillTurning > turning + .15, "mobile: holding the right drag should keep turning");
+    await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    await page.waitForTimeout(80);
+    const released = await page.evaluate(() => window.__galleryDebug().yaw);
+    await page.waitForTimeout(180);
+    const stopped = await page.evaluate(() => window.__galleryDebug().yaw);
+    assert.ok(Math.abs(stopped - released) < .04, "mobile: releasing the right drag should stop turning");
+
+    const left = { x: 70, y: 340, id: 3 };
+    await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [left] });
+    await touch.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ ...left, x: left.x + 70 }] });
+    await page.waitForTimeout(180);
+    const leftTouch = await page.evaluate(() => window.__galleryDebug().yaw);
+    assert.ok(Math.abs(leftTouch - stopped) < .04, "mobile: the left half should not turn the view");
+    await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+
+    const reverse = { x: 290, y: 340, id: 4 };
+    await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [reverse] });
+    await touch.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ ...reverse, x: reverse.x - 65 }] });
+    await page.waitForTimeout(240);
+    const turnedLeft = await page.evaluate(() => window.__galleryDebug().yaw);
+    assert.ok(turnedLeft < leftTouch - .15, "mobile: holding a left drag should keep turning left");
+    await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  }
+
   if (name === "desktop") {
     for (const [section, x, z] of [[1, 0, -9], [2, 9, -18], [3, 18, -8], [4, 29, 2], [5, 40, -9]]) {
       await page.evaluate(([px, pz]) => window.__galleryTestPose(px, pz, 0), [x, z]);

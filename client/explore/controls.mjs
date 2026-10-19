@@ -1,5 +1,14 @@
 const LOOK_SENSITIVITY = .0035;
 const PITCH_LIMIT = Math.PI * .39;
+const LOOK_DEAD_ZONE = 10;
+const LOOK_TRAVEL = 80;
+const MAX_TURN_SPEED = 2.4;
+const MAX_PITCH_SPEED = 1.35;
+
+function lookAxis(distance) {
+  const travel = Math.max(0, Math.abs(distance) - LOOK_DEAD_ZONE);
+  return Math.sign(distance) * Math.min(1, travel / LOOK_TRAVEL);
+}
 
 export class GalleryControls {
   constructor(canvas, joystick, knob) {
@@ -14,6 +23,8 @@ export class GalleryControls {
     this.joyPointer = null;
     this.lookPointer = null;
     this.lastLook = null;
+    this.lookOrigin = null;
+    this.lookOffset = { x: 0, y: 0 };
 
     window.addEventListener("keydown", (event) => {
       if (["KeyW", "KeyA", "KeyS", "KeyD", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.code)) {
@@ -47,13 +58,25 @@ export class GalleryControls {
 
     canvas.addEventListener("pointerdown", (event) => {
       if (!this.enabled || this.lookPointer !== null) return;
+      const touchLook = event.pointerType === "touch";
+      const bounds = canvas.getBoundingClientRect();
+      if (touchLook && event.clientX < bounds.left + bounds.width / 2) return;
       event.preventDefault();
       this.lookPointer = event.pointerId;
-      this.lastLook = { x: event.clientX, y: event.clientY };
+      this.lookOrigin = touchLook ? { x: event.clientX, y: event.clientY } : null;
+      this.lookOffset = { x: 0, y: 0 };
+      this.lastLook = touchLook ? null : { x: event.clientX, y: event.clientY };
       canvas.setPointerCapture(event.pointerId);
     });
     canvas.addEventListener("pointermove", (event) => {
       if (event.pointerId !== this.lookPointer || !this.enabled) return;
+      if (this.lookOrigin) {
+        this.lookOffset = {
+          x: event.clientX - this.lookOrigin.x,
+          y: event.clientY - this.lookOrigin.y,
+        };
+        return;
+      }
       const dx = event.clientX - this.lastLook.x;
       const dy = event.clientY - this.lastLook.y;
       this.yaw += dx * LOOK_SENSITIVITY;
@@ -65,6 +88,8 @@ export class GalleryControls {
         if (event.pointerId === this.lookPointer) {
           this.lookPointer = null;
           this.lastLook = null;
+          this.lookOrigin = null;
+          this.lookOffset = { x: 0, y: 0 };
         }
       });
     }
@@ -81,6 +106,15 @@ export class GalleryControls {
     this.clearJoystick();
     this.lookPointer = null;
     this.lastLook = null;
+    this.lookOrigin = null;
+    this.lookOffset = { x: 0, y: 0 };
+  }
+
+  updateLook(dt) {
+    if (!this.enabled || !this.lookOrigin) return;
+    this.yaw += lookAxis(this.lookOffset.x) * MAX_TURN_SPEED * dt;
+    this.pitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT,
+      this.pitch - lookAxis(this.lookOffset.y) * MAX_PITCH_SPEED * dt));
   }
 
   clearJoystick() {

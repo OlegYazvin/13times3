@@ -13,7 +13,7 @@ The portfolio data is in `src/_data/site.json`; shared templates and styles are 
 
 ## The gallery
 
-The gallery uses Three.js in the browser and a bundled static script. It needs no service beyond the existing GitHub Pages deployment. On a phone, use the left-thumb movement pad and drag the right side to look; on a desktop, use W A S D or arrow keys and drag to look. The 41 frames are numbered and solid in this release. The old achievement pages are independent of these frames.
+The gallery uses Three.js in the browser and a bundled static script. It needs no service beyond the existing GitHub Pages deployment. On a phone, use the left-thumb movement pad and hold a drag on the right side to keep looking around; release to stop. On a desktop, use W A S D or arrow keys and drag to look. The 41 frames are numbered and solid in this release. The old achievement pages are independent of these frames.
 
 Frame IDs, labels, positions, and future room details live in `src/_data/gallery.json`. One scene unit is one meter. To make a frame enterable later, place its painting preview and glTF `.glb` scene under `src/assets/rooms/<id>/`, then set both `previewImage` and `modelUrl` in that frame's room record. `dimensionsM` defines simple walkable bounds (default 3.048 meters on each side); `entryPose` sets the camera after crossing; `previewCamera` sets the near-frame live peek. The painting should be rendered from that same 3D scene and camera so the reveal matches. Only the nearest room is loaded, and its assets are released after leaving. Keep each future room near or below 8 MB downloaded and watch the GitHub Pages 1 GB published-site limit.
 
