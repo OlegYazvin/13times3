@@ -54,28 +54,111 @@ function sign(name, title, small, x, y, z, w, h, rotationY=0) {
   const face = new THREE.Mesh(new THREE.PlaneGeometry(w,h), new THREE.MeshBasicMaterial({map:cardTexture(title,small),side:THREE.DoubleSide}));
   face.name = name; face.position.z=.012; holder.add(face);
 }
-function figure(name, image, x, z, height, width, backingColor, lift=0) {
-  const texture = new THREE.Texture(image);
-  texture.needsUpdate = true;
-  texture.colorSpace = THREE.SRGBColorSpace;
-  const aspect = texture.image.width/texture.image.height;
-  const w = width || height*aspect;
-  // Wood thickness, painted side and a slight offset of the portrait make the
-  // people read as sculpted paper figures when viewed from an angle.
-  const body = new THREE.Group(); body.name=name; body.position.set(x,lift,z); root.add(body);
-  const reverse = new THREE.Mesh(new THREE.PlaneGeometry(w,height),new THREE.MeshBasicMaterial({map:texture,color:backingColor,transparent:true,alphaTest:.08,side:THREE.DoubleSide,depthWrite:true}));
-  reverse.name=`${name} painted paper back`; reverse.position.set(0,height/2,-.045); reverse.rotation.y=.06; body.add(reverse);
-  const plane = new THREE.Mesh(new THREE.PlaneGeometry(w,height),new THREE.MeshBasicMaterial({map:texture,transparent:true,alphaTest:.08,side:THREE.DoubleSide,depthWrite:true}));
-  plane.name=`${name} painted likeness`; plane.position.set(0,height/2,.02); body.add(plane);
-  box(`${name} small paper stand`,0,.06,-.1,.3,.12,.24,mat(backingColor),body);
-  return body;
+// The figures are native 3D meshes with no image planes. This small sculpting
+// vocabulary keeps their visual language close to the paper-theater room.
+const skinJane = mat(0xe9a883);
+const skinZephrine = mat(0xe7ad88);
+const navy = mat(0x343653);
+const rust = mat(0xb6784a);
+const hairJane = mat(0x352b31);
+const hairZephrine = mat(0x694232);
+const hairHighlight = mat(0x8e5b3d);
+const eyeWhite = mat(0xf7e6d2);
+const eyeDark = mat(0x3b3b43);
+const eyeBlue = mat(0x728fa0);
+const rose = mat(0xb86868);
+const aqua = mat(0x76b7b6);
+
+function oval(name, x, y, z, sx, sy, sz, material, parent) {
+  const mesh = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 12), material);
+  mesh.name = name; mesh.position.set(x,y,z); mesh.scale.set(sx,sy,sz); parent.add(mesh); return mesh;
+}
+function limb(name, a, b, startRadius, endRadius, material, parent) {
+  const from = new THREE.Vector3(...a), to = new THREE.Vector3(...b);
+  const direction = to.clone().sub(from);
+  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(endRadius,startRadius,direction.length(),12),material);
+  mesh.name=name; mesh.position.copy(from).add(to).multiplyScalar(.5);
+  mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),direction.normalize());
+  parent.add(mesh);
+  return mesh;
+}
+function face(name, head, skin, iris, options={}) {
+  oval(`${name} softly sculpted face`,0,0,0,.18,.215,.16,skin,head);
+  oval(`${name} small nose`,0,-.022,.165,.033,.048,.044,skin,head);
+  for (const sign of [-1,1]) {
+    oval(`${name} ear`,sign*.174,-.015,-.01,.045,.07,.033,skin,head);
+    oval(`${name} eye white`,sign*.078,.034,.145,.046,.032,.018,eyeWhite,head);
+    oval(`${name} iris`,sign*.078,.033,.164,.023,.025,.012,iris,head);
+    oval(`${name} pupil`,sign*.078,.033,.175,.010,.015,.008,eyeDark,head);
+    oval(`${name} eyebrow`,sign*.078,.091,.153,.052,.010,.011,options.hair || hairZephrine,head);
+  }
+  oval(`${name} quiet smile`,0,-.111,.153,.062,.010,.012,rose,head);
+}
+function sculptZephrine() {
+  const child = new THREE.Group(); child.name="Zephrine — sculpted in the middle of a dance";
+  child.position.set(1.1,.40,-1.53); child.rotation.y=-.13; root.add(child);
+  // Rounded toddler proportions and the rust outfit recall the supplied photos.
+  oval("Zephrine rust sweater",0,.72,0,.23,.30,.17,rust,child);
+  oval("Zephrine round collar",0,.96,.045,.115,.046,.13,skinZephrine,child);
+  oval("Zephrine pants hips",0,.51,0,.22,.15,.17,rust,child);
+  limb("Zephrine supporting leg",[-.11,.48,0],[-.14,.12,.01],.105,.078,rust,child);
+  limb("Zephrine lifted dancing leg",[.10,.48,0],[.28,.22,.13],.105,.076,rust,child);
+  oval("Zephrine left aqua shoe",-.15,.073,.12,.115,.055,.17,aqua,child);
+  oval("Zephrine lifted aqua shoe",.29,.18,.24,.12,.052,.16,aqua,child);
+  for(const [x,y,z] of [[-.15,.076,.24],[.29,.18,.37]]) {
+    box("aqua sandal strap",x,y,z,.15,.025,.025,mat(0xa2d8cf),child);
+  }
+  limb("Zephrine raised arm",[-.2,.91,0],[-.47,1.23,.05],.083,.054,rust,child);
+  limb("Zephrine open arm",[.2,.91,0],[.47,.78,.16],.083,.052,rust,child);
+  oval("Zephrine raised hand",-.49,1.255,.06,.067,.072,.04,skinZephrine,child);
+  oval("Zephrine open hand",.50,.775,.17,.072,.054,.035,skinZephrine,child);
+  for(let i=0;i<3;i++) box("sweater button",0,.84-i*.065,.171,.025,.025,.014,mat(0xe0b687),child);
+
+  const head = new THREE.Group(); head.name="Zephrine's blue-eyed face and curly bob";
+  head.position.set(0,1.13,.01); head.rotation.z=-.07; child.add(head);
+  face("Zephrine",head,skinZephrine,eyeBlue,{hair:hairZephrine});
+  oval("Zephrine hair crown",0,.15,-.055,.207,.185,.17,hairZephrine,head);
+  const curls=[[-.205,.11,.03],[-.23,.02,.025],[-.23,-.07,.02],[-.18,-.15,-.025],
+    [.205,.11,.03],[.23,.02,.025],[.23,-.07,.02],[.18,-.15,-.025],
+    [-.14,.22,.08],[-.055,.23,.095],[.04,.235,.085],[.135,.21,.085]];
+  curls.forEach(([x,y,z],index)=>oval(`Zephrine curl ${index+1}`,x,y,z,.064,.07,.067,index%3?hairZephrine:hairHighlight,head));
+  return child;
+}
+function sculptJane() {
+  const jane = new THREE.Group(); jane.name="Jane — sculpted at the signup desk";
+  jane.position.set(-1.57,0,.28); jane.rotation.y=.09; root.add(jane);
+  // A gently tapered dress gives Jane the subtly slimmer silhouette requested.
+  const skirt = new THREE.Mesh(new THREE.CylinderGeometry(.19,.31,.62,18),navy);
+  skirt.name="Jane's navy dress skirt"; skirt.position.set(0,.59,0); jane.add(skirt);
+  oval("Jane navy bodice",0,1.03,0,.215,.29,.16,navy,jane);
+  oval("Jane neckline",0,1.25,.055,.113,.048,.115,skinJane,jane);
+  limb("Jane left leg",[-.11,.39,0],[-.12,.08,.035],.072,.054,skinJane,jane);
+  limb("Jane right leg",[.11,.39,0],[.13,.08,.04],.072,.054,skinJane,jane);
+  oval("Jane left navy shoe",-.12,.055,.13,.105,.055,.16,navy,jane);
+  oval("Jane right navy shoe",.13,.055,.14,.105,.055,.16,navy,jane);
+  // Her hand and pen are physically over the signup paper, frozen mid-sentence.
+  limb("Jane writing upper arm",[.17,1.18,.02],[.23,1.01,.20],.075,.063,skinJane,jane);
+  limb("Jane writing forearm",[.23,1.01,.20],[.29,.956,.38],.064,.045,skinJane,jane);
+  oval("Jane writing hand",.30,.954,.39,.068,.035,.055,skinJane,jane);
+  limb("Jane resting upper arm",[-.17,1.18,.02],[-.27,1.02,.22],.075,.061,skinJane,jane);
+  limb("Jane resting forearm",[-.27,1.02,.22],[-.08,.95,.37],.061,.044,skinJane,jane);
+  oval("Jane resting hand",-.06,.949,.38,.071,.036,.055,skinJane,jane);
+  limb("Jane pen",[.315,.965,.43],[.35,1.075,.45],.009,.007,eyeDark,jane);
+
+  const head = new THREE.Group(); head.name="Jane's dark high bun and freckled face";
+  head.position.set(0,1.48,.015); head.rotation.y=.23; head.rotation.z=-.04; jane.add(head);
+  face("Jane",head,skinJane,eyeDark,{hair:hairJane});
+  oval("Jane swept back hair",0,.115,-.075,.195,.18,.145,hairJane,head);
+  oval("Jane high bun",.02,.28,-.09,.115,.115,.105,hairJane,head);
+  oval("Jane loose bun strand",-.08,.30,-.06,.055,.07,.06,hairJane,head);
+  for(const sign of [-1,1]) {
+    oval("Jane pearl stud",sign*.19,-.025,.02,.019,.019,.019,eyeWhite,head);
+    for(let i=0;i<3;i++) oval("Jane freckle",sign*(.055+i*.025),-.052+(i%2)*.018,.153,.006,.006,.004,mat(0xc77b69),head);
+  }
+  return jane;
 }
 
 export async function authorRoom() {
-  const zephrineImage = await new Promise((resolve,reject) => { const image=new Image(); image.onload=()=>resolve(image); image.onerror=reject; image.src="/room01/zephrine.png"; });
-  const janeImage = await new Promise((resolve,reject) => { const image=new Image(); image.onload=()=>resolve(image); image.onerror=reject; image.src="/room01/jane.png"; });
-  // TextureLoader.load above is asynchronous, so preload both images first.
-  void zephrineImage; void janeImage;
 
   // Architecture: 5.4 m square, tall walls, open central doorway at +Z.
   box("plank floor",0,-.08,0,5.4,.16,5.4,mat(0xc49278));
@@ -110,12 +193,12 @@ export async function authorRoom() {
   box("proscenium top",.88,3.04,-2.42,3.1,.21,.25,gold);
   box("stage spotlight glow",.9,3.31,-1.6,.62,.05,.62,mat(0xf7d9a0,{emissive:0xf7b861,emissiveIntensity:.5}));
   sphere("paper spotlight",.9,3.23,-1.62,.18,mat(0xffd889,{emissive:0xffba65,emissiveIntensity:.85}));
-  figure("Zephrine", zephrineImage,1.12,-1.55,1.38,undefined,0xb8774b,.40);
+  sculptZephrine();
   sign("dance card","DANCE","a little first step",-.08,1.63,-2.35,.69,.45);
   sign("acting card","ACTING","a story to tell",2.0,1.63,-2.35,.69,.45);
 
   // The foreground signup desk and Jane's paused pen.
-  figure("Jane", janeImage,-1.58,.30,1.72,undefined,0x2b315a);
+  sculptJane();
   box("signup desk top",-1.37,.88,.66,1.54,.095,.72,mat(0x9d684f));
   box("desk fascia",-1.37,.53,.93,1.54,.63,.075,mat(0x805344));
   for(const x of [-2.04,-.7]) for(const z of [.36,.94]) box("desk carved leg",x,.43,z,.09,.86,.09,timber);

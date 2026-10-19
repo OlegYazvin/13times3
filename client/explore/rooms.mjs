@@ -53,12 +53,9 @@ function disposeScene(scene) {
 export function disposeRoom(room) {
   if (!room) return;
   disposeScene(room.scene);
-  room.previewTexture?.dispose();
-  room.previewMaterial?.dispose();
   room.liveMaterial?.dispose();
   room.target?.dispose();
   room.liveSurface?.parent?.remove(room.liveSurface);
-  if (room.surface) room.surface.material = room.originalMaterial;
 }
 
 export class RoomManager {
@@ -73,7 +70,6 @@ export class RoomManager {
     this.hallPose = null;
     this.suppressFrameId = null;
     this.loader = new GLTFLoader();
-    this.textureLoader = new THREE.TextureLoader();
   }
 
   assetUrl(path) {
@@ -120,16 +116,11 @@ export class RoomManager {
     this.loadingFrame = frame.id;
     if (this.active) this.clearActive();
     try {
-      const [previewTexture, gltf] = await Promise.all([
-        this.textureLoader.loadAsync(this.assetUrl(frame.room.previewImage)),
-        this.loader.loadAsync(this.assetUrl(frame.room.modelUrl)),
-      ]);
+      const gltf = await this.loader.loadAsync(this.assetUrl(frame.room.modelUrl));
       if (generation !== this.generation) {
-        previewTexture.dispose();
         disposeScene(gltf.scene);
         return;
       }
-      previewTexture.colorSpace = THREE.SRGBColorSpace;
       const scene = new THREE.Scene();
       scene.background = new THREE.Color(0x211a30);
       scene.add(new THREE.AmbientLight(0xffffff, 1.65));
@@ -146,17 +137,13 @@ export class RoomManager {
       previewCamera.position.fromArray(view.position);
       previewCamera.lookAt(...view.target);
       const target = new THREE.WebGLRenderTarget(384, Math.round(384 * FRAME_HEIGHT / FRAME_WIDTH), { depthBuffer: true });
-      const previewMaterial = new THREE.MeshBasicMaterial({ map: previewTexture });
       const liveMaterial = new THREE.MeshBasicMaterial({ map: target.texture, transparent: true, opacity: 0, depthWrite: false });
       const frameMesh = this.gallery.frameMeshes.get(frame.id);
-      const originalMaterial = frameMesh.surface.material;
-      frameMesh.surface.material = previewMaterial;
       const liveSurface = new THREE.Mesh(frameMesh.surface.geometry, liveMaterial);
       liveSurface.position.z = .105;
       frameMesh.root.add(liveSurface);
       this.active = {
-        frame, scene, previewCamera, target, previewTexture, previewMaterial,
-        liveMaterial, liveSurface, surface: frameMesh.surface, originalMaterial,
+        frame, scene, previewCamera, target, liveMaterial, liveSurface,
       };
       this.loadingFrame = null;
       if (this.pendingEntry === frame.id) {

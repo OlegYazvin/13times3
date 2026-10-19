@@ -16,13 +16,9 @@ const server = createServer(async (request,response)=>{
     response.end('<!doctype html><body style="margin:0;background:#211a30"><script type="module" src="/author.js"></script>');
     return;
   }
-  const filename = pathname==="/author.js" ? "author.js" : pathname==="/room01/jane.png" ? "jane.png" : pathname==="/room01/zephrine.png" ? "zephrine.png" : null;
-  if(!filename){response.writeHead(404);response.end();return;}
-  response.writeHead(200,{"content-type":filename.endsWith(".js")?"text/javascript":"image/png"});
-  const source = filename === "jane.png" ? resolve("room_assets/01/jane-painted.png")
-    : filename === "zephrine.png" ? resolve("room_assets/01/zephrine-painted.png")
-    : resolve(cache,filename);
-  response.end(await readFile(source));
+  if(pathname!=="/author.js"){response.writeHead(404);response.end();return;}
+  response.writeHead(200,{"content-type":"text/javascript"});
+  response.end(await readFile(resolve(cache,"author.js")));
 });
 await new Promise(resolve=>server.listen(0,"127.0.0.1",resolve));
 const browser=await chromium.launch({headless:true,args:["--use-gl=angle","--use-angle=swiftshader","--enable-webgl"]});

@@ -89,7 +89,7 @@ def main() -> None:
     assert preview.read_bytes()[:4] == b"RIFF"
     assert model.read_bytes()[:4] == b"glTF"
     assert preview.stat().st_size + model.stat().st_size < 8_000_000
-    assert not (OUTPUT / "room_assets").exists(), "Painted source assets should not be published separately"
+    assert not (OUTPUT / "room_assets").exists(), "Reference artwork should not be published separately"
     explore = parse(source_path("/explore"))
     assert explore.select_one("#welcome-title") is not None
     assert explore.select_one("#joystick") is not None

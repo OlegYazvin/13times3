@@ -28,7 +28,7 @@ function showFallback(message) {
 
 try {
   const manifest = JSON.parse(document.getElementById("gallery-data").textContent);
-  const gallery = createGalleryScene(manifest);
+  const gallery = createGalleryScene(manifest, experience.dataset.basePath);
   const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
   let pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
   renderer.setPixelRatio(pixelRatio);
@@ -68,6 +68,7 @@ try {
       section: nearestSection(player, gallery.layout.sections).section.index + 1,
       mode: rooms.mode,
       activeRoom: rooms.active?.frame.id || null,
+      frame01Painting: Boolean(gallery.frameMeshes.get("01").surface.material.map?.image?.width),
       frameCount: gallery.layout.frames.length,
     });
     window.__galleryTestPose = (x, z, yaw) => {

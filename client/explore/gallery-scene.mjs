@@ -241,7 +241,7 @@ function addArchitecture(scene, section, palette, frames, floaters, moteMaterial
   }
 }
 
-export function createGalleryScene(manifest) {
+export function createGalleryScene(manifest, assetBase = "/") {
   const layout = buildLayout(manifest);
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xc9b5ae);
@@ -278,8 +278,14 @@ export function createGalleryScene(manifest) {
   const placeholderMaterials = palettes.map((palette, index) =>
     new THREE.MeshBasicMaterial({ map: placeholderTexture(palette.paper, index), side: THREE.FrontSide }));
   const frameMeshes = new Map();
+  const textureLoader = new THREE.TextureLoader();
   for (const frame of layout.frames) {
     const object = frameMesh(frame, placeholderMaterials);
+    if (frame.room?.previewImage) {
+      const texture = textureLoader.load(assetBase + frame.room.previewImage.replace(/^\//, ""));
+      texture.colorSpace = THREE.SRGBColorSpace;
+      object.surface.material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.FrontSide });
+    }
     scene.add(object.group);
     frameMeshes.set(frame.id, object);
   }

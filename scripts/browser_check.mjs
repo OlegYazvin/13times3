@@ -21,6 +21,7 @@ async function checkViewport(name, options) {
   assert.equal(await page.locator("#fallback").isVisible(), false);
   assert.equal(await page.locator("#scene canvas").isVisible(), true);
   const before = await page.evaluate(() => window.__galleryDebug());
+  assert.equal(before.frame01Painting, true, `${name}: frame 01 painting should load on opening`);
   await page.keyboard.down("w");
   await page.waitForFunction((startZ) => window.__galleryDebug().z < startZ - .1, before.z, { timeout: 8000 });
   await page.keyboard.up("w");
@@ -97,6 +98,8 @@ async function checkViewport(name, options) {
       await page.waitForFunction((number) => document.querySelector("#section-status").textContent === `Gallery ${number} / 5`, section);
       assert.match(await statusText(page), new RegExp(`Gallery ${section} / 5`));
     }
+    assert.equal((await page.evaluate(() => window.__galleryDebug())).frame01Painting, true,
+      "desktop: frame 01 painting must remain visible from the far hall");
     await page.evaluate(() => document.querySelector("#scene canvas").getContext("webgl2").getExtension("WEBGL_lose_context").loseContext());
     await page.locator("#fallback").waitFor({ state: "visible" });
   }
@@ -162,6 +165,8 @@ try {
   await roomPage.keyboard.up("s");
   assert.equal(await roomPage.locator("#room-title").isVisible(),false);
   await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === null, null, { timeout: 12000 });
+  assert.equal((await roomPage.evaluate(() => window.__galleryDebug())).frame01Painting, true,
+    "room: painting must remain after unloading the 3D scene");
   await roomPage.evaluate(() => window.__galleryTestPose(40, -18, 0));
   await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === null, null, { timeout: 12000 });
   assert.deepEqual(roomErrors, []);
