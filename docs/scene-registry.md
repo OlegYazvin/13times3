@@ -14,14 +14,15 @@ The gallery has 41 stable frame IDs. The 39 original achievement pages are a sep
 | `06` | Planned | “Jane ended breast feeding” | Jane | The end of breastfeeding; the scene's treatment and other participants are still to be defined | Oleg's idea, 2026-10-19 |
 | `07` | Planned | “The time we went blueberry picking” | Oleg, Jane; other participants unconfirmed | Blueberry-picking outing; location and exact moment are still to be defined | Oleg's idea, 2026-10-19 |
 | `08` | Planned | “Chicago Open house” | Jane, Oleg; other participants unconfirmed | Treat Jane's choices `#4`–`#10` as visited for scene planning; exclude her three northern picks `#1`–`#3`. The [source notes](scene-08-open-house-notes.md) list the venues and explain why the Zen temple remains included. | Oleg's idea, 2026-10-19; [Jane's choice list](scene-08-open-house-notes.md) from the 2026-10-17 Codex conversation |
+| `09` | Planned | “We FINALLY visited our friends in Ithaca for the first time where Zephrine got to try apple picking for the first time.” | Oleg, Jane, Zephrine, friends (names unconfirmed) | First visit to friends in Ithaca and Zephrine's first apple-picking experience; the supplied photos show the group at a farm stand and Zephrine holding an apple. Separate from the blueberry-picking memory in frame `07`. | Oleg's idea and private [photo notes](scene-09-ithaca-notes.md), 2026-10-20 |
 
-Frames `02`–`08` are reserved ideas only: they have no model, preview, or enterable room. Frames `09`–`41` remain unassigned blank portals. Frame `01` is the only published walkable room as of 2026-10-20.
+Frames `02`–`09` are reserved ideas only: they have no model, preview, or enterable room. Frames `10`–`41` remain unassigned blank portals. Frame `01` is the only published walkable room as of 2026-10-20.
 
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.
 
-For planned frames, also flag these likely overlaps: helping Oleg get a job (`02`); Charlize becoming Zephrine's best friend (`03`); Zephrine's “blue car” (`04`); Jane's office move or standing up to management during it (`05`); ending breastfeeding (`06`); the blueberry-picking trip (`07`); and Open House Chicago or Jane's Chicago architectural itinerary (`08`). Ask whether an overlap is a revision or a distinct later moment before assigning another frame.
+For planned frames, also flag these likely overlaps: helping Oleg get a job (`02`); Charlize becoming Zephrine's best friend (`03`); Zephrine's “blue car” (`04`); Jane's office move or standing up to management during it (`05`); ending breastfeeding (`06`); the blueberry-picking trip (`07`); Open House Chicago or Jane's Chicago architectural itinerary (`08`); and the first Ithaca friend visit or Zephrine's first apple-picking experience (`09`). Frame `07` and frame `09` both involve picking fruit, but they are distinct memories with different fruit, places, and story emphasis. Ask whether a new overlap is a revision or a distinct later moment before assigning another frame.
 
 ## When adding a scene
 
