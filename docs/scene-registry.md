@@ -6,7 +6,7 @@ The gallery has 41 stable frame IDs. The 39 original achievement pages are a sep
 
 | Frame | Status | Memory or event | People | Distinctive setting and motifs | Source |
 | --- | --- | --- | --- | --- | --- |
-| `01` | Published | “You signed Zephrine up for dance and acting classes!” | Jane, Zephrine | Frozen signup moment: Jane at a desk, Zephrine on a small stage; storybook undersea cave with mermaid, kelp, coral, shells, script, and footprints | [author](../scripts/room01_author.mjs), [manifest](../src/_data/gallery.json), [live room](https://13times3.com/explore/) |
+| `01` | Published | “You signed Zephrine up for dance and acting classes!” | Jane, Zephrine | Frozen signup moment: Jane at a desk, Zephrine on a small stage; storybook undersea cave with mermaid, kelp, coral, shells, script, and footprints; painting opens into a continuous walk-through doorway | [author](../scripts/room01_author.mjs), [manifest](../src/_data/gallery.json), [live room](https://13times3.com/explore/) |
 | `02` | Planned | “Jane helped me (Oleg) get a job” | Jane, Oleg | Jane's help with Oleg's job; the specific setting and actions are still to be defined | Oleg's idea, 2026-10-19 |
 | `03` | Planned | “Jane made sure Zephrine has a best friend (Charlize)” | Jane, Zephrine, Charlize | The friendship Jane helped create; the specific moment is still to be defined | Oleg's idea, 2026-10-19 |
 | `04` | Planned | “Jane Got zephrine the ‘blue car’” | Jane, Zephrine | The “blue car”; what it is and the scene's moment are still to be defined | Oleg's idea, 2026-10-19 |
@@ -15,7 +15,7 @@ The gallery has 41 stable frame IDs. The 39 original achievement pages are a sep
 | `07` | Planned | “The time we went blueberry picking” | Oleg, Jane; other participants unconfirmed | Blueberry-picking outing; location and exact moment are still to be defined | Oleg's idea, 2026-10-19 |
 | `08` | Planned | “Chicago Open house” | Jane, Oleg; other participants unconfirmed | Treat Jane's choices `#4`–`#10` as visited for scene planning; exclude her three northern picks `#1`–`#3`. The [source notes](scene-08-open-house-notes.md) list the venues and explain why the Zen temple remains included. | Oleg's idea, 2026-10-19; [Jane's choice list](scene-08-open-house-notes.md) from the 2026-10-17 Codex conversation |
 
-Frames `02`–`08` are reserved ideas only: they have no model, preview, or enterable room. Frames `09`–`41` remain unassigned blank portals. Frame `01` is the only published walkable room as of 2026-10-19.
+Frames `02`–`08` are reserved ideas only: they have no model, preview, or enterable room. Frames `09`–`41` remain unassigned blank portals. Frame `01` is the only published walkable room as of 2026-10-20.
 
 ## Overlap cues for frame 01
 

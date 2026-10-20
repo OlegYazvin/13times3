@@ -292,12 +292,12 @@ function caveShell() {
     const x=-2.7+5.4*u,y=3.42*v;
     return [x,y,-2.57+.035*Math.sin(x*2.5+y*2.1)+.02*Math.sin(x*6.4-y*4.7)];
   },2.2);
-  for(const [from,to] of [[-2.7,-.9],[.9,2.7]]) caveSurface("carved rock beside the return arch",8,13,(u,v)=>{
+  for(const [from,to] of [[-2.7,-1.675],[1.675,2.7]]) caveSurface("carved rock beside the return arch",8,13,(u,v)=>{
     const x=from+(to-from)*u,y=3.42*v;
     return [x,y,2.58-.025*Math.sin(x*4+y*2.8)];
   },1.5);
   caveSurface("stone above the open return doorway",10,3,(u,v)=>{
-    const x=-.9+1.8*u,y=2.96+.47*v;
+    const x=-1.675+3.35*u,y=3.35+.08*v;
     return [x,y,2.58-.025*Math.sin(x*4+y*2.8)];
   },1.5);
 }
@@ -490,7 +490,7 @@ function sculptJane() {
 
 export async function authorRoom() {
 
-  // Architecture: 5.4 m square, tall walls, open central doorway at +Z.
+  // Architecture: 5.4 m square, with an opening matching the gallery frame.
   box("sandstone under the grotto floor",0,-.08,0,5.4,.16,5.4,mat(0x9a766f));
   caveSurface("softly undulating sandy cave floor",24,24,(u,v)=>{
     const x=-2.7+5.4*u,z=-2.7+5.4*v;
@@ -500,16 +500,14 @@ export async function authorRoom() {
   box("back wall",0,1.8,-2.7,5.4,3.6,.14,mat(C.wall));
   box("left wall",-2.7,1.8,0,.14,3.6,5.4,mat(0x916177));
   box("right wall",2.7,1.8,0,.14,3.6,5.4,mat(0x916177));
-  box("front wall left",-1.79,1.8,2.7,1.82,3.6,.14,mat(C.wall));
-  box("front wall right",1.79,1.8,2.7,1.82,3.6,.14,mat(C.wall));
-  box("front lintel",0,3.24,2.7,1.76,.72,.14,mat(C.wall));
-  box("return doorway threshold",0,.025,2.56,1.75,.05,.28,gold);
-  box("doorway left gilded edge",-.9,1.45,2.59,.055,2.9,.2,gold);
-  box("doorway right gilded edge",.9,1.45,2.59,.055,2.9,.2,gold);
-  box("doorway gold header",0,2.93,2.59,1.86,.055,.2,gold);
-  sign("way back to the gallery","GALLERY","walk through to return",0,2.55,2.52,1.44,.35,Math.PI);
-  for(const x of [-.64,.64]) stoneRib("short carved hanger for the return sign",
-    [[x,2.9,2.53],[x+.025,2.75,2.53],[x,2.68,2.53]],.012,gold);
+  box("front wall left",-2.1875,1.8,2.7,1.025,3.6,.14,mat(C.wall));
+  box("front wall right",2.1875,1.8,2.7,1.025,3.6,.14,mat(C.wall));
+  box("front lintel",0,3.475,2.7,3.35,.25,.14,mat(C.wall));
+  box("return doorway threshold",0,.025,2.56,3.35,.05,.28,gold);
+  box("doorway left gilded edge",-1.675,1.675,2.59,.055,3.35,.2,gold);
+  box("doorway right gilded edge",1.675,1.675,2.59,.055,3.35,.2,gold);
+  box("doorway gold header",0,3.35,2.59,3.45,.055,.2,gold);
+  sign("gallery direction on inner lintel","GALLERY","walk through to return",0,3.45,2.52,1.44,.2,Math.PI);
   const paleStone=mat(0x8da6a2);
   const duskStone=mat(0x806e82);
   for(const z of [-2.1,-.88,.37,1.68]) {
@@ -643,7 +641,7 @@ export async function authorRoom() {
     line("undersea wall relief",[[-2.44,y,1.66],[-2.44,y+.07,1.28],[-2.44,y-.04,.91],[-2.44,y+.05,.54]],.013,y===2.48?seaFoam:gold);
   }
 
-  const scene = new THREE.Scene(); scene.background = new THREE.Color(0x211a30);
+  const scene = new THREE.Scene(); scene.background = new THREE.Color(0xc6ad99);
   scene.add(new THREE.AmbientLight(0xffffff,1.65));
   const key = new THREE.DirectionalLight(0xffdfab,2.1); key.position.set(1.6,3.2,1.8); scene.add(key);
   const fill = new THREE.DirectionalLight(0xb7c7ff,.7); fill.position.set(-2,2,-1); scene.add(fill);

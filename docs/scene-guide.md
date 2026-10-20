@@ -14,8 +14,8 @@ These are decisions and corrections from developing frame `01`. Read them with t
 
 ## Portal and movement behavior
 
-- Keep the painting visible in the hallway and preload only its room model nearby. Walking close to the frame switches straight to the full 3D room. Do not periodically redraw a live image inside the frame, fade a second view over it, or require a tap; those approaches looked cropped and janky up close.
-- Capture a still hallway view for the room's return doorway when Jane enters. Walking close to that doorway switches directly back to the hall and releases the room's GPU resources. Keep the return pose facing into the hall.
+- Keep the painting opaque at a distance and preload only its room model nearby. Reveal the real room through irregular openings in the painting as Jane approaches. Render the room behind an actual aperture in the gallery wall, with parallax from the same world camera. Do not use a periodically refreshed texture, screen fade, or camera teleport.
+- Crossing the aperture in either direction preserves world position, view direction, and field of view. The return doorway shows the actual hallway, not a still capture. Keep the nearby room loaded on exit and release it after Jane walks away.
 - Collide with walls, stage, desk, and figures. Walking through a character or other solid object breaks the scene. Keep the return opening obvious and traversable while the rest of the boundary is solid.
 - On phones, the left thumb joystick moves. A drag begun anywhere else on the scene looks around; holding the displaced finger left or right continuously turns in that direction, without repeated swipes. Drag vertically to look up or down. Preserve desktop keyboard and drag controls.
 
@@ -23,6 +23,6 @@ These are decisions and corrections from developing frame `01`. Read them with t
 
 - Use the current Eleventy, Three.js, GitHub Pages, and Cloudflare setup. Keep rooms static-hosted with no backend or paid service. Load one room at a time, and aim for roughly 8 MB or less of downloaded assets per room.
 - A room may be around 10 feet on each side or larger when its scene needs space. Store its dimensions, entry pose, preview camera, model, and preview in `src/_data/gallery.json`.
-- Render the portrait preview from the same 3D scene and intended camera, so it predicts what Jane enters. Compare screenshots from the far hallway, close painting, entered room, return doorway, and after exit.
+- Render the portrait preview from the same 3D scene and a hallway viewing pose, so it predicts the room revealed through the frame. Compare screenshots from the far hallway, partial reveal, open frame, entered room, return doorway, and after exit.
 - Verify collision, resource cleanup, the WebGL fallback, resize, sustained phone turning, phone movement, and desktop movement. Preserve all 39 achievement URLs and 41 unique frame IDs. Use phone emulation for development, then check feel and performance on a physical iPhone when available; the target is a steady 30 fps there.
 - Inspect screenshots for hidden signs, flat walls, obvious primitive shapes, clipping, mismatched views, and jarring mixed visual styles before publishing.

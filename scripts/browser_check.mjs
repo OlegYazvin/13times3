@@ -141,104 +141,125 @@ try {
   await context.close();
   console.log("WebGL fallback: 41 numbered frames visible");
 
-  // Test the actual published room, its threshold, obstacle, exit, and cleanup.
+  // The painting opens onto the same world; crossing never replaces the camera pose.
   const roomContext = await browser.newContext({ viewport: { width: 920, height: 700 } });
   const roomPage = await roomContext.newPage();
   const roomErrors = [];
   roomPage.on("pageerror", (error) => roomErrors.push(error.message));
   await roomPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
   await roomPage.getByRole("button", { name: /begin walking/i }).click();
-  await roomPage.evaluate(() => window.__galleryTestPose(0, -13.5, -Math.PI / 2));
   await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === "01", null, { timeout: 12000 });
-  assert.equal((await roomPage.evaluate(() => window.__galleryDebug())).mode, "hall",
-    "far hallway should still show the static painting");
-  await roomPage.evaluate(() => window.__galleryTestPose(-.3, -4.775, -Math.PI / 2));
-  await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === "01", null, { timeout: 12000 });
-  assert.equal((await roomPage.evaluate(() => window.__galleryDebug())).modelColliderCount, 4,
-    "room collision should come from the loaded 3D figures and furniture");
-  assert.equal((await roomPage.evaluate(() => window.__galleryDebug())).mode, "hall",
-    "painting should remain visible until Jane approaches it");
-  await roomPage.screenshot({path:".cache/room01-hall-view.png"});
+  await roomPage.evaluate(() => window.__galleryTestPose(0, -1.1, -.67));
+  await roomPage.waitForFunction(() => window.__galleryDebug().paintingOpacity === 1);
+  await roomPage.screenshot({ path: ".cache/room01-painting-far.png" });
+  await roomPage.evaluate(() => window.__galleryTestPose(0, -4.975, -Math.PI / 2));
+  await roomPage.waitForFunction(() => window.__galleryDebug().paintingOpacity < 1);
+  const midway = await roomPage.evaluate(() => window.__galleryDebug());
+  assert.ok(midway.paintingOpacity > .45 && midway.paintingOpacity < 1);
+  await roomPage.screenshot({ path: ".cache/room01-painting-reveal.png" });
+  await roomPage.evaluate(() => window.__galleryTestPose(-1.9, -4.975, -Math.PI / 2));
+  await roomPage.waitForFunction(() => window.__galleryDebug().paintingOpacity <= .45);
+  await roomPage.screenshot({ path: ".cache/room01-open-doorway.png" });
+  await roomPage.evaluate(() => window.__galleryTestPose(-1.9, -3.9, -Math.PI / 2));
+  await roomPage.screenshot({ path: ".cache/room01-open-doorway-angled.png" });
+  await roomPage.evaluate(() => window.__galleryTestPose(-2.35, -4.975, -Math.PI / 2));
+  const beforeEntry = await roomPage.evaluate(() => window.__galleryDebug());
   await roomPage.keyboard.down("w");
   await roomPage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
   await roomPage.keyboard.up("w");
-  await roomPage.waitForTimeout(500);
-  assert.equal(await roomPage.locator("#room-title").textContent(),"You signed Zephrine up for dance and acting classes!");
-  assert.equal(await roomPage.locator("#room-title").isVisible(),true);
-  await roomPage.screenshot({path:".cache/room01-entered.png"});
-  await roomPage.evaluate(() => window.__galleryTestPose(.1, -.35, 0));
+  const entered = await roomPage.evaluate(() => window.__galleryDebug());
+  assert.ok(entered.x < -2.9 && entered.x > -3.1, "entry position should advance through the frame without a jump");
+  assert.equal(entered.yaw, beforeEntry.yaw);
+  assert.equal(entered.cameraFov, beforeEntry.cameraFov);
+  assert.equal(entered.cameraFov, 75);
+  assert.equal(await roomPage.locator("#room-title").textContent(), "You signed Zephrine up for dance and acting classes!");
+  await roomPage.screenshot({ path: ".cache/room01-entered-continuous.png" });
+
+  // Authored obstacles and the room shell remain solid.
+  await roomPage.evaluate(() => window.__galleryTestRoomPose(0, -.35, -Math.PI / 2));
   await roomPage.keyboard.down("w");
   await roomPage.waitForTimeout(220);
   await roomPage.keyboard.up("w");
-  assert.ok((await roomPage.evaluate(() => window.__galleryDebug().z)) > -.47, "stage should block forward movement");
-  await roomPage.evaluate(() => window.__galleryTestPose(-1.57, -.5, 0));
+  assert.ok((await roomPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > -.55, "stage should block movement");
+  await roomPage.evaluate(() => window.__galleryTestRoomPose(-1.57, -.5, -Math.PI / 2));
   await roomPage.keyboard.down("s");
   await roomPage.waitForTimeout(520);
   await roomPage.keyboard.up("s");
-  assert.ok((await roomPage.evaluate(() => window.__galleryDebug().z)) < -.28,
-    "Jane's 3D figure should block walking through her");
-  await roomPage.evaluate(() => window.__galleryTestPose(0, .2, Math.PI));
-  await roomPage.waitForFunction(() => window.__galleryDebug().returnImageReady, null, { timeout: 12000 });
-  await roomPage.screenshot({path:".cache/room01-return-doorway.png"});
-  await roomPage.evaluate(() => window.__galleryTestPose(0, 1.45, Math.PI));
-  await roomPage.screenshot({path:".cache/room01-return-full-before-threshold.png"});
-  const returnView = await roomPage.evaluate(() => window.__galleryDebug());
+  assert.ok((await roomPage.evaluate(() => window.__galleryDebug().roomLocal.z)) < -.28,
+    "Jane's figure should block movement");
+
+  await roomPage.evaluate(() => window.__galleryTestRoomPose(0, 2.1, Math.PI / 2));
+  await roomPage.screenshot({ path: ".cache/room01-real-hallway-return.png" });
+  const beforeExit = await roomPage.evaluate(() => window.__galleryDebug());
   await roomPage.keyboard.down("w");
   await roomPage.waitForFunction(() => window.__galleryDebug().mode === "hall", null, { timeout: 12000 });
   await roomPage.keyboard.up("w");
-  const returned = await roomPage.evaluate(() => window.__galleryDebug());
-  assert.ok(Math.abs(returned.x - returnView.returnViewX) < .1 &&
-    Math.abs(returned.z - returnView.returnViewZ) < .1,
-  "return should preserve the hallway camera position");
-  assert.ok(Math.abs(returned.yaw - Math.PI / 4) < .1,
-    "return should face out into the gallery");
-  await roomPage.screenshot({path:".cache/room01-returned-hall.png"});
-  assert.equal(await roomPage.locator("#room-title").isVisible(),false);
-  assert.equal(returned.activeRoom, null, "room resources should release immediately after returning");
-  assert.equal((await roomPage.evaluate(() => window.__galleryDebug())).frame01Painting, true,
-    "room: painting must remain available after returning");
-  await roomPage.evaluate(() => window.__galleryTestPose(40, -18, 0));
+  const exited = await roomPage.evaluate(() => window.__galleryDebug());
+  assert.ok(exited.x > -2.9 && exited.x < -2.5, "exit should advance into the hall without a jump");
+  assert.equal(exited.yaw, beforeExit.yaw, "exit must keep Jane facing into the hall");
+  assert.equal(exited.cameraFov, beforeExit.cameraFov);
+  assert.equal(exited.activeRoom, "01", "room stays visible nearby after exit");
+  await roomPage.screenshot({ path: ".cache/room01-returned-continuous.png" });
+  await roomPage.evaluate(() => window.__galleryTestPose(2.35, -4.975, Math.PI / 2));
+  await roomPage.keyboard.down("w");
+  await roomPage.waitForTimeout(400);
+  await roomPage.keyboard.up("w");
+  assert.ok((await roomPage.evaluate(() => window.__galleryDebug().x)) < 2.6,
+    "blank frame 02 must remain solid");
+  await roomPage.evaluate(() => window.__galleryTestPose(0, -25, 0));
   await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === null, null, { timeout: 12000 });
+  assert.equal((await roomPage.evaluate(() => window.__galleryDebug())).paintingOpacity, 1);
   assert.deepEqual(roomErrors, []);
   await roomContext.close();
-  console.log("Room 01: painting-to-room proximity switch, direct return, collision, and cleanup");
+  console.log("Room 01: painterly reveal, continuous entry and exit, obstacles, blank frame, and cleanup");
 
   const phoneContext = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true });
   const phonePage = await phoneContext.newPage();
   const phoneErrors = [];
   phonePage.on("pageerror", error => phoneErrors.push(error.message));
-  await phonePage.goto(`${base}/explore/`, {waitUntil:"networkidle"});
-  await phonePage.getByRole("button", {name:/begin walking/i}).click();
-  await phonePage.evaluate(() => window.__galleryTestPose(-.3,-4.775,-Math.PI/2));
-  await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "01",null,{timeout:12000});
-  await phonePage.screenshot({path:".cache/room01-mobile-before-threshold.png"});
+  await phonePage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
+  await phonePage.getByRole("button", { name: /begin walking/i }).click();
+  await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "01", null, { timeout: 12000 });
+  await phonePage.evaluate(() => window.__galleryTestPose(-2.35, -4.975, -Math.PI / 2));
+  await phonePage.screenshot({ path: ".cache/room01-mobile-doorway.png" });
   const ring = await phonePage.locator(".joystick-ring").boundingBox();
-  const phoneTouch = await phoneContext.newCDPSession(phonePage);
-  const point = {x:ring.x+ring.width/2,y:ring.y+ring.height/2,id:5};
-  await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[point]});
-  await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchMove",touchPoints:[{...point,y:point.y-38}]});
-  await phonePage.waitForFunction(() => window.__galleryDebug().mode === "room",null,{timeout:12000});
-  await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});
-  await phonePage.waitForTimeout(500);
-  const roomYaw = await phonePage.evaluate(() => window.__galleryDebug().yaw);
-  await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[{x:260,y:440,id:6}]});
-  await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchMove",touchPoints:[{x:350,y:440,id:6}]});
-  await phonePage.waitForFunction((start) => window.__galleryDebug().yaw > start + .15,roomYaw,{timeout:5000});
-  await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});
-  await phonePage.screenshot({path:".cache/room01-mobile-entered.png"});
-  await phonePage.evaluate(() => window.__galleryTestPose(0, 1.55, Math.PI));
-  await phonePage.waitForFunction(() => window.__galleryDebug().returnImageReady,null,{timeout:12000});
-  await phonePage.screenshot({path:".cache/room01-mobile-return-before-threshold.png"});
-  await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchStart",touchPoints:[point]});
-  await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchMove",touchPoints:[{...point,y:point.y-38}]});
-  await phonePage.waitForFunction(() => window.__galleryDebug().mode === "hall",null,{timeout:12000});
-  await phoneTouch.send("Input.dispatchTouchEvent",{type:"touchEnd",touchPoints:[]});
-  assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).activeRoom,null);
-  await phonePage.evaluate(() => window.__galleryTestPose(40,-18,0));
-  await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === null,null,{timeout:12000});
-  assert.deepEqual(phoneErrors,[]);
+  const touch = await phoneContext.newCDPSession(phonePage);
+  const point = { x: ring.x + ring.width / 2, y: ring.y + ring.height / 2, id: 5 };
+  const phoneFov = (await phonePage.evaluate(() => window.__galleryDebug())).cameraFov;
+  assert.equal(phoneFov, 100);
+  await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ ...point, y: point.y - 38 }] });
+  await phonePage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
+  await phonePage.screenshot({ path: ".cache/room01-mobile-entered-continuous.png" });
+  await phonePage.evaluate(() => window.__galleryTestRoomPose(0, 2.1, Math.PI / 2));
+  await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ ...point, y: point.y - 38 }] });
+  await phonePage.waitForFunction(() => window.__galleryDebug().mode === "hall", null, { timeout: 12000 });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
+  assert.deepEqual(phoneErrors, []);
   await phoneContext.close();
-  console.log("Phone emulation: left-thumb movement crossed frame 01 in both directions");
+  console.log("Phone emulation: joystick crossed the same doorway both ways at a stable FOV");
+
+  const failedContext = await browser.newContext({ viewport: { width: 920, height: 700 } });
+  const failedPage = await failedContext.newPage();
+  await failedPage.route("**/assets/explore/room01/room.glb*", (route) => route.abort());
+  await failedPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
+  await failedPage.getByRole("button", { name: /begin walking/i }).click();
+  await failedPage.waitForFunction(() => document.querySelector("#announcement").textContent.includes("could not be loaded"),
+    null, { timeout: 12000 });
+  await failedPage.evaluate(() => window.__galleryTestPose(-2.35, -4.975, -Math.PI / 2));
+  await failedPage.keyboard.down("w");
+  await failedPage.waitForTimeout(450);
+  await failedPage.keyboard.up("w");
+  const failed = await failedPage.evaluate(() => window.__galleryDebug());
+  assert.equal(failed.activeRoom, null);
+  assert.equal(failed.paintingOpacity, 1);
+  assert.ok(failed.x > -2.6, "an unavailable room leaves the hallway wall solid");
+  await failedContext.close();
+  console.log("Room load failure: painting and wall remain solid");
 } finally {
   await browser.close();
 }

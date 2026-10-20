@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import {
-  buildLayout, HALL_WIDTH, HALL_HEIGHT, FRAME_HEIGHT, FRAME_WIDTH,
+  buildLayout, HALL_WIDTH, HALL_HEIGHT, FRAME_HEIGHT, FRAME_WIDTH, portalOpening,
 } from "./layout.mjs";
 
 // Five related plaster washes give each turn a slightly different atmosphere.
@@ -116,14 +116,65 @@ function box(parent, name, x, y, z, width, height, depth, material) {
   return mesh;
 }
 
-function wallBetween(start, end, material) {
+function wallBetween(start, end, material, height = HALL_HEIGHT, centerY = HALL_HEIGHT / 2) {
   const dx = end.x - start.x;
   const dz = end.z - start.z;
   const length = Math.hypot(dx, dz);
-  const wall = new THREE.Mesh(new THREE.BoxGeometry(length, HALL_HEIGHT, .12), material);
-  wall.position.set((start.x + end.x) / 2, HALL_HEIGHT / 2, (start.z + end.z) / 2);
+  const wall = new THREE.Mesh(new THREE.BoxGeometry(length, height, .12), material);
+  wall.position.set((start.x + end.x) / 2, centerY, (start.z + end.z) / 2);
   wall.rotation.y = Math.atan2(-dz, dx);
   return wall;
+}
+
+function wallWithOpenings(scene, start, end, material, frames) {
+  if (!frames.length) {
+    scene.add(wallBetween(start, end, material));
+    return;
+  }
+  const length = Math.hypot(end.x - start.x, end.z - start.z);
+  const pointAt = (distance) => ({
+    x: start.x + (end.x - start.x) * distance / length,
+    z: start.z + (end.z - start.z) * distance / length,
+  });
+  const openings = frames.map((frame) => {
+    const along = ((frame.center.x - start.x) * (end.x - start.x) +
+      (frame.center.z - start.z) * (end.z - start.z)) / length;
+    return { along, ...portalOpening(frame) };
+  }).sort((a, b) => a.along - b.along);
+  let cursor = 0;
+  for (const opening of openings) {
+    const left = opening.along - opening.width / 2;
+    const right = opening.along + opening.width / 2;
+    if (left > cursor) scene.add(wallBetween(pointAt(cursor), pointAt(left), material));
+    scene.add(wallBetween(pointAt(left), pointAt(right), material,
+      HALL_HEIGHT - opening.height, (HALL_HEIGHT + opening.height) / 2));
+    cursor = right;
+  }
+  if (cursor < length) scene.add(wallBetween(pointAt(cursor), end, material));
+}
+
+function revealMaskTexture() {
+  const canvas = document.createElement("canvas");
+  canvas.width = 512;
+  canvas.height = 768;
+  const context = canvas.getContext("2d");
+  const image = context.createImageData(canvas.width, canvas.height);
+  for (let y = 0; y < canvas.height; y++) for (let x = 0; x < canvas.width; x++) {
+    const nx = (x - canvas.width / 2) / (canvas.width / 2);
+    const ny = (y - canvas.height / 2) / (canvas.height / 2);
+    const radial = Math.min(1, Math.hypot(nx * .82, ny * .88));
+    const angle = Math.atan2(ny, nx);
+    const brush = Math.sin(angle * 9 + radial * 7) * .025 +
+      Math.sin(angle * 17 - radial * 4) * .012;
+    const value = Math.max(.54, Math.min(1, .55 + (radial + brush) * .45));
+    const offset = (y * canvas.width + x) * 4;
+    image.data[offset] = image.data[offset + 1] = image.data[offset + 2] = Math.round(value * 255);
+    image.data[offset + 3] = 255;
+  }
+  context.putImageData(image, 0, 0);
+  const texture = makeTexture(canvas);
+  texture.colorSpace = THREE.NoColorSpace;
+  return texture;
 }
 
 function frameMesh(frame, placeholderMaterials) {
@@ -137,7 +188,9 @@ function frameMesh(frame, placeholderMaterials) {
   root.rotation.y = frame.sideSign === 1 ? -Math.PI / 2 : Math.PI / 2;
   sectionGroup.add(root);
 
-  box(root, "painted wooden frame back", 0, 0, .025, FRAME_WIDTH + .25, FRAME_HEIGHT + .25, .07, wood);
+  if (!frame.room?.modelUrl) {
+    box(root, "painted wooden frame back", 0, 0, .025, FRAME_WIDTH + .25, FRAME_HEIGHT + .25, .07, wood);
+  }
   const surface = new THREE.Mesh(new THREE.PlaneGeometry(FRAME_WIDTH, FRAME_HEIGHT), placeholderMaterials[frame.section]);
   surface.position.z = .09;
   root.add(surface);
@@ -193,14 +246,23 @@ function addArchitecture(scene, section, palette, frames, floaters, moteMaterial
   for (const sign of [-1, 1]) {
     const startInset = section.index > 0 && innerTurnSigns[section.index - 1] === sign ? HALL_WIDTH / 2 + .12 : .05;
     const endInset = section.index < 4 && innerTurnSigns[section.index] === sign ? HALL_WIDTH / 2 + .12 : .05;
-    const wallLength = length - startInset - endInset;
-    const wallCenter = -(startInset + wallLength / 2);
     box(group, "runner stitched edge", sign * 1.13, .023, -length / 2, .035, .008, length - .55, border);
-    box(group, "plaster wainscot", sign * (HALL_WIDTH / 2 - .105), .62, wallCenter, .035, 1.15, wallLength, plasterPanel);
-    box(group, "wooden skirting", sign * (HALL_WIDTH / 2 - .10), .18, wallCenter, .12, .34, wallLength, wood);
-    box(group, "chair rail", sign * (HALL_WIDTH / 2 - .10), 1.23, wallCenter, .10, .075, wallLength, ivory);
-    box(group, "ceiling cornice", sign * (HALL_WIDTH / 2 - .21), HALL_HEIGHT - .17, wallCenter, .24, .24, wallLength, ivory);
-    box(group, "cornice shadow", sign * (HALL_WIDTH / 2 - .17), HALL_HEIGHT - .35, wallCenter, .08, .035, wallLength, shadowTrim);
+    const openings = frames.filter((frame) => frame.section === section.index && frame.sideSign === sign && frame.room.modelUrl)
+      .map((frame) => ({ start: frame.along - portalOpening(frame).width / 2,
+        end: frame.along + portalOpening(frame).width / 2 })).sort((a, b) => a.start - b.start);
+    let runs = [[startInset, length - endInset]];
+    for (const opening of openings) runs = runs.flatMap(([start, end]) => [
+      [start, Math.min(end, opening.start)], [Math.max(start, opening.end), end],
+    ].filter(([a, b]) => b > a));
+    for (const [start, end] of runs) {
+      const center = -(start + end) / 2;
+      const runLength = end - start;
+      box(group, "plaster wainscot", sign * (HALL_WIDTH / 2 - .105), .62, center, .035, 1.15, runLength, plasterPanel);
+      box(group, "wooden skirting", sign * (HALL_WIDTH / 2 - .10), .18, center, .12, .34, runLength, wood);
+      box(group, "chair rail", sign * (HALL_WIDTH / 2 - .10), 1.23, center, .10, .075, runLength, ivory);
+      box(group, "ceiling cornice", sign * (HALL_WIDTH / 2 - .21), HALL_HEIGHT - .17, center, .24, .24, runLength, ivory);
+      box(group, "cornice shadow", sign * (HALL_WIDTH / 2 - .17), HALL_HEIGHT - .35, center, .08, .035, runLength, shadowTrim);
+    }
 
     const centers = frames.filter((frame) => frame.section === section.index && frame.sideSign === sign)
       .map((frame) => frame.along).sort((a, b) => a - b);
@@ -267,9 +329,10 @@ export function createGalleryScene(manifest, assetBase = "/", assetVersion = "")
   scene.add(ceiling);
 
   const wallMaterials = palettes.map((palette) => new THREE.MeshBasicMaterial({ map: plasterTexture(palette.wall, palette.wash) }));
-  for (const side of [layout.outline.left, layout.outline.right]) {
+  for (const [sideIndex, side] of [layout.outline.left, layout.outline.right].entries()) {
     for (let index = 0; index < layout.sections.length; index += 1) {
-      scene.add(wallBetween(side[index], side[index + 1], wallMaterials[index]));
+      wallWithOpenings(scene, side[index], side[index + 1], wallMaterials[index],
+        layout.frames.filter((frame) => frame.section === index && frame.sideSign === (sideIndex ? 1 : -1) && frame.room.modelUrl));
     }
   }
   scene.add(wallBetween(layout.outline.left[0], layout.outline.right[0], wallMaterials[0]));
@@ -279,12 +342,15 @@ export function createGalleryScene(manifest, assetBase = "/", assetVersion = "")
     new THREE.MeshBasicMaterial({ map: placeholderTexture(palette.paper, index), side: THREE.FrontSide }));
   const frameMeshes = new Map();
   const textureLoader = new THREE.TextureLoader();
+  const revealMask = revealMaskTexture();
   for (const frame of layout.frames) {
     const object = frameMesh(frame, placeholderMaterials);
     if (frame.room?.previewImage) {
       const texture = textureLoader.load(assetBase + frame.room.previewImage.replace(/^\//, "") + (assetVersion ? `?v=${assetVersion}` : ""));
       texture.colorSpace = THREE.SRGBColorSpace;
-      object.surface.material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.FrontSide });
+      object.surface.material = new THREE.MeshBasicMaterial({
+        map: texture, alphaMap: revealMask, alphaTest: .5, side: THREE.FrontSide,
+      });
     }
     scene.add(object.group);
     frameMeshes.set(frame.id, object);

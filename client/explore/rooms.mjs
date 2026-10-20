@@ -1,11 +1,11 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { nearestFrame, PLAYER_RADIUS, FRAME_WIDTH } from "./layout.mjs";
+import { nearestFrame, PLAYER_RADIUS, isWalkable, portalOpening } from "./layout.mjs";
 
 const LOAD_DISTANCE = 12;
-// Switch before a phone camera gets so close that the portrait fills and crops the screen.
-const ENTER_DISTANCE = 2.4;
-const EXIT_DISTANCE = 1.15;
+const UNLOAD_DISTANCE = 14;
+const REVEAL_START = 4;
+const REVEAL_END = 1.2;
 
 export function roomIsReady(frame) {
   return Boolean(frame.room?.previewImage && frame.room?.modelUrl);
@@ -19,26 +19,6 @@ function hitsObstacle(x, z, colliders = []) {
     return x > collider.minX - PLAYER_RADIUS && x < collider.maxX + PLAYER_RADIUS &&
       z > collider.minZ - PLAYER_RADIUS && z < collider.maxZ + PLAYER_RADIUS;
   });
-}
-
-export function moveWithinRoom(previous, intended, room, colliders = room.colliders) {
-  const halfX = room.dimensionsM[0] / 2 - PLAYER_RADIUS;
-  const halfZ = room.dimensionsM[2] / 2 - PLAYER_RADIUS;
-  let nextX = previous.x;
-  let nextZ = previous.z;
-  // Sweep in small steps so a quick movement cannot jump through thin solids.
-  const steps = Math.max(1, Math.ceil(Math.hypot(intended.x - previous.x, intended.z - previous.z) / .075));
-  for (let step = 1; step <= steps; step++) {
-    const x = Math.max(-halfX, Math.min(halfX, previous.x + (intended.x - previous.x) * step / steps));
-    const z = Math.max(-halfZ, Math.min(halfZ, previous.z + (intended.z - previous.z) * step / steps));
-    // The opening is centered in the +Z wall. Elsewhere it is a solid wall.
-    if (previous.z + (intended.z - previous.z) * step / steps > halfZ && Math.abs(nextX) < .55) {
-      return { x: nextX, z: nextZ, exit: true };
-    }
-    if (!hitsObstacle(x, nextZ, colliders)) nextX = x;
-    if (!hitsObstacle(nextX, z, colliders)) nextZ = z;
-  }
-  return { x: nextX, z: nextZ, exit: false };
 }
 
 export function collidersFromScene(scene) {
@@ -80,20 +60,18 @@ function disposeScene(scene) {
 
 export function disposeRoom(room) {
   if (!room) return;
-  disposeScene(room.scene);
-  room.returnTarget?.dispose();
+  room.group.parent?.remove(room.group);
+  disposeScene(room.group);
 }
 
 export class RoomManager {
-  constructor({ renderer, gallery, controls, player, announce, assetBase, assetVersion, onModeChange }) {
-    Object.assign(this, { renderer, gallery, controls, player, announce, assetBase, assetVersion, onModeChange });
+  constructor({ gallery, player, announce, assetBase, assetVersion, onModeChange }) {
+    Object.assign(this, { gallery, player, announce, assetBase, assetVersion, onModeChange });
     this.mode = "hall";
     this.active = null;
     this.loadingFrame = null;
     this.generation = 0;
-    this.pendingEntry = null;
-    this.hallPose = null;
-    this.suppressFrameId = null;
+    this.failedFrames = new Set();
     this.loader = new GLTFLoader();
     this.readyFrames = gallery.layout.frames.filter(roomIsReady);
   }
@@ -103,160 +81,138 @@ export class RoomManager {
   }
 
   get scene() {
-    return this.mode === "room" ? this.active?.scene : this.gallery.scene;
+    return this.gallery.scene;
   }
 
-  updateHall() {
-    if (this.mode !== "hall") return;
+  update() {
     const nearest = nearestFrame(this.player, this.readyFrames, LOAD_DISTANCE);
-    if (this.suppressFrameId) {
-      if (nearest?.frame.id === this.suppressFrameId && nearest.distance < 3.5) return;
-      this.suppressFrameId = null;
+    if (this.mode === "hall" && this.active &&
+      Math.hypot(this.player.x - this.active.frame.center.x, this.player.z - this.active.frame.center.z) > UNLOAD_DISTANCE) {
+      this.clearActive();
     }
-    if (!nearest) {
-      if (this.active) this.clearActive();
-      if (this.loadingFrame) this.generation += 1;
+    if (this.mode === "hall" && this.loadingFrame && !nearest) {
+      this.generation += 1;
       this.loadingFrame = null;
-      return;
     }
-    if (this.active?.frame.id !== nearest.frame.id && this.loadingFrame !== nearest.frame.id) {
+    if (!nearest && this.mode === "hall") this.failedFrames.clear();
+    if (this.mode === "hall" && nearest && this.active && this.active.frame.id !== nearest.frame.id) {
+      this.clearActive();
+    }
+    if (nearest && !this.active && this.loadingFrame !== nearest.frame.id && !this.failedFrames.has(nearest.frame.id)) {
       this.load(nearest.frame);
+    }
+    if (!this.active) return;
+    const distance = Math.hypot(this.player.x - this.active.frame.center.x,
+      this.player.z - this.active.frame.center.z);
+    const t = Math.max(0, Math.min(1, (distance - REVEAL_END) / (REVEAL_START - REVEAL_END)));
+    const smooth = t * t * (3 - 2 * t);
+    this.gallery.frameMeshes.get(this.active.frame.id).surface.material.opacity = .45 + .55 * smooth;
+    this.active.group.visible = smooth < 1 || this.mode === "room";
+    const local = this.worldToRoom(this.player);
+    const nextMode = local.z < this.active.frame.room.dimensionsM[2] / 2 ? "room" : "hall";
+    if (nextMode !== this.mode) {
+      this.mode = nextMode;
+      this.onModeChange(nextMode, this.active.frame);
     }
   }
 
   async load(frame) {
     const generation = ++this.generation;
     this.loadingFrame = frame.id;
-    if (this.active) this.clearActive();
     try {
       const gltf = await this.loader.loadAsync(this.assetUrl(frame.room.modelUrl));
       if (generation !== this.generation) {
         disposeScene(gltf.scene);
         return;
       }
-      const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x211a30);
-      scene.add(new THREE.AmbientLight(0xffffff, 1.65));
+      const group = new THREE.Group();
+      group.name = `room ${frame.id} behind its gallery frame`;
+      const outward = {
+        x: frame.sectionData.right.x * frame.sideSign,
+        z: frame.sectionData.right.z * frame.sideSign,
+      };
+      group.position.set(frame.center.x + outward.x * frame.room.dimensionsM[2] / 2,
+        0, frame.center.z + outward.z * frame.room.dimensionsM[2] / 2);
+      group.rotation.y = Math.atan2(-outward.x, -outward.z);
+      group.add(gltf.scene);
+      group.add(new THREE.AmbientLight(0xffffff, .45));
       const key = new THREE.DirectionalLight(0xffdfab, 2.1);
       key.position.set(1.6, 3.2, 1.8);
-      scene.add(key);
+      group.add(key, key.target);
       const fill = new THREE.DirectionalLight(0xb7c7ff, .7);
       fill.position.set(-2, 2, -1);
-      scene.add(fill);
-      scene.add(gltf.scene);
+      group.add(fill, fill.target);
       const modelColliders = collidersFromScene(gltf.scene);
-
-      const returnCamera = new THREE.PerspectiveCamera(75, 1.72 / 2.78, .05, 120);
-      const returnTarget = new THREE.WebGLRenderTarget(640, 1034, { depthBuffer: true });
-      const returnSurface = new THREE.Mesh(new THREE.PlaneGeometry(1.72, 2.78),
-        new THREE.MeshBasicMaterial({ map: returnTarget.texture, side: THREE.DoubleSide }));
-      returnSurface.position.set(0, 1.43, 2.68);
-      returnSurface.rotation.y = Math.PI;
-      scene.add(returnSurface);
+      this.gallery.scene.add(group);
       this.active = {
-        frame, scene, returnCamera, returnTarget, returnSurface,
-        returnImageReady: false, hallYaw: 0,
+        frame, group,
         colliders: modelColliders.length ? modelColliders : frame.room.colliders,
         modelColliderCount: modelColliders.length,
       };
       this.loadingFrame = null;
-      if (this.pendingEntry === frame.id) {
-        this.pendingEntry = null;
-        this.enter();
-      }
     } catch (error) {
       if (generation === this.generation) {
         this.loadingFrame = null;
-        this.pendingEntry = null;
+        this.failedFrames.add(frame.id);
         this.announce(`Room ${frame.label} could not be loaded. Please try again later.`);
       }
       console.error("Room load failed", error);
     }
   }
 
-  attemptPortal(previous, intended) {
-    if (this.mode !== "hall") return false;
-    const nearest = nearestFrame(intended, this.readyFrames, ENTER_DISTANCE + FRAME_WIDTH / 2);
-    if (!nearest) return false;
-    const frame = nearest.frame;
-    const outward = {
-      x: frame.sectionData.right.x * frame.sideSign,
-      z: frame.sectionData.right.z * frame.sideSign,
+  worldToRoom(position) {
+    const { group } = this.active;
+    const dx = position.x - group.position.x;
+    const dz = position.z - group.position.z;
+    const sin = Math.sin(group.rotation.y);
+    const cos = Math.cos(group.rotation.y);
+    return { x: cos * dx - sin * dz, z: sin * dx + cos * dz };
+  }
+
+  roomToWorld(position) {
+    const { group } = this.active;
+    const sin = Math.sin(group.rotation.y);
+    const cos = Math.cos(group.rotation.y);
+    return {
+      x: group.position.x + cos * position.x + sin * position.z,
+      z: group.position.z - sin * position.x + cos * position.z,
     };
-    const fromWall = -((intended.x - frame.center.x) * outward.x +
-      (intended.z - frame.center.z) * outward.z);
-    const along = Math.abs((intended.x - frame.center.x) * frame.sectionData.forward.x +
-      (intended.z - frame.center.z) * frame.sectionData.forward.z);
-    const toward = (intended.x - previous.x) * outward.x + (intended.z - previous.z) * outward.z;
-    const facing = Math.sin(this.controls.yaw) * outward.x - Math.cos(this.controls.yaw) * outward.z;
-    if (fromWall <= 0 || fromWall > ENTER_DISTANCE ||
-      along > FRAME_WIDTH / 2 - PLAYER_RADIUS || toward <= 0 || facing < .45) return false;
-    if (this.suppressFrameId === frame.id) this.suppressFrameId = null;
-    if (this.active?.frame.id === nearest.frame.id) this.enter();
-    else {
-      this.pendingEntry = nearest.frame.id;
-      this.announce(`Preparing room ${nearest.frame.label}.`);
-      if (this.loadingFrame !== nearest.frame.id) this.load(nearest.frame);
-    }
-    return true;
   }
 
-  enter() {
-    if (!this.active || this.mode !== "hall") return;
-    this.hallPose = { x: this.player.x, y: this.player.y, z: this.player.z, yaw: this.controls.yaw, pitch: this.controls.pitch };
-    const { frame, returnCamera, returnTarget } = this.active;
-    const inwardX = -frame.sectionData.right.x * frame.sideSign;
-    const inwardZ = -frame.sectionData.right.z * frame.sideSign;
-    const hallYaw = Math.atan2(inwardX + frame.sectionData.forward.x,
-      -(inwardZ + frame.sectionData.forward.z));
-    returnCamera.position.set(this.hallPose.x, this.hallPose.y, this.hallPose.z);
-    returnCamera.rotation.set(0, -hallYaw, 0, "YXZ");
-    const previousTarget = this.renderer.getRenderTarget();
-    this.renderer.setRenderTarget(returnTarget);
-    this.renderer.render(this.gallery.scene, returnCamera);
-    this.renderer.setRenderTarget(previousTarget);
-    this.active.hallYaw = hallYaw;
-    this.active.returnImageReady = true;
-    const pose = this.active.frame.room.entryPose;
-    this.player.x = pose.position[0];
-    this.player.y = pose.position[1];
-    this.player.z = pose.position[2];
-    this.controls.yaw = pose.yaw || 0;
-    this.controls.pitch = pose.pitch || 0;
-    this.mode = "room";
-    this.onModeChange("room", this.active.frame);
+  canStand(position) {
+    if (isWalkable(position, this.gallery.layout)) return true;
+    if (!this.active) return false;
+    const local = this.worldToRoom(position);
+    const { frame, colliders } = this.active;
+    const halfX = frame.room.dimensionsM[0] / 2;
+    const halfZ = frame.room.dimensionsM[2] / 2;
+    const opening = portalOpening(frame);
+    if (Math.abs(local.x) > halfX - PLAYER_RADIUS ||
+      local.z < -halfZ + PLAYER_RADIUS || local.z > halfZ + PLAYER_RADIUS) return false;
+    if (local.z > halfZ - PLAYER_RADIUS &&
+      Math.abs(local.x) > opening.width / 2 - PLAYER_RADIUS) return false;
+    return !hitsObstacle(local.x, local.z, colliders);
   }
 
-  moveInRoom(intended) {
-    const halfZ = this.active.frame.room.dimensionsM[2] / 2;
-    if (intended.z >= halfZ - EXIT_DISTANCE && Math.abs(intended.x) < .55 &&
-      intended.z > this.player.z && -Math.cos(this.controls.yaw) > .45) {
-      this.leave();
-      return;
-    }
-    const next = moveWithinRoom(this.player, intended, this.active.frame.room, this.active.colliders);
-    if (next.exit) {
-      this.leave();
-      return;
+  move(intended) {
+    const start = { x: this.player.x, z: this.player.z };
+    let next = { ...start };
+    const steps = Math.max(1, Math.ceil(Math.hypot(intended.x - start.x, intended.z - start.z) / .075));
+    for (let step = 1; step <= steps; step++) {
+      const candidate = {
+        x: start.x + (intended.x - start.x) * step / steps,
+        z: start.z + (intended.z - start.z) * step / steps,
+      };
+      if (this.canStand({ x: candidate.x, z: next.z })) next.x = candidate.x;
+      if (this.canStand({ x: next.x, z: candidate.z })) next.z = candidate.z;
     }
     this.player.x = next.x;
     this.player.z = next.z;
   }
 
-  leave() {
-    if (this.mode !== "room") return;
-    Object.assign(this.player, { x: this.hallPose.x, y: this.hallPose.y, z: this.hallPose.z });
-    this.controls.yaw = this.controls.yaw + this.active.hallYaw - Math.PI;
-    this.controls.pitch = this.hallPose.pitch;
-    const frame = this.active.frame;
-    this.suppressFrameId = frame.id;
-    this.mode = "hall";
-    this.onModeChange("hall", frame);
-    this.clearActive();
-  }
-
   clearActive() {
     if (!this.active) return;
+    this.gallery.frameMeshes.get(this.active.frame.id).surface.material.opacity = 1;
     disposeRoom(this.active);
     this.active = null;
   }

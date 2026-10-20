@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { GalleryControls } from "./controls.mjs";
 import { createGalleryScene } from "./gallery-scene.mjs";
 import {
-  EYE_HEIGHT, moveWithCollision, nearestSection,
+  EYE_HEIGHT, nearestSection,
 } from "./layout.mjs";
 import { RoomManager } from "./rooms.mjs";
 
@@ -36,9 +36,6 @@ try {
   sceneHost.append(renderer.domElement);
 
   const camera = new THREE.PerspectiveCamera(75, 1, .05, 120);
-  const roomFov = (frame) => camera.aspect < .7
-    ? Math.min(110, frame.room.previewCamera.fov + 25)
-    : frame.room.previewCamera.fov;
   const player = { x: 0, y: EYE_HEIGHT, z: -1.1 };
   const controls = new GalleryControls(
     renderer.domElement,
@@ -48,13 +45,11 @@ try {
   // Frame 01 should greet Jane immediately, including on a narrow phone view.
   controls.yaw = -.67;
   const rooms = new RoomManager({
-    renderer, gallery, controls, player,
+    gallery, player,
     assetBase: experience.dataset.basePath,
     assetVersion: experience.dataset.roomVersion,
     announce(message) { announcement.textContent = message; },
     onModeChange(mode, frame) {
-      camera.fov = mode === "room" ? roomFov(frame) : 75;
-      camera.updateProjectionMatrix();
       roomTitle.hidden = mode !== "room";
       roomTitle.textContent = mode === "room" ? frame.room.title || `Room ${frame.label}` : "";
       status.textContent = mode === "room"
@@ -68,9 +63,9 @@ try {
       section: nearestSection(player, gallery.layout.sections).section.index + 1,
       mode: rooms.mode,
       activeRoom: rooms.active?.frame.id || null,
-      returnImageReady: rooms.active?.returnImageReady ?? false,
-      returnViewX: rooms.active?.returnCamera.position.x ?? null,
-      returnViewZ: rooms.active?.returnCamera.position.z ?? null,
+      roomLocal: rooms.active ? rooms.worldToRoom(player) : null,
+      paintingOpacity: gallery.frameMeshes.get("01").surface.material.opacity,
+      cameraFov: camera.fov,
       modelColliderCount: rooms.active?.modelColliderCount ?? 0,
       roomColliders: rooms.active?.colliders ?? [],
       frame01Painting: Boolean(gallery.frameMeshes.get("01").surface.material.map?.image?.width),
@@ -78,6 +73,11 @@ try {
     });
     window.__galleryTestPose = (x, z, yaw) => {
       Object.assign(player, { x, z });
+      controls.yaw = yaw;
+    };
+    window.__galleryTestRoomPose = (x, z, yaw) => {
+      if (!rooms.active) return;
+      Object.assign(player, rooms.roomToWorld({ x, z }));
       controls.yaw = yaw;
     };
   }
@@ -89,7 +89,7 @@ try {
     renderer.setPixelRatio(pixelRatio);
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
-    camera.fov = rooms.mode === "room" ? roomFov(rooms.active.frame) : 75;
+    camera.fov = camera.aspect < .7 ? 100 : 75;
     camera.updateProjectionMatrix();
   }
   resize();
@@ -128,11 +128,10 @@ try {
         x: player.x + (sin * movement.forward + cos * movement.strafe) * dt * 2.2,
         z: player.z + (-cos * movement.forward + sin * movement.strafe) * dt * 2.2,
       };
-      if (rooms.mode === "hall") {
-        if (!rooms.attemptPortal(player, desired)) Object.assign(player, moveWithCollision(player, desired, gallery.layout));
-      } else if (rooms.mode === "room") rooms.moveInRoom(desired);
+      rooms.move(desired);
     }
 
+    rooms.update();
     if (rooms.mode === "hall") {
       const current = nearestSection(player, gallery.layout.sections).section.index + 1;
       if (current !== sectionNumber) {
@@ -140,7 +139,6 @@ try {
         status.textContent = `Gallery ${current} / 5`;
         announcement.textContent = `Gallery section ${current} of 5.`;
       }
-      rooms.updateHall();
     }
 
     camera.position.set(player.x, player.y, player.z);

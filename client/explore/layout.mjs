@@ -6,6 +6,13 @@ export const FRAME_HEIGHT = 4.1;
 export const EYE_HEIGHT = 1.65;
 export const PLAYER_RADIUS = 0.32;
 
+export function portalOpening(frame) {
+  return {
+    width: Math.min(FRAME_WIDTH, frame.room.dimensionsM[0] - .4),
+    height: Math.min(FRAME_HEIGHT, frame.room.dimensionsM[1] - .25),
+  };
+}
+
 export const PATH = Object.freeze([
   { x: 0, z: 0 },
   { x: 0, z: -22 },
@@ -129,7 +136,6 @@ export function nearestSection(position, sections) {
   }
   return closest;
 }
-
 export function isWalkable(position, layout, radius = PLAYER_RADIUS) {
   const first = layout.sections[0];
   const last = layout.sections.at(-1);
@@ -157,12 +163,4 @@ export function nearestFrame(position, frames, maximumDistance = Infinity) {
     }
   }
   return closest;
-}
-
-export function crossesPortal(previous, intended, frame, radius = PLAYER_RADIUS) {
-  const outward = multiply(frame.sectionData.right, frame.sideSign);
-  const before = dot(subtract(previous, frame.center), outward);
-  const after = dot(subtract(intended, frame.center), outward);
-  const lateral = Math.abs(dot(subtract(intended, frame.center), frame.sectionData.forward));
-  return before < -radius && after >= -radius && lateral <= FRAME_WIDTH / 2 - radius;
 }
