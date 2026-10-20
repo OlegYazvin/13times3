@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 import * as THREE from "three";
 import {
-  buildLayout, FRAME_WIDTH, HALL_WIDTH, isWalkable,
+  buildLayout, framePlaqueText, FRAME_WIDTH, HALL_WIDTH, isWalkable,
   moveWithCollision, nearestSection, PATH, portalOpening,
 } from "../client/explore/layout.mjs";
 import { collidersFromScene, RoomManager, roomIsReady } from "../client/explore/rooms.mjs";
@@ -41,28 +41,32 @@ test("frame 01 has a room-sized opening and the other frames stay solid", () => 
   assert.equal(roomIsReady(frame), true);
   assert.equal(layout.frames.slice(1).every((record) => !roomIsReady(record)), true);
   assert.deepEqual(portalOpening(frame), { width: 3.35, height: 3.35 });
+  assert.equal(framePlaqueText(frame), "Zephrine's first stage");
+  assert.equal(framePlaqueText(layout.frames[1]), "02");
 });
 
 function roomManager(colliders = layout.frames[0].room.colliders) {
-  const player = { x: -2.35, z: layout.frames[0].center.z };
+  const frame = layout.frames[0];
+  const player = { x: frame.center.x + .55, z: frame.center.z };
   const manager = new RoomManager({ gallery: { layout }, player });
   const group = new THREE.Group();
-  group.position.set(-5.6, 0, layout.frames[0].center.z);
+  group.position.set(frame.center.x - frame.room.dimensionsM[2] / 2, 0, frame.center.z);
   group.rotation.y = Math.PI / 2;
-  manager.active = { frame: layout.frames[0], group, colliders };
+  manager.active = { frame, group, colliders };
   return manager;
 }
 
 test("walking through frame 01 keeps one world position in both directions", () => {
   const manager = roomManager();
-  assert.equal(manager.canStand({ x: -2.9, z: manager.player.z }), true);
-  manager.move({ x: -3.5, z: manager.player.z });
-  assert.ok(Math.abs(manager.player.x + 3.5) < .01);
+  const leftWall = -HALL_WIDTH / 2;
+  assert.equal(manager.canStand({ x: leftWall, z: manager.player.z }), true);
+  manager.move({ x: leftWall - .6, z: manager.player.z });
+  assert.ok(Math.abs(manager.player.x - (leftWall - .6)) < .01);
   manager.move({ x: 0, z: manager.player.z });
   assert.ok(Math.abs(manager.player.x) < .01);
-  assert.equal(manager.canStand({ x: -2.9, z: manager.player.z + 2 }), false,
+  assert.equal(manager.canStand({ x: leftWall, z: manager.player.z + 2 }), false,
     "the wall beside the opening remains solid");
-  assert.equal(manager.canStand({ x: 2.9, z: manager.player.z }), false,
+  assert.equal(manager.canStand({ x: HALL_WIDTH / 2, z: manager.player.z }), false,
     "the blank frame on the opposite wall stays solid");
 });
 

@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import {
-  buildLayout, HALL_WIDTH, HALL_HEIGHT, FRAME_HEIGHT, FRAME_WIDTH, portalOpening,
+  buildLayout, framePlaqueText, HALL_WIDTH, HALL_HEIGHT, FRAME_HEIGHT, FRAME_WIDTH, portalOpening,
 } from "./layout.mjs";
 
 // Five related plaster washes give each turn a slightly different atmosphere.
@@ -81,17 +81,24 @@ function placeholderTexture(paper, index) {
   return makeTexture(canvas);
 }
 
-function labelTexture(label) {
+function labelTexture(label, descriptive = false) {
   const canvas = document.createElement("canvas");
-  canvas.width = 256;
-  canvas.height = 96;
+  canvas.width = descriptive ? 1024 : 256;
+  canvas.height = descriptive ? 160 : 96;
   const context = canvas.getContext("2d");
-  context.clearRect(0, 0, 256, 96);
-  context.font = "600 74px Georgia, serif";
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  let fontSize = descriptive ? 94 : 74;
+  context.font = `600 ${fontSize}px Georgia, serif`;
+  if (descriptive) {
+    while (context.measureText(label).width > 940 && fontSize > 46) {
+      fontSize -= 2;
+      context.font = `600 ${fontSize}px Georgia, serif`;
+    }
+  }
   context.fillStyle = "#5b463c";
   context.textAlign = "center";
   context.textBaseline = "middle";
-  context.fillText(label, 128, 49);
+  context.fillText(label, canvas.width / 2, canvas.height / 2 + (descriptive ? 5 : 1));
   return makeTexture(canvas);
 }
 
@@ -202,12 +209,18 @@ function frameMesh(frame, placeholderMaterials) {
     box(root, "frame inner rail", 0, sign * (FRAME_HEIGHT / 2 - .025), .152, FRAME_WIDTH, .025, .025, gold);
   }
 
-  box(root, "number plaque", 0, FRAME_HEIGHT / 2 + .29, .12, .93, .40, .07, ivory);
+  const descriptive = Boolean(frame.room?.modelUrl);
+  const plaqueWidth = descriptive ? 3.12 : .93;
+  const plaqueHeight = descriptive ? .45 : .40;
+  const plaqueY = FRAME_HEIGHT / 2 + (descriptive ? .19 : .29);
+  box(root, descriptive ? "painting caption plaque" : "number plaque",
+    0, plaqueY, .12, plaqueWidth, plaqueHeight, .07, ivory);
   const label = new THREE.Mesh(
-    new THREE.PlaneGeometry(.76, .32),
-    new THREE.MeshBasicMaterial({ map: labelTexture(frame.label), transparent: true, depthWrite: false }),
+    new THREE.PlaneGeometry(descriptive ? 2.95 : .76, descriptive ? .35 : .32),
+    new THREE.MeshBasicMaterial({ map: labelTexture(framePlaqueText(frame), descriptive), transparent: true, depthWrite: false }),
   );
-  label.position.set(0, FRAME_HEIGHT / 2 + .29, .163);
+  label.name = descriptive ? `painting caption: ${frame.room.caption}` : `frame number: ${frame.label}`;
+  label.position.set(0, plaqueY, .163);
   root.add(label);
   return { group: sectionGroup, surface, root };
 }

@@ -1,10 +1,14 @@
 // All dimensions are meters. The route is deliberately fixed so frame IDs stay put.
-export const HALL_WIDTH = 5.8;
+export const HALL_WIDTH = 6.4;
 export const HALL_HEIGHT = 4.8;
 export const FRAME_WIDTH = 3.35;
 export const FRAME_HEIGHT = 4.1;
 export const EYE_HEIGHT = 1.65;
 export const PLAYER_RADIUS = 0.32;
+
+export function framePlaqueText(frame) {
+  return frame.room?.modelUrl ? frame.room.caption : frame.label;
+}
 
 export function portalOpening(frame) {
   return {
@@ -88,6 +92,10 @@ export function buildLayout(manifest) {
         : [collider.minX, collider.maxX, collider.minZ, collider.maxZ].every(Number.isFinite) &&
           collider.minX < collider.maxX && collider.minZ < collider.maxZ))) {
       throw new Error(`Frame ${record.id} needs valid obstacle footprints for its room.`);
+    }
+    if (record.room.modelUrl && (typeof record.room.caption !== "string" ||
+      !record.room.caption.trim() || record.room.caption.length > 48)) {
+      throw new Error(`Frame ${record.id} needs a short painting caption.`);
     }
     // Keep the full painting inside the straight wall at each turn.
     const endMargin = HALL_WIDTH / 2 + FRAME_WIDTH / 2 + .4;

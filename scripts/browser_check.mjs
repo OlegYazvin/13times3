@@ -1,8 +1,11 @@
 import assert from "node:assert/strict";
 import { mkdir } from "node:fs/promises";
 import { chromium } from "playwright";
+import { HALL_WIDTH, PLAYER_RADIUS } from "../client/explore/layout.mjs";
 
 const base = process.env.GALLERY_TEST_BASE || "http://127.0.0.1:8080";
+const leftWall = -HALL_WIDTH / 2;
+const rightWall = HALL_WIDTH / 2;
 await mkdir(".cache", { recursive: true });
 const browser = await chromium.launch({
   headless: true,
@@ -138,8 +141,9 @@ try {
   await fallbackPage.goto(`${base}/explore/`, { waitUntil: "domcontentloaded" });
   await fallbackPage.locator("#fallback").waitFor({ state: "visible" });
   assert.equal(await fallbackPage.locator(".frame-list li").count(), 41);
+  assert.equal(await fallbackPage.locator(".frame-list li").first().textContent(), "Zephrine's first stage");
   await context.close();
-  console.log("WebGL fallback: 41 numbered frames visible");
+  console.log("WebGL fallback: 41 frames listed with the completed painting caption");
 
   // The painting opens onto the same world; crossing never replaces the camera pose.
   const roomContext = await browser.newContext({ viewport: { width: 920, height: 700 } });
@@ -157,18 +161,19 @@ try {
   const midway = await roomPage.evaluate(() => window.__galleryDebug());
   assert.ok(midway.paintingOpacity > .45 && midway.paintingOpacity < 1);
   await roomPage.screenshot({ path: ".cache/room01-painting-reveal.png" });
-  await roomPage.evaluate(() => window.__galleryTestPose(-1.9, -4.975, -Math.PI / 2));
+  await roomPage.evaluate((x) => window.__galleryTestPose(x, -4.975, -Math.PI / 2), leftWall + 1);
   await roomPage.waitForFunction(() => window.__galleryDebug().paintingOpacity <= .45);
   await roomPage.screenshot({ path: ".cache/room01-open-doorway.png" });
-  await roomPage.evaluate(() => window.__galleryTestPose(-1.9, -3.9, -Math.PI / 2));
+  await roomPage.evaluate((x) => window.__galleryTestPose(x, -3.9, -Math.PI / 2), leftWall + 1);
   await roomPage.screenshot({ path: ".cache/room01-open-doorway-angled.png" });
-  await roomPage.evaluate(() => window.__galleryTestPose(-2.35, -4.975, -Math.PI / 2));
+  await roomPage.evaluate((x) => window.__galleryTestPose(x, -4.975, -Math.PI / 2), leftWall + .55);
   const beforeEntry = await roomPage.evaluate(() => window.__galleryDebug());
   await roomPage.keyboard.down("w");
   await roomPage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
   await roomPage.keyboard.up("w");
   const entered = await roomPage.evaluate(() => window.__galleryDebug());
-  assert.ok(entered.x < -2.9 && entered.x > -3.1, "entry position should advance through the frame without a jump");
+  assert.ok(entered.x < leftWall && entered.x > leftWall - .2,
+    "entry position should advance through the frame without a jump");
   assert.equal(entered.yaw, beforeEntry.yaw);
   assert.equal(entered.cameraFov, beforeEntry.cameraFov);
   assert.equal(entered.cameraFov, 75);
@@ -195,16 +200,17 @@ try {
   await roomPage.waitForFunction(() => window.__galleryDebug().mode === "hall", null, { timeout: 12000 });
   await roomPage.keyboard.up("w");
   const exited = await roomPage.evaluate(() => window.__galleryDebug());
-  assert.ok(exited.x > -2.9 && exited.x < -2.5, "exit should advance into the hall without a jump");
+  assert.ok(exited.x > leftWall && exited.x < leftWall + .5,
+    "exit should advance into the hall without a jump");
   assert.equal(exited.yaw, beforeExit.yaw, "exit must keep Jane facing into the hall");
   assert.equal(exited.cameraFov, beforeExit.cameraFov);
   assert.equal(exited.activeRoom, "01", "room stays visible nearby after exit");
   await roomPage.screenshot({ path: ".cache/room01-returned-continuous.png" });
-  await roomPage.evaluate(() => window.__galleryTestPose(2.35, -4.975, Math.PI / 2));
+  await roomPage.evaluate((x) => window.__galleryTestPose(x, -4.975, Math.PI / 2), rightWall - .55);
   await roomPage.keyboard.down("w");
   await roomPage.waitForTimeout(400);
   await roomPage.keyboard.up("w");
-  assert.ok((await roomPage.evaluate(() => window.__galleryDebug().x)) < 2.6,
+  assert.ok((await roomPage.evaluate(() => window.__galleryDebug().x)) < rightWall - PLAYER_RADIUS + .02,
     "blank frame 02 must remain solid");
   await roomPage.evaluate(() => window.__galleryTestPose(0, -25, 0));
   await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === null, null, { timeout: 12000 });
@@ -220,7 +226,7 @@ try {
   await phonePage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
   await phonePage.getByRole("button", { name: /begin walking/i }).click();
   await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "01", null, { timeout: 12000 });
-  await phonePage.evaluate(() => window.__galleryTestPose(-2.35, -4.975, -Math.PI / 2));
+  await phonePage.evaluate((x) => window.__galleryTestPose(x, -4.975, -Math.PI / 2), leftWall + .55);
   await phonePage.screenshot({ path: ".cache/room01-mobile-doorway.png" });
   const ring = await phonePage.locator(".joystick-ring").boundingBox();
   const touch = await phoneContext.newCDPSession(phonePage);
@@ -250,14 +256,14 @@ try {
   await failedPage.getByRole("button", { name: /begin walking/i }).click();
   await failedPage.waitForFunction(() => document.querySelector("#announcement").textContent.includes("could not be loaded"),
     null, { timeout: 12000 });
-  await failedPage.evaluate(() => window.__galleryTestPose(-2.35, -4.975, -Math.PI / 2));
+  await failedPage.evaluate((x) => window.__galleryTestPose(x, -4.975, -Math.PI / 2), leftWall + .55);
   await failedPage.keyboard.down("w");
   await failedPage.waitForTimeout(450);
   await failedPage.keyboard.up("w");
   const failed = await failedPage.evaluate(() => window.__galleryDebug());
   assert.equal(failed.activeRoom, null);
   assert.equal(failed.paintingOpacity, 1);
-  assert.ok(failed.x > -2.6, "an unavailable room leaves the hallway wall solid");
+  assert.ok(failed.x > leftWall + PLAYER_RADIUS - .02, "an unavailable room leaves the hallway wall solid");
   await failedContext.close();
   console.log("Room load failure: painting and wall remain solid");
 } finally {

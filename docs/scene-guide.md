@@ -5,6 +5,7 @@ These are decisions and corrections from developing frame `01`. Read them with t
 ## Art direction
 
 - Make the hallway spacious, dreamlike, and architectural. Avoid a narrow digital tunnel, repeated hexagons, empty flat walls, and decorative elements that hide labels or signs.
+- Blank frames keep their two-digit number plaques. Every completed room needs a short `room.caption` in the gallery manifest; display it above the painting in place of that number. Keep it readable from the wider hallway and clear of nearby trim and pilasters.
 - Make each room a coherent, detailed 3D storybook tableau. Give surfaces, ceiling, props, figures, and lighting a shared visual language. Use custom contours, layered materials, carvings, and intentional silhouettes; large default spheres, ovals, and egg shapes make the scene look unfinished.
 - Every character and important prop should have volume from multiple viewpoints. Do not use 2D photo cutouts. A recognizable painted likeness does not need photorealism. Keep photos as private references; do not publish the originals or their metadata.
 - Jane's, Zephrine's, and Oleg's uploaded reference photos are stored locally under `.secrets/reference-photos/` and excluded from Git. Use them when a later scene includes those people. Oleg's files are `oleg-portrait.jpg` and `oleg-with-jane-and-zephrine.jpg`; they show his medium-length dark brown hair, dark rectangular glasses, and short beard. The private copies have been resized and stripped of EXIF metadata. Do not publish the original photos or these reference copies.

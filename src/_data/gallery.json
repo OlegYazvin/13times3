@@ -34,7 +34,7 @@
           "position": [
             0,
             1.65,
-            5.6
+            5.9
           ],
           "target": [
             0,
@@ -44,6 +44,7 @@
           "fov": 70
         },
         "title": "You signed Zephrine up for dance and acting classes!",
+        "caption": "Zephrine's first stage",
         "colliders": [
           {
             "minX": -2.18,
