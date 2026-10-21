@@ -1,0 +1,7 @@
+# Frame 02: Jane helped Oleg get a job
+
+Oleg describes Jane as a constant source of support during a long job search. The room should make several versions of Jane visible at once: advising him at his desk, caring for Zephrine, doing household work, approaching strangers outdoors to find contacts, and holding him when the grind became too much. Fuse an interior desk space with an outdoor world in a dreamlike way. Do not display the company name or imply a specific employer, hiring date, conversation, or offer letter.
+
+The attached desk photo is stored privately as `.secrets/reference-photos/oleg-desk.jpg`, resized and stripped of EXIF. Its distinctive details are a dark curved wooden desk; orange drawer cabinets; a large black monitor and two laptops; a gray upholstered swivel chair; wall-hung string instruments; a webcam; a drinking glass; and a pale wall. Zephrine appears in the photo but Oleg asked that her pose there be ignored. Use the furniture and atmosphere as reference, while sculpting Oleg and Zephrine in the 3D scene from their other private reference photos. Never publish the original or reference photo.
+
+Frame `02` is now a walkable room authored in [`scripts/room02_author.mjs`](../scripts/room02_author.mjs). It is about Jane's sustained support of Oleg, distinct from frame `05` about Jane's own office move and standing up to management. The multiple Janes are clearly symbolic rather than separate literal people. Its blank pages and unbranded screens avoid inventing an employer or private work content.

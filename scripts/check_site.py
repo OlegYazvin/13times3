@@ -110,7 +110,7 @@ def main() -> None:
     assert len(first_room["colliders"]) == 4
     assert sum(collider.get("shape") == "circle" for collider in first_room["colliders"]) == 2
     assert all(not frame["room"]["previewImage"] and not frame["room"]["modelUrl"]
-               for index, frame in enumerate(frames) if index not in (0, 8))
+               for index, frame in enumerate(frames) if index not in (0, 1, 8))
     preview = OUTPUT / first_room["previewImage"].lstrip("/")
     model = OUTPUT / first_room["modelUrl"].lstrip("/")
     assert preview.read_bytes()[:4] == b"RIFF"
@@ -123,6 +123,20 @@ def main() -> None:
     assert not any("dance card" in node.get("name", "").lower() or "acting card" in node.get("name", "").lower()
                    for node in glb_json["nodes"]), "Stage labels should not cover the scene"
     assert preview.stat().st_size + model.stat().st_size < 8_000_000
+    job_room = frames[1]["room"]
+    assert job_room["title"] == "Jane helped me (Oleg) get a job"
+    assert job_room["caption"] == "Jane kept me going"
+    assert job_room["dimensionsM"] == [12.4, 6.4, 17.2]
+    job_preview = OUTPUT / job_room["previewImage"].lstrip("/")
+    job_model = OUTPUT / job_room["modelUrl"].lstrip("/")
+    assert job_preview.read_bytes()[:4] == b"RIFF"
+    assert job_model.read_bytes()[:4] == b"glTF"
+    assert job_preview.stat().st_size + job_model.stat().st_size < 8_000_000
+    job_glb = job_model.read_bytes()
+    job_json_length = int.from_bytes(job_glb[12:16], "little")
+    job_json = json.loads(job_glb[20:20 + job_json_length])
+    assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in job_json["nodes"]) >= 20, "Room 02 needs solid desk, figures, and props"
+    assert not any("company" in node.get("name", "").lower() for node in job_json["nodes"]), "Do not name a company in room 02"
     orchard_room = frames[8]["room"]
     assert orchard_room["title"] == "We FINALLY visited our friends in Ithaca for the first time where Zephrine got to try apple picking for the first time."
     assert orchard_room["caption"] == "First apples with friends"
@@ -184,7 +198,7 @@ def main() -> None:
 
     total_bytes = sum(path.stat().st_size for path in OUTPUT.rglob("*") if path.is_file())
     assert total_bytes < 1_000_000_000, "GitHub Pages published-site limit exceeded"
-    print(f"Verified 39 detail pages, 2 grid routes, credits, 41 gallery frames (rooms 01 and 09 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
+    print(f"Verified 39 detail pages, 2 grid routes, credits, 41 gallery frames (rooms 01, 02, and 09 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,11 @@
+# Frame 03: Zephrine and Charlize's friendship
+
+Oleg says Jane put sustained effort into making sure Zephrine could see Charlize. Their shared places include playgrounds at Hamlin and Fellger and dance classes at Visceral Dance. Jane also became friends with Charlize's mother, Aibike. The room should show the accumulating pattern of friendship rather than claiming a single invented first meeting or date. Seven metadata-free references from Oleg's queued archive are now under `.secrets/reference-photos/charlize-friendship/`; the originals remain unpublished.
+
+`IMG_2377.jpg` and `IMG_2379.jpg` show Charlize in a striped navy-and-white dress with pink trim beside Zephrine in a peach top and pink skirt, both tilting their heads together. `IMG_4294.jpg` shows the girls sharing play food; `IMG_2438.jpg` shows Charlize in the striped dress in a bright studio passage. `IMG20260905194126.jpg` shows both girls in a blue push car, while `IMG_4351.jpg` shows a red-and-yellow toy car. These are moments from the friendship, but Oleg has separately defined frame `04` as Zephrine driving her own blue push car with Jane and Oleg on a Roscoe Village walk. Avoid making the two rooms portray the same car ride.
+
+This memory overlaps frame `01` only in its dance-class setting. Frame `01` is the signup moment; frame `03` is the ongoing friendship between Zephrine and Charlize and the two mothers' bond. It also differs from frame `10`, the first Maggie Daley Park visit with a different group of friends and their two children. Do not assume Charlize or Aibike are in frame `10`'s photos.
+
+## Public setting references
+
+The [Chicago Park District's Hamlin Park page](https://www.chicagoparkdistrict.com/parks-facilities/hamlin-hannibal-park) describes its larger park and playground at 3035 N Hoyne Avenue. Its [Fellger Park page](https://www.chicagoparkdistrict.com/parks-facilities/fellger-charles-park) describes a much smaller shaded playlot at Belmont and Damen, with a soft-surface playground. [Visceral Dance's youth program](https://www.visceraldance.com/youthprogram) is at 3121 N Rockwell Avenue. Use those differences to make three linked memories legible without asserting which exact equipment the girls used or what date a class occurred.

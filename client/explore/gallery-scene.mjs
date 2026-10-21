@@ -223,12 +223,14 @@ function frameMesh(frame, placeholderMaterials) {
 
   const descriptive = Boolean(frame.room?.modelUrl);
   const plaqueWidth = descriptive ? 3.12 : .93;
-  const plaqueHeight = descriptive ? .45 : .40;
-  const plaqueY = FRAME_HEIGHT / 2 + (descriptive ? .19 : .29);
+  const plaqueHeight = descriptive ? .36 : .40;
+  // Set finished-painting captions across the upper canvas. From the center
+  // of this wide hall, an above-frame plaque falls outside the 75° view.
+  const plaqueY = FRAME_HEIGHT / 2 + (descriptive ? -.63 : .29);
   box(root, descriptive ? "painting caption plaque" : "number plaque",
     0, plaqueY, .12, plaqueWidth, plaqueHeight, .07, ivory);
   const label = new THREE.Mesh(
-    new THREE.PlaneGeometry(descriptive ? 2.95 : .76, descriptive ? .35 : .32),
+    new THREE.PlaneGeometry(descriptive ? 2.95 : .76, descriptive ? .28 : .32),
     new THREE.MeshBasicMaterial({ map: labelTexture(framePlaqueText(frame), descriptive), transparent: true, depthWrite: false }),
   );
   label.name = descriptive ? `painting caption: ${frame.room.caption}` : `frame number: ${frame.label}`;
