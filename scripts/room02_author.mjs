@@ -3,6 +3,8 @@ import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
+import janeFaceURL from "./assets/room02/jane-face.webp";
+import olegFaceURL from "./assets/room02/oleg-face.webp";
 
 // A single impossible space: Oleg's desk opens into a street and four
 // simultaneous acts of Jane's support. All figures and props have volume.
@@ -13,7 +15,9 @@ const C = {
   brass: 0xb6925d, blue: 0x394f77, paleBlue: 0x90aabe, teal: 0x6f9695,
   street: 0xb8b1a5, sky: 0xb2c9d0, leaf: 0x738e73, darkLeaf: 0x526a61,
   skin: 0xdca784, paper: 0xf4e8d1, hair: 0x3b2d32, zephHair: 0x634739,
-  amber: 0xe8b978, night: 0x606476,
+  amber: 0xe8b978, night: 0x606476, cream: 0xe7d9c4,
+  janeSkin: 0xd8a18e, olegSkin: 0xd7a98d, blush: 0xbd746f,
+  janeInk: 0x272e42, iris: 0x65736b, floral: 0xe5b8a4,
 };
 const grainCanvas = document.createElement("canvas");
 grainCanvas.width = grainCanvas.height = 64;
@@ -35,6 +39,19 @@ const material = (color, extra = {}) => new THREE.MeshStandardMaterial({
 const M = Object.fromEntries(Object.entries(C).map(([key, value]) => [key, material(value)]));
 const glow = new THREE.MeshBasicMaterial({ color: C.amber, side: THREE.DoubleSide });
 const skyMaterial = new THREE.MeshBasicMaterial({ color: C.sky, side: THREE.DoubleSide });
+const paintedFaces = {};
+const facesReady = Promise.all([
+  ["jane", janeFaceURL], ["oleg", olegFaceURL],
+].map(([name, url]) => new Promise((resolve, reject) => {
+  new THREE.TextureLoader().load(url, (texture) => {
+    texture.colorSpace = THREE.SRGBColorSpace;
+    paintedFaces[name] = new THREE.MeshBasicMaterial({
+      map: texture, transparent: true, alphaTest: .025,
+      side: THREE.DoubleSide, depthWrite: true,
+    });
+    resolve();
+  }, undefined, reject);
+})));
 
 function add(parent, name, geometry, mat, x = 0, y = 0, z = 0) {
   const mesh = new THREE.Mesh(geometry, mat);
@@ -94,6 +111,67 @@ function foldedLeaf(parent, x, y, z, size, mat, angle = 0) {
   mesh.rotation.set(Math.PI / 2 - .3, angle, .25);
   mesh.userData.batchLeaf = true;
 }
+function shapedEye(parent, name, x, y, z, scale, white, iris) {
+  const outline = new THREE.Shape();
+  outline.moveTo(-.052, 0);
+  outline.quadraticCurveTo(0, .035, .052, 0);
+  outline.quadraticCurveTo(0, -.026, -.052, 0);
+  const scl = scale || 1;
+  const eye = add(parent, `${name} shaped eye`, new THREE.ExtrudeGeometry(outline,
+    { depth: .009, bevelEnabled: true, bevelSize: .003, bevelThickness: .002,
+      bevelSegments: 2, curveSegments: 8 }), white, x, y, z);
+  eye.scale.setScalar(scl);
+  const center = add(parent, `${name} colored iris`,
+    new THREE.CylinderGeometry(.017, .017, .008, 16), iris,
+    x, y - .001, z + .02);
+  center.rotation.x = Math.PI / 2;
+  add(parent, `${name} tiny reflected light`, new THREE.CylinderGeometry(.005, .005, .004, 8),
+    white, x - .006, y + .007, z + .025).rotation.x = Math.PI / 2;
+}
+function curvedShoe(parent, side, material) {
+  const x = side * .14;
+  loft(parent, "formed shoe with toe and heel", [[.015, .105, .18, x, .13],
+    [.055, .135, .22, x, .105], [.125, .12, .18, x, .075],
+    [.17, .09, .13, x, .025]], material, 15, true);
+  curve(parent, "shoe's stitched upper", [[x - .095, .11, .19],
+    [x, .125, .27], [x + .095, .11, .19]], .006, M.brass, 12);
+}
+function paintedFaceShell(parent, name, height) {
+  const rows = 24, columns = 22;
+  const positions = [], uvs = [], indices = [];
+  const base = height - .035;
+  const profile = [
+    [-.445, .055, .055], [-.385, .136, .116], [-.29, .178, .147],
+    [-.18, .196, .162], [-.045, .18, .151], [.07, .145, .128],
+    [.15, .027, .03],
+  ];
+  for (let row = 0; row <= rows; row++) for (let col = 0; col <= columns; col++) {
+    const u = col / columns, v = row / rows;
+    const offsetY = -.445 + v * .555;
+    const y = base + offsetY;
+    let band = 0;
+    while (band < profile.length - 2 && offsetY > profile[band + 1][0]) band++;
+    const start = profile[band], end = profile[band + 1];
+    const fraction = THREE.MathUtils.clamp((offsetY - start[0]) / (end[0] - start[0]), 0, 1);
+    const rx = THREE.MathUtils.lerp(start[1], end[1], fraction);
+    const rz = THREE.MathUtils.lerp(start[2], end[2], fraction);
+    const around = (u - .5) * 1.93;
+    const x = around * rx;
+    const z = .007 + rz * Math.sqrt(Math.max(0, 1 - around * around));
+    positions.push(x, y, z); uvs.push(u, v);
+  }
+  for (let row = 0; row < rows; row++) for (let col = 0; col < columns; col++) {
+    const a = row * (columns + 1) + col;
+    indices.push(a, a + 1, a + columns + 1, a + 1, a + columns + 2, a + columns + 1);
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+  geometry.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
+  geometry.setIndex(indices); geometry.computeVertexNormals();
+  const mesh = add(parent, `${name} painted likeness on curved sculpted face`,
+    geometry, M.skin);
+  mesh.userData.paintedFace = name;
+}
 
 // The timber floor loosens into pavement and an outdoor lane, with the path
 // kept clear through the middle for exploration and return to the gallery.
@@ -148,12 +226,12 @@ for (const x of [-5.95, 5.95]) {
       x < 0 ? M.plaster : M.darkLeaf);
   }
 }
-for (let i = 0; i < 6; i++) {
-  const z = -6.7 + i * 2.3;
-  box(root, "room's warm plaster pilaster", -5.97, 2.4, z, .25, 4.8, .17, M.plaster);
-  curve(root, "timber beam dissolving into the sky",
-    [[-5.95, 4.65, z], [-3.6, 5.04 + .1 * i, z -.2], [-1.3, 5.5, z -.4],
-      [.45, 5.75, z -.8]], .045, i % 2 ? M.brass : M.desk);
+for (const z of [-5.9, -.9, 4.1]) {
+  box(root, "shallow plaster pier between home windows", -5.97, 2.35, z,
+    .21, 4.7, .22, M.plaster);
+  curve(root, "carved plaster capital over the home windows",
+    [[-5.91, 4.47, z - .17], [-5.88, 4.62, z],
+      [-5.91, 4.47, z + .17]], .035, M.brass, 12);
 }
 for (let i = 0; i < 5; i++) {
   const x = -5.3 + i * 1.2;
@@ -169,14 +247,33 @@ for (let i = 0; i < 5; i++) {
 for (let i = 0; i < 7; i++) {
   const x = -.1 + i * .88;
   const height = 2.15 + .54 * Math.sin(i * 1.38) + (i % 3) * .24;
-  box(root, "distant folded brick neighborhood", x, height / 2, -8.3,
-    .8, height, .42, i % 2 ? M.orange : M.plaster);
-  for (let row = 0; row < 3; row++) for (const offset of [-.16, .16]) {
-    box(root, "tiny pale apartment window", x + offset, .58 + row * .61,
-      -8.065, .16, .28, .015, row % 2 ? M.paper : M.paleBlue);
+  const brick = i % 2 ? M.orange : M.plaster;
+  box(root, "distant brick building body", x, height / 2, -8.3,
+    .8, height, .42, brick);
+  for (let row = 0; row < 3; row++) for (const offset of [-.17, .17]) {
+    const wx = x + offset, wy = .63 + row * .58;
+    box(root, "recessed dark glass in an apartment window", wx, wy,
+      -8.077, .19, .29, .012, M.night);
+    for (const side of [-1, 1]) box(root, "narrow masonry window jamb",
+      wx + side * .105, wy, -8.063, .025, .33, .025, M.paper);
+    box(root, "projecting stone window sill", wx, wy - .17,
+      -8.034, .25, .025, .055, M.paper);
+    curve(root, "arched lintel above neighborhood window",
+      [[wx - .105, wy + .16, -8.05], [wx, wy + .23, -8.05],
+        [wx + .105, wy + .16, -8.05]], .016, M.brass, 10);
   }
-  box(root, "small cornice on the skyline", x, height, -8.3,
-    .88, .09, .52, M.desk);
+  for (let step = 0; step < 3; step++) box(root,
+    "layered projecting masonry cornice", x, height + step * .052, -8.3,
+    .86 + step * .035, .045, .46 + step * .022, step === 1 ? M.brass : M.desk);
+  if (i % 3 === 0) {
+    const roof = new THREE.Shape();
+    roof.moveTo(-.43, 0); roof.lineTo(0, .34); roof.lineTo(.43, 0); roof.closePath();
+    const geometry = new THREE.ExtrudeGeometry(roof,
+      { depth: .28, bevelEnabled: true, bevelSize: .015,
+        bevelThickness: .015, bevelSegments: 1 });
+    add(root, "pitched roof with a hand-finished silhouette",
+      geometry, M.desk, x, height + .1, -8.46);
+  }
 }
 for (const z of [-4.8, -1.4, 2.0]) {
   const x = -5.78;
@@ -296,110 +393,239 @@ function person(name, x, z, height, outfit, options = {}) {
   group.name = `fully sculpted figure of ${name}`;
   group.position.set(x, 0, z); group.rotation.y = options.yaw || 0; root.add(group);
   const child = Boolean(options.child);
+  const jane = Boolean(options.jane);
+  const oleg = Boolean(options.oleg);
+  const skin = jane ? M.janeSkin : oleg ? M.olegSkin : M.skin;
+  const hair = options.hair || M.hair;
   const legHeight = height * .43;
   for (const s of [-1, 1]) {
-    loft(group, "tailored trouser leg", [[.08, .11, .11, s * .135],
-      [legHeight, .115, .11, s * .13], [legHeight + .09, .14, .12, s * .13]],
-    options.pants || M.ink, 10);
-    box(group, "solid walking shoe", s * .14, .065, .08, .25, .13, .33, M.desk);
+    loft(group, "tailored trouser leg with knee and cuff", [[.13, .105, .11, s * .135],
+      [.22, .11, .115, s * .13], [legHeight * .38, .13, .12, s * .135],
+      [legHeight * .59, .115, .12, s * .125],
+      [legHeight * .75, .14, .13, s * .135],
+      [legHeight, .15, .13, s * .13], [legHeight + .09, .145, .125, s * .13]],
+    options.pants || M.ink, 16);
+    curvedShoe(group, s, M.desk);
+    curve(group, "fold of trouser at the knee", [[s * .23, legHeight * .56, .09],
+      [s * .14, legHeight * .54, .13], [s * .045, legHeight * .58, .085]],
+    .008, options.pants || M.ink, 9);
+    curve(group, "creased trouser seam with formed knee", [[s * .135, .18, .107],
+      [s * .145, legHeight * .45, .123],
+      [s * .125, legHeight * .72, .119]], .005, M.night, 12);
   }
-  loft(group, "solid folded clothing silhouette", [[legHeight, .25, .17],
-    [legHeight + .16, .31, .19], [height - .54, .27, .16],
-    [height - .43, .22, .14]], outfit, 14, true);
+  loft(group, "tailored cloth silhouette with waist, chest and shoulders",
+    [[legHeight - .05, jane ? .235 : .25, .17],
+      [legHeight + .16, jane ? .26 : .30, .19],
+      [height - .84, jane ? .23 : .27, .165],
+      [height - .56, jane ? .285 : .31, .19],
+      [height - .43, .205, .14]], outfit, 20, true);
+  loft(group, "sculpted neck emerging from the collar", [[height - .465, .079, .072],
+    [height - .39, .071, .068], [height - .34, .064, .064]], skin, 14);
+  for (const s of [-1, 1]) {
+    curve(group, "tailored side seam and cloth drape",
+      [[s * .23, legHeight + .06, .118],
+        [s * .26, height - .77, .12], [s * .26, height - .53, .105]],
+      .009, jane ? M.night : M.paper, 13);
+    curve(group, "tailored pocket opening",
+      [[s * .14, legHeight + .17, .155],
+        [s * .205, legHeight + .18, .15],
+        [s * .235, legHeight + .24, .134]], .007,
+      jane ? M.floral : M.brass, 10);
+  }
+  curve(group, "hem stitched into the garment", [[-.23, legHeight + .02, .15],
+    [0, legHeight - .015, .18], [.23, legHeight + .02, .15]], .008,
+  jane ? M.floral : M.brass, 14);
+  if (jane) {
+    curve(group, "soft V neckline", [[-.15, height - .44, .125],
+      [0, height - .58, .2], [.15, height - .44, .125]], .014, M.floral, 14);
+    for (const s of [-1, 1]) for (let i = 0; i < 3; i++) {
+      const fx = s * (.09 + i * .033), fy = height - .63 - i * .105;
+      curve(group, "embroidered botanical sprig on Jane's blouse",
+        [[fx, fy - .06, .196], [fx + s * .018, fy, .208],
+          [fx + s * .05, fy + .043, .19]], .005, i % 2 ? M.paper : M.floral, 9);
+    }
+  } else if (oleg) {
+    curve(group, "cream shirt's joined crew neck", [[-.18, height - .44, .11],
+      [0, height - .5, .195], [.18, height - .44, .11]], .018, M.paper, 15);
+    for (let i = 0; i < 3; i++) curve(group, "shirt fabric crease",
+      [[-.12 + i * .1, height - .72, .173],
+        [-.08 + i * .08, height - .82, .178],
+        [-.1 + i * .09, height - .89, .164]], .006, M.paper, 7);
+  }
   for (const s of [-1, 1]) {
     const shoulder = [s * .22, height - .46, 0];
     const hand = options.hands?.[s] || [s * .33, height - 1.02, .16];
     const elbow = [s * .36, (height - .72 + hand[1]) / 2, (hand[2] + .05) / 2];
-    beam(group, "sleeved upper arm", shoulder, elbow, .095, .077, outfit);
-    beam(group, "reaching forearm", elbow, hand, .08, .055, outfit);
+    beam(group, "sleeved upper arm", shoulder, elbow, .105, .083, outfit, 13);
+    beam(group, "reaching forearm", elbow, hand, .086, .056, outfit, 13);
+    curve(group, "stitched sleeve seam", [[s * .25, height - .48, .09],
+      [s * .34, height - .66, .092], [elbow[0], elbow[1], elbow[2] + .075]],
+      .006, jane ? M.floral : M.paper, 10);
+    loft(group, "tapered garment cuff", [[hand[1] - .09, .067, .063, hand[0], hand[2]],
+      [hand[1] - .01, .078, .068, hand[0], hand[2]]], outfit, 11);
     loft(group, "shaped open hand", [[hand[1] - .07, .036, .032, hand[0], hand[2]],
       [hand[1], .05, .04, hand[0], hand[2]],
-      [hand[1] + .02, .018, .017, hand[0], hand[2]]], M.skin, 9);
+      [hand[1] + .02, .018, .017, hand[0], hand[2]]], skin, 12);
+    for (let finger = 0; finger < 3; finger++) {
+      const fx = hand[0] + (finger - 1) * .026;
+      curve(group, "three individual reaching fingers",
+        [[fx, hand[1] - .01, hand[2] + .034],
+          [fx + s * .006, hand[1] - .085 - .012 * (finger === 1), hand[2] + .044]],
+        .009, skin, 5);
+    }
   }
+  const head = new THREE.Group();
+  head.name = `${name} modeled and painted head`;
+  head.position.y = (height - .26) * .2;
+  head.scale.setScalar(.8);
+  group.add(head);
   const faceHeight = height - .035;
-  loft(group, "cheek and jaw portrait", [[faceHeight - .42, .06, .065],
-    [faceHeight - .34, .14, .12], [faceHeight - .16, .17, .145],
-    [faceHeight + .02, .15, .13], [faceHeight + .15, .02, .02]], M.skin, 15);
+  loft(head, `${name} modeled cheeks, jaw and brow`,
+    [[faceHeight - .445, .055, .055],
+      [faceHeight - .385, jane ? .136 : .118, .116],
+      [faceHeight - .29, jane ? .178 : .16, .147],
+      [faceHeight - .18, jane ? .196 : .18, .162],
+      [faceHeight - .045, jane ? .18 : .17, .151],
+      [faceHeight + .07, .145, .128],
+      [faceHeight + .15, .027, .03]], skin, 28);
+  if (jane || oleg) paintedFaceShell(head, jane ? "jane" : "oleg", height);
   for (const s of [-1, 1]) {
-    add(group, "small eye white", new THREE.SphereGeometry(.026, 8, 6), M.paper,
-      s * .069, faceHeight - .155, .143);
-    add(group, "dark iris", new THREE.SphereGeometry(.013, 7, 5), M.ink,
-      s * .069, faceHeight - .155, .167);
-    curve(group, "eyebrow", [[s * .03, faceHeight - .095, .15],
-      [s * .075, faceHeight - .085, .158], [s * .115, faceHeight - .1, .142]], .01, M.hair);
+    loft(head, "formed ear and earlobe", [[faceHeight - .28, .023, .031,
+      s * .184, -.012], [faceHeight - .19, .037, .043, s * .184, -.012],
+      [faceHeight - .085, .022, .027, s * .178, -.017]], skin, 12);
+    if (!jane && !oleg) {
+      shapedEye(head, name, s * .078, faceHeight - .17, .154,
+        child ? .78 : 1, M.paper, M.ink);
+      curve(head, "upper eyelid shaped along the eye", [[s * .027, faceHeight - .153, .166],
+        [s * .078, faceHeight - .138, .183], [s * .133, faceHeight - .158, .16]],
+      .008, hair, 12);
+      curve(head, "individual angled eyebrow", [[s * .031, faceHeight - .085, .15],
+        [s * .082, faceHeight - .07, .164], [s * .131, faceHeight - .094, .142]],
+      .012, hair, 12);
+    }
+    if (jane) {
+      add(head, "Jane's small pearl earring", new THREE.IcosahedronGeometry(.015, 1),
+        M.paper, s * .192, faceHeight - .265, .017);
+      for (let i = 0; i < 3; i++) add(head, "subtle cheek freckle",
+        new THREE.IcosahedronGeometry(.0035, 0), M.blush,
+        s * (.11 + i * .014), faceHeight - .27 + i * .012, .147);
+    }
   }
-  loft(group, "small sculpted nose", [[faceHeight - .27, .017, .019, 0, .155],
-    [faceHeight - .16, .027, .029, 0, .178],
-    [faceHeight - .14, .008, .01, 0, .158]], M.skin, 8);
-  curve(group, "gentle expression", [[-.05, faceHeight - .31, .12],
-    [0, faceHeight - .324, .134], [.05, faceHeight - .31, .12]], .009, M.orange);
-  if (options.beard) for (const s of [-1, 1]) curve(group, "Oleg's short beard",
-    [[s * .13, faceHeight - .28, .08], [s * .08, faceHeight - .37, .115],
-      [0, faceHeight - .42, .1]], .034, M.hair);
+  if (!jane && !oleg) {
+    loft(head, "rounded sculpted nose with bridge and tip",
+      [[faceHeight - .285, .029, .032, 0, .17],
+        [faceHeight - .265, .036, .045, 0, .181],
+        [faceHeight - .205, .024, .035, 0, .187],
+        [faceHeight - .12, .018, .02, 0, .165]], skin, 13);
+    curve(head, "upper lip with a gentle human expression",
+      [[-.057, faceHeight - .325, .135], [0, faceHeight - .317, .166],
+        [.057, faceHeight - .325, .135]], .010, M.orange, 16);
+    curve(head, "lower lip", [[-.045, faceHeight - .336, .138],
+      [0, faceHeight - .35, .151], [.045, faceHeight - .336, .138]],
+    .006, M.blush, 12);
+  }
+  if (oleg) {
+    for (const s of [-1, 1]) {
+      curve(head, "beard following the cheek", [[s * .148, faceHeight - .19, .064],
+        [s * .139, faceHeight - .29, .111],
+        [s * .11, faceHeight - .37, .12]], .018, hair, 12);
+    }
+  }
   if (options.glasses) for (const s of [-1, 1]) {
-    curve(group, "Oleg's dark rectangular glasses", [[s * .012, faceHeight - .12, .18],
-      [s * .12, faceHeight - .12, .17], [s * .12, faceHeight - .21, .16],
-      [s * .016, faceHeight - .21, .18], [s * .012, faceHeight - .12, .18]], .01, M.ink);
-    beam(group, "glasses temple", [s * .12, faceHeight - .15, .16],
-      [s * .18, faceHeight - .16, -.01], .008, .007, M.ink, 5);
+    beam(head, "glasses arm sweeping toward the ear", [s * .14,
+      faceHeight - .16, .08], [s * .185, faceHeight - .165, .008],
+      .008, .007, M.ink, 7);
   }
-  loft(group, "layered hair rather than a round cap", [[faceHeight + .04, .09, .08],
-    [faceHeight + .12, .17, .14, 0, -.02],
-    [faceHeight + .21, .13, .11, 0, -.025],
-    [faceHeight + .25, .028, .03, 0, -.025]], options.hair || M.hair, 15);
-  for (let i = 0; i < 6; i++) {
-    const xx = -.15 + i * .06;
-    curve(group, "carved hair lock", [[xx, faceHeight + .15, .11],
-      [xx + .015, faceHeight + .05, .15], [xx + .02, faceHeight - .035, .13]],
-      .013, options.hair || M.hair);
+  loft(head, "custom hairline and swept three-dimensional hair",
+    [[faceHeight + .025, .135, .125, 0, -.034],
+      [faceHeight + .11, .185, .15, 0, -.025],
+      [faceHeight + .21, .15, .126, 0, -.04],
+      [faceHeight + .26, .045, .045, 0, -.05]], hair, 22);
+  if (jane) {
+    for (const s of [-1, 1]) for (let i = 0; i < 3; i++)
+      curve(head, "dark hair combed back to Jane's bun",
+        [[s * (.045 + i * .038), faceHeight + .03, .14],
+          [s * (.075 + i * .026), faceHeight + .18, .105],
+          [s * .06, faceHeight + .31, -.075]],
+      .011 + i * .002, hair, 12);
+    loft(head, "Jane's high twisted bun, not a sphere",
+      [[faceHeight + .245, .075, .065, 0, -.075],
+        [faceHeight + .29, .12, .10, 0, -.08],
+        [faceHeight + .375, .13, .11, 0, -.085],
+        [faceHeight + .45, .082, .07, 0, -.085],
+        [faceHeight + .49, .012, .016, 0, -.085]], hair, 18);
+    for (let i = 0; i < 4; i++) {
+      const angle = i * Math.PI * .55;
+      curve(head, "twisted strand in Jane's bun",
+        [[.07 * Math.cos(angle), faceHeight + .33, -.02 + .075 * Math.sin(angle)],
+          [.12 * Math.cos(angle + .7), faceHeight + .385,
+            -.085 + .09 * Math.sin(angle + .7)],
+          [.035 * Math.cos(angle + 1.4), faceHeight + .465,
+            -.085 + .04 * Math.sin(angle + 1.4)]], .011, hair, 9);
+    }
+    for (const s of [-1, 1]) curve(head, "soft wisps beside Jane's ear",
+      [[s * .17, faceHeight + .05, -.008],
+        [s * .196, faceHeight - .18, .004],
+        [s * .17, faceHeight - .3, .018]], .012, hair, 10);
+  } else if (oleg) {
+    for (let i = 0; i < 5; i++) curve(head,
+      "Oleg's side-parted wavy brown hair", [[-.15 + i * .066,
+        faceHeight + .12, .12], [-.1 + i * .055, faceHeight + .23, .17],
+        [.12 + i * .018, faceHeight + .06, .13]],
+    .013 + (i % 2) * .005, hair, 12);
+    for (const s of [-1, 1]) for (let i = 0; i < 3; i++) {
+      const xx = s * (.155 + i * .017);
+      curve(head, "Oleg's loose ear-length wave",
+        [[xx, faceHeight + .09, -.045],
+          [xx + s * .05, faceHeight - .18, -.075],
+          [xx + s * .025, faceHeight - .48, .005]],
+      .018 - i * .002, hair, 13);
+    }
+  } else if (child) {
+    for (const s of [-1, 1]) for (let i = 0; i < 3; i++) curve(head,
+      "Zephrine's loose curl", [[s * (.12 + i * .025), faceHeight + .09, -.03],
+        [s * (.2 + i * .018), faceHeight - .13, .005],
+        [s * (.15 + i * .02), faceHeight - .32, .04]],
+    .014, hair, 12);
   }
-  if (options.bun) loft(group, "Jane's distinctive high bun", [[faceHeight + .2, .05, .04, 0, -.075],
-    [faceHeight + .3, .13, .11, 0, -.085],
-    [faceHeight + .4, .08, .07, 0, -.085],
-    [faceHeight + .43, .01, .01, 0, -.085]], options.hair || M.hair, 12);
-  if (options.longHair) for (const s of [-1, 1]) for (let i = 0; i < 3; i++) {
-    const xx = s * (.13 + i * .018);
-    curve(group, "Oleg's medium wavy hair", [[xx, faceHeight + .04, -.02],
-      [xx + s * .05, faceHeight - .24, -.05],
-      [xx + s * .025, faceHeight - .52, .004]], .025 - i * .003, M.hair);
-  }
-  curve(group, "stitched neckline", [[-.14, height - .45, .12],
-    [0, height - .49, .18], [.14, height - .45, .12]], .016, M.paper);
-  if (child) for (let i = 0; i < 4; i++) box(group, "pattern on Zephrine's dress",
-    -.14 + i * .09, height - .74 + .08 * (i % 2), .19, .026, .04, .01, M.teal);
+  if (child) for (let i = 0; i < 6; i++) curve(group,
+    "embroidered small floral mark on Zephrine's dress",
+    [[-.14 + i * .06, height - .76 + .06 * (i % 2), .18],
+      [-.12 + i * .06, height - .72 + .06 * (i % 2), .19]],
+    .006, i % 2 ? M.teal : M.floral, 5);
   return group;
 }
 
 // Five versions of Jane are a deliberately symbolic afterimage. Distinct
 // poses and nearby props tell the story without labels or copied photos.
-person("Jane advising Oleg", -.05, 4.58, 1.68, M.blue,
-  { bun: true, hands: { "-1": [-.83, 1.18, .4], "1": [.35, .83, .3] }, yaw: -.42 });
-const oleg = person("Oleg at the job-search desk", -1.35, 4.82, 1.73, M.ink,
-  { glasses: true, beard: true, longHair: true, hands: { "-1": [-.34, 1.03, .42],
+person("Jane advising Oleg", -.05, 4.58, 1.68, M.janeInk,
+  { jane: true, hands: { "-1": [-.83, 1.18, .4], "1": [.35, .83, .3] }, yaw: -.42 });
+const oleg = person("Oleg at the job-search desk", -1.35, 4.82, 1.73, M.cream,
+  { oleg: true, glasses: true, hands: { "-1": [-.34, 1.03, .42],
     "1": [.34, 1.02, .43] }, yaw: .42 });
 const pageInHand = box(oleg, "a blank folded page held in the long search",
   0, 1.07, .47, .43, .42, .018, M.paper);
 pageInHand.rotation.z = -.12;
 for (let line = 0; line < 3; line++) box(oleg, "unreadable mark on the page",
   -.03, 1.2 - line * .1, .486, .23 - line * .035, .012, .008, M.brass);
-person("Jane caring for Zephrine", -3.96, -3.5, 1.68, M.blue,
-  { bun: true, hands: { "-1": [-.4, .74, .25], "1": [.37, .8, .27] }, yaw: -.23 });
+person("Jane caring for Zephrine", -3.96, -3.5, 1.68, M.janeInk,
+  { jane: true, hands: { "-1": [-.4, .74, .25], "1": [.37, .8, .27] }, yaw: -.23 });
 person("Zephrine with Jane", -3.2, -3.22, 1.05, M.paper,
   { child: true, hair: M.zephHair, pants: M.teal, hands: { "-1": [-.31, .6, .18] } });
-person("Jane keeping the household going", -4.2, -6.0, 1.68, M.blue,
-  { bun: true, hands: { "1": [.54, .84, .36] }, yaw: .35 });
-person("Jane reaching out to contacts", 2.45, 1.9, 1.68, M.blue,
-  { bun: true, hands: { "1": [.56, .91, .38], "-1": [-.35, .66, .2] }, yaw: -.55 });
+person("Jane keeping the household going", -4.2, -6.0, 1.68, M.janeInk,
+  { jane: true, hands: { "1": [.54, .84, .36] }, yaw: .35 });
+person("Jane reaching out to contacts", 2.45, 1.9, 1.68, M.janeInk,
+  { jane: true, hands: { "1": [.56, .91, .38], "-1": [-.35, .66, .2] }, yaw: -.55 });
 for (const [x, z, height, color] of [[3.55, 1.3, 1.75, M.orange],
   [3.73, 2.52, 1.6, M.paleBlue]]) {
   person("unnamed person Jane approached outdoors", x, z, height, color,
     { hair: M.night, yaw: .25 });
 }
 person("Jane holding Oleg when the search was hard", -.45, -5.88,
-  1.68, M.blue, { bun: true, hands: { "-1": [-.55, 1.05, .5],
+  1.68, M.janeInk, { jane: true, hands: { "-1": [-.55, 1.05, .5],
     "1": [.45, 1.02, .49] }, yaw: .38 });
-person("Oleg leaning into Jane's embrace", .12, -5.48, 1.73, M.ink,
-  { glasses: true, beard: true, longHair: true,
+person("Oleg leaning into Jane's embrace", .12, -5.48, 1.73, M.cream,
+  { oleg: true, glasses: true,
     hands: { "-1": [-.41, 1.02, .45], "1": [.38, .89, .38] }, yaw: -.4 });
 
 // A quiet kitchen and ordinary work make the support concrete. Thin arcs of
@@ -421,22 +647,29 @@ for (let i = 0; i < 5; i++) {
     [1.6 + i * .2, 2.7 + i * .12, .18]],
     .009, i % 2 ? M.brass : M.paper, 40);
 }
-for (let i = 0; i < 13; i++) {
-  const x = -4.6 + i * .43, y = 3.96 + .2 * Math.sin(i * .7), z = -2.4 + .18 * i;
-  const page = box(root, "blank folded page floating toward the street", x, y, z,
-    .19, .23, .016, M.paper);
-  page.rotation.set(.15 + i * .12, i * .16, .3 * Math.sin(i));
-}
-for (let i = 0; i < 8; i++) {
-  const x = -3.9 + i * .9, y = 4.62 + .45 * Math.sin(i * .7), z = -.6 - .31 * i;
-  const sail = box(root, "folded blank page drifting above the search",
-    x, y, z, .46, .27, .025, M.paper);
-  sail.rotation.set(.16 + i * .11, i * .17, .28 * Math.sin(i));
-  curve(root, "fine fold in airborne paper", [[x - .18, y, z + .022],
-    [x, y + .018, z + .028], [x + .18, y, z + .02]], .007, M.brass);
+for (let i = 0; i < 5; i++) {
+  const x = -3.9 + i * 1.35, y = 4.2 + .36 * Math.sin(i * .7), z = -1.3 - .53 * i;
+  const sheet = new THREE.Shape();
+  sheet.moveTo(-.22, -.14);
+  sheet.quadraticCurveTo(-.28, -.04, -.21, .13);
+  sheet.quadraticCurveTo(-.08, .21, .03, .13);
+  sheet.lineTo(.2, .16);
+  sheet.quadraticCurveTo(.29, -.04, .18, -.16);
+  sheet.quadraticCurveTo(0, -.1, -.22, -.14);
+  const page = add(root, "a hand-folded page drifting through the search",
+    new THREE.ExtrudeGeometry(sheet, { depth: .012, bevelEnabled: true,
+      bevelSize: .007, bevelThickness: .005, bevelSegments: 1,
+      curveSegments: 7 }), M.paper, x, y, z);
+  page.rotation.set(.15 + i * .12, i * .14, .26 * Math.sin(i));
+  curve(root, "ink crease along the drifting paper", [[x - .16, y + .03, z + .028],
+    [x + .02, y + .045, z + .03], [x + .18, y + .025, z + .022]], .006, M.brass, 9);
 }
 
 async function authorRoom() {
+  await facesReady;
+  root.traverse((object) => {
+    if (object.userData.paintedFace) object.material = paintedFaces[object.userData.paintedFace];
+  });
   // Batch small leaves into one mesh per pigment before exporting for phones.
   root.updateMatrixWorld(true);
   const groups = new Map();

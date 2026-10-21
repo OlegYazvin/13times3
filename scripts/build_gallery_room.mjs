@@ -13,6 +13,7 @@ await mkdir(destination, { recursive: true });
 await build({
   entryPoints: [`scripts/room${id}_author.mjs`],
   bundle: true, format: "esm", target: "es2020",
+  loader: { ".webp": "dataurl" },
   outfile: resolve(cache, "author.js"),
 });
 const server = createServer(async (request, response) => {
