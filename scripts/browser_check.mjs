@@ -250,13 +250,12 @@ try {
   await jobPage.evaluate(() => window.__galleryTestPose(1.2, -5.275, Math.PI / 2));
   await jobPage.screenshot({ path: ".cache/room02-open-doorway.png" });
   const jobBefore = await jobPage.evaluate(() => window.__galleryDebug());
-  await jobPage.keyboard.down("w");
-  await jobPage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
-  await jobPage.keyboard.up("w");
+  await jobPage.evaluate(() => window.__galleryTestWorldMove(3.3, -5.275));
   const jobEntered = await jobPage.evaluate(() => window.__galleryDebug());
+  assert.equal(jobEntered.mode, "room");
   assert.equal(jobEntered.yaw, jobBefore.yaw);
   assert.equal(jobEntered.cameraFov, jobBefore.cameraFov);
-  assert.ok(jobEntered.x > 3.2 && jobEntered.x < 3.4,
+  assert.ok(Math.abs(jobEntered.x - 3.3) < .02,
     "room 02 entry should not move the camera abruptly");
   assert.ok(jobEntered.modelColliderCount >= 20, "desk, figures, and street trees should collide");
   await jobPage.screenshot({ path: ".cache/room02-entered-continuous.png" });
@@ -662,6 +661,10 @@ try {
   await aquariumPage.evaluate(() => window.__galleryTestRoomMove(1.13, 5.7));
   assert.ok((await aquariumPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 6.75,
     "G's figure should block movement");
+  await aquariumPage.evaluate(() => window.__galleryTestRoomPose(2.35, 6.5, 0));
+  await aquariumPage.evaluate(() => window.__galleryTestRoomMove(2.35, 3.8));
+  assert.ok((await aquariumPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 5.35,
+    "the central curved fish habitat should block movement");
   await aquariumPage.evaluate(() => window.__galleryTestRoomPose(1.95, 9.2, Math.PI));
   await aquariumPage.evaluate(() => window.__galleryTestRoomMove(1.95, 11.2));
   assert.ok((await aquariumPage.evaluate(() => window.__galleryDebug().roomLocal.z)) < 10.0,

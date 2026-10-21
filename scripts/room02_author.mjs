@@ -5,9 +5,9 @@ import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
 import janeFaceURL from "./assets/room02/jane-face.webp";
-import olegFaceURL from "./assets/room02/oleg-face.webp";
 import zephrineFaceURL from "./assets/room02/zephrine-face.webp";
-import { openSky } from "./open_sky.mjs";
+import { addOpenSky } from "./open_sky.mjs";
+import { addOlegPortrait, finishOlegPortraits } from "./oleg_portrait.mjs";
 
 // A single impossible space: Oleg's desk opens into a street and four
 // simultaneous acts of Jane's support. All figures and props have volume.
@@ -43,7 +43,7 @@ const M = Object.fromEntries(Object.entries(C).map(([key, value]) => [key, mater
 const glow = new THREE.MeshBasicMaterial({ color: C.amber, side: THREE.DoubleSide });
 const paintedFaces = {};
 const facesReady = Promise.all([
-  ["jane", janeFaceURL], ["oleg", olegFaceURL],
+  ["jane", janeFaceURL],
   ["zephrine", zephrineFaceURL],
 ].map(([name, url]) => new Promise((resolve, reject) => {
   new THREE.TextureLoader().load(url, (texture) => {
@@ -149,6 +149,10 @@ function paintedFaceShell(parent, name, height) {
     [-.18, .196, .162], [-.045, .18, .151], [.07, .145, .128],
     [.15, .027, .03],
   ];
+  if (name === "oleg") {
+    addOlegPortrait(parent, base, profile, M.olegSkin);
+    return;
+  }
   for (let row = 0; row <= rows; row++) for (let col = 0; col <= columns; col++) {
     const u = col / columns, v = row / rows;
     const offsetY = -.445 + v * .555;
@@ -208,18 +212,8 @@ for (let i = 0; i < 70; i++) {
   stone.scale.set(1.7, .2, 1.1);
 }
 
-// Four sides of a watercolor sky are actual room geometry. The front stays
-// open so the return doorway reveals the real gallery.
-const openAir = openSky(C.sky, 14);
-for (const x of [-6.17, 6.17]) {
-  const side = add(root, "high watercolor sky", openAir.panel(17.22),
-    openAir.sideMaterial, x, 7, 0);
-  side.rotation.y = Math.PI / 2;
-}
-add(root, "distant outdoors wrapping the home", openAir.panel(12.4),
-  openAir.sideMaterial, 0, 7, -8.59);
-add(root, "sky high above the desk and street", openAir.roof(12.4, 17.2),
-  openAir.topMaterial, 0, 13.99, 0);
+// The desk and street belong to one outdoor world with no visible roof seam.
+addOpenSky(root, C.sky, C.street);
 
 // Solid rear and side landscape cues define the walkable perimeter without
 // placing an opaque wall across the portrait view.
@@ -482,8 +476,14 @@ function person(name, x, z, height, outfit, options = {}) {
   }
   const head = new THREE.Group();
   head.name = `${name} modeled and painted head`;
-  head.position.y = (height - .26) * .2;
-  head.scale.setScalar(.8);
+  if (oleg) {
+    const jawPivot = height - .48;
+    head.position.y = jawPivot * .35;
+    head.scale.set(.9, .65, .9);
+  } else {
+    head.position.y = (height - .26) * .2;
+    head.scale.setScalar(.8);
+  }
   group.add(head);
   const faceHeight = height - .035;
   loft(head, `${name} modeled cheeks, jaw and brow`,
@@ -675,6 +675,7 @@ for (let i = 0; i < 5; i++) {
 
 async function authorRoom() {
   await facesReady;
+  await finishOlegPortraits(root);
   root.traverse((object) => {
     if (object.userData.paintedFace) object.material = paintedFaces[object.userData.paintedFace];
   });
@@ -701,7 +702,7 @@ async function authorRoom() {
   fill.position.set(4, 3, -2); scene.add(fill);
   scene.add(root);
   const view = gallery.frames[1].room.previewCamera;
-  const camera = new THREE.PerspectiveCamera(view.fov, FRAME_WIDTH / FRAME_HEIGHT, .05, 38);
+  const camera = new THREE.PerspectiveCamera(view.fov, FRAME_WIDTH / FRAME_HEIGHT, .05, 120);
   camera.position.fromArray(view.position); camera.lookAt(...view.target);
   const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
   renderer.outputColorSpace = THREE.SRGBColorSpace;

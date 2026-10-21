@@ -4,7 +4,7 @@ import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
-import { openSky } from "./open_sky.mjs";
+import { addOpenSky } from "./open_sky.mjs";
 import { addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
 
@@ -112,15 +112,7 @@ ground.setAttribute("color", new THREE.Float32BufferAttribute(groundColors, 3));
 ground.computeVertexNormals();
 add(root, "the ground where park visits become a dance floor", ground,
   mat(0xffffff, { vertexColors: true }));
-const openAir = openSky(C.sky, 14);
-for (const x of [-5.88, 5.88]) {
-  const side = add(root, "wraparound watercolor sky", openAir.panel(14.4),
-    openAir.sideMaterial, x, 7, 0); side.rotation.y = Math.PI / 2;
-}
-add(root, "far sky behind the shared memories", openAir.panel(11.8),
-  openAir.sideMaterial, 0, 7, -7.19);
-add(root, "pale sky overhead", openAir.roof(11.8, 14.4),
-  openAir.topMaterial, 0, 13.99, 0);
+addOpenSky(root, C.sky, C.ground);
 
 // Three generous paths braid through the space. The middle stays clear from
 // the threshold to the central pair, with side routes around the play pieces.
@@ -408,7 +400,7 @@ async function authorRoom() {
   fill.position.set(4, 4, -3); scene.add(fill);
   scene.add(root);
   const view = gallery.frames[2].room.previewCamera;
-  const camera = new THREE.PerspectiveCamera(view.fov, FRAME_WIDTH / FRAME_HEIGHT, .05, 40);
+  const camera = new THREE.PerspectiveCamera(view.fov, FRAME_WIDTH / FRAME_HEIGHT, .05, 120);
   camera.position.fromArray(view.position); camera.lookAt(...view.target);
   const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
   renderer.outputColorSpace = THREE.SRGBColorSpace;

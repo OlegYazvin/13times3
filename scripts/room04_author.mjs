@@ -4,7 +4,7 @@ import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
-import { openSky } from "./open_sky.mjs";
+import { addOpenSky } from "./open_sky.mjs";
 import { addOlegPortrait, addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
 
@@ -116,16 +116,7 @@ for (const side of [-1, 1]) {
     [side * 2.18, .12, 3.9], [side * 2.23, .12, -.7],
     [side * 2.18, .12, -4.4], [side * 2.23, .12, -8.15]], .075, M.cream, 55);
 }
-const openAir = openSky(C.sky, 14);
-for (const x of [-5.39, 5.39]) {
-  const side = add(root, "wraparound watercolor Chicago sky",
-    openAir.panel(16.4), openAir.sideMaterial, x, 7, 0);
-  side.rotation.y = Math.PI / 2;
-}
-add(root, "sky at the end of the remembered walk", openAir.panel(10.8),
-  openAir.sideMaterial, 0, 7, -8.19);
-add(root, "sky overhead", openAir.roof(10.8, 16.4),
-  openAir.topMaterial, 0, 13.99, 0);
+addOpenSky(root, C.sky, C.sidewalk);
 
 // Repeating stoops, bay windows and brick patterns suggest a Roscoe Village
 // block without copying a private house or asserting an exact address.
@@ -317,6 +308,7 @@ function adult(name, x, z, outfit, options = {}) {
       [hand[1], .048, .041, hand[0], hand[2]],
       [hand[1] + .02, .015, .015, hand[0], hand[2]]], skin, 8);
   }
+  const headStart = group.children.length;
   const face = height - .04;
   loft(group, "carved face and cheekbone", [[face - .42, .06, .055],
     [face - .34, .14, .12], [face - .16, .17, .145],
@@ -358,6 +350,14 @@ function adult(name, x, z, outfit, options = {}) {
     curve(group, "Oleg's dark rectangular glasses", [[side * .015, face - .12, .18],
       [side * .12, face - .12, .17], [side * .12, face - .21, .16],
       [side * .015, face - .21, .18], [side * .015, face - .12, .18]], .01, M.dark);
+  }
+  if (options.oleg) {
+    const head = new THREE.Group();
+    head.name = `${name} proportioned sculpted head`;
+    for (const child of group.children.slice(headStart)) head.add(child);
+    head.scale.y = .65;
+    head.position.y = (height - .46) * .35;
+    group.add(head);
   }
   curve(group, "stitched neckline", [[-.14, height - .43, .13],
     [0, height - .49, .17], [.14, height - .43, .13]], .011, M.cream);
@@ -451,7 +451,7 @@ async function authorRoom() {
   fill.position.set(4, 4, -3); scene.add(fill);
   scene.add(root);
   const view = gallery.frames[3].room.previewCamera;
-  const camera = new THREE.PerspectiveCamera(view.fov, FRAME_WIDTH / FRAME_HEIGHT, .05, 42);
+  const camera = new THREE.PerspectiveCamera(view.fov, FRAME_WIDTH / FRAME_HEIGHT, .05, 120);
   camera.position.fromArray(view.position); camera.lookAt(...view.target);
   const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
   renderer.outputColorSpace = THREE.SRGBColorSpace;

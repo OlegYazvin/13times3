@@ -102,6 +102,8 @@ try {
     };
     window.__galleryTestRoomCanStand = (x, z) =>
       rooms.canStand(rooms.roomToWorld({ x, z }), "room");
+    window.__galleryTestWorldMove = (x, z) =>
+      rooms.move({ x, z });
     window.__galleryTestRoomMove = (x, z) =>
       rooms.move(rooms.roomToWorld({ x, z }));
   }

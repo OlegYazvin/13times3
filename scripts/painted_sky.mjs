@@ -4,9 +4,12 @@ import * as THREE from "three";
 // while trees, architecture, people, and props remain modeled in front of it.
 export function paintedSkyTexture(seed = 1) {
   const canvas = document.createElement("canvas");
-  canvas.width = 768; canvas.height = 384;
+  canvas.width = 384; canvas.height = 192;
   const ctx = canvas.getContext("2d");
   ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // Cloud strokes use the original logical coordinates; the smaller texture
+  // keeps all seven outdoor worlds within their mobile download budgets.
+  ctx.scale(.5, .5);
   let state = seed >>> 0;
   const random = () => ((state = (state * 1664525 + 1013904223) >>> 0) / 4294967296);
   for (let layer = 0; layer < 28; layer++) {

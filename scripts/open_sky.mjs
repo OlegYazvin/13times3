@@ -1,31 +1,51 @@
 import * as THREE from "three";
 import { paintedSkyTexture } from "./painted_sky.mjs";
 
-// A high, softly graduated enclosure keeps outdoor scenes open from every
-// walkable angle, without an abrupt low horizontal ceiling.
-export function openSky(color, height) {
-  const horizon = new THREE.Color(color);
-  const zenith = horizon.clone().offsetHSL(-.025, -.07, .13);
-  const sideMaterial = new THREE.MeshBasicMaterial({ vertexColors: true,
-    map: paintedSkyTexture(Math.floor(horizon.getHex())),
-    side: THREE.DoubleSide });
-  const topMaterial = new THREE.MeshBasicMaterial({ color: zenith,
-    side: THREE.DoubleSide });
-  function panel(width) {
-    const geometry = new THREE.PlaneGeometry(width, height, 1, 8);
-    const shades = [];
-    for (let i = 0; i < geometry.attributes.position.count; i++) {
-      const t = (geometry.attributes.position.getY(i) + height / 2) / height;
-      const c = horizon.clone().lerp(zenith, Math.pow(t, .68));
-      shades.push(c.r, c.g, c.b);
-    }
-    geometry.setAttribute("color", new THREE.Float32BufferAttribute(shades, 3));
-    return geometry;
+// Outdoor memories are independent worlds. Their atmosphere can extend well
+// beyond the walkable bounds without ever occupying another gallery room.
+export function addOpenSky(root, skyColor, groundColor) {
+  const sky = new THREE.Color(skyColor);
+  const zenith = sky.clone().offsetHSL(-.025, -.07, .13);
+  const horizon = sky.clone().offsetHSL(.012, -.025, .075);
+  const dome = new THREE.SphereGeometry(30, 32, 16, 0, Math.PI * 2,
+    0, Math.PI / 2 + .17);
+  const shades = [];
+  for (let i = 0; i < dome.attributes.position.count; i++) {
+    const t = THREE.MathUtils.clamp(dome.attributes.position.getY(i) / 30, 0, 1);
+    const color = horizon.clone().lerp(zenith, Math.pow(t, .72));
+    shades.push(color.r, color.g, color.b);
   }
-  function roof(width, depth) {
-    const geometry = new THREE.PlaneGeometry(width, depth);
-    geometry.rotateX(Math.PI / 2);
-    return geometry;
+  dome.setAttribute("color", new THREE.Float32BufferAttribute(shades, 3));
+  const atmosphere = new THREE.Mesh(dome, new THREE.MeshBasicMaterial({
+    map: paintedSkyTexture(skyColor), vertexColors: true,
+    side: THREE.DoubleSide, depthWrite: false,
+  }));
+  atmosphere.name = "continuous watercolor sky dome without a roof seam";
+  atmosphere.position.y = -2.5;
+  root.add(atmosphere);
+
+  // The authored walkable floor remains in front. This broad, dimmer terrain
+  // catches low viewing angles beyond it, avoiding a sudden floor-to-sky gap.
+  const distant = new THREE.PlaneGeometry(60, 60, 12, 12);
+  distant.rotateX(-Math.PI / 2);
+  const ground = new THREE.Color(groundColor);
+  const far = ground.clone().lerp(horizon, .57);
+  const floorShades = [];
+  for (let i = 0; i < distant.attributes.position.count; i++) {
+    const x = distant.attributes.position.getX(i);
+    const z = distant.attributes.position.getZ(i);
+    const r = Math.hypot(x, z);
+    const color = ground.clone().lerp(far,
+      THREE.MathUtils.smoothstep(r, 8, 29));
+    color.offsetHSL(0, 0, .009 * Math.sin(x * .22 + z * .11));
+    floorShades.push(color.r, color.g, color.b);
   }
-  return { panel, roof, sideMaterial, topMaterial };
+  distant.setAttribute("color", new THREE.Float32BufferAttribute(floorShades, 3));
+  const terrain = new THREE.Mesh(distant, new THREE.MeshBasicMaterial({
+    color: 0xffffff, vertexColors: true, side: THREE.DoubleSide,
+  }));
+  terrain.name = "distant ground beyond the walkable scene";
+  terrain.position.y = -.095;
+  root.add(terrain);
+  return { atmosphere, terrain };
 }

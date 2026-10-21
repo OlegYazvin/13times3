@@ -8,6 +8,50 @@ import zephrineFaceURL from "./assets/room02/zephrine-face.webp";
 // reference photographs stay private; only this small painted texture ships.
 const portraitMaterialPromises = new Map();
 const portraitMeshes = new WeakMap();
+const hairPaint = new THREE.MeshStandardMaterial({ color: 0x382b2b,
+  roughness: .94, side: THREE.DoubleSide });
+const framePaint = new THREE.MeshStandardMaterial({ color: 0x28282e,
+  roughness: .72, side: THREE.DoubleSide });
+
+function raisedLine(parent, name, points, radius, material) {
+  const path = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)));
+  const mesh = new THREE.Mesh(new THREE.TubeGeometry(path, 12, radius, 6), material);
+  mesh.name = name;
+  parent.add(mesh);
+}
+
+function shapeOlegPortrait(parent, faceY) {
+  // The painted lenses retain their fine detail; sculpted temples, hair and
+  // beard give the portrait depth in profile without covering the eyes.
+  for (const side of [-1, 1]) {
+    raisedLine(parent, "Oleg's glasses temple behind the ear", [
+      [side * .13, faceY - .16, .15],
+      [side * .177, faceY - .17, .075],
+      [side * .187, faceY - .17, -.035],
+    ], .006, framePaint);
+    raisedLine(parent, "Oleg's cheek-length sideburn", [
+      [side * .163, faceY + .045, .052],
+      [side * .185, faceY - .09, .012],
+      [side * .177, faceY - .245, .018],
+      [side * .139, faceY - .305, .072],
+    ], .02, hairPaint);
+    for (let lock = 0; lock < 3; lock++) {
+      const x = side * (.16 + lock * .013);
+      raisedLine(parent, "separate swept lock around Oleg's ear", [
+        [x * .77, faceY + .19, -.055],
+        [x, faceY + .025, -.09 - lock * .012],
+        [x * 1.12, faceY - .18, -.07],
+        [x * .92, faceY - .39 - lock * .035, .025],
+      ], .017 - lock * .002, hairPaint);
+    }
+    raisedLine(parent, "short beard wrapping Oleg's jaw in profile", [
+      [side * .137, faceY - .29, .095],
+      [side * .12, faceY - .365, .11],
+      [side * .067, faceY - .414, .102],
+      [0, faceY - .427, .09],
+    ], .014, hairPaint);
+  }
+}
 
 function addPortrait(parent, faceY, profile, fallbackMaterial, person) {
   const rows = 24, columns = 24;
@@ -22,9 +66,15 @@ function addPortrait(parent, faceY, profile, fallbackMaterial, person) {
     const t = THREE.MathUtils.clamp((offset - a[0]) / (b[0] - a[0]), 0, 1);
     const rx = THREE.MathUtils.lerp(a[1], b[1], t);
     const rz = THREE.MathUtils.lerp(a[2], b[2], t);
-    const around = (u - .5) * 1.92;
-    positions.push(around * rx, faceY + offset,
-      .008 + rz * Math.sqrt(Math.max(0, 1 - around * around)));
+    const angle = (u - .5) * 2.22;
+    const x = Math.sin(angle) * rx;
+    // Real cheek, brow and nose relief prevents the likeness reading as a
+    // flat photograph stuck to the front of an otherwise sculpted head.
+    const bump = person === "Oleg" ?
+      .036 * Math.exp(-Math.pow((u - .5) / .11, 2) - Math.pow((v - .48) / .2, 2)) +
+      .012 * Math.exp(-Math.pow((Math.abs(u - .5) - .23) / .13, 2) - Math.pow((v - .43) / .24, 2)) :
+      .017 * Math.exp(-Math.pow((u - .5) / .14, 2) - Math.pow((v - .49) / .23, 2));
+    positions.push(x, faceY + offset, .009 + Math.cos(angle) * rz + bump);
     uvs.push(u, v);
   }
   for (let row = 0; row < rows; row++) for (let col = 0; col < columns; col++) {
@@ -44,7 +94,9 @@ function addPortrait(parent, faceY, profile, fallbackMaterial, person) {
 }
 
 export function addOlegPortrait(parent, faceY, profile, fallbackMaterial) {
-  return addPortrait(parent, faceY, profile, fallbackMaterial, "Oleg");
+  const mesh = addPortrait(parent, faceY, profile, fallbackMaterial, "Oleg");
+  shapeOlegPortrait(parent, faceY);
+  return mesh;
 }
 
 export function addJanePortrait(parent, faceY, profile, fallbackMaterial) {

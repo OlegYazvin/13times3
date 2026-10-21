@@ -28,6 +28,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 outdoor finish revision: layered, sculpted foliage now fills the bare branch silhouettes in frames `02`, `03`, `04`, `07`, `09`, and `10`, while separate modeled leaves and fruit remain visible. Outdoor sky walls receive a subtle pigment wash, with the roof kept high. These are revisions to the published settings, not additional scenes.
 
+2026-10-21 portal-world and portrait revision: the outdoor portions of frames `02`, `03`, `04`, `07`, `08`, `09`, and `10` now use seamless watercolor sky domes and distant ground rather than box-like sky walls. Oleg's illustrated facial texture was regenerated from his private reference photo and paired with curved facial relief, sculpted temple pieces, swept hair and a shorter beard silhouette in all published rooms where he appears (`02`, `04`, `05`, `07`, `08`, `09`, `10`, `11`). Frame `11` gains a luminous glass dome, a sculpted ray in the rear habitat, and a walk-around curved fish tank near G and Zephrine. These are revisions of the existing scenes, not new memories or frame assignments.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

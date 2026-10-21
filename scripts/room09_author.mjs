@@ -4,7 +4,7 @@ import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
-import { openSky } from "./open_sky.mjs";
+import { addOpenSky } from "./open_sky.mjs";
 import { addOlegPortrait, addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
 
@@ -96,7 +96,7 @@ function leaf(parent, name, x, y, z, length, width, angle, material) {
   shape.bezierCurveTo(-width, length * .24, -width * .72, length * .68, 0, length);
   shape.bezierCurveTo(width * .72, length * .68, width, length * .24, 0, 0);
   const mesh = put(parent, name, new THREE.ExtrudeGeometry(shape, { depth: .012, bevelEnabled: false,
-    curveSegments: 5 }), material, x, y, z);
+    curveSegments: 3 }), material, x, y, z);
   mesh.rotation.set(Math.PI / 2 - .18, angle, -.15);
   mesh.userData.batchLeaf = true;
   return mesh;
@@ -147,17 +147,7 @@ for (let i = 0; i < 24; i++) {
 
 // Broad sculpted hills and a color-washed sky stay behind the grove. They are
 // geometry, with depth and side walls, never photographic planes or cutouts.
-const openAir = openSky(P.sky, 15);
-function skyPanel(name, width, x, z, angle = 0) {
-  const panel = put(root, name, openAir.panel(width),
-    openAir.sideMaterial, x, 7.5, z);
-  panel.rotation.y = angle;
-}
-skyPanel("painted dusk sky at the orchard horizon", 11.64, 0, -7.085);
-skyPanel("west horizon wrapping into the orchard", 14.24, -5.79, 0, Math.PI / 2);
-skyPanel("east horizon wrapping into the orchard", 14.24, 5.79, 0, Math.PI / 2);
-put(root, "open color-washed sky above the branches", openAir.roof(11.64, 14.24),
-  openAir.topMaterial, 0, 14.99, 0);
+addOpenSky(root, P.sky, P.grass);
 for (const [shift, tint] of [[-6.84, M.distant], [-6.58, M.leaf]]) {
   const points = [];
   for (let i = 0; i <= 30; i++) {
@@ -350,6 +340,12 @@ for (const [offset, material] of [[0, M.ochre], [.19, M.cream]]) {
 // Sculpted figures use lofts, folds, seams, and raised facial features. They
 // remain three-dimensional from every side. No reference photo is in the GLB.
 function face(parent, height, hair, { glasses = false, beard = false, bun = false, longHair = false, oleg = false, jane = false, zephrine = false } = {}) {
+  const shellGroup = oleg ? new THREE.Group() : null;
+  if (shellGroup) {
+    shellGroup.name = "proportioned three-dimensional Oleg face and hair";
+    parent.add(shellGroup);
+    parent = shellGroup;
+  }
   const head = sculptLoft(parent, "faceted cheek and jaw portrait", [
     [height - .42, .065, .07], [height - .34, .145, .13],
     [height - .16, .173, .15], [height + .02, .15, .14],
@@ -410,6 +406,10 @@ function face(parent, height, hair, { glasses = false, beard = false, bun = fals
     tube(parent, "long wavy hair around shoulders", [[x, height + .06, -.02],
       [x + s * .05, height - .22, -.05], [x + s * .025, height - .56, .005]],
       .029 - i * .003, hair);
+  }
+  if (shellGroup) {
+    shellGroup.scale.y = .65;
+    shellGroup.position.y = (height - .42) * .35;
   }
 }
 function person(name, x, z, height, outfit, hair, options = {}) {
@@ -546,7 +546,7 @@ async function authorRoom() {
   fill.position.set(3.3, 3.2, -2); scene.add(fill);
   scene.add(root);
   const view = gallery.frames[8].room.previewCamera;
-  const camera = new THREE.PerspectiveCamera(view.fov, FRAME_WIDTH / FRAME_HEIGHT, .05, 35);
+  const camera = new THREE.PerspectiveCamera(view.fov, FRAME_WIDTH / FRAME_HEIGHT, .05, 120);
   camera.position.fromArray(view.position); camera.lookAt(...view.target);
   const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
   renderer.outputColorSpace = THREE.SRGBColorSpace;

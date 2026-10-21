@@ -20,11 +20,35 @@ const art=createRoomArt({index:10,title:"G and Zephrine wonder at the fish",
 const {root,M,random,add,box,beam,curve,loft,petal,
   wrapSky,ground,person,exportRoom}=art;
 wrapSky(C.deep);
-ground(C.ground,(x,z)=>{
+const floor=ground(C.ground,(x,z)=>{
   const r=Math.hypot(x*.72,z*.67);
   return new THREE.Color(C.marble).lerp(new THREE.Color(C.ground),
     Math.min(.72,r/13));
 });
+{
+  const canvas=document.createElement("canvas");
+  canvas.width=canvas.height=640;
+  const ctx=canvas.getContext("2d");
+  ctx.fillStyle="#ffffff";ctx.fillRect(0,0,640,640);
+  // Layered, irregular water reflections soften the broad marble floor.
+  // They are part of its material, with all story figures still fully 3D.
+  for(let layer=0;layer<3;layer++) for(let i=0;i<110;i++) {
+    const x=random()*720-40,y=random()*720-40;
+    const radius=10+random()*46;
+    ctx.strokeStyle=layer===0?"rgba(43,127,139,.055)":
+      layer===1?"rgba(183,219,214,.20)":"rgba(255,250,223,.48)";
+    ctx.lineWidth=layer===0?4+random()*5:2+random()*3;
+    ctx.beginPath();
+    ctx.moveTo(x-radius,y);
+    ctx.bezierCurveTo(x-radius*.44,y-radius*.5,
+      x+radius*.5,y+radius*.45,x+radius,y+radius*.08);
+    ctx.stroke();
+  }
+  const caustics=new THREE.CanvasTexture(canvas);
+  caustics.colorSpace=THREE.SRGBColorSpace;
+  floor.material.map=caustics;
+  floor.material.needsUpdate=true;
+}
 
 // An octagonal radial mosaic makes the whole room read as one vast rotunda.
 for(const radius of [2.2,4.3,6.55,8.3]) {
@@ -41,8 +65,36 @@ for(let i=0;i<16;i++) {
   beam(root,"fine radiating floor seam",[Math.cos(a)*2.3,.057,Math.sin(a)*1.8],
     [Math.cos(a)*8.1,.057,Math.sin(a)*6.4],.012,.012,M.pearl,5);
 }
-// Marble columns and a faceted aquatic glass dome evoke the historic Shedd
-// building. All visible walls are textured water and arches, not a box.
+// A continuous paneled canopy gives the rotunda an actual luminous roof,
+// rather than leaving ribs hanging over a flat dark ceiling.
+{
+  const positions=[],colors=[],indices=[],rings=9,slices=48;
+  const shallow=new THREE.Color(0xa6cdd0),deep=new THREE.Color(0x6a9bab);
+  for(let ring=0;ring<=rings;ring++) {
+    const r=.08+ring*8.12/rings;
+    const y=7.75-2.65*Math.pow(r/8.2,2);
+    for(let slice=0;slice<=slices;slice++) {
+      const a=slice*Math.PI*2/slices;
+      const wash=.05*Math.sin(a*7+ring*1.2)+.04*Math.cos(a*11-ring*.8);
+      const c=shallow.clone().lerp(deep,.18+.48*r/8.2+wash);
+      positions.push(Math.cos(a)*r,y,Math.sin(a)*r);
+      colors.push(c.r,c.g,c.b);
+      if(ring<rings&&slice<slices) {
+        const i=ring*(slices+1)+slice;
+        indices.push(i,i+slices+1,i+1,i+1,i+slices+1,i+slices+2);
+      }
+    }
+  }
+  const geometry=new THREE.BufferGeometry();
+  geometry.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
+  geometry.setAttribute("color",new THREE.Float32BufferAttribute(colors,3));
+  geometry.setIndex(indices);geometry.computeVertexNormals();
+  add(root,"continuous aquamarine glass canopy between shell ribs",geometry,
+    new THREE.MeshBasicMaterial({color:0xffffff,vertexColors:true,
+      side:THREE.DoubleSide}));
+}
+// Marble columns and a glass dome evoke the historic Shedd building as a
+// dream rather than a literal or dated exhibit replica.
 for(let i=0;i<8;i++) {
   const a=i*Math.PI*2/8+.13;
   const x=Math.cos(a)*8.1,z=Math.sin(a)*8.0;
@@ -206,19 +258,70 @@ function fish(x,y,z,scale,mat,phase,yaw=0) {
 }
 // Several different schools stay inside the side and end habitats. The
 // contrast in size, orientation, and color makes the water feel inhabited.
-for(const side of [-1,1]) for(let i=0;i<10;i++) {
+for(const side of [-1,1]) for(let i=0;i<8;i++) {
   const z=-10.7+random()*23.2;
   fish(side*(8.05+random()*.38),1.18+random()*4.4,z,
     .48+random()*.38,i%5===0?M.coral:i%3?M.gold:M.turquoise,
     i*.88+side,side*Math.PI/2);
 }
-for(let i=0;i<8;i++) fish(-6.8+random()*13.6,
+for(let i=0;i<6;i++) fish(-6.8+random()*13.6,
   1.12+random()*4.7,-12.0-random()*.75,
   .47+random()*.46,i%3===0?M.coral:i%3===1?M.gold:M.turquoise,
   i*.71,Math.PI*(i%2));
-for(let i=0;i<5;i++) fish(-7+random()*14,
+for(let i=0;i<4;i++) fish(-7+random()*14,
   1.15+random()*4.35,13.03,.37+random()*.28,
   i%3?M.turquoise:M.gold,33+i*.64,Math.PI*(i%2));
+
+// A ray travels in the end habitat. Its swept wings and tail occupy volume
+// and remain clearly recognizable from the doorway and the inner path.
+function ray(x,y,z,scale,yaw=0) {
+  const group=new THREE.Group();
+  group.name="large sculpted ray behind end-habitat glass";
+  group.position.set(x,y,z);group.rotation.y=yaw;group.scale.setScalar(scale);
+  root.add(group);
+  const top=[],bottom=[],uv=[],indices=[],rows=10,columns=24;
+  for(let layer=0;layer<2;layer++) for(let row=0;row<=rows;row++) {
+    const t=row/rows,zz=.58-t*1.08;
+    const width=.15+1.25*Math.pow(Math.sin(Math.PI*t),.9);
+    for(let column=0;column<=columns;column++) {
+      const u=column/columns*2-1,edge=Math.abs(u);
+      const wing=.12*Math.sin(t*Math.PI*2)+.16*Math.pow(edge,2);
+      const thickness=(1-edge*.78)*Math.sin(Math.PI*t)*.115;
+      const target=layer===0?top:bottom;
+      target.push(u*width,wing+(layer===0?thickness:-thickness),zz);
+      uv.push(column/columns,t);
+      if(row<rows&&column<columns) {
+        const a=row*(columns+1)+column;
+        if(layer===0) indices.push(a,a+columns+1,a+1,
+          a+1,a+columns+1,a+columns+2);
+        else {
+          const n=(rows+1)*(columns+1);
+          indices.push(n+a,n+a+1,n+a+columns+1,
+            n+a+1,n+a+columns+2,n+a+columns+1);
+        }
+      }
+    }
+  }
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute("position",new THREE.Float32BufferAttribute([...top,...bottom],3));
+  geo.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
+  geo.setIndex(indices);geo.computeVertexNormals();
+  add(group,"thick rippling ray body and wing membrane",geo,M.turquoise);
+  curve(group,"long tapering ray tail",[[0,.02,-.48],[0,.01,-.92],
+    [.03,-.02,-1.65]],.028,M.deep,23);
+  for(const side of [-1,1]) {
+    add(group,"ray eye set into the broad head",
+      new THREE.SphereGeometry(.025,10,8),M.ink,side*.15,.14,.37);
+    for(let spot=0;spot<5;spot++) {
+      const sx=side*(.2+spot*.17),sz=.12-(spot%2)*.2;
+      add(group,"painted silver spot on ray's back",
+        new THREE.SphereGeometry(.021,7,5),M.pearl,sx,.095,sz);
+    }
+  }
+  return group;
+}
+ray(-2.15,3.85,-12.35,.92,.14);
+ray(4.3,2.9,-12.45,.62,-.26);
 
 // Every habitat has an organic floor and species-specific shelter. The
 // branches are curved solids with fine offshoots, not freestanding polygons.
@@ -256,6 +359,67 @@ for(let patch=0;patch<5;patch++)
   coralGarden(-6.75+patch*3.35,-12.8,true);
 for(let patch=0;patch<3;patch++)
   coralGarden(-6.5+patch*5.5,13.05,patch%2===0);
+
+// A free-standing tide-pool lantern gives Zephrine something close enough to
+// study from several angles. The curved glazing holds its own fish, stone,
+// kelp and branch coral; its base is a real collision obstacle.
+{
+  const x=2.35,z=3.8;
+  loft(root,"solid shell-carved base of the tide-pool lantern",
+    [[.04,1.35,1.25,x,z],[.14,1.48,1.38,x,z],
+      [.39,1.39,1.31,x,z],[.49,1.31,1.22,x,z]],M.marble,28,true);
+  const lanternGlass=new THREE.MeshPhysicalMaterial({color:0x8ec7cb,
+    transparent:true,opacity:.21,roughness:.09,metalness:0,
+    depthWrite:false,side:THREE.DoubleSide});
+  const wall=loft(root,"solid curved glass habitat one can walk around",
+    [[.47,1.3,1.2,x,z],[1.55,1.34,1.24,x,z],
+      [3.05,1.31,1.21,x,z],[4.3,1.22,1.13,x,z],
+      [4.57,1.12,1.04,x,z]],lanternGlass,32,true);
+  wall.userData.solidFootprint=true;
+  for(const y of [.48,4.56]) {
+    const points=[];
+    for(let i=0;i<=36;i++) {
+      const a=i*Math.PI*2/36;
+      points.push([x+Math.cos(a)*(y<1?1.31:1.13),y,
+        z+Math.sin(a)*(y<1?1.22:1.05)]);
+    }
+    curve(root,"continuous engraved brass lip of round tank",points,
+      .045,M.gold,36);
+  }
+  for(const a of [-.85,-.28,.35,.92]) {
+    curve(root,"fine vertical brass seam following curved tank glazing",
+      [[x+Math.cos(a)*1.29,.48,z+Math.sin(a)*1.19],
+        [x+Math.cos(a)*1.32,2.2,z+Math.sin(a)*1.22],
+        [x+Math.cos(a)*1.13,4.56,z+Math.sin(a)*1.04]],
+      .012,M.gold,18);
+  }
+  loft(root,"irregular reef rock inside round habitat",
+    [[.42,.76,.64,x,z],[.72,.91,.79,x-.12,z],
+      [1.1,.58,.51,x+.13,z-.12],[1.38,.15,.15,x+.24,z-.14]],
+    M.deep,15);
+  coralGarden(x,z,true);
+  for(let plant=0;plant<9;plant++) {
+    const a=plant*Math.PI*2/9;
+    const sx=x+Math.cos(a)*.7,sz=z+Math.sin(a)*.62;
+    const h=1.5+(plant%3)*.47;
+    curve(root,"tapered kelp spiraling inside glass",
+      [[sx,.55,sz],[sx+.12*Math.sin(a),h*.55,sz+.14],
+        [sx-.17*Math.cos(a),h,sz-.1]],.025,
+      plant%2?M.kelp:M.leaf,19);
+    for(let leaf=0;leaf<3;leaf++) {
+      const p=petal(root,"ribbed kelp blade inside central tank",
+        sx+.09*Math.sin(a),.9+leaf*.42,sz+.06,
+        .24+leaf*.025,plant%2?M.kelp:M.turquoise,a);
+      p.rotation.x=.45;
+    }
+  }
+  for(let i=0;i<7;i++) {
+    const a=i*Math.PI*2/7;
+    fish(x+Math.cos(a)*.54,1.35+(i%4)*.65,
+      z+Math.sin(a)*.48,.32+(i%3)*.06,
+      i%3?M.gold:M.coral,50+i*.53,a);
+  }
+}
 for(const side of [-1,1]) for(let i=0;i<8;i++) {
   const z=-9.5+i*2.75;
   curve(root,"dappled underwater light across viewing glass",

@@ -102,6 +102,24 @@ def main() -> None:
         )
     published_ids = {frame_id for frame_id, status, _ in registry_rows if status == "Published"}
     assert published_ids == live_ids, "Published scenes in the registry must match live room models"
+    # These elements are baked into independent GLBs, not inferred from the
+    # manifest. Guard against committing author changes without rebuilding.
+    for frame_id in ("02", "03", "04", "07", "08", "09", "10"):
+        room_model = OUTPUT / frames[int(frame_id) - 1]["room"]["modelUrl"].lstrip("/")
+        room_bytes = room_model.read_bytes()
+        json_size = int.from_bytes(room_bytes[12:16], "little")
+        room_nodes = json.loads(room_bytes[20:20 + json_size])["nodes"]
+        assert any("continuous watercolor sky dome" in node.get("name", "") for node in room_nodes), (
+            f"Outdoor room {frame_id} is missing its continuous sky dome"
+        )
+    aquarium_model = OUTPUT / frames[10]["room"]["modelUrl"].lstrip("/")
+    aquarium_bytes = aquarium_model.read_bytes()
+    aquarium_size = int.from_bytes(aquarium_bytes[12:16], "little")
+    aquarium_nodes = json.loads(aquarium_bytes[20:20 + aquarium_size])["nodes"]
+    assert any("solid curved glass habitat" in node.get("name", "") and
+               node.get("extras", {}).get("solidFootprint") for node in aquarium_nodes), (
+        "Room 11 needs the walk-around fish habitat and its collision footprint"
+    )
     for frame_id, status, details in registry_rows:
         if status == "Published":
             title = frames[int(frame_id) - 1]["room"]["title"]
