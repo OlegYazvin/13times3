@@ -9,6 +9,7 @@ import { addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
 import { addContactShadow } from "./stage_shadows.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
+import { paintedFabric } from "./painted_fabric.mjs";
 
 // A friendship remembered across visits: two Chicago play spaces and a dance
 // floor meet in one impossible garden. The places are suggestions, not a claim
@@ -251,25 +252,30 @@ function figure(name, x, z, height, options) {
   person.position.set(x, 0, z); person.rotation.y = options.yaw || 0; root.add(person);
   addContactShadow(person, height);
   const skin = mat(options.skin), hair = mat(options.hair);
-  const outfit = mat(options.outfit), skirt = mat(options.skirt || options.outfit);
-  const leg = height * .42;
+  const outfit = paintedFabric(mat(options.outfit));
+  const skirt = paintedFabric(mat(options.skirt || options.outfit));
+  const childFigure = height < 1.45;
+  const leg = height * (childFigure ? .44 : .49);
   for (const side of [-1, 1]) {
     loft(person, "shaped leg", [[.07, .095, .09, side * .125],
       [leg, .12, .105, side * .12], [leg + .08, .13, .1, side * .12]],
-    options.pants ? mat(options.pants) : skin, 9);
+    options.pants ? paintedFabric(mat(options.pants)) : skin, 9);
     loft(person,"shaped walking shoe with rounded toe",
-      [[.018,.08,.135,side*.125,.115],
-        [.055,.118,.178,side*.125,.105],
-        [.13,.108,.135,side*.125,.045],
-        [.165,.058,.08,side*.125,0]],
+      [[.018,.08,.105,side*.125,.065],
+        [.055,.11,.15,side*.125,.055],
+        [.13,.095,.115,side*.125,.015],
+        [.165,.058,.065,side*.125,-.02]],
       options.shoe ? mat(options.shoe) : M.ink,11);
     curve(person,"fold across walking shoe",
-      [[side*.18,.083,.205],[side*.125,.095,.22],
-        [side*.07,.083,.205]],.006,M.cream,9);
+      [[side*.18,.083,.15],[side*.125,.095,.18],
+        [side*.07,.083,.15]],.006,M.cream,9);
   }
-  loft(person, "tailored clothing with a solid body", [[leg, .23, .17],
-    [leg + .17, .3, .19], [height - .52, .245, .15],
-    [height - .39, .195, .13]], outfit, 13, true);
+  const torsoRings = childFigure ?
+    [[leg, .18, .145], [leg + .07, .205, .16],
+      [height - .39, .175, .125]] :
+    [[leg, .23, .17], [leg + .12, .265, .18],
+      [height - .52, .245, .15], [height - .39, .195, .13]];
+  loft(person, "tailored clothing with a solid body", torsoRings, outfit, 13, true);
   if (options.dress) {
     loft(person, "flared dancing skirt", [[leg - .18, .39, .3],
       [leg, .33, .25], [leg + .19, .235, .18]], skirt, 15);

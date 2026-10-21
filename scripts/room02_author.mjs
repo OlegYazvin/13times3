@@ -10,6 +10,7 @@ import { addOpenSky } from "./open_sky.mjs";
 import { addOlegPortrait, finishOlegPortraits } from "./oleg_portrait.mjs";
 import { addContactShadow } from "./stage_shadows.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
+import { paintedFabric } from "./painted_fabric.mjs";
 
 // A single impossible space: Oleg's desk opens into a street and four
 // simultaneous acts of Jane's support. All figures and props have volume.
@@ -412,6 +413,7 @@ for (const [x, z] of [[3.2, -5.3], [2.7, -.9], [3.7, 3.4]]) {
 }
 
 function person(name, x, z, height, outfit, options = {}) {
+  const cloth = paintedFabric(outfit);
   const group = new THREE.Group();
   group.name = `fully sculpted figure of ${name}`;
   group.position.set(x, 0, z); group.rotation.y = options.yaw || 0; root.add(group);
@@ -421,14 +423,14 @@ function person(name, x, z, height, outfit, options = {}) {
   const oleg = Boolean(options.oleg);
   const skin = jane ? M.janeSkin : oleg ? M.olegSkin : M.skin;
   const hair = options.hair || M.hair;
-  const legHeight = height * .43;
+  const legHeight = height * (child ? .44 : .49);
   for (const s of [-1, 1]) {
     loft(group, "tailored trouser leg with knee and cuff", [[.13, .105, .11, s * .135],
-      [.22, .11, .115, s * .13], [legHeight * .38, .13, .12, s * .135],
+      [.22, .11, .115, s * .13], [Math.max(.27, legHeight * .38), .13, .12, s * .135],
       [legHeight * .59, .115, .12, s * .125],
       [legHeight * .75, .14, .13, s * .135],
       [legHeight, .15, .13, s * .13], [legHeight + .09, .145, .125, s * .13]],
-    options.pants || M.ink, 16);
+    paintedFabric(options.pants || M.ink), 16);
     curvedShoe(group, s, M.desk);
     curve(group, "fold of trouser at the knee", [[s * .23, legHeight * .56, .09],
       [s * .14, legHeight * .54, .13], [s * .045, legHeight * .58, .085]],
@@ -438,11 +440,10 @@ function person(name, x, z, height, outfit, options = {}) {
       [s * .125, legHeight * .72, .119]], .005, M.night, 12);
   }
   loft(group, "tailored cloth silhouette with waist, chest and shoulders",
-    [[legHeight - .05, jane ? .235 : .25, .17],
-      [legHeight + .16, jane ? .26 : .30, .19],
-      [height - .84, jane ? .23 : .27, .165],
-      [height - .56, jane ? .285 : .31, .19],
-      [height - .43, .205, .14]], outfit, 20, true);
+    [[legHeight - .05, jane ? .235 : .245, .17],
+      [legHeight + .10, jane ? .25 : .27, .175],
+      [height - .57, jane ? .27 : .29, .18],
+      [height - .43, .205, .14]], cloth, 20, true);
   loft(group, "sculpted neck emerging from the collar", [[height - .465, .079, .072],
     [height - .39, .071, .068], [height - .34, .064, .064]], skin, 14);
   for (const s of [-1, 1]) {
@@ -481,7 +482,7 @@ function person(name, x, z, height, outfit, options = {}) {
     const hand = options.hands?.[s] || [s * .33, height - 1.02, .16];
     const elbow = [s * .36, (height - .72 + hand[1]) / 2, (hand[2] + .05) / 2];
     sculptSleevedArm(add, group, { shoulder, elbow, hand,
-      outfit, skin, trim: jane ? M.floral : M.paper,
+      outfit: cloth, skin, trim: jane ? M.floral : M.paper,
       size: Math.min(1, height / 1.7) });
     curve(group, "stitched sleeve seam", [[s * .25, height - .48, .09],
       [s * .34, height - .66, .092], [elbow[0], elbow[1], elbow[2] + .075]],
@@ -491,8 +492,8 @@ function person(name, x, z, height, outfit, options = {}) {
   head.name = `${name} modeled and painted head`;
   if (oleg) {
     const jawPivot = height - .48;
-    head.position.y = jawPivot * .35;
-    head.scale.set(.85, .65, .80);
+    head.position.y = jawPivot * .41;
+    head.scale.set(.82, .59, .77);
   } else {
     head.position.y = (height - .26) * .2;
     head.scale.setScalar(.8);

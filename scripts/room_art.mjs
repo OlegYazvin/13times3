@@ -8,6 +8,7 @@ import { addOlegPortrait, addJanePortrait, addGPortrait,
 import { addOpenSky } from "./open_sky.mjs";
 import { addContactShadow } from "./stage_shadows.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
+import { paintedFabric } from "./painted_fabric.mjs";
 
 // Shared sculpting tools for independent storybook worlds. Each room supplies
 // its own palette, architecture, composition and narrative details.
@@ -135,10 +136,14 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
     group.position.set(x, 0, z); group.rotation.y = options.yaw || 0; root.add(group);
     addContactShadow(group, stature);
     const skin = asMaterial(options.skin || "skin"), hair = asMaterial(options.hair || "hair");
-    const outfit = asMaterial(options.outfit || "fabric"), pants = asMaterial(options.pants || "ink");
+    const outfit = paintedFabric(asMaterial(options.outfit || "fabric"));
+    const pants = paintedFabric(asMaterial(options.pants || "ink"));
     const trim = options.trim ? asMaterial(options.trim) :
       asMaterial(outfit.color.clone().offsetHSL(0, -.035, .09).getHex());
-    const leg = stature * .42;
+    // Adult legs carry roughly half the height. The earlier short legs and
+    // oversized footwear made the recurring family look like toy figurines.
+    const childFigure = stature <= 1.45;
+    const leg = stature * (childFigure ? .44 : .49);
     const oleg = name.startsWith("Oleg");
     const jane = name.startsWith("Jane");
     const g = name.startsWith("G ");
@@ -151,20 +156,26 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
           [leg * .67, .109, .115, side * .12],
           [leg, .143, .135, side * .12],
           [leg + .08, .14, .12, side * .12]], pants, 12);
-      loft(group, "formed walking shoe with heel and toe", [[.018, .10, .16, side * .12, .12],
-        [.065, .135, .20, side * .12, .105], [.145, .11, .155, side * .12, .04],
-        [.17, .07, .1, side * .12, .005]], options.shoes || "ink", 12);
+      loft(group, "formed walking shoe with distinct heel, instep and toe",
+        [[.012, .088, .095, side * .12, .055],
+          [.038, .104, .145, side * .12, .055],
+          [.08, .115, .155, side * .12, .045],
+          [.135, .09, .105, side * .12, -.005],
+          [.16, .06, .073, side * .12, -.03]], options.shoes || "ink", 14);
       curve(group, "trouser crease", [[side * .12, .23, .1],
         [side * .13, leg * .56, .113], [side * .11, leg, .105]],
       .006, options.pants || "ink", 12);
       curve(group, "hem folded over walking shoe",
-        [[side * .04, .18, .15], [side * .12, .17, .16],
-          [side * .21, .18, .13]], .008, trim, 8);
+        [[side * .04, .18, .125], [side * .12, .17, .14],
+          [side * .21, .18, .115]], .007, trim, 8);
     }
-    loft(group, "tailored solid clothing with waist and shoulder contours",
-      [[leg, .235, .19], [leg + .13, .285, .205],
-        [leg + .27, .27, .195], [stature - .7, .24, .175],
-        [stature - .54, .295, .19], [stature - .41, .2, .13]],
+    const garmentRings = childFigure ?
+      [[leg, .18, .135], [leg + .045, .2, .15],
+        [stature - .51, .21, .155], [stature - .39, .16, .12]] :
+      [[leg, .225, .16], [leg + .10, .245, .175],
+        [leg + .18, .23, .165], [stature - .55, .275, .18],
+        [stature - .41, .2, .13]];
+    loft(group, "tailored solid clothing with waist and shoulder contours", garmentRings,
       outfit, 16, true);
     loft(group, "modeled neck above folded collar",
       [[stature - .435, .074, .071], [stature - .34, .069, .066],
@@ -176,7 +187,7 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
       const hand = options.hands?.[side] || [side * .31, stature - .95, .14];
       const elbow = [side * .315, (stature - .68 + hand[1]) / 2, hand[2] * .55];
       sculptSleevedArm(add, group, {
-        shoulder: [side * .218, stature - .43, .005], elbow, hand,
+        shoulder: [side * (childFigure ? .17 : .218), stature - .43, .005], elbow, hand,
         outfit, skin, trim, size: Math.min(1, stature / 1.7),
       });
     }
@@ -251,8 +262,8 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
       const head = new THREE.Group();
       head.name = `proportioned sculpted ${name} head and painted likeness`;
       for (const child of group.children.slice(headStart)) head.add(child);
-      const horizontal = oleg ? .85 : zephrine ? .9 : .87;
-      const vertical = oleg ? .65 : zephrine ? .78 : .7;
+      const horizontal = oleg ? .82 : zephrine ? .9 : .85;
+      const vertical = oleg ? .59 : zephrine ? .78 : .66;
       head.scale.set(horizontal, vertical, horizontal * .94);
       head.position.y = (stature - .445) * (1 - vertical);
       group.add(head);

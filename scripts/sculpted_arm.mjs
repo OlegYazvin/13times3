@@ -55,11 +55,24 @@ export function sculptSleevedArm(add, parent, {
     ring(between(lower, wrist, .82), .06, .92), ring(wrist, .06, .9),
   ], trim, 12);
   const tip = [hand[0] + side * .012 * size,
-    hand[1] - .08 * size, hand[2] + .012 * size];
+    hand[1] - .065 * size, hand[2] + .012 * size];
   sweep(add, parent, "sculpted palm and gathered fingers", [
     ring(wrist, .043, .78), ring(between(wrist, tip, .43), .05, .56),
-    ring(between(wrist, tip, .83), .04, .45), ring(tip, .012, .65),
+    ring(between(wrist, tip, .83), .04, .45), ring(tip, .035, .58),
   ], skin, 12);
+  for (let finger = 0; finger < 4; finger++) {
+    const spread = (finger - 1.5) * .018 * size;
+    const start = [tip[0] + spread, tip[1] + .003 * size,
+      tip[2] + .015 * size];
+    const bend = [start[0] + spread * .13, start[1] - .026 * size,
+      start[2] + .01 * size];
+    const end = [bend[0] + spread * .12,
+      bend[1] - (.022 + .008 * (1 - Math.abs(finger - 1.5))) * size,
+      bend[2] + .006 * size];
+    sweep(add, parent, "four separate tapered fingers held in a natural curl", [
+      ring(start, .010, .8), ring(bend, .009, .83), ring(end, .004, .75),
+    ], skin, 7);
+  }
   const thumb = [hand[0] - side * .052 * size,
     hand[1] - .022 * size, hand[2] + .04 * size];
   sweep(add, parent, "separate modeled thumb", [

@@ -44,6 +44,10 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 custom-figure continuity revision: the independent figure authors for frames `01`, `02`, `03`, `04`, and `09` also use continuous sculpted arms, wrists, hands and thumbs instead of visibly segmented cylinder arms and oval hands. Oleg's head proportions in the custom job, blue-car and orchard rooms are aligned with his shared portrait sculpt. Their poses and scene subjects remain unchanged. This aligns the close Oleg, Jane and child figures with the common room figures; portrait and garment detail still need further review.
 
+2026-10-21 human-scale finish revision: Oleg's recurring figure in frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11` now has longer, correctly ordered leg and torso contours, smaller formed shoes, and a more closely proportioned head carrying the same illustrated likeness. Shared family figures and the other independent author paths use a small woven-pigment garment texture and modeled separate fingers; the clothing remains true 3D geometry. The child torso contours are sized separately instead of inheriting an adult ring order. These are revisions to the same scenes, with no change to their frame IDs or stories. The neighboring outdoor memories continue to use independent sky worlds through their portal apertures.
+
+2026-10-21 portrait-hair refinement: Oleg's recurring head sculpt now uses a narrower, warmer-brown side and back hair shell aligned to the painted likeness. This updates frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11` without changing their stories or IDs.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

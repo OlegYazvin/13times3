@@ -5,6 +5,7 @@ import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
 import { addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
+import { paintedFabric } from "./painted_fabric.mjs";
 
 // Frame 01 is authored once as a scene. Its GLB and painting use this same root
 // and the camera stored in gallery.json.
@@ -420,15 +421,16 @@ function face(name, head, skin, iris, options={}) {
   if (!painted) oval(`${name} quiet smile`,0,-.111,.153,.062,.010,.012,rose,head);
 }
 function sculptZephrine() {
+  const rustCloth = paintedFabric(rust);
   const child = new THREE.Group(); child.name="Zephrine — sculpted in the middle of a dance";
   child.userData.solidFootprint = true;
   child.position.set(1.1,.40,-1.53); child.rotation.y=-.13; root.add(child);
   // Rounded toddler proportions and the rust outfit recall the supplied photos.
-  oval("Zephrine rust sweater",0,.72,0,.23,.30,.17,rust,child);
+  oval("Zephrine rust sweater",0,.72,0,.23,.30,.17,rustCloth,child);
   oval("Zephrine round collar",0,.96,.045,.115,.046,.13,skinZephrine,child);
-  oval("Zephrine pants hips",0,.51,0,.22,.15,.17,rust,child);
-  limb("Zephrine supporting leg",[-.11,.48,0],[-.14,.12,.01],.105,.078,rust,child);
-  limb("Zephrine lifted dancing leg",[.10,.48,0],[.28,.22,.13],.105,.076,rust,child);
+  oval("Zephrine pants hips",0,.51,0,.22,.15,.17,rustCloth,child);
+  limb("Zephrine supporting leg",[-.11,.48,0],[-.14,.12,.01],.105,.078,rustCloth,child);
+  limb("Zephrine lifted dancing leg",[.10,.48,0],[.28,.22,.13],.105,.076,rustCloth,child);
   oval("Zephrine left aqua shoe",-.15,.073,.12,.115,.055,.17,aqua,child);
   oval("Zephrine lifted aqua shoe",.29,.18,.24,.12,.052,.16,aqua,child);
   for(const [x,y,z] of [[-.15,.076,.24],[.29,.18,.37]]) {
@@ -436,10 +438,10 @@ function sculptZephrine() {
   }
   sculptSleevedArm(addSculpt,child,{shoulder:[-.2,.91,0],
     elbow:[-.36,1.085,.025],hand:[-.49,1.255,.06],
-    outfit:rust,skin:skinZephrine,trim:parchment,size:.68});
+    outfit:rustCloth,skin:skinZephrine,trim:parchment,size:.68});
   sculptSleevedArm(addSculpt,child,{shoulder:[.2,.91,0],
     elbow:[.34,.83,.08],hand:[.50,.775,.17],
-    outfit:rust,skin:skinZephrine,trim:parchment,size:.68});
+    outfit:rustCloth,skin:skinZephrine,trim:parchment,size:.68});
   for(let i=0;i<3;i++) box("sweater button",0,.84-i*.065,.171,.025,.025,.014,mat(0xe0b687),child);
 
   const head = new THREE.Group(); head.name="Zephrine's blue-eyed face and curly bob";
@@ -461,13 +463,14 @@ function sculptZephrine() {
   return child;
 }
 function sculptJane() {
+  const navyCloth = paintedFabric(navy);
   const jane = new THREE.Group(); jane.name="Jane — sculpted at the signup desk";
   jane.userData.solidFootprint = true;
   jane.position.set(-1.57,0,.28); jane.rotation.y=.09; root.add(jane);
   // A gently tapered dress gives Jane the subtly slimmer silhouette requested.
-  const skirt = new THREE.Mesh(new THREE.CylinderGeometry(.19,.31,.62,18),navy);
+  const skirt = new THREE.Mesh(new THREE.CylinderGeometry(.19,.31,.62,18),navyCloth);
   skirt.name="Jane's navy dress skirt"; skirt.position.set(0,.59,0); jane.add(skirt);
-  oval("Jane navy bodice",0,1.03,0,.215,.29,.16,navy,jane);
+  oval("Jane navy bodice",0,1.03,0,.215,.29,.16,navyCloth,jane);
   oval("Jane neckline",0,1.25,.055,.113,.048,.115,skinJane,jane);
   limb("Jane left leg",[-.11,.39,0],[-.12,.08,.035],.072,.054,skinJane,jane);
   limb("Jane right leg",[.11,.39,0],[.13,.08,.04],.072,.054,skinJane,jane);

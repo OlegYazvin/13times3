@@ -9,6 +9,7 @@ import { addOlegPortrait, addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
 import { addContactShadow } from "./stage_shadows.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
+import { paintedFabric } from "./painted_fabric.mjs";
 
 // A single authored world: the painting and exported GLB share this root.
 // The photographs stay private. Nothing here embeds a photographic image.
@@ -383,32 +384,33 @@ function face(parent, height, hair, { glasses = false, beard = false, bun = fals
       .029 - i * .003, hair);
   }
   if (shellGroup) {
-    shellGroup.scale.set(.85, .65, .80);
-    shellGroup.position.y = (height - .42) * .35;
+    shellGroup.scale.set(.82, .59, .77);
+    shellGroup.position.y = (height - .42) * .41;
   }
 }
 function person(name, x, z, height, outfit, hair, options = {}) {
+  const cloth = paintedFabric(outfit);
   const group = new THREE.Group(); group.name = `three-dimensional portrait of ${name}`;
   group.position.set(x, 0, z); root.add(group);
   addContactShadow(group, height);
-  const legHeight = height * .43;
+  const legHeight = height * (options.child ? .44 : .49);
   for (const s of [-1, 1]) {
     const leg = sculptLoft(group, "cloth trouser leg with taper", [
       [.07, .13, .13, s * .15], [.21, .115, .11, s * .15],
       [legHeight, .105, .105, s * .14], [legHeight + .15, .14, .12, s * .13],
-    ], options.pants || M.ink, 10);
+    ], paintedFabric(options.pants || M.ink), 10);
     leg.rotation.z = s * .03;
     const shoe = sculptLoft(group, "shaped walking shoe with rounded toe", [
-      [.015, .115, .18, s * .15, .1], [.07, .145, .21, s * .15, .09],
-      [.145, .11, .15, s * .15, .035], [.17, .07, .1, s * .15, 0],
+      [.015, .088, .1, s * .15, .055], [.06, .11, .155, s * .15, .05],
+      [.135, .09, .11, s * .15, .01], [.17, .065, .065, s * .15, -.025],
     ], options.shoes || M.bark, 14);
     shoe.rotation.y = s * .07;
-    box(group, "shoe sole", s * .15, .012, .08, .28, .03, .4, M.ink);
+    box(group, "shoe sole", s * .15, .012, .06, .225, .024, .29, M.ink);
   }
   const torso = sculptLoft(group, "tailored garment silhouette, solid for collision", [
     [legHeight, .29, .18], [legHeight + .15, .32, .21],
     [height - .57, .27, .18], [height - .43, .21, .15],
-  ], outfit, 15);
+  ], cloth, 15);
   torso.userData.solidFootprint = true;
   for (const s of [-1, 1]) {
     const shoulder = [s * .24, height - .48, 0];
@@ -416,7 +418,7 @@ function person(name, x, z, height, outfit, hair, options = {}) {
     const elbow = [s * (options.armsWide ? .44 : .34),
       (height - .76 + hand[1]) / 2 + .09, (hand[2] + .04) / 2];
     sculptSleevedArm(put, group, { shoulder, elbow, hand,
-      outfit, skin: options.child ? skinChild : skin, trim: M.cream,
+      outfit: cloth, skin: options.child ? skinChild : skin, trim: M.cream,
       size: Math.min(1, height / 1.7) });
   }
   face(group, height - .04, hair, { ...options, oleg: name === "Oleg",

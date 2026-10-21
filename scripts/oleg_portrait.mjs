@@ -8,9 +8,9 @@ import zephrineFaceURL from "./assets/room02/zephrine-face.webp";
 // reference photographs stay private; only this small painted texture ships.
 const portraitMaterialPromises = new Map();
 const portraitMeshes = new WeakMap();
-const hairPaint = new THREE.MeshStandardMaterial({ color: 0x382b2b,
+const hairPaint = new THREE.MeshStandardMaterial({ color: 0x49352f,
   roughness: .94, side: THREE.DoubleSide });
-const hairGlint = new THREE.MeshStandardMaterial({ color: 0x594239,
+const hairGlint = new THREE.MeshStandardMaterial({ color: 0x624a3e,
   roughness: .98, side: THREE.DoubleSide });
 const framePaint = new THREE.MeshStandardMaterial({ color: 0x28282e,
   roughness: .72, side: THREE.DoubleSide });
@@ -59,11 +59,11 @@ function taperedLock(parent, name, points, radii, material) {
 
 function sculptHairBehindFace(parent, faceY) {
   const profile = [
-    [-.43, .105, .08, -.045],
-    [-.31, .17, .13, -.04],
-    [-.12, .195, .15, -.037],
-    [.07, .19, .153, -.035],
-    [.19, .155, .125, -.04],
+    [-.43, .09, .075, -.045],
+    [-.31, .15, .12, -.04],
+    [-.12, .17, .14, -.037],
+    [.07, .17, .143, -.035],
+    [.19, .14, .12, -.04],
     [.27, .045, .05, -.045],
   ];
   const sides = 24, positions = [], uvs = [], indices = [];

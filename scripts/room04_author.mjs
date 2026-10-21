@@ -9,6 +9,7 @@ import { addOlegPortrait, addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
 import { addContactShadow } from "./stage_shadows.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
+import { paintedFabric } from "./painted_fabric.mjs";
 
 // A Roscoe Village walk imagined as a long paper street. The blue toy car is
 // an original sculpted object informed by Oleg's Step2 product reference;
@@ -288,25 +289,33 @@ beam(car, "shared parent push grip", [-.37, 1.48, -1.05],
   [.37, 1.48, -1.05], .055, .055, M.dark);
 
 function adult(name, x, z, outfit, options = {}) {
+  const cloth = paintedFabric(outfit);
   const group = new THREE.Group(); group.name = `fully sculpted figure of ${name}`;
   group.position.set(x, 0, z); group.rotation.y = options.yaw || 0; root.add(group);
   const skin = options.skin || M.janeSkin, height = options.height || 1.69;
   addContactShadow(group, height);
+  const hip = height * .49;
   for (const side of [-1, 1]) {
-    loft(group, "trouser leg", [[.08, .105, .1, side * .125],
-      [.72, .12, .1, side * .13], [.8, .14, .12, side * .13]],
-    options.pants || M.dark, 10);
-    box(group, "solid walking shoe", side * .13, .07, .09, .23, .13, .31, M.dark);
+    loft(group, "trouser leg with knee and tapered ankle", [[.13, .09, .09, side * .125],
+      [hip * .48, .105, .10, side * .13],
+      [hip * .68, .11, .105, side * .13],
+      [hip, .14, .115, side * .13]],
+    paintedFabric(options.pants || M.dark), 10);
+    loft(group, "sculpted walking shoe with toe, sole and instep",
+      [[.014, .09, .10, side * .13, .055],
+        [.045, .11, .145, side * .13, .045],
+        [.09, .115, .13, side * .13, .02],
+        [.15, .075, .075, side * .13, -.025]], M.dark, 14);
   }
-  loft(group, "folded shirt and solid body", [[.74, .255, .18],
-    [.92, .3, .19], [height - .48, .26, .16],
-    [height - .38, .2, .13]], outfit, 14, true);
+  loft(group, "folded shirt and solid body", [[hip - .03, .245, .17],
+    [hip + .17, .28, .185], [height - .48, .25, .16],
+    [height - .38, .2, .13]], cloth, 14, true);
   for (const side of [-1, 1]) {
     const hand = options.hands?.[side] || [side * .33, height - 1.0, .18];
     const elbow = [side * .35, (height - .72 + hand[1]) / 2, hand[2] * .55];
     sculptSleevedArm(add, group, {
       shoulder: [side * .22, height - .42, 0], elbow, hand,
-      outfit, skin, trim: M.cream,
+      outfit: cloth, skin, trim: M.cream,
       size: Math.min(1, height / 1.7),
     });
   }
@@ -357,8 +366,8 @@ function adult(name, x, z, outfit, options = {}) {
     const head = new THREE.Group();
     head.name = `${name} proportioned sculpted head`;
     for (const child of group.children.slice(headStart)) head.add(child);
-    head.scale.set(.85, .65, .80);
-    head.position.y = (height - .46) * .35;
+    head.scale.set(.82, .59, .77);
+    head.position.y = (height - .46) * .41;
     group.add(head);
   }
   curve(group, "stitched neckline", [[-.14, height - .43, .13],
