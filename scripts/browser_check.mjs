@@ -150,7 +150,7 @@ try {
   await fallbackPage.goto(`${base}/explore/`, { waitUntil: "domcontentloaded" });
   await fallbackPage.locator("#fallback").waitFor({ state: "visible" });
   assert.equal(await fallbackPage.locator(".frame-list li").count(), 41);
-  assert.equal(await fallbackPage.locator(".fallback-previews img").count(), 3);
+  assert.equal(await fallbackPage.locator(".fallback-previews img").count(), 4);
   assert.equal(await fallbackPage.locator(".frame-list li").first().textContent(), "Zephrine's first stage");
   await context.close();
   console.log("WebGL fallback: 41 frames listed with the completed painting caption");
@@ -216,12 +216,12 @@ try {
   assert.equal(exited.cameraFov, beforeExit.cameraFov);
   assert.equal(exited.activeRoom, "01", "room stays visible nearby after exit");
   await roomPage.screenshot({ path: ".cache/room01-returned-continuous.png" });
-  await roomPage.evaluate((x) => window.__galleryTestPose(x, -9.0916666667, -Math.PI / 2), leftWall + .55);
+  await roomPage.evaluate((x) => window.__galleryTestPose(x, -9.0916666667, Math.PI / 2), rightWall - .55);
   await roomPage.keyboard.down("w");
   await roomPage.waitForTimeout(400);
   await roomPage.keyboard.up("w");
-  assert.ok((await roomPage.evaluate(() => window.__galleryDebug().x)) > leftWall + PLAYER_RADIUS - .02,
-    "blank frame 03 must remain solid");
+  assert.ok((await roomPage.evaluate(() => window.__galleryDebug().x)) < rightWall - PLAYER_RADIUS + .02,
+    "blank frame 04 must remain solid");
   await roomPage.evaluate(() => window.__galleryTestPose(22, 0, 0));
   await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === null, null, { timeout: 12000 });
   assert.equal((await roomPage.evaluate(() => window.__galleryDebug())).paintingOpacity, 1);
@@ -278,6 +278,48 @@ try {
   assert.deepEqual(jobErrors, []);
   await jobContext.close();
   console.log("Room 02: painting, live doorway, desk and figure collision, exit, and cleanup");
+
+  const friendshipContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
+  const friendshipPage = await friendshipContext.newPage();
+  const friendshipErrors = [];
+  friendshipPage.on("pageerror", error => friendshipErrors.push(error.message));
+  await friendshipPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
+  await friendshipPage.getByRole("button", { name: /begin walking/i }).click();
+  await friendshipPage.evaluate(() => window.__galleryTestPose(0, -9.0916666667, -Math.PI / 2));
+  await friendshipPage.waitForFunction(() => window.__galleryDebug().activeRoom === "03", null, { timeout: 15000 });
+  await friendshipPage.screenshot({ path: ".cache/room03-painting-far.png" });
+  await friendshipPage.evaluate((x) => window.__galleryTestPose(x, -9.0916666667, -Math.PI / 2), leftWall + .55);
+  await friendshipPage.screenshot({ path: ".cache/room03-open-doorway.png" });
+  const friendshipBefore = await friendshipPage.evaluate(() => window.__galleryDebug());
+  await friendshipPage.keyboard.down("w");
+  await friendshipPage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
+  await friendshipPage.keyboard.up("w");
+  const friendshipEntered = await friendshipPage.evaluate(() => window.__galleryDebug());
+  assert.equal(friendshipEntered.yaw, friendshipBefore.yaw);
+  assert.equal(friendshipEntered.cameraFov, friendshipBefore.cameraFov);
+  assert.ok(friendshipEntered.modelColliderCount >= 10, "friends, mothers, and park structures must collide");
+  await friendshipPage.screenshot({ path: ".cache/room03-entered-continuous.png" });
+  await friendshipPage.evaluate(() => window.__galleryTestRoomPose(-.58, 2.7, 0));
+  await friendshipPage.keyboard.down("w");
+  await friendshipPage.waitForTimeout(420);
+  await friendshipPage.keyboard.up("w");
+  assert.ok((await friendshipPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 2.35,
+    "Zephrine's figure should be solid");
+  await friendshipPage.evaluate(() => window.__galleryTestRoomPose(0, 6.4, Math.PI / 2));
+  const friendshipBeforeExit = await friendshipPage.evaluate(() => window.__galleryDebug());
+  await friendshipPage.keyboard.down("w");
+  await friendshipPage.waitForFunction(() => window.__galleryDebug().mode === "hall", null, { timeout: 12000 });
+  await friendshipPage.keyboard.up("w");
+  const friendshipExited = await friendshipPage.evaluate(() => window.__galleryDebug());
+  assert.equal(friendshipExited.yaw, friendshipBeforeExit.yaw);
+  assert.equal(friendshipExited.cameraFov, friendshipBeforeExit.cameraFov);
+  assert.equal(friendshipExited.activeRoom, "03");
+  await friendshipPage.screenshot({ path: ".cache/room03-returned-continuous.png" });
+  await friendshipPage.evaluate(() => window.__galleryTestPose(22, 0, 0));
+  await friendshipPage.waitForFunction(() => window.__galleryDebug().activeRoom === null, null, { timeout: 12000 });
+  assert.deepEqual(friendshipErrors, []);
+  await friendshipContext.close();
+  console.log("Room 03: friendship painting, doorway, figure collision, return, and cleanup");
 
   const orchardContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
   const orchardPage = await orchardContext.newPage();
@@ -369,6 +411,15 @@ try {
   await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
   await phonePage.screenshot({ path: ".cache/room02-mobile-entered-continuous.png" });
+  await phonePage.evaluate((x) => window.__galleryTestPose(x, -9.0916666667, -Math.PI / 2), leftWall + .55);
+  await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "03", null, { timeout: 15000 });
+  await phonePage.screenshot({ path: ".cache/room03-mobile-doorway.png" });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ ...point, y: point.y - 38 }] });
+  await phonePage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
+  await phonePage.screenshot({ path: ".cache/room03-mobile-entered-continuous.png" });
   assert.deepEqual(phoneErrors, []);
   await phoneContext.close();
   console.log("Phone emulation: joystick crossed the same doorway both ways at a stable FOV");

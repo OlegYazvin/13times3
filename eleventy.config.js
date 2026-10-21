@@ -48,7 +48,7 @@ module.exports = function (eleventyConfig) {
   );
   eleventyConfig.addWatchTarget("src/assets/explore/app.js");
   eleventyConfig.addWatchTarget("src/assets/explore/resolutions-scott-buckley.mp3");
-  for (const id of ["01", "02", "09"]) eleventyConfig.addWatchTarget(`src/assets/explore/room${id}`);
+  for (const id of ["01", "02", "03", "09"]) eleventyConfig.addWatchTarget(`src/assets/explore/room${id}`);
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   eleventyConfig.addPassthroughCopy("src/robots.txt");
   eleventyConfig.addPassthroughCopy({

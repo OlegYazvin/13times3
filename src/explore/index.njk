@@ -39,7 +39,7 @@ eleventyExcludeFromCollections: true
         <div class="welcome-card">
           <p class="eyebrow">For Jane · forty-one frames</p>
           <h1 id="welcome-title">Step into the in-between.</h1>
-          <p>A winding hallway holds forty-one frames. Frame 01 opens into Zephrine's first stage, frame 02 into Jane's support during Oleg's job search, and frame 09 into a first apple-picking visit with friends. The other frames are still waiting.</p>
+          <p>A winding hallway holds forty-one frames. Frame 01 opens into Zephrine's first stage, frame 02 into Jane's support during Oleg's job search, frame 03 into Zephrine and Charlize's friendship, and frame 09 into a first apple-picking visit with friends. The other frames are still waiting.</p>
           <p>Walk through a finished painting to explore its frozen scene, then turn around and walk through the gold-edged doorway to return to the gallery.</p>
           <p class="control-note"><strong>On your phone:</strong> move with the joystick. Drag anywhere else on the scene and hold left or right to keep turning; lift to stop. Drag up or down to look. <strong>On a computer:</strong> use W A S D or arrow keys and drag to look.</p>
           <p class="music-note">Music fades in when you begin. Use Sound to turn it off or on.</p>
@@ -52,7 +52,7 @@ eleventyExcludeFromCollections: true
         <div class="fallback-card">
           <p class="eyebrow">The gallery</p>
           <h1>The gallery is waiting.</h1>
-          <p>This browser could not open the 3D hallway. Frames 01, 02, and 09 are finished paintings; the other frames are waiting.</p>
+          <p>This browser could not open the 3D hallway. Frames 01, 02, 03, and 09 are finished paintings; the other frames are waiting.</p>
           <div class="fallback-previews">
             {% for frame in gallery.frames %}{% if frame.room.modelUrl %}
               <figure><img class="fallback-preview" src="{{ frame.room.previewImage | url }}?v={{ galleryRoomVersion }}" alt="{{ frame.room.caption }}"><figcaption>{{ frame.room.caption }}</figcaption></figure>

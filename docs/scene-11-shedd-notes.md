@@ -1,6 +1,6 @@
 # Frame 11: Shedd Aquarium with G
 
-Oleg's scene idea: “We took zephrine to the Shedd aquairum with G.” G is Oleg's mother and Zephrine's grandmother. She is **not** Anna Shersher, who is Jane's mother. This is a planned memory only: keep frame `11` blank in the gallery manifest until Oleg asks to build it.
+Oleg's scene idea: “We took zephrine to the Shedd aquairum with G.” G is Oleg's mother and Zephrine's grandmother. She is **not** Anna Shersher, who is Jane's mother. The user has asked for the reserved scenes to be built; frame `11` stays blank until its room is authored and published.
 
 ## Private character references
 
@@ -16,6 +16,8 @@ These photos identify likenesses, not the aquarium's location, date, exhibit vis
 ## Atmosphere and setting for eventual build
 
 Oleg wants inspiration from photographs of the real Shedd Aquarium without a literal reconstruction. Aim for a majestic, coherent 3D storybook aquarium with recognizable architectural cues and a family-centered frozen moment. The fish can drift or turn slightly in a restrained loop while the people and main moment remain still. Do not make the entire tableau a static flat image.
+
+On 2026-10-21, Oleg chose **G and Zephrine wondering at the fish together** as the central moment. Give G a clear, affectionate role beside Zephrine. Keep Jane and Oleg present only as the composition supports the family memory; do not invent a named exhibit they visited.
 
 Before authoring, inspect current and period-appropriate images of the aquarium, including [Shedd's history of the building](https://www.sheddaquarium.org/about-shedd/vision/history) and [Wonder of Water in its historic rotunda](https://www.sheddaquarium.org/exhibits/wonder-of-water). Shedd describes a white marble neoclassical building with an aquatic-themed glass dome and an octagonal original footprint; the rotunda now has two towering freshwater and saltwater habitats. These are visual vocabulary, not a claim that the family saw a particular exhibit. Shedd's exhibits have changed over time, so verify what existed when the visit happened if Oleg later supplies its date or exhibit details.
 

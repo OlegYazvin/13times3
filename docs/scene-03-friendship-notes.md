@@ -6,6 +6,8 @@ Oleg says Jane put sustained effort into making sure Zephrine could see Charlize
 
 This memory overlaps frame `01` only in its dance-class setting. Frame `01` is the signup moment; frame `03` is the ongoing friendship between Zephrine and Charlize and the two mothers' bond. It also differs from frame `10`, the first Maggie Daley Park visit with a different group of friends and their two children. Do not assume Charlize or Aibike are in frame `10`'s photos.
 
+The published room uses the photo-backed head-tilt, clothing colors, skin tones and hair as stylized 3D figure cues. Aibike does not have a supplied likeness; her figure represents her role without claiming exact features. The park and dance areas symbolize repeated time together rather than asserting a specific event, first meeting, or apparatus used. The original and sanitized reference photos stay private.
+
 ## Public setting references
 
 The [Chicago Park District's Hamlin Park page](https://www.chicagoparkdistrict.com/parks-facilities/hamlin-hannibal-park) describes its larger park and playground at 3035 N Hoyne Avenue. Its [Fellger Park page](https://www.chicagoparkdistrict.com/parks-facilities/fellger-charles-park) describes a much smaller shaded playlot at Belmont and Damen, with a soft-surface playground. [Visceral Dance's youth program](https://www.visceraldance.com/youthprogram) is at 3121 N Rockwell Avenue. Use those differences to make three linked memories legible without asserting which exact equipment the girls used or what date a class occurred.

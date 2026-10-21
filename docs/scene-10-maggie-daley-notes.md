@@ -2,6 +2,8 @@
 
 Oleg's scene idea: “We visited maggie daley park for the first time with Zephrine!” He says Zephrine is his daughter and that the attached photos are references for the friends who went with them and their two children. Oleg has since asked for the planned rooms to be built; frame `10` remains planned until a room is authored. The friends' names and the specific play structures Zephrine used remain unknown.
 
+On 2026-10-21, Oleg chose **shared play** as the room's center. Give the friends and their two children an active role in the frozen group moment; the park's structures should set the world without claiming the family used a particular feature.
+
 ## Private references
 
 The uploaded archive `/data/Downloads/Photos-1-001(3).zip` contained two HEIC photos. Resized JPEG copies, without EXIF or location metadata, are stored at `.secrets/reference-photos/maggie-daley-park/IMG_3259.jpg` and `IMG_3253.jpg`. Both `.secrets/` and `.cache/` are excluded from Git and the published site. Never publish these reference photos without a separate request.

@@ -110,7 +110,7 @@ def main() -> None:
     assert len(first_room["colliders"]) == 4
     assert sum(collider.get("shape") == "circle" for collider in first_room["colliders"]) == 2
     assert all(not frame["room"]["previewImage"] and not frame["room"]["modelUrl"]
-               for index, frame in enumerate(frames) if index not in (0, 1, 8))
+               for index, frame in enumerate(frames) if index not in (0, 1, 2, 8))
     preview = OUTPUT / first_room["previewImage"].lstrip("/")
     model = OUTPUT / first_room["modelUrl"].lstrip("/")
     assert preview.read_bytes()[:4] == b"RIFF"
@@ -137,6 +137,22 @@ def main() -> None:
     job_json = json.loads(job_glb[20:20 + job_json_length])
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in job_json["nodes"]) >= 20, "Room 02 needs solid desk, figures, and props"
     assert not any("company" in node.get("name", "").lower() for node in job_json["nodes"]), "Do not name a company in room 02"
+    friendship_room = frames[2]["room"]
+    assert friendship_room["title"] == "Jane made sure Zephrine has a best friend (Charlize)"
+    assert friendship_room["caption"] == "A friendship Jane made room for"
+    assert friendship_room["dimensionsM"] == [11.8, 5.6, 14.4]
+    friend_preview = OUTPUT / friendship_room["previewImage"].lstrip("/")
+    friend_model = OUTPUT / friendship_room["modelUrl"].lstrip("/")
+    assert friend_preview.read_bytes()[:4] == b"RIFF"
+    assert friend_model.read_bytes()[:4] == b"glTF"
+    assert friend_preview.stat().st_size + friend_model.stat().st_size < 8_000_000
+    friend_glb = friend_model.read_bytes()
+    friend_json_length = int.from_bytes(friend_glb[12:16], "little")
+    friend_json = json.loads(friend_glb[20:20 + friend_json_length])
+    assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in friend_json["nodes"]) >= 10, "Room 03 needs solid people and play structures"
+    assert any("Zephrine" in node.get("name", "") for node in friend_json["nodes"])
+    assert any("Charlize" in node.get("name", "") for node in friend_json["nodes"])
+    assert any("Aibike" in node.get("name", "") for node in friend_json["nodes"])
     orchard_room = frames[8]["room"]
     assert orchard_room["title"] == "We FINALLY visited our friends in Ithaca for the first time where Zephrine got to try apple picking for the first time."
     assert orchard_room["caption"] == "First apples with friends"
@@ -198,7 +214,7 @@ def main() -> None:
 
     total_bytes = sum(path.stat().st_size for path in OUTPUT.rglob("*") if path.is_file())
     assert total_bytes < 1_000_000_000, "GitHub Pages published-site limit exceeded"
-    print(f"Verified 39 detail pages, 2 grid routes, credits, 41 gallery frames (rooms 01, 02, and 09 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
+    print(f"Verified 39 detail pages, 2 grid routes, credits, 41 gallery frames (rooms 01, 02, 03, and 09 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
 
 
 if __name__ == "__main__":
