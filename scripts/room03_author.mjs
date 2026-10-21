@@ -3,6 +3,7 @@ import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
+import { openSky } from "./open_sky.mjs";
 
 // A friendship remembered across visits: two Chicago play spaces and a dance
 // floor meet in one impossible garden. The places are suggestions, not a claim
@@ -32,7 +33,6 @@ const mat = (color, extra = {}) => new THREE.MeshStandardMaterial({
   color, map: grain, roughness: .93, metalness: 0, side: THREE.DoubleSide, ...extra,
 });
 const M = Object.fromEntries(Object.entries(C).map(([key, value]) => [key, mat(value)]));
-const skyMat = new THREE.MeshBasicMaterial({ color: C.sky, side: THREE.DoubleSide });
 function add(parent, name, geometry, material, x = 0, y = 0, z = 0) {
   const mesh = new THREE.Mesh(geometry, material);
   mesh.name = name; mesh.position.set(x, y, z); parent.add(mesh); return mesh;
@@ -109,14 +109,15 @@ ground.setAttribute("color", new THREE.Float32BufferAttribute(groundColors, 3));
 ground.computeVertexNormals();
 add(root, "the ground where park visits become a dance floor", ground,
   mat(0xffffff, { vertexColors: true }));
+const openAir = openSky(C.sky, 14);
 for (const x of [-5.88, 5.88]) {
-  const side = add(root, "wraparound watercolor sky", new THREE.PlaneGeometry(14.4, 5.6),
-    skyMat, x, 2.8, 0); side.rotation.y = Math.PI / 2;
+  const side = add(root, "wraparound watercolor sky", openAir.panel(14.4),
+    openAir.sideMaterial, x, 7, 0); side.rotation.y = Math.PI / 2;
 }
-add(root, "far sky behind the shared memories", new THREE.PlaneGeometry(11.8, 5.6),
-  skyMat, 0, 2.8, -7.19);
-const ceiling = new THREE.PlaneGeometry(11.8, 14.4); ceiling.rotateX(Math.PI / 2);
-add(root, "pale sky overhead", ceiling, skyMat, 0, 5.59, 0);
+add(root, "far sky behind the shared memories", openAir.panel(11.8),
+  openAir.sideMaterial, 0, 7, -7.19);
+add(root, "pale sky overhead", openAir.roof(11.8, 14.4),
+  openAir.topMaterial, 0, 13.99, 0);
 
 // Three generous paths braid through the space. The middle stays clear from
 // the threshold to the central pair, with side routes around the play pieces.

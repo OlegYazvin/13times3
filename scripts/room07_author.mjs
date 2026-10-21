@@ -16,10 +16,10 @@ const C = {
 };
 const art = createRoomArt({ index: 6,
   title: "G shows Zephrine blueberries while Oleg carries her high",
-  width: 12.8, height: 5.8, depth: 16.6, colors: C, seed: 707707 });
+  width: 12.8, height: 15.0, depth: 16.6, colors: C, seed: 707707 });
 const { root, M, random, add, box, beam, curve, loft, petal,
   wrapSky, ground, person, exportRoom } = art;
-wrapSky();
+wrapSky(C.sky, true);
 ground(C.ground, (x, z) => {
   const path = Math.exp(-Math.pow((x - .23 * Math.sin(z * .4)) / 1.45, 2));
   return new THREE.Color(C.grass).lerp(new THREE.Color(C.linen), path * .68);
@@ -108,7 +108,7 @@ const oleg = person("Oleg with Zephrine on his shoulders", -.58, 1.12, 1.75, {
   hands: { "-1": [-.35, 1.04, .24], "1": [.37, 1.12, .31] }, yaw: -.14,
 });
 const zeph = person("Zephrine picking her own blueberries up high",
-  -.58, 1.12, 1.04, {
+  -.58, .86, 1.04, {
     skin: M.skin, hair: M.zephHair, outfit: M.rose, skirt: M.peach,
     pants: M.fabric, dress: true, curls: true,
     hands: { "1": [.66, .67, -.38], "-1": [-.29, .66, .15] }, yaw: -.1,

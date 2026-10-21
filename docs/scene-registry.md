@@ -20,6 +20,8 @@ The gallery has 41 stable frame IDs. The 39 original achievement pages are a sep
 
 Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unassigned blank portals.
 
+2026-10-21 visual revision: frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11` contain Oleg. His recurring sculpted figure now uses a shared illustrated likeness based on the private references. Outdoor or outdoor-blended frames `02`, `03`, `04`, `07`, `08`, `09`, and `10` have taller sky worlds. All published rooms remain on their original frame IDs; the hallway now treats each as a separate portal world, so adjacent worlds can overlap behind the frames without showing through each other.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

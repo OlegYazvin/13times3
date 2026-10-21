@@ -23,7 +23,7 @@ The room uses [Shedd's history of the building](https://www.sheddaquarium.org/ab
 
 ## Portal topology and movement requirement
 
-The interior marble return arch is freestanding, with a walkable loop behind either post. The actual hall boundary is 1.85 meters farther back, so Jane can circle the posts while remaining inside the aquarium; only crossing the centered gallery aperture exits. This retains a single world camera, direct parallax, and continuous position and field of view. The shallow area behind the arch is the physical compromise imposed by placing a room behind an existing hallway wall. Test the loop, aperture, collision, and visual treatment from inside before accepting it.
+The interior marble return arch is freestanding, with a walkable loop behind either post. The gallery aperture sits 1.85 meters farther back; only crossing that opening exits. The aquarium and gallery now render in separate spaces through a stencil doorway, so neighboring portal worlds can overlap without intruding. The camera position, direction, and field of view remain continuous. Test the loop, aperture, collision, and visual treatment from inside before accepting it.
 
 Painted deep-water side panoramas, small fish, and sea fans keep the gallery's plaster out of the view from behind the arch. The loop and posts were checked from both sides in browser emulation.
 

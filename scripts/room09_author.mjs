@@ -3,6 +3,8 @@ import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
+import { openSky } from "./open_sky.mjs";
+import { addOlegPortrait, finishOlegPortraits } from "./oleg_portrait.mjs";
 
 // A single authored world: the painting and exported GLB share this root.
 // The photographs stay private. Nothing here embeds a photographic image.
@@ -143,26 +145,17 @@ for (let i = 0; i < 24; i++) {
 
 // Broad sculpted hills and a color-washed sky stay behind the grove. They are
 // geometry, with depth and side walls, never photographic planes or cutouts.
+const openAir = openSky(P.sky, 15);
 function skyPanel(name, width, x, z, angle = 0) {
-  const geometry = new THREE.PlaneGeometry(width, 5.82, 1, 10);
-  const colors = [];
-  for (let i = 0; i < geometry.attributes.position.count; i++) {
-    const height = geometry.attributes.position.getY(i) + 2.91;
-    const color = new THREE.Color(0xd3b8a2).lerp(new THREE.Color(P.sky), Math.min(1, height / 5.82));
-    colors.push(color.r, color.g, color.b);
-  }
-  geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
-  const panel = put(root, name, geometry,
-    new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide }), x, 2.9, z);
+  const panel = put(root, name, openAir.panel(width),
+    openAir.sideMaterial, x, 7.5, z);
   panel.rotation.y = angle;
 }
 skyPanel("painted dusk sky at the orchard horizon", 11.64, 0, -7.085);
 skyPanel("west horizon wrapping into the orchard", 14.24, -5.79, 0, Math.PI / 2);
 skyPanel("east horizon wrapping into the orchard", 14.24, 5.79, 0, Math.PI / 2);
-const skyRoof = new THREE.PlaneGeometry(11.64, 14.24);
-skyRoof.rotateX(Math.PI / 2);
-put(root, "open color-washed sky above the branches", skyRoof,
-  new THREE.MeshBasicMaterial({ color: P.sky, side: THREE.DoubleSide }), 0, 5.8, 0);
+put(root, "open color-washed sky above the branches", openAir.roof(11.64, 14.24),
+  openAir.topMaterial, 0, 14.99, 0);
 for (const [shift, tint] of [[-6.84, M.distant], [-6.58, M.leaf]]) {
   const points = [];
   for (let i = 0; i <= 30; i++) {
@@ -351,33 +344,36 @@ for (const [offset, material] of [[0, M.ochre], [.19, M.cream]]) {
 
 // Sculpted figures use lofts, folds, seams, and raised facial features. They
 // remain three-dimensional from every side. No reference photo is in the GLB.
-function face(parent, height, hair, { glasses = false, beard = false, bun = false, longHair = false } = {}) {
+function face(parent, height, hair, { glasses = false, beard = false, bun = false, longHair = false, oleg = false } = {}) {
   const head = sculptLoft(parent, "faceted cheek and jaw portrait", [
     [height - .42, .065, .07], [height - .34, .145, .13],
     [height - .16, .173, .15], [height + .02, .15, .14],
     [height + .13, .09, .085], [height + .17, .018, .018],
   ], skin, 15);
   head.name = "sculpted portrait face";
+  if (oleg) addOlegPortrait(parent, height,
+    [[-.42, .065, .07], [-.34, .145, .13], [-.16, .173, .15],
+      [.02, .15, .14], [.13, .09, .085]], skin);
   for (const s of [-1, 1]) {
     put(parent, "warm ear and cheek detail", new THREE.DodecahedronGeometry(.037, 0), skin,
       s * .166, height - .22, .01);
-    put(parent, "painted eye white", new THREE.SphereGeometry(.026, 9, 7), M.cream,
+    if (!oleg) put(parent, "painted eye white", new THREE.SphereGeometry(.026, 9, 7), M.cream,
       s * .069, height - .15, .145);
-    put(parent, "small dark iris", new THREE.SphereGeometry(.013, 8, 6), M.ink,
+    if (!oleg) put(parent, "small dark iris", new THREE.SphereGeometry(.013, 8, 6), M.ink,
       s * .069, height - .15, .168);
-    tube(parent, "expressive brow", [[s * .032, height - .09, .15],
+    if (!oleg) tube(parent, "expressive brow", [[s * .032, height - .09, .15],
       [s * .072, height - .08, .155], [s * .112, height - .092, .14]], .009, hair);
   }
-  sculptLoft(parent, "small raised nose", [[height - .28, .017, .019, 0, .15],
+  if (!oleg) sculptLoft(parent, "small raised nose", [[height - .28, .017, .019, 0, .15],
     [height - .16, .024, .027, 0, .178], [height - .14, .008, .01, 0, .16]], skin, 8);
-  tube(parent, "gentle portrait mouth", [[-.052, height - .315, .119],
+  if (!oleg) tube(parent, "gentle portrait mouth", [[-.052, height - .315, .119],
     [0, height - .329, .133], [.052, height - .315, .119]], .009, M.red);
-  if (beard) {
+  if (beard && !oleg) {
     for (const s of [-1, 1]) tube(parent, "short painted beard", [
       [s * .12, height - .28, .085], [s * .085, height - .37, .115],
       [0, height - .41, .099]], .035, hair);
   }
-  if (glasses) {
+  if (glasses && !oleg) {
     for (const s of [-1, 1]) {
       tube(parent, "dark rectangular glasses rim", [[s * .015, height - .116, .181],
         [s * .121, height - .116, .17], [s * .124, height - .205, .162],
@@ -415,8 +411,10 @@ function person(name, x, z, height, outfit, hair, options = {}) {
       [legHeight, .105, .105, s * .14], [legHeight + .15, .14, .12, s * .13],
     ], options.pants || M.ink, 10);
     leg.rotation.z = s * .03;
-    const shoe = put(group, "sculpted walking shoe", new THREE.BoxGeometry(.27, .12, .38),
-      options.shoes || M.bark, s * .15, .06, .08);
+    const shoe = sculptLoft(group, "shaped walking shoe with rounded toe", [
+      [.015, .115, .18, s * .15, .1], [.07, .145, .21, s * .15, .09],
+      [.145, .11, .15, s * .15, .035], [.17, .07, .1, s * .15, 0],
+    ], options.shoes || M.bark, 14);
     shoe.rotation.y = s * .07;
     box(group, "shoe sole", s * .15, .012, .08, .28, .03, .4, M.ink);
   }
@@ -436,7 +434,7 @@ function person(name, x, z, height, outfit, hair, options = {}) {
       [hand[1], .054, .044, hand[0], hand[2]],
       [hand[1] + .018, .025, .02, hand[0], hand[2]]], options.child ? skinChild : skin, 9);
   }
-  face(group, height - .04, hair, options);
+  face(group, height - .04, hair, { ...options, oleg: name === "Oleg" });
   tube(group, "stitched garment neckline", [[-.15, height - .44, .1],
     [0, height - .48, .18], [.15, height - .44, .1]], .017, M.cream);
   if (options.jacket) {
@@ -511,6 +509,7 @@ for (let i = 0; i < 14; i++) {
 }
 
 async function authorRoom() {
+  await finishOlegPortraits(root);
   // All leaves use the same few pigments. Merge their transformed geometry so
   // the mobile GPU sees a handful of draw calls instead of hundreds.
   root.updateMatrixWorld(true);

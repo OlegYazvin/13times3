@@ -13,16 +13,12 @@ const C = {
   fabric: 0x78939d, paper: 0xf5ebd9,
 };
 const art = createRoomArt({ index: 7, title: "Jane's chosen city route",
-  width: 13.2, height: 6.5, depth: 27.8, colors: C, seed: 80808 });
+  width: 13.2, height: 16.0, depth: 27.8, colors: C, seed: 80808 });
 const { root, M, random, add, box, beam, curve, loft, petal,
   wrapSky, ground, person, exportRoom } = art;
-wrapSky();
+wrapSky(C.sky, true);
 ground(C.street, (x, z) => new THREE.Color(C.ground).lerp(
   new THREE.Color(C.street), Math.exp(-Math.pow((x - .25 * Math.sin(z * .44)) / 1.7, 2)) * .84));
-add(root,"distant painted city atmosphere",
-  new THREE.PlaneGeometry(13.1,6.45),
-  new THREE.MeshBasicMaterial({color:C.sky,side:THREE.DoubleSide,fog:false}),
-  0,3.23,-13.77);
 // Layered facades continue between the seven named stops. They make the route
 // feel like a real piece of city fabric rather than objects on a blank plane.
 for (const side of [-1,1]) for (let bay=0;bay<7;bay++) {

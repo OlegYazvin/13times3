@@ -26,18 +26,13 @@ test("41 stable frame slots follow five connected winding sections", () => {
   }
 });
 
-test("large rooms beside the first bend clear neighboring hallways", () => {
-  const route = layout.frames[7];
-  const play = layout.frames[9];
-  // The Chicago room extends east from the first passage. Its southern side
-  // must stay north of the next passage's wall.
-  assert.ok(route.center.z - route.room.dimensionsM[0] / 2 >
-    PATH[1].z + HALL_WIDTH / 2,
-  "frame 08 must not intersect the second gallery passage");
-  // The Play Garden extends north from the second passage. Its western side
-  // must clear the original north/south passage.
-  assert.ok(play.center.x - play.room.dimensionsM[0] / 2 > HALL_WIDTH / 2,
-    "frame 10 must not intersect the first gallery passage");
+test("rooms render in a separate world so their floor plans may overlap", () => {
+  const hall = new THREE.Scene();
+  const manager = new RoomManager({ gallery: { layout, scene: hall },
+    player: { x: 0, z: -9 } });
+  assert.notEqual(manager.roomScene, hall);
+  assert.notEqual(manager.portalScene, hall);
+  assert.equal(manager.roomScene.children.length, 0);
 });
 
 test("movement stays inside the hallway and slides along its walls", () => {
@@ -103,7 +98,7 @@ function roomManager(colliders = layout.frames[0].room.colliders) {
 test("walking through frame 01 keeps one world position in both directions", () => {
   const manager = roomManager();
   const leftWall = -HALL_WIDTH / 2;
-  assert.equal(manager.canStand({ x: leftWall, z: manager.player.z }), true);
+  assert.equal(manager.canStand({ x: leftWall + .35, z: manager.player.z }), true);
   manager.move({ x: leftWall - .6, z: manager.player.z });
   assert.ok(Math.abs(manager.player.x - (leftWall - .6)) < .01);
   manager.move({ x: 0, z: manager.player.z });
@@ -116,6 +111,7 @@ test("walking through frame 01 keeps one world position in both directions", () 
 
 test("room 01 stage, desk, people, and boundary block movement", () => {
   const manager = roomManager();
+  manager.mode = "room";
   const position = (x, z) => manager.roomToWorld({ x, z });
   assert.equal(manager.canStand(position(.1, -1)), false, "stage");
   assert.equal(manager.canStand(position(-1.2, .5)), false, "desk");
@@ -128,6 +124,22 @@ test("room 01 stage, desk, people, and boundary block movement", () => {
   manager.move(position(0, -2.4));
   assert.ok(manager.worldToRoom(manager.player).z > -.8,
     "a long movement cannot tunnel through the stage");
+});
+
+test("room collision wins where an independent world overlaps hallway coordinates", () => {
+  const manager = roomManager();
+  const place = { x: 0, z: manager.active.frame.center.z };
+  const local = manager.worldToRoom(place);
+  manager.active.frame = { ...manager.active.frame, room: {
+    ...manager.active.frame.room, dimensionsM: [30, 3.6, 30],
+  } };
+  manager.active.colliders = [{ minX: local.x - .2, maxX: local.x + .2,
+    minZ: local.z - .2, maxZ: local.z + .2 }];
+  assert.equal(isWalkable(place, layout), true);
+  manager.mode = "room";
+  assert.equal(manager.canStand(place), false, "hallway floor must not erase room obstacles");
+  manager.mode = "hall";
+  assert.equal(manager.canStand(place), true, "the hall remains walkable in its own world");
 });
 
 test("solid footprints travel with authored 3D model parts", () => {
@@ -146,5 +158,6 @@ test("solid footprints travel with authored 3D model parts", () => {
     assert.ok(Math.abs(solid[key] - expected) < 1e-6);
   }
   const manager = roomManager([solid]);
+  manager.mode = "room";
   assert.equal(manager.canStand(manager.roomToWorld({x:1,z:-1})), false);
 });

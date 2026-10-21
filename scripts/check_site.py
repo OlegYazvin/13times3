@@ -96,6 +96,10 @@ def main() -> None:
     assert len(registry_ids) == len(set(registry_ids)), "The scene registry repeats a frame ID"
     assert set(registry_ids) <= {frame["id"] for frame in frames}, "The scene registry has an unknown frame ID"
     live_ids = {frame["id"] for frame in frames if frame["room"]["modelUrl"]}
+    for frame in frames[:11]:
+        assert re.fullmatch(r"#[0-9a-fA-F]{6}", frame["room"]["backgroundColor"]), (
+            f"Room {frame['id']} needs a sky or interior clear color for its isolated render space"
+        )
     published_ids = {frame_id for frame_id, status, _ in registry_rows if status == "Published"}
     assert published_ids == live_ids, "Published scenes in the registry must match live room models"
     for frame_id, status, details in registry_rows:
@@ -126,7 +130,7 @@ def main() -> None:
     job_room = frames[1]["room"]
     assert job_room["title"] == "Jane helped me (Oleg) get a job"
     assert job_room["caption"] == "Jane kept me going"
-    assert job_room["dimensionsM"] == [12.4, 6.4, 17.2]
+    assert job_room["dimensionsM"] == [12.4, 14.0, 17.2]
     job_preview = OUTPUT / job_room["previewImage"].lstrip("/")
     job_model = OUTPUT / job_room["modelUrl"].lstrip("/")
     assert job_preview.read_bytes()[:4] == b"RIFF"
@@ -140,7 +144,7 @@ def main() -> None:
     friendship_room = frames[2]["room"]
     assert friendship_room["title"] == "Jane made sure Zephrine has a best friend (Charlize)"
     assert friendship_room["caption"] == "A friendship Jane made room for"
-    assert friendship_room["dimensionsM"] == [11.8, 5.6, 14.4]
+    assert friendship_room["dimensionsM"] == [11.8, 14.0, 14.4]
     friend_preview = OUTPUT / friendship_room["previewImage"].lstrip("/")
     friend_model = OUTPUT / friendship_room["modelUrl"].lstrip("/")
     assert friend_preview.read_bytes()[:4] == b"RIFF"
@@ -156,7 +160,7 @@ def main() -> None:
     car_room = frames[3]["room"]
     assert car_room["title"] == "Jane Got zephrine the ‘blue car’"
     assert car_room["caption"] == "Zephrine's blue car"
-    assert car_room["dimensionsM"] == [10.8, 5.4, 16.4]
+    assert car_room["dimensionsM"] == [10.8, 14.0, 16.4]
     car_preview = OUTPUT / car_room["previewImage"].lstrip("/")
     car_model = OUTPUT / car_room["modelUrl"].lstrip("/")
     assert car_preview.read_bytes()[:4] == b"RIFF"
@@ -204,7 +208,7 @@ def main() -> None:
     berry_room = frames[6]["room"]
     assert berry_room["title"] == "The time we went blueberry picking"
     assert berry_room["caption"] == "Blueberries with G"
-    assert berry_room["dimensionsM"] == [12.8, 5.8, 16.6]
+    assert berry_room["dimensionsM"] == [12.8, 15.0, 16.6]
     berry_preview = OUTPUT / berry_room["previewImage"].lstrip("/")
     berry_model = OUTPUT / berry_room["modelUrl"].lstrip("/")
     assert berry_preview.read_bytes()[:4] == b"RIFF"
@@ -219,7 +223,7 @@ def main() -> None:
     route_room = frames[7]["room"]
     assert route_room["title"] == "Chicago Open house"
     assert route_room["caption"] == "Jane's chosen city route"
-    assert route_room["dimensionsM"] == [13.2, 6.5, 27.8]
+    assert route_room["dimensionsM"] == [13.2, 16.0, 27.8]
     route_preview = OUTPUT / route_room["previewImage"].lstrip("/")
     route_model = OUTPUT / route_room["modelUrl"].lstrip("/")
     assert route_preview.read_bytes()[:4] == b"RIFF"
@@ -235,7 +239,7 @@ def main() -> None:
     orchard_room = frames[8]["room"]
     assert orchard_room["title"] == "We FINALLY visited our friends in Ithaca for the first time where Zephrine got to try apple picking for the first time."
     assert orchard_room["caption"] == "First apples with friends"
-    assert orchard_room["dimensionsM"] == [11.6, 5.8, 14.2]
+    assert orchard_room["dimensionsM"] == [11.6, 15.0, 14.2]
     orchard_preview = OUTPUT / orchard_room["previewImage"].lstrip("/")
     orchard_model = OUTPUT / orchard_room["modelUrl"].lstrip("/")
     assert orchard_preview.read_bytes()[:4] == b"RIFF"
@@ -248,7 +252,7 @@ def main() -> None:
     play_room = frames[9]["room"]
     assert play_room["title"] == "We visited maggie daley park for the first time with Zephrine!"
     assert play_room["caption"] == "A day of shared play"
-    assert play_room["dimensionsM"] == [15.2, 6.8, 18.8]
+    assert play_room["dimensionsM"] == [15.2, 16.0, 18.8]
     play_preview = OUTPUT / play_room["previewImage"].lstrip("/")
     play_model = OUTPUT / play_room["modelUrl"].lstrip("/")
     assert play_preview.read_bytes()[:4] == b"RIFF"
@@ -278,6 +282,15 @@ def main() -> None:
         assert detail in aquarium_names, f"Room 11 missing {detail}"
     assert sum("driftPhase" in node.get("extras", {}) for node in aquarium_json["nodes"]) >= 24, "Room 11 fish need gentle motion metadata"
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in aquarium_json["nodes"]) >= 20, "Aquarium columns, tanks, figures, and doorway posts must collide"
+    for frame_id in (2, 4, 5, 7, 8, 9, 10, 11):
+        model = (OUTPUT / f"assets/explore/room{frame_id:02d}/room.glb").read_bytes()
+        json_length = int.from_bytes(model[12:16], "little")
+        scene_data = json.loads(model[20:20 + json_length])
+        assert any("oleg painted likeness" in node.get("name", "").lower() or
+                   "oleg's painted likeness" in node.get("name", "").lower()
+                   for node in scene_data["nodes"]), (
+            f"Room {frame_id:02d} must include Oleg's shared illustrated likeness"
+        )
     assert not (OUTPUT / "room_assets").exists(), "Reference artwork should not be published separately"
     explore = parse(source_path("/explore"))
     assert explore.select_one("#welcome-title") is not None

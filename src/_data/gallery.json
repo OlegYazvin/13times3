@@ -16,6 +16,7 @@
       "room": {
         "previewImage": "/assets/explore/room01/preview.webp",
         "modelUrl": "/assets/explore/room01/room.glb",
+        "backgroundColor": "#c6ad99",
         "dimensionsM": [
           5.4,
           3.6,
@@ -82,9 +83,10 @@
       "room": {
         "previewImage": "/assets/explore/room02/preview.webp",
         "modelUrl": "/assets/explore/room02/room.glb",
+        "backgroundColor": "#b2c9d0",
         "dimensionsM": [
           12.4,
-          6.4,
+          14.0,
           17.2
         ],
         "entryPose": {
@@ -130,7 +132,8 @@
       "room": {
         "previewImage": "/assets/explore/room03/preview.webp",
         "modelUrl": "/assets/explore/room03/room.glb",
-        "dimensionsM": [11.8, 5.6, 14.4],
+        "backgroundColor": "#c4d6d5",
+        "dimensionsM": [11.8, 14.0, 14.4],
         "entryPose": {
           "position": [0, 1.65, 6.2],
           "yaw": 0
@@ -159,7 +162,8 @@
       "room": {
         "previewImage": "/assets/explore/room04/preview.webp",
         "modelUrl": "/assets/explore/room04/room.glb",
-        "dimensionsM": [10.8, 5.4, 16.4],
+        "backgroundColor": "#c1d2cc",
+        "dimensionsM": [10.8, 14.0, 16.4],
         "entryPose": {
           "position": [0, 1.65, 7.2],
           "yaw": 0
@@ -187,6 +191,7 @@
       "room": {
         "previewImage": "/assets/explore/room05/preview.webp",
         "modelUrl": "/assets/explore/room05/room.glb",
+        "backgroundColor": "#777684",
         "dimensionsM": [12.6, 6.5, 17.8],
         "entryPose": {
           "position": [0, 1.65, 7.9],
@@ -215,6 +220,7 @@
       "room": {
         "previewImage": "/assets/explore/room06/preview.webp",
         "modelUrl": "/assets/explore/room06/room.glb",
+        "backgroundColor": "#aaa7b6",
         "dimensionsM": [9.4, 5.2, 11.8],
         "entryPose": {
           "position": [0, 1.65, 5.0],
@@ -241,7 +247,8 @@
       "room": {
         "previewImage": "/assets/explore/room07/preview.webp",
         "modelUrl": "/assets/explore/room07/room.glb",
-        "dimensionsM": [12.8, 5.8, 16.6],
+        "backgroundColor": "#adcbd0",
+        "dimensionsM": [12.8, 15.0, 16.6],
         "entryPose": {
           "position": [0, 1.65, 7.2],
           "yaw": 0
@@ -269,7 +276,8 @@
       "room": {
         "previewImage": "/assets/explore/room08/preview.webp",
         "modelUrl": "/assets/explore/room08/room.glb",
-        "dimensionsM": [13.2, 6.5, 27.8],
+        "backgroundColor": "#d9d4ca",
+        "dimensionsM": [13.2, 16.0, 27.8],
         "entryPose": {
           "position": [0, 1.65, 12.6],
           "yaw": 0
@@ -293,9 +301,10 @@
       "room": {
         "previewImage": "/assets/explore/room09/preview.webp",
         "modelUrl": "/assets/explore/room09/room.glb",
+        "backgroundColor": "#b8c8bf",
         "dimensionsM": [
           11.6,
-          5.8,
+          15.0,
           14.2
         ],
         "entryPose": {
@@ -341,7 +350,8 @@
       "room": {
         "previewImage": "/assets/explore/room10/preview.webp",
         "modelUrl": "/assets/explore/room10/room.glb",
-        "dimensionsM": [15.2, 6.8, 18.8],
+        "backgroundColor": "#c6dce4",
+        "dimensionsM": [15.2, 16.0, 18.8],
         "entryPose": {
           "position": [0, 1.65, 8.1],
           "yaw": 0
@@ -365,6 +375,7 @@
       "room": {
         "previewImage": "/assets/explore/room11/preview.webp",
         "modelUrl": "/assets/explore/room11/room.glb",
+        "backgroundColor": "#7199a4",
         "dimensionsM": [18.4, 8.2, 20.8],
         "entryPose": {
           "position": [0, 1.65, 9.1],

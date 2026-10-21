@@ -34,7 +34,8 @@ try {
   galleryMusic = new GalleryMusic(musicButton, experience.dataset.musicUrl);
   const manifest = JSON.parse(document.getElementById("gallery-data").textContent);
   const gallery = createGalleryScene(manifest, experience.dataset.basePath, experience.dataset.roomVersion);
-  const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+  const renderer = new THREE.WebGLRenderer({ antialias: true, stencil: true,
+    powerPreference: "high-performance" });
   let pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
   renderer.setPixelRatio(pixelRatio);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -70,6 +71,7 @@ try {
       section: nearestSection(player, gallery.layout.sections).section.index + 1,
       mode: rooms.mode,
       activeRoom: rooms.active?.frame.id || null,
+      activeRoomIsolated: rooms.active?.group.parent === rooms.roomScene,
       roomLocal: rooms.active ? rooms.worldToRoom(player) : null,
       paintingOpacity: gallery.frameMeshes.get("01").surface.material.opacity,
       cameraFov: camera.fov,
@@ -90,11 +92,13 @@ try {
     window.__galleryTestPose = (x, z, yaw) => {
       Object.assign(player, { x, z });
       controls.yaw = yaw;
+      rooms.setMode("hall");
     };
     window.__galleryTestRoomPose = (x, z, yaw) => {
       if (!rooms.active) return;
       Object.assign(player, rooms.roomToWorld({ x, z }));
       controls.yaw = yaw;
+      rooms.setMode("room");
     };
   }
 
@@ -167,7 +171,7 @@ try {
     if (rooms.mode === "room") {
       status.textContent = `Room ${rooms.active.frame.label}`;
     }
-    if (rooms.scene) renderer.render(rooms.scene, camera);
+    rooms.render(renderer, camera);
     requestAnimationFrame(tick);
   }
 

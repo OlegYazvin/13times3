@@ -7,10 +7,15 @@ const base = process.env.GALLERY_TEST_BASE || "http://127.0.0.1:8080";
 const leftWall = -HALL_WIDTH / 2;
 const rightWall = HALL_WIDTH / 2;
 await mkdir(".cache", { recursive: true });
-let browser = await chromium.launch({
+const browserOptions = {
   headless: true,
   args: ["--use-gl=angle", "--use-angle=swiftshader", "--enable-webgl"],
-});
+};
+let browser = await chromium.launch(browserOptions);
+async function restartBrowser() {
+  await browser.close();
+  browser = await chromium.launch(browserOptions);
+}
 
 async function checkViewport(name, options) {
   const context = await browser.newContext(options);
@@ -155,6 +160,7 @@ try {
   assert.equal(await fallbackPage.locator(".frame-list li").first().textContent(), "Zephrine's first stage");
   await context.close();
   console.log("WebGL fallback: 41 frames listed with the completed painting caption");
+  await restartBrowser();
 
   // The painting opens onto the same world; crossing never replaces the camera pose.
   const roomContext = await browser.newContext({ viewport: { width: 920, height: 700 } });
@@ -238,6 +244,8 @@ try {
   await jobPage.getByRole("button", { name: /begin walking/i }).click();
   await jobPage.evaluate(() => window.__galleryTestPose(.5, -1, .56));
   await jobPage.waitForFunction(() => window.__galleryDebug().activeRoom === "02", null, { timeout: 15000 });
+  assert.equal((await jobPage.evaluate(() => window.__galleryDebug())).activeRoomIsolated, true,
+    "room 02 must live behind a masked portal in its own render space");
   await jobPage.screenshot({ path: ".cache/room02-painting-far.png" });
   await jobPage.evaluate(() => window.__galleryTestPose(1.2, -5.275, Math.PI / 2));
   await jobPage.screenshot({ path: ".cache/room02-open-doorway.png" });
@@ -279,6 +287,7 @@ try {
   assert.deepEqual(jobErrors, []);
   await jobContext.close();
   console.log("Room 02: painting, live doorway, desk and figure collision, exit, and cleanup");
+  await restartBrowser();
 
   const friendshipContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
   const friendshipPage = await friendshipContext.newPage();
@@ -363,6 +372,7 @@ try {
   assert.deepEqual(carErrors, []);
   await carContext.close();
   console.log("Room 04: blue-car painting, doorway, car collision, return, and cleanup");
+  await restartBrowser();
 
   const officeContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
   const officePage = await officeContext.newPage();
@@ -447,6 +457,7 @@ try {
   assert.deepEqual(weaningErrors, []);
   await weaningContext.close();
   console.log("Room 06: tender painting, doorway, chair collision, return, and cleanup");
+  await restartBrowser();
 
   const berryContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
   const berryPage = await berryContext.newPage();
@@ -531,6 +542,7 @@ try {
   assert.deepEqual(routeErrors, []);
   await routeContext.close();
   console.log("Room 08: Chicago route, continuous doorway, architecture collision, and cleanup");
+  await restartBrowser();
   }
 
   if (process.env.GALLERY_TEST_SHEDD_ONLY !== "1") {
@@ -621,6 +633,7 @@ try {
   assert.deepEqual(playErrors, []);
   await playContext.close();
   console.log("Room 10: Play Garden, shared play, figure collision, and cleanup");
+  await restartBrowser();
   }
 
   const aquariumContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
@@ -692,9 +705,7 @@ try {
 
   // A fresh browser prevents SwiftShader from retaining all earlier test
   // contexts' GPU allocations before portrait-phone emulation starts.
-  await browser.close();
-  browser = await chromium.launch({ headless: true,
-    args: ["--use-gl=angle", "--use-angle=swiftshader", "--enable-webgl"] });
+  await restartBrowser();
 
   if (process.env.GALLERY_TEST_PHONE_FINAL_ONLY !== "1") {
   const phoneContext = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true });
@@ -798,6 +809,7 @@ try {
   assert.deepEqual(phoneErrors, []);
   await phoneContext.close();
   console.log("Phone emulation: rooms 01–09 passed at a stable FOV");
+  await restartBrowser();
   }
 
   for (const [id, x, z, yaw] of [["10", 11, -24.35, Math.PI],

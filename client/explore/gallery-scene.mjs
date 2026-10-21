@@ -332,7 +332,9 @@ function addArchitecture(scene, layout, section, palette, frames, floaters, mote
 export function createGalleryScene(manifest, assetBase = "/", assetVersion = "") {
   const layout = buildLayout(manifest);
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xc9b5ae);
+  // The render loop clears to this tone once; an opaque scene background would
+  // erase the other world during the second portal pass.
+  scene.background = null;
   scene.fog = new THREE.FogExp2(0xc9b5ae, .009);
   scene.add(new THREE.AmbientLight(0xfff0d8, 1.2));
 

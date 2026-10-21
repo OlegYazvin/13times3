@@ -74,6 +74,15 @@ export class RoomManager {
     this.failedFrames = new Set();
     this.loader = new GLTFLoader();
     this.readyFrames = gallery.layout.frames.filter(roomIsReady);
+    // Each room is a separate render space. Only the current room is loaded,
+    // and the other space is drawn through the doorway's stencil aperture.
+    this.roomScene = new THREE.Scene();
+    this.portalScene = new THREE.Scene();
+    this.hallMaterials = new Set();
+    gallery.scene?.traverse((object) => {
+      const materials = Array.isArray(object.material) ? object.material : [object.material];
+      for (const material of materials) if (material) this.hallMaterials.add(material);
+    });
   }
 
   assetUrl(path) {
@@ -82,6 +91,38 @@ export class RoomManager {
 
   get scene() {
     return this.gallery.scene;
+  }
+
+  setStencil(materials, enabled) {
+    for (const material of materials) {
+      if (material.stencilWrite === enabled) continue;
+      material.stencilWrite = enabled;
+      material.stencilRef = 1;
+      material.stencilFunc = THREE.EqualStencilFunc;
+      material.stencilFail = THREE.KeepStencilOp;
+      material.stencilZFail = THREE.KeepStencilOp;
+      material.stencilZPass = THREE.KeepStencilOp;
+      material.needsUpdate = true;
+    }
+  }
+
+  render(renderer, camera) {
+    renderer.autoClear = false;
+    renderer.setClearColor(this.mode === "room" && this.active ?
+      this.active.backgroundColor : 0xc9b5ae);
+    renderer.clear(true, true, true);
+    if (!this.active) {
+      this.setStencil(this.hallMaterials, false);
+      renderer.render(this.gallery.scene, camera);
+      return;
+    }
+    const inRoom = this.mode === "room";
+    this.setStencil(this.hallMaterials, inRoom);
+    this.setStencil(this.active.materials, !inRoom);
+    renderer.render(inRoom ? this.roomScene : this.gallery.scene, camera);
+    renderer.clear(false, false, true);
+    renderer.render(this.portalScene, camera);
+    renderer.render(inRoom ? this.gallery.scene : this.roomScene, camera);
   }
 
   update() {
@@ -108,12 +149,12 @@ export class RoomManager {
     const smooth = t * t * (3 - 2 * t);
     this.gallery.frameMeshes.get(this.active.frame.id).surface.material.opacity = .45 + .55 * smooth;
     this.active.group.visible = smooth < 1 || this.mode === "room";
-    const local = this.worldToRoom(this.player);
-    const nextMode = local.z < this.active.frame.room.dimensionsM[2] / 2 ? "room" : "hall";
-    if (nextMode !== this.mode) {
-      this.mode = nextMode;
-      this.onModeChange(nextMode, this.active.frame);
-    }
+  }
+
+  setMode(nextMode) {
+    if (nextMode === this.mode) return;
+    this.mode = nextMode;
+    this.onModeChange?.(nextMode, this.active?.frame);
   }
 
   async load(frame) {
@@ -151,9 +192,29 @@ export class RoomManager {
             amplitude: object.userData.driftAmplitude || .05 });
         }
       });
-      this.gallery.scene.add(group);
+      this.roomScene.add(group);
+      const materials = new Set();
+      gltf.scene.traverse((object) => {
+        const list = Array.isArray(object.material) ? object.material : [object.material];
+        for (const material of list) if (material) materials.add(material);
+      });
+      const opening = portalOpening(frame);
+      const mask = new THREE.Mesh(new THREE.PlaneGeometry(opening.width, opening.height),
+        new THREE.MeshBasicMaterial({
+          colorWrite: false, depthWrite: false, depthTest: true,
+          side: THREE.DoubleSide, stencilWrite: true,
+          stencilRef: 1, stencilFunc: THREE.AlwaysStencilFunc,
+          stencilFail: THREE.KeepStencilOp,
+          stencilZFail: THREE.KeepStencilOp,
+          stencilZPass: THREE.ReplaceStencilOp,
+        }));
+      mask.name = `portal stencil for frame ${frame.id}`;
+      mask.position.set(frame.center.x, opening.height / 2, frame.center.z);
+      this.gallery.frameMeshes.get(frame.id).surface.getWorldQuaternion(mask.quaternion);
+      this.portalScene.add(mask);
       this.active = {
-        frame, group,
+        frame, group, materials, mask,
+        backgroundColor: new THREE.Color(frame.room.backgroundColor || 0xc9b5ae),
         colliders: modelColliders.length ? modelColliders : frame.room.colliders,
         modelColliderCount: modelColliders.length,
         driftingFish,
@@ -188,8 +249,18 @@ export class RoomManager {
     };
   }
 
-  canStand(position) {
-    if (isWalkable(position, this.gallery.layout)) return true;
+  canStand(position, region = this.mode) {
+    if (region === "hall") {
+      if (isWalkable(position, this.gallery.layout)) return true;
+      if (!this.active) return false;
+      // The player's radius may straddle the wall as the camera center reaches
+      // the doorway plane. Allow only this narrow part of the active opening.
+      const local = this.worldToRoom(position);
+      const plane = this.active.frame.room.dimensionsM[2] / 2;
+      const opening = portalOpening(this.active.frame);
+      return local.z >= plane && local.z <= plane + PLAYER_RADIUS &&
+        Math.abs(local.x) < opening.width / 2 - PLAYER_RADIUS;
+    }
     if (!this.active) return false;
     const local = this.worldToRoom(position);
     const { frame, colliders } = this.active;
@@ -203,20 +274,43 @@ export class RoomManager {
     return !hitsObstacle(local.x, local.z, colliders);
   }
 
+  regionAfterStep(from, to, region) {
+    if (!this.active) return "hall";
+    const near = this.worldToRoom(from), next = this.worldToRoom(to);
+    const plane = this.active.frame.room.dimensionsM[2] / 2;
+    const opening = portalOpening(this.active.frame);
+    if (Math.abs(next.x) > opening.width / 2 - PLAYER_RADIUS) return region;
+    if (region === "hall" && near.z >= plane && next.z < plane) return "room";
+    if (region === "room" && near.z <= plane && next.z > plane) return "hall";
+    return region;
+  }
+
   move(intended) {
     const start = { x: this.player.x, z: this.player.z };
     let next = { ...start };
+    let region = this.mode;
     const steps = Math.max(1, Math.ceil(Math.hypot(intended.x - start.x, intended.z - start.z) / .075));
     for (let step = 1; step <= steps; step++) {
       const candidate = {
         x: start.x + (intended.x - start.x) * step / steps,
         z: start.z + (intended.z - start.z) * step / steps,
       };
-      if (this.canStand({ x: candidate.x, z: next.z })) next.x = candidate.x;
-      if (this.canStand({ x: next.x, z: candidate.z })) next.z = candidate.z;
+      const alongX = { x: candidate.x, z: next.z };
+      const nextXRegion = this.regionAfterStep(next, alongX, region);
+      if (this.canStand(alongX, nextXRegion)) {
+        next.x = candidate.x;
+        region = nextXRegion;
+      }
+      const alongZ = { x: next.x, z: candidate.z };
+      const nextZRegion = this.regionAfterStep(next, alongZ, region);
+      if (this.canStand(alongZ, nextZRegion)) {
+        next.z = candidate.z;
+        region = nextZRegion;
+      }
     }
     this.player.x = next.x;
     this.player.z = next.z;
+    this.setMode(region);
   }
 
   animate(time, reduceMotion = false) {
@@ -231,6 +325,10 @@ export class RoomManager {
   clearActive() {
     if (!this.active) return;
     this.gallery.frameMeshes.get(this.active.frame.id).surface.material.opacity = 1;
+    this.portalScene.remove(this.active.mask);
+    this.active.mask.geometry.dispose();
+    this.active.mask.material.dispose();
+    this.setStencil(this.hallMaterials, false);
     disposeRoom(this.active);
     this.active = null;
   }

@@ -3,6 +3,7 @@ import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
+import { addOlegPortrait, finishOlegPortraits } from "./oleg_portrait.mjs";
 
 // Shared sculpting tools for independent storybook worlds. Each room supplies
 // its own palette, architecture, composition and narrative details.
@@ -84,22 +85,39 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
     shape.moveTo(0, 0); shape.bezierCurveTo(-.44, .23, -.5, .76, 0, 1);
     shape.bezierCurveTo(.5, .76, .44, .23, 0, 0);
     const mesh = add(parent, name, new THREE.ExtrudeGeometry(shape,
-      { depth: .025, bevelEnabled: false, curveSegments: 5 }), mat, x, y, z);
+      { depth: .025, bevelEnabled: false, curveSegments: 3 }), mat, x, y, z);
     mesh.scale.setScalar(scale); mesh.rotation.set(.28, yaw, .17);
     mesh.userData.batchPetal = true;
     return mesh;
   }
-  function wrapSky(color = colors.sky) {
+  function wrapSky(color = colors.sky, openAir = false) {
     const sky = new THREE.MeshBasicMaterial({ color, side: THREE.DoubleSide });
-    for (const x of [-width / 2 + .01, width / 2 - .01]) {
-      const side = add(root, "world-wrapping side atmosphere",
-        new THREE.PlaneGeometry(depth, height), sky, x, height / 2, 0);
-      side.rotation.y = Math.PI / 2;
+    const horizon = new THREE.Color(color);
+    const zenith = horizon.clone().offsetHSL(-.025, -.07, .13);
+    function skyPanel(span, name, x, y, z, turn = 0) {
+      const geometry = new THREE.PlaneGeometry(span, height, 1, openAir ? 8 : 1);
+      if (openAir) {
+        const shades = [];
+        for (let i = 0; i < geometry.attributes.position.count; i++) {
+          const t = (geometry.attributes.position.getY(i) + height / 2) / height;
+          const pigment = horizon.clone().lerp(zenith, Math.pow(t, .68));
+          shades.push(pigment.r, pigment.g, pigment.b);
+        }
+        geometry.setAttribute("color", new THREE.Float32BufferAttribute(shades, 3));
+      }
+      const mesh = add(root, name, geometry,
+        openAir ? new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide }) : sky,
+        x, y, z);
+      mesh.rotation.y = turn;
     }
-    add(root, "far atmospheric wall", new THREE.PlaneGeometry(width, height),
-      sky, 0, height / 2, -depth / 2 + .01);
+    for (const x of [-width / 2 + .01, width / 2 - .01]) {
+      skyPanel(depth, "world-wrapping side atmosphere", x, height / 2, 0, Math.PI / 2);
+    }
+    skyPanel(width, "far atmospheric wall", 0, height / 2, -depth / 2 + .01);
     const top = new THREE.PlaneGeometry(width, depth); top.rotateX(Math.PI / 2);
-    add(root, "world-wrapping sky or ceiling", top, sky, 0, height - .01, 0);
+    add(root, "world-wrapping sky or ceiling", top,
+      openAir ? new THREE.MeshBasicMaterial({ color: zenith, side: THREE.DoubleSide }) : sky,
+      0, height - .01, 0);
   }
   function ground(color = colors.ground, colorAt = null) {
     const plane = new THREE.PlaneGeometry(width, depth, 34, 42);
@@ -124,11 +142,16 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
     const skin = asMaterial(options.skin || "skin"), hair = asMaterial(options.hair || "hair");
     const outfit = asMaterial(options.outfit || "fabric"), pants = asMaterial(options.pants || "ink");
     const leg = stature * .42;
+    const oleg = name.startsWith("Oleg");
     for (const side of [-1, 1]) {
       loft(group, "shaped leg", [[.07, .1, .1, side * .12],
         [leg, .12, .1, side * .12], [leg + .08, .14, .12, side * .12]], pants, 9);
-      box(group, "solid walking shoe", side * .12, .07, .08,
-        .23, .14, .31, options.shoes || "ink");
+      loft(group, "formed walking shoe with heel and toe", [[.018, .10, .16, side * .12, .12],
+        [.065, .135, .20, side * .12, .105], [.145, .11, .155, side * .12, .04],
+        [.17, .07, .1, side * .12, .005]], options.shoes || "ink", 12);
+      curve(group, "trouser crease", [[side * .12, .23, .1],
+        [side * .13, leg * .56, .113], [side * .11, leg, .105]],
+      .006, options.pants || "ink", 12);
     }
     loft(group, "folded solid clothing silhouette", [[leg, .24, .18],
       [leg + .15, .3, .19], [stature - .52, .25, .16],
@@ -146,24 +169,33 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
       loft(group, "small formed hand", [[hand[1] - .052, .033, .033, hand[0], hand[2]],
         [hand[1], .045, .038, hand[0], hand[2]],
         [hand[1] + .02, .014, .015, hand[0], hand[2]]], skin, 8);
+      for (let finger = -1; finger <= 1; finger++) curve(group, "individual finger",
+        [[hand[0] + finger * .021, hand[1] - .01, hand[2] + .03],
+          [hand[0] + finger * .022, hand[1] - .07, hand[2] + .045]],
+        .006, skin, 5);
     }
     const face = stature - .035;
     loft(group, "carved cheek and jaw portrait", [[face - .41, .06, .058],
       [face - .32, .14, .12], [face - .15, .17, .145],
       [face + .03, .15, .13], [face + .14, .02, .02]], skin, 14);
+    if (oleg) addOlegPortrait(group, face,
+      [[-.41, .06, .058], [-.32, .14, .12], [-.15, .17, .145],
+        [.03, .15, .13], [.11, .07, .07]], skin);
     for (const side of [-1, 1]) {
-      add(group, "small painted eye", new THREE.SphereGeometry(.021, 7, 6),
-        options.eyeWhite || "paper", side * .068, face - .15, .143);
-      add(group, "dark iris", new THREE.SphereGeometry(.012, 7, 5),
-        options.iris || "ink", side * .068, face - .15, .163);
-      curve(group, "fine eyebrow", [[side * .027, face - .093, .15],
-        [side * .071, face - .084, .157], [side * .111, face - .101, .14]],
-        .008, hair);
+      if (!oleg) {
+        add(group, "small painted eye", new THREE.SphereGeometry(.021, 7, 6),
+          options.eyeWhite || "paper", side * .068, face - .15, .143);
+        add(group, "dark iris", new THREE.SphereGeometry(.012, 7, 5),
+          options.iris || "ink", side * .068, face - .15, .163);
+        curve(group, "fine eyebrow", [[side * .027, face - .093, .15],
+          [side * .071, face - .084, .157], [side * .111, face - .101, .14]],
+          .008, hair);
+      }
     }
-    loft(group, "sculpted nose", [[face - .26, .016, .018, 0, .152],
+    if (!oleg) loft(group, "sculpted nose", [[face - .26, .016, .018, 0, .152],
       [face - .16, .025, .029, 0, .173],
       [face - .145, .008, .009, 0, .154]], skin, 8);
-    curve(group, "gentle expression", [[-.047, face - .3, .119],
+    if (!oleg) curve(group, "gentle expression", [[-.047, face - .3, .119],
       [0, face - .315, .133], [.047, face - .3, .119]],
       .009, options.lips || "rose");
     loft(group, "layered hair rather than a round cap", [[face + .035, .095, .08],
@@ -178,10 +210,10 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
         [side * (.15 + i * .02), face - (options.longHair ? .5 : .3), .02]],
         .022 - i * .0025, hair, 15);
     }
-    if (options.beard) for (const side of [-1, 1]) curve(group, "short beard",
+    if (options.beard && !oleg) for (const side of [-1, 1]) curve(group, "short beard",
       [[side * .13, face - .27, .08], [side * .09, face - .36, .115],
         [0, face - .42, .1]], .028, hair);
-    if (options.glasses) for (const side of [-1, 1]) curve(group,
+    if (options.glasses && !oleg) for (const side of [-1, 1]) curve(group,
       "dark rectangular glasses", [[side * .015, face - .12, .18],
         [side * .12, face - .12, .17], [side * .12, face - .21, .16],
         [side * .015, face - .21, .18], [side * .015, face - .12, .18]],
@@ -189,10 +221,15 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
     curve(group, "stitched neckline", [[-.14, stature - .42, .13],
       [0, stature - .48, .17], [.14, stature - .42, .13]],
       .012, options.trim || "paper");
+    for (const side of [-1, 1]) curve(group, "tailored garment side seam",
+      [[side * .23, leg + .04, .11], [side * .27, leg + .3, .15],
+        [side * .22, stature - .48, .11]], .006,
+      options.trim || "paper", 11);
     return group;
   }
   async function exportRoom({ key = 0xffd9ae, fill = 0xa8d4dc,
     ambient = 1.6, keyPower = 2.1 } = {}) {
+    await finishOlegPortraits(root);
     root.updateMatrixWorld(true);
     const groups = new Map();
     root.traverse(object => {

@@ -3,6 +3,8 @@ import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
+import { openSky } from "./open_sky.mjs";
+import { addOlegPortrait, finishOlegPortraits } from "./oleg_portrait.mjs";
 
 // A Roscoe Village walk imagined as a long paper street. The blue toy car is
 // an original sculpted object informed by Oleg's Step2 product reference;
@@ -31,7 +33,6 @@ const material = (color, extra = {}) => new THREE.MeshStandardMaterial({
   color, map: grain, roughness: .93, metalness: 0, side: THREE.DoubleSide, ...extra,
 });
 const M = Object.fromEntries(Object.entries(C).map(([key, value]) => [key, material(value)]));
-const skyMat = new THREE.MeshBasicMaterial({ color: C.sky, side: THREE.DoubleSide });
 function add(parent, name, geometry, mat, x = 0, y = 0, z = 0) {
   const mesh = new THREE.Mesh(geometry, mat);
   mesh.name = name; mesh.position.set(x, y, z); parent.add(mesh); return mesh;
@@ -113,15 +114,16 @@ for (const side of [-1, 1]) {
     [side * 2.18, .12, 3.9], [side * 2.23, .12, -.7],
     [side * 2.18, .12, -4.4], [side * 2.23, .12, -8.15]], .075, M.cream, 55);
 }
+const openAir = openSky(C.sky, 14);
 for (const x of [-5.39, 5.39]) {
   const side = add(root, "wraparound watercolor Chicago sky",
-    new THREE.PlaneGeometry(16.4, 5.4), skyMat, x, 2.7, 0);
+    openAir.panel(16.4), openAir.sideMaterial, x, 7, 0);
   side.rotation.y = Math.PI / 2;
 }
-add(root, "sky at the end of the remembered walk", new THREE.PlaneGeometry(10.8, 5.4),
-  skyMat, 0, 2.7, -8.19);
-const ceiling = new THREE.PlaneGeometry(10.8, 16.4); ceiling.rotateX(Math.PI / 2);
-add(root, "sky overhead", ceiling, skyMat, 0, 5.39, 0);
+add(root, "sky at the end of the remembered walk", openAir.panel(10.8),
+  openAir.sideMaterial, 0, 7, -8.19);
+add(root, "sky overhead", openAir.roof(10.8, 16.4),
+  openAir.topMaterial, 0, 13.99, 0);
 
 // Repeating stoops, bay windows and brick patterns suggest a Roscoe Village
 // block without copying a private house or asserting an exact address.
@@ -134,8 +136,21 @@ for (const side of [-1, 1]) for (let unit = 0; unit < 4; unit++) {
   box(group, "solid brick facade", 0, 2.05, 0, 1.45, 4.1, 3.82, tint, true);
   box(group, "stone foundation", 0, .45, 0, 1.5, .9, 3.87, M.mortar);
   box(group, "projecting cornice", 0, 4.18, 0, 1.58, .16, 4.05, M.cream);
+  for (let notch = 0; notch < 11; notch++) {
+    const dz = -1.77 + notch * .355;
+    box(group, "carved cornice dentil", front - side * .13, 4.01, dz,
+      .17, .19, .13, M.cream);
+  }
   box(group, "entrance door", front, 1.03, .05, .035, 1.75, .79,
     unit % 2 ? M.dark : M.blueShade);
+  for (const level of [.61, 1.31]) box(group, "recessed painted door panel",
+    front - side * .025, level, .05, .02, .43, .56, M.plum);
+  add(group, "brass door knob", new THREE.IcosahedronGeometry(.028, 1),
+    M.brass, front - side * .05, 1.03, .28);
+  box(group, "glazed transom above the stoop", front - side * .025, 2.02, .05,
+    .03, .2, .65, M.window);
+  for (const dz of [-.35, .45]) box(group, "transom and door casing",
+    front - side * .08, 1.12, dz, .16, 2.05, .06, M.cream);
   curve(group, "arched doorway lintel", [[front - side * .03, 1.89, -.34],
     [front - side * .03, 2.16, .04], [front - side * .03, 1.89, .44]], .04, M.cream);
   for (const level of [1.32, 2.73]) for (const dz of [-1.35, 1.27]) {
@@ -143,10 +158,26 @@ for (const side of [-1, 1]) for (let unit = 0; unit < 4; unit++) {
       .047, .82, .72, M.window);
     box(group, "painted window sill", front - side * .08, level - .47, dz,
       .17, .085, .91, M.cream);
+    const crown = curve(group, "curved limestone window crown",
+      [[front - side * .13, level + .49, dz - .46],
+        [front - side * .17, level + .57, dz],
+        [front - side * .13, level + .49, dz + .46]], .028, M.cream, 13);
+    crown.name = "carved window crown";
     for (const edge of [-1, 1]) box(group, "narrow bay window upright",
       front - side * .095, level, dz + edge * .39, .15, .94, .04, M.cream);
     beam(group, "middle window muntin", [front - side * .105, level, dz - .38],
       [front - side * .105, level, dz + .38], .016, .016, M.cream, 5);
+    beam(group, "vertical divided light", [front - side * .108, level - .39, dz],
+      [front - side * .108, level + .39, dz], .012, .012, M.cream, 5);
+    if (level < 2) {
+      box(group, "shaped window planter", front - side * .14, level - .54, dz,
+        .25, .12, .7, M.brass);
+      for (const shift of [-.21, 0, .21]) curve(group, "small trailing planter vine",
+        [[front - side * .19, level - .48, dz + shift],
+          [front - side * .27, level - .63, dz + shift + .05],
+          [front - side * .26, level - .76, dz + shift - .02]],
+        .018, M.leaf, 9);
+    }
   }
   for (let row = 0; row < 7; row++) for (let brick = 0; brick < 5; brick++) {
     const offset = row % 2 ? .22 : 0;
@@ -161,6 +192,11 @@ for (const side of [-1, 1]) for (let unit = 0; unit < 4; unit++) {
   for (const dz of [-.49, .58]) beam(group, "stoop railing",
     [front - side * .65, .34, dz], [front - side * .08, .98, dz],
     .025, .022, M.dark);
+  for (const dz of [-.49, .58]) for (let rung = 1; rung <= 3; rung++) {
+    const xx = front - side * (.65 - rung * .13);
+    beam(group, "iron stoop baluster", [xx, .31, dz],
+      [xx, .48 + rung * .12, dz], .012, .012, M.dark, 6);
+  }
 }
 
 for (const side of [-1, 1]) for (let i = 0; i < 4; i++) {
@@ -278,18 +314,21 @@ function adult(name, x, z, outfit, options = {}) {
   loft(group, "carved face and cheekbone", [[face - .42, .06, .055],
     [face - .34, .14, .12], [face - .16, .17, .145],
     [face + .03, .15, .13], [face + .14, .02, .02]], skin, 15);
+  if (options.oleg) addOlegPortrait(group, face,
+    [[-.42, .06, .055], [-.34, .14, .12], [-.16, .17, .145],
+      [.03, .15, .13], [.12, .055, .055]], skin);
   for (const side of [-1, 1]) {
-    add(group, "small painted eye", new THREE.SphereGeometry(.02, 7, 6), M.white,
+    if (!options.oleg) add(group, "small painted eye", new THREE.SphereGeometry(.02, 7, 6), M.white,
       side * .07, face - .15, .143);
-    add(group, "dark iris", new THREE.SphereGeometry(.011, 7, 5), M.dark,
+    if (!options.oleg) add(group, "dark iris", new THREE.SphereGeometry(.011, 7, 5), M.dark,
       side * .07, face - .15, .163);
-    curve(group, "eyebrow", [[side * .027, face - .09, .15],
+    if (!options.oleg) curve(group, "eyebrow", [[side * .027, face - .09, .15],
       [side * .075, face - .085, .155], [side * .115, face - .1, .14]],
       .008, M.hair);
   }
-  loft(group, "small nose", [[face - .27, .016, .017, 0, .155],
+  if (!options.oleg) loft(group, "small nose", [[face - .27, .016, .017, 0, .155],
     [face - .16, .025, .03, 0, .17], [face - .145, .008, .008, 0, .156]], skin, 8);
-  curve(group, "quiet smile", [[-.05, face - .31, .12],
+  if (!options.oleg) curve(group, "quiet smile", [[-.05, face - .31, .12],
     [0, face - .323, .13], [.05, face - .31, .12]], .008, M.coral);
   loft(group, "layered dark hair", [[face + .03, .09, .08],
     [face + .11, .17, .13, 0, -.02], [face + .2, .13, .11, 0, -.03],
@@ -302,10 +341,10 @@ function adult(name, x, z, outfit, options = {}) {
       [side * (.19 + i * .02), face - .18, -.05],
       [side * (.15 + i * .02), face - .48, .01]], .026 - i * .003, M.hair);
   }
-  if (options.beard) for (const side of [-1, 1]) curve(group, "Oleg's short beard",
+  if (options.beard && !options.oleg) for (const side of [-1, 1]) curve(group, "Oleg's short beard",
     [[side * .13, face - .27, .08], [side * .09, face - .36, .115],
       [0, face - .42, .1]], .029, M.hair);
-  if (options.glasses) for (const side of [-1, 1]) {
+  if (options.glasses && !options.oleg) for (const side of [-1, 1]) {
     curve(group, "Oleg's dark rectangular glasses", [[side * .015, face - .12, .18],
       [side * .12, face - .12, .17], [side * .12, face - .21, .16],
       [side * .015, face - .21, .18], [side * .015, face - .12, .18]], .01, M.dark);
@@ -316,7 +355,7 @@ function adult(name, x, z, outfit, options = {}) {
 }
 
 adult("Oleg pushing with Jane", -1.08, -1.2, M.cream, {
-  skin: M.olegSkin, height: 1.73, glasses: true, beard: true, longHair: true,
+  skin: M.olegSkin, height: 1.73, oleg: true, glasses: true, beard: true, longHair: true,
   hands: { "1": [.79, 1.48, 1.14], "-1": [-.38, 1.03, .27] }, yaw: .12,
 });
 adult("Jane pushing with Oleg", 1.08, -1.2, M.plum, {
@@ -382,6 +421,7 @@ for (let i = 0; i < 3; i++) {
 }
 
 async function authorRoom() {
+  await finishOlegPortraits(root);
   root.updateMatrixWorld(true);
   const groups = new Map();
   root.traverse(object => {

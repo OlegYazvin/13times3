@@ -15,10 +15,10 @@ const C = {
 };
 const art = createRoomArt({ index: 9,
   title: "Shared play at Maggie Daley Park", width: 15.2,
-  height: 6.8, depth: 18.8, colors: C, seed: 101010 });
+  height: 16.0, depth: 18.8, colors: C, seed: 101010 });
 const { root, M, random, add, box, beam, curve, loft, petal,
   wrapSky, ground, person, exportRoom } = art;
-wrapSky();
+wrapSky(C.sky, true);
 ground(C.ground, (x,z) => new THREE.Color(C.grass).lerp(
   new THREE.Color(C.sand), Math.exp(-Math.pow((x-.28*Math.sin(z*.4))/1.8,2))*.85));
 

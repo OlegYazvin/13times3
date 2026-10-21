@@ -5,6 +5,7 @@ import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
 import janeFaceURL from "./assets/room02/jane-face.webp";
 import olegFaceURL from "./assets/room02/oleg-face.webp";
+import { openSky } from "./open_sky.mjs";
 
 // A single impossible space: Oleg's desk opens into a street and four
 // simultaneous acts of Jane's support. All figures and props have volume.
@@ -38,7 +39,6 @@ const material = (color, extra = {}) => new THREE.MeshStandardMaterial({
 });
 const M = Object.fromEntries(Object.entries(C).map(([key, value]) => [key, material(value)]));
 const glow = new THREE.MeshBasicMaterial({ color: C.amber, side: THREE.DoubleSide });
-const skyMaterial = new THREE.MeshBasicMaterial({ color: C.sky, side: THREE.DoubleSide });
 const paintedFaces = {};
 const facesReady = Promise.all([
   ["jane", janeFaceURL], ["oleg", olegFaceURL],
@@ -206,16 +206,16 @@ for (let i = 0; i < 70; i++) {
 
 // Four sides of a watercolor sky are actual room geometry. The front stays
 // open so the return doorway reveals the real gallery.
+const openAir = openSky(C.sky, 14);
 for (const x of [-6.17, 6.17]) {
-  const side = add(root, "watercolor horizon wall", new THREE.PlaneGeometry(17.22, 6.45),
-    skyMaterial, x, 3.2, 0);
+  const side = add(root, "high watercolor sky", openAir.panel(17.22),
+    openAir.sideMaterial, x, 7, 0);
   side.rotation.y = Math.PI / 2;
 }
-add(root, "distant outdoors wrapping the home", new THREE.PlaneGeometry(12.4, 6.45),
-  skyMaterial, 0, 3.2, -8.59);
-const ceiling = new THREE.PlaneGeometry(12.4, 17.2);
-ceiling.rotateX(Math.PI / 2);
-add(root, "sky and ceiling becoming one", ceiling, skyMaterial, 0, 6.4, 0);
+add(root, "distant outdoors wrapping the home", openAir.panel(12.4),
+  openAir.sideMaterial, 0, 7, -8.59);
+add(root, "sky high above the desk and street", openAir.roof(12.4, 17.2),
+  openAir.topMaterial, 0, 13.99, 0);
 
 // Solid rear and side landscape cues define the walkable perimeter without
 // placing an opaque wall across the portrait view.

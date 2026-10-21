@@ -38,7 +38,8 @@ try {
   const decode = (url) => Buffer.from(url.slice(url.indexOf(",") + 1), "base64");
   const preview = decode(result.preview);
   const model = decode(result.glb);
-  if (preview.length + model.length > 8_000_000) throw new Error(`Room ${id} exceeds the 8 MB asset target`);
+  if (preview.length + model.length > 8_000_000) throw new Error(
+    `Room ${id} exceeds the 8 MB asset target (${preview.length} preview + ${model.length} model bytes)`);
   await writeFile(resolve(destination, "preview.webp"), preview);
   await writeFile(resolve(destination, "room.glb"), model);
   console.log(`Room ${id}: ${result.objects} scene groups, preview ${preview.length} bytes, GLB ${model.length} bytes`);
