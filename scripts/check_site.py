@@ -110,7 +110,7 @@ def main() -> None:
     assert len(first_room["colliders"]) == 4
     assert sum(collider.get("shape") == "circle" for collider in first_room["colliders"]) == 2
     assert all(not frame["room"]["previewImage"] and not frame["room"]["modelUrl"]
-               for index, frame in enumerate(frames) if index not in (0, 1, 2, 8))
+               for index, frame in enumerate(frames) if index not in (0, 1, 2, 3, 8))
     preview = OUTPUT / first_room["previewImage"].lstrip("/")
     model = OUTPUT / first_room["modelUrl"].lstrip("/")
     assert preview.read_bytes()[:4] == b"RIFF"
@@ -153,6 +153,23 @@ def main() -> None:
     assert any("Zephrine" in node.get("name", "") for node in friend_json["nodes"])
     assert any("Charlize" in node.get("name", "") for node in friend_json["nodes"])
     assert any("Aibike" in node.get("name", "") for node in friend_json["nodes"])
+    car_room = frames[3]["room"]
+    assert car_room["title"] == "Jane Got zephrine the ‘blue car’"
+    assert car_room["caption"] == "Zephrine's blue car"
+    assert car_room["dimensionsM"] == [10.8, 5.4, 16.4]
+    car_preview = OUTPUT / car_room["previewImage"].lstrip("/")
+    car_model = OUTPUT / car_room["modelUrl"].lstrip("/")
+    assert car_preview.read_bytes()[:4] == b"RIFF"
+    assert car_model.read_bytes()[:4] == b"glTF"
+    assert car_preview.stat().st_size + car_model.stat().st_size < 8_000_000
+    car_glb = car_model.read_bytes()
+    car_json_length = int.from_bytes(car_glb[12:16], "little")
+    car_json = json.loads(car_glb[20:20 + car_json_length])
+    assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in car_json["nodes"]) >= 10, "Room 04 needs solid car, people, houses and trees"
+    assert any("Zephrine" in node.get("name", "") for node in car_json["nodes"])
+    assert any("Oleg" in node.get("name", "") for node in car_json["nodes"])
+    assert any("Jane" in node.get("name", "") for node in car_json["nodes"])
+    assert not any("Charlize" in node.get("name", "") for node in car_json["nodes"])
     orchard_room = frames[8]["room"]
     assert orchard_room["title"] == "We FINALLY visited our friends in Ithaca for the first time where Zephrine got to try apple picking for the first time."
     assert orchard_room["caption"] == "First apples with friends"
@@ -214,7 +231,7 @@ def main() -> None:
 
     total_bytes = sum(path.stat().st_size for path in OUTPUT.rglob("*") if path.is_file())
     assert total_bytes < 1_000_000_000, "GitHub Pages published-site limit exceeded"
-    print(f"Verified 39 detail pages, 2 grid routes, credits, 41 gallery frames (rooms 01, 02, 03, and 09 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
+    print(f"Verified 39 detail pages, 2 grid routes, credits, 41 gallery frames (rooms 01–04 and 09 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
 
 
 if __name__ == "__main__":

@@ -150,7 +150,7 @@ try {
   await fallbackPage.goto(`${base}/explore/`, { waitUntil: "domcontentloaded" });
   await fallbackPage.locator("#fallback").waitFor({ state: "visible" });
   assert.equal(await fallbackPage.locator(".frame-list li").count(), 41);
-  assert.equal(await fallbackPage.locator(".fallback-previews img").count(), 4);
+  assert.equal(await fallbackPage.locator(".fallback-previews img").count(), 5);
   assert.equal(await fallbackPage.locator(".frame-list li").first().textContent(), "Zephrine's first stage");
   await context.close();
   console.log("WebGL fallback: 41 frames listed with the completed painting caption");
@@ -216,12 +216,12 @@ try {
   assert.equal(exited.cameraFov, beforeExit.cameraFov);
   assert.equal(exited.activeRoom, "01", "room stays visible nearby after exit");
   await roomPage.screenshot({ path: ".cache/room01-returned-continuous.png" });
-  await roomPage.evaluate((x) => window.__galleryTestPose(x, -9.0916666667, Math.PI / 2), rightWall - .55);
+  await roomPage.evaluate(() => window.__galleryTestPose(9.0916666667, -19.35, Math.PI));
   await roomPage.keyboard.down("w");
   await roomPage.waitForTimeout(400);
   await roomPage.keyboard.up("w");
-  assert.ok((await roomPage.evaluate(() => window.__galleryDebug().x)) < rightWall - PLAYER_RADIUS + .02,
-    "blank frame 04 must remain solid");
+  assert.ok((await roomPage.evaluate(() => window.__galleryDebug().z)) < -18.8 - PLAYER_RADIUS + .02,
+    "blank frame 12 must remain solid");
   await roomPage.evaluate(() => window.__galleryTestPose(22, 0, 0));
   await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === null, null, { timeout: 12000 });
   assert.equal((await roomPage.evaluate(() => window.__galleryDebug())).paintingOpacity, 1);
@@ -320,6 +320,48 @@ try {
   assert.deepEqual(friendshipErrors, []);
   await friendshipContext.close();
   console.log("Room 03: friendship painting, doorway, figure collision, return, and cleanup");
+
+  const carContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
+  const carPage = await carContext.newPage();
+  const carErrors = [];
+  carPage.on("pageerror", error => carErrors.push(error.message));
+  await carPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
+  await carPage.getByRole("button", { name: /begin walking/i }).click();
+  await carPage.evaluate(() => window.__galleryTestPose(1.2, -9.0916666667, Math.PI / 2));
+  await carPage.waitForFunction(() => window.__galleryDebug().activeRoom === "04", null, { timeout: 15000 });
+  await carPage.screenshot({ path: ".cache/room04-painting-far.png" });
+  await carPage.evaluate((x) => window.__galleryTestPose(x, -9.0916666667, Math.PI / 2), rightWall - .55);
+  await carPage.screenshot({ path: ".cache/room04-open-doorway.png" });
+  const carBefore = await carPage.evaluate(() => window.__galleryDebug());
+  await carPage.keyboard.down("w");
+  await carPage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
+  await carPage.keyboard.up("w");
+  const carEntered = await carPage.evaluate(() => window.__galleryDebug());
+  assert.equal(carEntered.yaw, carBefore.yaw);
+  assert.equal(carEntered.cameraFov, carBefore.cameraFov);
+  assert.ok(carEntered.modelColliderCount >= 20, "car, figures, trees and houses must collide");
+  await carPage.screenshot({ path: ".cache/room04-entered-continuous.png" });
+  await carPage.evaluate(() => window.__galleryTestRoomPose(0, 2.4, 0));
+  await carPage.keyboard.down("w");
+  await carPage.waitForTimeout(430);
+  await carPage.keyboard.up("w");
+  assert.ok((await carPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 1.95,
+    "blue car and Zephrine should block the sidewalk");
+  await carPage.evaluate(() => window.__galleryTestRoomPose(0, 7.2, -Math.PI / 2));
+  const carBeforeExit = await carPage.evaluate(() => window.__galleryDebug());
+  await carPage.keyboard.down("w");
+  await carPage.waitForFunction(() => window.__galleryDebug().mode === "hall", null, { timeout: 12000 });
+  await carPage.keyboard.up("w");
+  const carExited = await carPage.evaluate(() => window.__galleryDebug());
+  assert.equal(carExited.yaw, carBeforeExit.yaw);
+  assert.equal(carExited.cameraFov, carBeforeExit.cameraFov);
+  assert.equal(carExited.activeRoom, "04");
+  await carPage.screenshot({ path: ".cache/room04-returned-continuous.png" });
+  await carPage.evaluate(() => window.__galleryTestPose(22, 0, 0));
+  await carPage.waitForFunction(() => window.__galleryDebug().activeRoom === null, null, { timeout: 12000 });
+  assert.deepEqual(carErrors, []);
+  await carContext.close();
+  console.log("Room 04: blue-car painting, doorway, car collision, return, and cleanup");
 
   const orchardContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
   const orchardPage = await orchardContext.newPage();
@@ -420,6 +462,15 @@ try {
   await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
   await phonePage.screenshot({ path: ".cache/room03-mobile-entered-continuous.png" });
+  await phonePage.evaluate((x) => window.__galleryTestPose(x, -9.0916666667, Math.PI / 2), rightWall - .55);
+  await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "04", null, { timeout: 15000 });
+  await phonePage.screenshot({ path: ".cache/room04-mobile-doorway.png" });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ ...point, y: point.y - 38 }] });
+  await phonePage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
+  await phonePage.screenshot({ path: ".cache/room04-mobile-entered-continuous.png" });
   assert.deepEqual(phoneErrors, []);
   await phoneContext.close();
   console.log("Phone emulation: joystick crossed the same doorway both ways at a stable FOV");

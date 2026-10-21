@@ -36,22 +36,25 @@ test("movement stays inside the hallway and slides along its walls", () => {
   assert.equal(nearestSection({ x: 18, z: -10 }, layout.sections).section.index, 2);
 });
 
-test("frames 01, 02, 03, and 09 have room-sized openings and the other frames stay solid", () => {
+test("frames 01–04 and 09 have room-sized openings and the other frames stay solid", () => {
   const frame = layout.frames[0];
   assert.equal(roomIsReady(frame), true);
   assert.equal(roomIsReady(layout.frames[1]), true);
   assert.equal(roomIsReady(layout.frames[2]), true);
+  assert.equal(roomIsReady(layout.frames[3]), true);
   assert.equal(roomIsReady(layout.frames[8]), true);
-  assert.equal(layout.frames.every((record, index) => [0, 1, 2, 8].includes(index) || !roomIsReady(record)), true);
+  assert.equal(layout.frames.every((record, index) => [0, 1, 2, 3, 8].includes(index) || !roomIsReady(record)), true);
   assert.deepEqual(portalOpening(frame), { width: 3.35, height: 3.35 });
   assert.deepEqual(portalOpening(layout.frames[1]), { width: 3.35, height: 4.1 });
   assert.deepEqual(portalOpening(layout.frames[2]), { width: 3.35, height: 4.1 });
+  assert.deepEqual(portalOpening(layout.frames[3]), { width: 3.35, height: 4.1 });
   assert.deepEqual(portalOpening(layout.frames[8]), { width: 3.35, height: 4.1 });
   assert.equal(framePlaqueText(frame), "Zephrine's first stage");
   assert.equal(framePlaqueText(layout.frames[1]), "Jane kept me going");
   assert.equal(framePlaqueText(layout.frames[2]), "A friendship Jane made room for");
+  assert.equal(framePlaqueText(layout.frames[3]), "Zephrine's blue car");
   assert.equal(framePlaqueText(layout.frames[8]), "First apples with friends");
-  assert.equal(framePlaqueText(layout.frames[3]), "04");
+  assert.equal(framePlaqueText(layout.frames[11]), "12");
 });
 
 function roomManager(colliders = layout.frames[0].room.colliders) {

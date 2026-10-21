@@ -6,6 +6,7 @@
     "build:room01": "node scripts/build_room_01.mjs",
     "build:room02": "node scripts/build_gallery_room.mjs 02",
     "build:room03": "node scripts/build_gallery_room.mjs 03",
+    "build:room04": "node scripts/build_gallery_room.mjs 04",
     "build:room09": "node scripts/build_gallery_room.mjs 09",
     "build:client": "esbuild client/explore/main.mjs --bundle --format=esm --target=es2020 --minify --outfile=src/assets/explore/app.js",
     "build": "npm run build:client && node scripts/clean_output.mjs && eleventy",
