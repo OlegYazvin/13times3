@@ -363,10 +363,10 @@ function face(parent, height, hair, { glasses = false, beard = false, bun = fals
         [s * .18, height - .16, -.01], .008, .007, glass, 5);
     }
   }
-  sculptLoft(parent, "layered hair cap", [[height + .04, .09, .08],
+  if (!oleg) sculptLoft(parent, "layered hair cap", [[height + .04, .09, .08],
     [height + .1, .17, .14, 0, -.028], [height + .19, .14, .125, 0, -.03],
     [height + .245, .035, .04, 0, -.03]], hair, 15);
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < (oleg ? 0 : 7); i++) {
     const x = -.16 + i * .053;
     tube(parent, "carved hair lock", [[x, height + .16, .108],
       [x + (i - 3) * .008, height + .05, .15], [x + .012, height - .03, .136]],
@@ -375,7 +375,7 @@ function face(parent, height, hair, { glasses = false, beard = false, bun = fals
   if (bun) sculptLoft(parent, "Jane's top bun", [[height + .19, .055, .05, 0, -.08],
     [height + .3, .12, .11, 0, -.085], [height + .4, .08, .07, 0, -.085],
     [height + .43, .014, .012, 0, -.085]], hair, 12);
-  if (longHair) for (const s of [-1, 1]) for (let i = 0; i < 3; i++) {
+  if (longHair && !oleg) for (const s of [-1, 1]) for (let i = 0; i < 3; i++) {
     const x = s * (.13 + i * .017);
     tube(parent, "long wavy hair around shoulders", [[x, height + .06, -.02],
       [x + s * .05, height - .22, -.05], [x + s * .025, height - .56, .005]],

@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 import { nearestFrame, PLAYER_RADIUS, isWalkable, portalOpening } from "./layout.mjs";
 
 const LOAD_DISTANCE = 12;
@@ -76,7 +77,7 @@ export class RoomManager {
     this.loadingFrame = null;
     this.generation = 0;
     this.failedFrames = new Set();
-    this.loader = new GLTFLoader();
+    this.loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
     this.readyFrames = gallery.layout.frames.filter(roomIsReady);
     // Each room is a separate render space. Only the current room is loaded,
     // and the other space is drawn through the doorway's stencil aperture.

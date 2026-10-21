@@ -21,8 +21,8 @@ export function paintedSkyTexture(seed = 1) {
     const height = 7 + random() * 19;
     const gradient = ctx.createLinearGradient(0, y - height, 0, y + height);
     gradient.addColorStop(0, "rgba(168,184,192,0)");
-    gradient.addColorStop(.42, `rgba(154,177,184,${.035 + random() * .045})`);
-    gradient.addColorStop(.7, `rgba(211,200,190,${.055 + random() * .055})`);
+    gradient.addColorStop(.42, `rgba(154,177,184,${.07 + random() * .055})`);
+    gradient.addColorStop(.7, `rgba(211,200,190,${.075 + random() * .065})`);
     gradient.addColorStop(1, "rgba(255,255,255,0)");
     ctx.fillStyle = gradient;
     ctx.beginPath();

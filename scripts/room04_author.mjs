@@ -334,13 +334,13 @@ function adult(name, x, z, outfit, options = {}) {
     [face - .16, .025, .03, 0, .17], [face - .145, .008, .008, 0, .156]], skin, 8);
   if (!options.oleg && !options.bun) curve(group, "quiet smile", [[-.05, face - .31, .12],
     [0, face - .323, .13], [.05, face - .31, .12]], .008, M.coral);
-  loft(group, "layered dark hair", [[face + .03, .09, .08],
+  if (!options.oleg) loft(group, "layered dark hair", [[face + .03, .09, .08],
     [face + .11, .17, .13, 0, -.02], [face + .2, .13, .11, 0, -.03],
     [face + .25, .02, .02, 0, -.03]], M.hair, 14);
   if (options.bun) loft(group, "Jane's high bun", [[face + .18, .05, .04, 0, -.07],
     [face + .29, .13, .11, 0, -.07], [face + .4, .07, .06, 0, -.07],
     [face + .44, .01, .01, 0, -.07]], M.hair, 12);
-  if (options.longHair) for (const side of [-1, 1]) for (let i = 0; i < 3; i++) {
+  if (options.longHair && !options.oleg) for (const side of [-1, 1]) for (let i = 0; i < 3; i++) {
     curve(group, "Oleg's medium wavy hair", [[side * (.12 + i * .018), face + .08, -.04],
       [side * (.19 + i * .02), face - .18, -.05],
       [side * (.15 + i * .02), face - .48, .01]], .026 - i * .003, M.hair);

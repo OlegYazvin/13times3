@@ -2,6 +2,8 @@ import * as THREE from "three";
 import { createRoomArt } from "./room_art.mjs";
 import reefBackdropURL from "./assets/room11/reef-backdrop.webp";
 import riverBackdropURL from "./assets/room11/river-backdrop.webp";
+import reefVariantURL from "./assets/room11/reef-variant.webp";
+import riverVariantURL from "./assets/room11/river-variant.webp";
 
 // A dream of Shedd's aquatic dome, not a literal or dated exhibit replica.
 // G and Zephrine share the still moment; only the little fish gently breathe.
@@ -123,14 +125,6 @@ for(let ring=0;ring<3;ring++) {
 }
 add(root,"pearl center of aquatic dome",new THREE.OctahedronGeometry(.37,1),
   M.white,0,7.67,0);
-for(let i=0;i<56;i++) {
-  const a=random()*Math.PI*2,r=2+random()*6.2;
-  const p=petal(root,"dome glass scale catching blue light",
-    Math.cos(a)*r,5.5+(8-r)*.23+random()*.5,
-    Math.sin(a)*r*.9,.17+random()*.12,
-    i%4?M.glass:M.pearl,a);
-  p.rotation.x=.5;
-}
 
 // The visitor stands between actual inhabited saltwater and freshwater
 // habitats, with a third reef across the end. Fish and plants live behind the
@@ -140,14 +134,26 @@ const glass = new THREE.MeshPhysicalMaterial({color:0xa3d9df,transparent:true,
   opacity:.09,roughness:.08,metalness:0,depthWrite:false,side:THREE.DoubleSide});
 const reefWall = new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide});
 const riverWall = new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide});
+const reefVariantWall = new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide});
+const riverVariantWall = new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide});
 for(const side of [-1,1]) {
   box(root,"continuous solid sculpted tank wall",side*9.12,3.23,-.4,
     .15,6.45,25.35,M.deep,true);
   for(let bay=0;bay<5;bay++) {
     const z=-9.85+bay*5.12;
-    box(root,side===1?"painted saltwater reef habitat":"painted freshwater river habitat",
-      side*9.01,3.25,z,.05,5.45,4.66,
-      side===1?reefWall:riverWall);
+    const habitatPaint=side===1?
+      (bay%2?reefVariantWall:reefWall):
+      (bay%2?riverVariantWall:riverWall);
+    const habitat=box(root,side===1?"painted saltwater reef habitat":"painted freshwater river habitat",
+      side*9.01,3.25,z,.05,5.45,4.66,habitatPaint);
+    if(bay>=2) {
+      const uv=habitat.geometry.attributes.uv;
+      for(let vertex=0;vertex<uv.count;vertex++) {
+        const u=uv.getX(vertex);
+        uv.setX(vertex,bay===4?.08+u*.84:1-u);
+      }
+      uv.needsUpdate=true;
+    }
     const pane=add(root,"continuous thick aquarium viewing glass",
       new THREE.PlaneGeometry(4.62,5.52),glass,side*7.56,3.34,z);
     pane.rotation.y=Math.PI/2;
@@ -178,7 +184,7 @@ for(const side of [-1,1]) {
 }
 box(root,"solid distant reef backdrop",0,3.25,-13.28,18.1,6.5,.12,M.deep,true);
 for(const side of [-1,1]) box(root,"painted distant reef habitat",
-  side*4.45,3.25,-13.18,8.9,6.3,.016,reefWall);
+  side*4.45,3.25,-13.18,8.9,6.3,.016,side<0?reefWall:reefVariantWall);
 add(root,"distant reef aquarium viewing pane",new THREE.PlaneGeometry(15.8,5.52),
   glass,0,3.32,-11.35);
 for(let x=-6.8;x<=6.8;x+=3.4) {
@@ -194,7 +200,7 @@ curve(root,"great pearled arch around the distant reef",
 box(root,"solid aquarium boundary beyond portal",0,3.2,13.34,
   18.0,6.4,.1,M.deep,true);
 for(const side of [-1,1]) box(root,"painted habitat behind freestanding portal",
-  side*4.45,3.2,13.24,8.9,6.2,.016,side===1?reefWall:riverWall);
+  side*4.45,3.2,13.24,8.9,6.2,.016,side===1?reefVariantWall:riverVariantWall);
 for(const side of [-1,1]) {
   add(root,"rear aquarium glazing beyond portal",
     new THREE.PlaneGeometry(7.2,5.25),glass,side*5.25,3.2,12.9);
@@ -256,6 +262,70 @@ function fish(x,y,z,scale,mat,phase,yaw=0) {
       .008,stripe%2?M.pearl:M.gold,8);
   }
 }
+function jellyfish(x,y,z,scale,phase) {
+  const group=new THREE.Group();
+  group.name="translucent three-dimensional jellyfish suspended inside saltwater glass";
+  group.position.set(x,y,z);group.scale.setScalar(scale);
+  group.userData.driftPhase=phase;
+  group.userData.driftAmplitude=.035;
+  group.userData.preserveMaterials=true;
+  root.add(group);
+  const cap=new THREE.MeshPhysicalMaterial({color:0xd9d3dd,
+    emissive:0x324b5a,emissiveIntensity:.16,
+    transparent:true,opacity:.55,roughness:.28,metalness:0,
+    depthWrite:false,side:THREE.DoubleSide});
+  const membrane=new THREE.MeshPhysicalMaterial({color:0xf0d9cc,
+    transparent:true,opacity:.56,roughness:.42,metalness:0,
+    depthWrite:false,side:THREE.DoubleSide});
+  const vertices=[],indices=[],rows=9,sides=28;
+  for(let row=0;row<=rows;row++) {
+    const t=row/rows;
+    const radius=.08+.64*Math.sin(t*Math.PI*.61);
+    const yy=.48-.52*t+.10*Math.sin(Math.PI*t);
+    for(let side=0;side<sides;side++) {
+      const a=side*Math.PI*2/sides;
+      const scallop=.035*Math.sin(a*8)*Math.pow(t,3);
+      vertices.push(Math.cos(a)*(radius+scallop),
+        yy+.018*Math.cos(a*8)*Math.pow(t,3),
+        Math.sin(a)*(radius+scallop));
+      if(row<rows) {
+        const n=row*sides+side,b=row*sides+(side+1)%sides;
+        indices.push(n,n+sides,b,b,n+sides,n+sides+(side+1)%sides);
+      }
+    }
+  }
+  const geometry=new THREE.BufferGeometry();
+  geometry.setAttribute("position",new THREE.Float32BufferAttribute(vertices,3));
+  geometry.setIndex(indices);geometry.computeVertexNormals();
+  add(group,"scalloped translucent jelly bell with real volume",geometry,cap);
+  for(let rib=0;rib<8;rib++) {
+    const a=rib*Math.PI*2/8;
+    const radial=[];
+    for(let step=0;step<=6;step++) {
+      const t=step/6,r=.08+.64*Math.sin(t*Math.PI*.61);
+      radial.push([Math.cos(a)*r,.49-.52*t+.1*Math.sin(Math.PI*t),
+        Math.sin(a)*r]);
+    }
+    curve(group,"fine structural ridge following the jelly bell",
+      radial,.009,M.pearl,17);
+    const base=[Math.cos(a)*.69,-.05,Math.sin(a)*.69];
+    curve(group,"trailing filament with a gentle underwater curl",
+      [base,[base[0]*.75,-.48,base[2]*.8],
+        [base[0]*.56+.12*Math.sin(a*3),-.97,base[2]*.55],
+        [base[0]*.42,-1.5-(rib%3)*.12,base[2]*.42]],
+      .012,membrane,23);
+  }
+  for(let arm=0;arm<4;arm++) {
+    const a=arm*Math.PI/2+.27;
+    curve(group,"folded central oral arm, distinct from the tentacles",
+      [[Math.cos(a)*.13,-.035,Math.sin(a)*.13],
+        [Math.cos(a)*.2,-.48,Math.sin(a)*.2],
+        [Math.cos(a)*.1+.09,-1.01,Math.sin(a)*.11],
+        [Math.cos(a)*.12-.06,-1.32,Math.sin(a)*.13]],
+      .037,membrane,21);
+  }
+  return group;
+}
 // Several different schools stay inside the side and end habitats. The
 // contrast in size, orientation, and color makes the water feel inhabited.
 for(const side of [-1,1]) for(let i=0;i<8;i++) {
@@ -280,6 +350,7 @@ for(let i=0;i<6;i++) fish(-6.8+random()*13.6,
 for(let i=0;i<4;i++) fish(-7+random()*14,
   1.15+random()*4.35,13.03,.37+random()*.28,
   i%3?M.turquoise:M.gold,33+i*.64,Math.PI*(i%2));
+jellyfish(8.04,3.35,4.05,.82,111);
 
 // A ray travels in the end habitat. Its swept wings and tail occupy volume
 // and remain clearly recognizable from the doorway and the inner path.
@@ -362,8 +433,36 @@ function coralGarden(x,z,marine) {
       .031,n%2?M.coral:M.gold,12);
   }
 }
+function fanCoral(x,z,span,height,material,sideways=false) {
+  const group=new THREE.Group();
+  group.name="branching three-dimensional sea fan inside the aquarium";
+  group.position.set(x,.42,z);root.add(group);
+  const point=(u,v,depth)=>sideways?[depth,v,u]:[u,v,depth];
+  function branch(u,v,a,length,level,depth) {
+    const nextU=u+Math.cos(a)*length;
+    const nextV=v+Math.sin(a)*length;
+    const bend=depth+.035*Math.sin(nextU*5+nextV*3);
+    curve(group,"tapering sea-fan branch with spatial bend",
+      [point(u,v,depth),
+        point((u+nextU)*.5+.035*Math.sin(level*2+a),
+          (v+nextV)*.5,bend),
+        point(nextU,nextV,bend)],
+      .009+level*.008,material,9);
+    if(level<=0)return;
+    branch(nextU,nextV,a-.31-.07*Math.sin(level*2.3),
+      length*.76,level-1,bend-.045);
+    branch(nextU,nextV,a+.34+.06*Math.cos(level*1.8),
+      length*.73,level-1,bend+.045);
+  }
+  group.scale.set(span,height,span);
+  branch(0,0,Math.PI/2,.24,5,0);
+  return group;
+}
 for(const side of [-1,1]) for(let patch=0;patch<5;patch++)
   coralGarden(side*8.53,-10.6+patch*5.35,side===1);
+fanCoral(-3.15,-12.65,1.2,2.65,M.coral);
+fanCoral(3.7,-12.68,1.12,2.48,M.gold);
+fanCoral(8.12,4.0,1.1,2.22,M.coral,true);
 for(const side of [-1,1]) for(let shelf=0;shelf<4;shelf++) {
   const x=side*8.35,z=5.5-shelf*5.35;
   loft(root,"layered reef ledge behind aquarium glass",
@@ -444,6 +543,7 @@ for(let patch=0;patch<3;patch++)
   fish(x-.36,2.58,z+.65,.72,M.gold,81,.22);
   fish(x+.42,3.33,z+.53,.63,M.coral,83,-.36);
   fish(x+.17,1.82,z-.51,.68,M.turquoise,85,Math.PI+.24);
+  jellyfish(x-.19,3.43,z+.32,.72,113);
 }
 for(const side of [-1,1]) for(let i=0;i<8;i++) {
   const z=-9.5+i*2.75;
@@ -516,18 +616,56 @@ curve(root,"freestanding arched return doorway",
 for(const side of [-1,1]) curve(root,"open floor loop around return doorway",
   [[side*1.95,.065,8.75],[side*2.72,.065,10.15],
     [side*2.74,.065,12.1]],.027,M.turquoise,19);
-for(const side of [-1,1]) for(let i=0;i<6;i++) {
-  const x=side*(2.5+i*.92);
-  curve(root,"shell-inlaid tide curling behind portal",
-    [[x-.3,.07,11.35],[x,.07,11.7],[x+.27,.07,11.35]],
-    .018,i%2?M.gold:M.turquoise,12);
+// An inhabited tide globe rewards the path behind the freestanding arch.
+// Its footprint stays outside the return route around the right post.
+{
+  const x=5.05,z=10.64;
+  loft(root,"solid carved pedestal for rear tide globe",
+    [[.04,1.12,1.04,x,z],[.15,1.18,1.1,x,z],
+      [.39,1.1,1.03,x,z],[.48,1.02,.95,x,z]],M.marble,24,true);
+  const waterGlass=new THREE.MeshPhysicalMaterial({color:0x87c6cb,
+    transparent:true,opacity:.27,roughness:.1,metalness:0,
+    depthWrite:false,side:THREE.DoubleSide});
+  loft(root,"solid curved rear tide globe with visible glass boundary",
+    [[.47,1.02,.94,x,z],[1.18,1.06,.98,x,z],
+      [2.16,1.0,.93,x,z],[2.62,.87,.81,x,z]],waterGlass,26,true);
+  for(const y of [.48,2.63]) {
+    const ring=[];
+    for(let i=0;i<=28;i++) {
+      const a=i*Math.PI*2/28;
+      ring.push([x+Math.cos(a)*(y<1?1.03:.87),y,
+        z+Math.sin(a)*(y<1?.95:.81)]);
+    }
+    curve(root,"continuous shell-metal rim of rear tide globe",
+      ring,.035,M.gold,29);
+  }
+  loft(root,"irregular living rock within the rear glass",
+    [[.47,.6,.52,x,z],[.64,.73,.61,x-.08,z],
+      [.97,.47,.4,x+.06,z-.05],[1.12,.13,.11,x+.11,z-.08]],
+    M.deep,12);
+  for(let strand=0;strand<6;strand++) {
+    const a=strand*Math.PI*2/6;
+    const sx=x+Math.cos(a)*.48,sz=z+Math.sin(a)*.43;
+    curve(root,"rooted plant inside rear fish exhibit",
+      [[sx,.55,sz],[sx+.07,1.15,sz-.05],
+        [sx-.08,1.84+(strand%2)*.18,sz+.04]],
+      .022,strand%2?M.kelp:M.leaf,15);
+    for(let leaf=0;leaf<3;leaf++) petal(root,
+      "pointed kelp blade attached to rear plant",
+      sx+.04,.83+leaf*.36,sz+.06,.19,
+      strand%2?M.kelp:M.turquoise,a);
+  }
+  fish(x-.33,1.58,z+.38,.56,M.gold,126,.2);
+  fish(x+.3,2.02,z-.24,.51,M.coral,128,Math.PI+.3);
 }
 
 window.__authorRoom=async()=>{
   const loader=new THREE.TextureLoader();
-  const [reef,river]=await Promise.all([
-    loader.loadAsync(reefBackdropURL),loader.loadAsync(riverBackdropURL)]);
-  for(const [material,texture] of [[reefWall,reef],[riverWall,river]]) {
+  const [reef,river,reefVariant,riverVariant]=await Promise.all([
+    loader.loadAsync(reefBackdropURL),loader.loadAsync(riverBackdropURL),
+    loader.loadAsync(reefVariantURL),loader.loadAsync(riverVariantURL)]);
+  for(const [material,texture] of [[reefWall,reef],[riverWall,river],
+    [reefVariantWall,reefVariant],[riverVariantWall,riverVariant]]) {
     texture.colorSpace=THREE.SRGBColorSpace;
     texture.userData.mimeType="image/webp";
     material.map=texture;

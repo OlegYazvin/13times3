@@ -32,6 +32,14 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 open-sky and habitat finish revision: frames `03`, `04`, `07`, and `09` no longer suspend thin branch and leaf strips across the outdoor sky; their actual park, street, and fruit trees remain. Frame `03` gains grounded shade trees, path flowers, and modeled shoe and garment folds. Shared and custom-authored figures receive soft floor contact shadows. Frame `11` adds larger fish near the visitor-side glazing and low sculpted reef ledges, and makes the central curved tank boundary clearer. The scene IDs, subjects, and portal positions do not change.
 
+2026-10-21 saltwater exhibit revision: frame `11` replaces loose polygon ornaments under its dome with two fully modeled translucent jellyfish inside saltwater glass and three branching sea fans anchored in the habitats. A small inhabited tide globe occupies the aquarium path behind the freestanding hallway portal, outside the walk-around return route. The fish schools and frame assignment remain the same.
+
+2026-10-21 portrait and independent-world revision: Oleg's shared painted face was reauthored against his private references with narrower facial proportions, grey-green eyes, and more faithful glasses, hair, and beard. His sculpted heads gain raised spectacle rims and swept hair locks, while duplicate room-specific hair pieces were removed. The same likeness is rebuilt into his appearances in frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11`. The outdoor worlds in frames `02`, `03`, `04`, `07`, `08`, `09`, and `10` now carry their watercolor sky and distant terrain well beyond the finite walkable set; their physical footprints may overlap behind neighboring gallery frames, but the portal renderer keeps each world separate. This is a revision of those published memories, with no new frame IDs.
+
+2026-10-21 aquarium habitat finish: frame `11` also gains distinct painted saltwater and freshwater vistas across its glass bays instead of a single repeated reef and river image. Those murals remain behind volumetric fish, plants, sea fans, jellyfish, glass, and collision boundaries; the room's memory and portal location are unchanged.
+
+2026-10-21 job room cleanup: frame `02` mounts the hanging instruments from Oleg's desk reference on a solid plaster music wall and removes unsupported floating paper and sky threads. The same repeated acts of Jane's support, home-to-street fusion, and job-search desk remain; the story is unchanged.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

@@ -591,8 +591,17 @@ try {
   playPage.on("pageerror", error => playErrors.push(error.message));
   await playPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
   await playPage.getByRole("button", { name: /begin walking/i }).click();
+  // Frames 09 and 10 are opposite each other; their large outdoor sky domes
+  // occupy overlapping world coordinates if treated as one physical building.
+  // Moving between the paintings must replace the isolated world, never stack
+  // the two scenes behind both openings.
+  await playPage.evaluate(() => window.__galleryTestPose(11, -28.2, 0));
+  await playPage.waitForFunction(() => window.__galleryDebug().activeRoom === "09", null, { timeout: 15000 });
+  assert.equal((await playPage.evaluate(() => window.__galleryDebug())).loadedWorldCount, 1);
   await playPage.evaluate(() => window.__galleryTestPose(11, -25.8, Math.PI));
   await playPage.waitForFunction(() => window.__galleryDebug().activeRoom === "10", null, { timeout: 15000 });
+  assert.equal((await playPage.evaluate(() => window.__galleryDebug())).loadedWorldCount, 1,
+    "adjacent portal worlds must never occupy the same render scene");
   await playPage.screenshot({ path: ".cache/room10-painting-far.png" });
   await playPage.evaluate(() => window.__galleryTestPose(11, -24.35, Math.PI));
   await playPage.screenshot({ path: ".cache/room10-open-doorway.png" });

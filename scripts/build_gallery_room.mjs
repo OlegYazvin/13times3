@@ -3,11 +3,14 @@ import { chromium } from "playwright";
 import { createServer } from "node:http";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 
 const id = process.argv[2];
 if (!/^\d{2}$/.test(id || "")) throw new Error("Usage: node scripts/build_gallery_room.mjs 09");
 const cache = resolve(`.cache/room${id}`);
 const destination = resolve(`src/assets/explore/room${id}`);
+const execFileAsync = promisify(execFile);
 await mkdir(cache, { recursive: true });
 await mkdir(destination, { recursive: true });
 await build({
@@ -37,7 +40,13 @@ try {
   const result = await page.evaluate(() => window.__authorRoom());
   const decode = (url) => Buffer.from(url.slice(url.indexOf(",") + 1), "base64");
   const preview = decode(result.preview);
-  const model = decode(result.glb);
+  let model = decode(result.glb);
+  const rawPath = resolve(cache, "room-uncompressed.glb");
+  const packedPath = resolve(cache, "room-meshopt.glb");
+  await writeFile(rawPath, model);
+  await execFileAsync(resolve("node_modules/.bin/gltf-transform"),
+    ["meshopt", rawPath, packedPath], { maxBuffer: 1024 * 1024 });
+  model = await readFile(packedPath);
   if (preview.length + model.length > 8_000_000) throw new Error(
     `Room ${id} exceeds the 8 MB asset target (${preview.length} preview + ${model.length} model bytes)`);
   await writeFile(resolve(destination, "preview.webp"), preview);

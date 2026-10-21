@@ -229,7 +229,7 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
     if (!painted) curve(group, "gentle expression", [[-.047, face - .3, .119],
       [0, face - .315, .133], [.047, face - .3, .119]],
       .009, options.lips || "rose");
-    loft(group, "layered hair rather than a round cap", [[face + .035, .095, .08],
+    if (!oleg) loft(group, "layered hair rather than a round cap", [[face + .035, .095, .08],
       [face + .11, .17, .14, 0, -.02], [face + .2, .13, .11, 0, -.03],
       [face + .25, .02, .02, 0, -.03]], hair, 14);
     if (options.bun) loft(group, "high tied hair", [[face + .18, .05, .04, 0, -.07],
@@ -240,7 +240,7 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
       [[side * .08, face + .07, .12],
         [side * .155, face + .17, .08],
         [side * .07, face + .31, -.07]], .012, hair, 13);
-    if (options.curls || options.longHair) for (const side of [-1, 1]) for (let i = 0; i < 4; i++) {
+    if ((options.curls || options.longHair) && !oleg) for (const side of [-1, 1]) for (let i = 0; i < 4; i++) {
       curve(group, "individual waved hair strand", [[side * (.12 + i * .018),
         face + .08, -.035], [side * (.19 + i * .02), face - .14, -.025],
         [side * (.15 + i * .02), face - (options.longHair ? .5 : .3), .02]],
@@ -254,17 +254,6 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
         [side * .12, face - .12, .17], [side * .12, face - .21, .16],
         [side * .015, face - .21, .18], [side * .015, face - .12, .18]],
       .01, options.glassesColor || "ink");
-    if (oleg) for (const side of [-1, 1]) {
-      curve(group, "Oleg's dark spectacle arm in three-quarter profile",
-        [[side * .12, face - .16, .145],
-          [side * .166, face - .17, .07],
-          [side * .18, face - .18, -.012]], .008,
-        options.glassesColor || "ink", 11);
-      curve(group, "short sculpted beard edge along jaw",
-        [[side * .14, face - .26, .06],
-          [side * .11, face - .36, .092],
-          [0, face - .41, .06]], .012, hair, 11);
-    }
     // Oleg's painted likeness needs an adult head proportion. Keep the jaw
     // at the collar while shortening his sculpted cranium; leave the other
     // figures' authored poses and story sightlines intact.
@@ -343,7 +332,8 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
       }
       const fishMaterial = material(0xffffff, { vertexColors: true });
       for (const parent of parents) {
-        if (typeof parent.userData.driftPhase !== "number") continue;
+        if (typeof parent.userData.driftPhase !== "number" ||
+          parent.userData.preserveMaterials) continue;
         const byTopology = new Map();
         for (const mesh of parent.children) {
           if (!mesh.isMesh || !mesh.material.color) continue;

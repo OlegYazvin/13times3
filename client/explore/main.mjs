@@ -72,6 +72,7 @@ try {
       mode: rooms.mode,
       activeRoom: rooms.active?.frame.id || null,
       activeRoomIsolated: rooms.active?.group.parent === rooms.roomScene,
+      loadedWorldCount: rooms.roomScene.children.length,
       roomLocal: rooms.active ? rooms.worldToRoom(player) : null,
       paintingOpacity: gallery.frameMeshes.get("01").surface.material.opacity,
       cameraFov: camera.fov,

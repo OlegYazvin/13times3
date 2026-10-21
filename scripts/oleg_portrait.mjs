@@ -10,6 +10,8 @@ const portraitMaterialPromises = new Map();
 const portraitMeshes = new WeakMap();
 const hairPaint = new THREE.MeshStandardMaterial({ color: 0x382b2b,
   roughness: .94, side: THREE.DoubleSide });
+const hairGlint = new THREE.MeshStandardMaterial({ color: 0x594239,
+  roughness: .98, side: THREE.DoubleSide });
 const framePaint = new THREE.MeshStandardMaterial({ color: 0x28282e,
   roughness: .72, side: THREE.DoubleSide });
 
@@ -20,10 +22,92 @@ function raisedLine(parent, name, points, radius, material) {
   parent.add(mesh);
 }
 
+function taperedLock(parent, name, points, radii, material) {
+  const path = new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)));
+  const positions = [], uvs = [], indices = [];
+  const rows = 12, sides = 8;
+  for (let row = 0; row <= rows; row++) {
+    const t = row / rows;
+    const center = path.getPoint(t);
+    const tangent = path.getTangent(t).normalize();
+    const across = new THREE.Vector3(0, 0, 1).cross(tangent).normalize();
+    const depth = tangent.clone().cross(across).normalize();
+    const step = t * (radii.length - 1), low = Math.floor(step);
+    const radius = THREE.MathUtils.lerp(radii[low],
+      radii[Math.min(low + 1, radii.length - 1)], step - low);
+    for (let side = 0; side < sides; side++) {
+      const angle = side * Math.PI * 2 / sides;
+      const point = center.clone()
+        .addScaledVector(across, Math.cos(angle) * radius)
+        .addScaledVector(depth, Math.sin(angle) * radius * .62);
+      positions.push(point.x, point.y, point.z);
+      uvs.push(side / sides, t);
+    }
+  }
+  for (let row = 0; row < rows; row++) for (let side = 0; side < sides; side++) {
+    const a = row * sides + side, b = row * sides + (side + 1) % sides;
+    indices.push(a, b, a + sides, b, b + sides, a + sides);
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+  geometry.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
+  geometry.setIndex(indices); geometry.computeVertexNormals();
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.name = name;
+  parent.add(mesh);
+}
+
+function sculptHairBehindFace(parent, faceY) {
+  const profile = [
+    [-.43, .105, .08, -.045],
+    [-.31, .17, .13, -.04],
+    [-.12, .195, .15, -.037],
+    [.07, .19, .153, -.035],
+    [.19, .155, .125, -.04],
+    [.27, .045, .05, -.045],
+  ];
+  const sides = 24, positions = [], uvs = [], indices = [];
+  for (let row = 0; row < profile.length; row++) {
+    const [y, width, depth, offsetZ] = profile[row];
+    for (let side = 0; side <= sides; side++) {
+      // Leave the center front open. The painted face already supplies the
+      // hairline there; this modeled shell gives the side and back volume.
+      const angle = .72 + side / sides * (Math.PI * 2 - 1.44);
+      positions.push(Math.sin(angle) * width, faceY + y,
+        Math.cos(angle) * depth + offsetZ);
+      uvs.push(side / sides, row / (profile.length - 1));
+    }
+  }
+  for (let row = 0; row < profile.length - 1; row++) for (let side = 0; side < sides; side++) {
+    const a = row * (sides + 1) + side;
+    indices.push(a, a + 1, a + sides + 1, a + 1, a + sides + 2, a + sides + 1);
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+  geometry.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
+  geometry.setIndex(indices); geometry.computeVertexNormals();
+  const mesh = new THREE.Mesh(geometry, hairPaint);
+  mesh.name = "shaped back and side hair with open painted hairline";
+  parent.add(mesh);
+}
+
 function shapeOlegPortrait(parent, faceY) {
   // The painted lenses retain their fine detail; sculpted temples, hair and
   // beard give the portrait depth in profile without covering the eyes.
+  sculptHairBehindFace(parent, faceY);
   for (const side of [-1, 1]) {
+    // These are actual raised frames following the brow and cheek contour.
+    // The lenses in the painted texture supply fine detail, while this rim
+    // keeps the glasses recognizable from a three-quarter view.
+    raisedLine(parent, "Oleg's shaped rectangular spectacle rim", [
+      [side * .014, faceY - .122, .187],
+      [side * .043, faceY - .108, .19],
+      [side * .13, faceY - .115, .168],
+      [side * .139, faceY - .189, .152],
+      [side * .105, faceY - .228, .168],
+      [side * .034, faceY - .224, .19],
+      [side * .014, faceY - .122, .187],
+    ], .0065, framePaint);
     raisedLine(parent, "Oleg's glasses temple behind the ear", [
       [side * .13, faceY - .16, .15],
       [side * .177, faceY - .17, .075],
@@ -36,13 +120,13 @@ function shapeOlegPortrait(parent, faceY) {
       [side * .139, faceY - .305, .072],
     ], .02, hairPaint);
     for (let lock = 0; lock < 3; lock++) {
-      const x = side * (.16 + lock * .013);
-      raisedLine(parent, "separate swept lock around Oleg's ear", [
-        [x * .77, faceY + .19, -.055],
-        [x, faceY + .025, -.09 - lock * .012],
-        [x * 1.12, faceY - .18, -.07],
-        [x * .92, faceY - .39 - lock * .035, .025],
-      ], .017 - lock * .002, hairPaint);
+      const x = side * (.13 + lock * .022);
+      taperedLock(parent, "sculpted swept hair falling beside Oleg's ear", [
+        [x * .65, faceY + .205, .02],
+        [x, faceY + .045, -.07 - lock * .009],
+        [x * 1.13, faceY - .17, -.067],
+        [x * .96, faceY - .42 - lock * .02, .012],
+      ], [.008, .019 - lock * .002, .015, .002], lock === 1 ? hairGlint : hairPaint);
     }
     raisedLine(parent, "short beard wrapping Oleg's jaw in profile", [
       [side * .137, faceY - .29, .095],
@@ -51,6 +135,13 @@ function shapeOlegPortrait(parent, faceY) {
       [0, faceY - .427, .09],
     ], .014, hairPaint);
   }
+  raisedLine(parent, "bridge joining Oleg's glasses", [
+    [-.018, faceY - .137, .191],
+    [0, faceY - .145, .195],
+    [.018, faceY - .137, .191],
+  ], .0065, framePaint);
+  // The illustrated face already carries the fine swept hairline. More
+  // raised locks across it looked like angular armor at walking distance.
 }
 
 function addPortrait(parent, faceY, profile, fallbackMaterial, person) {

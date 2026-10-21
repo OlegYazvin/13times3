@@ -336,10 +336,31 @@ for (let i = 0; i < 5; i++) {
   beam(chair, "chair foot", [0, .13, .16], [Math.cos(a) * .4, .07, .16 + Math.sin(a) * .4],
     .05, .027, M.ink);
 }
+// A real plaster partition and rail support the instruments from Oleg's
+// reference desk. Without this, they read as props floating in the sky.
+box(root, "solid plaster music wall beside the work desk", -5.02, 2.47, 5.87,
+  1.92, 4.78, .14, M.plaster, true);
+for (const side of [-1, 1]) {
+  box(root, "carved timber edge of the music wall", -5.02 + side * .95,
+    2.44, 5.97, .085, 4.69, .13, M.desk);
+  curve(root, "fine brass line carved into the music-wall edge",
+    [[-5.02 + side * .93, .33, 6.05],
+      [-5.02 + side * .93, 2.45, 6.05],
+      [-5.02 + side * .93, 4.5, 6.05]], .009, M.brass, 22);
+}
+curve(root, "shaped cornice above Oleg's hanging instruments",
+  [[-6.02, 4.7, 6.0], [-5.55, 4.84, 6.0],
+    [-5.02, 4.9, 6.0], [-4.49, 4.84, 6.0],
+    [-4.02, 4.7, 6.0]], .06, M.desk, 23);
+box(root, "aged timber rail below the hanging instruments", -5.02, 2.18, 6.02,
+  1.76, .075, .2, M.desk);
 for (const [x, tint] of [[-5.35, M.ink], [-4.58, M.orange]]) {
+  add(root, "small brass hook fixing instrument to the wall",
+    new THREE.TorusGeometry(.055, .012, 7, 12), M.brass,
+    x, 4.13, 6.045);
   const instrument = new THREE.Group();
   instrument.name = "hanging string instrument";
-  instrument.position.set(x, 3.35, 6.1); root.add(instrument);
+  instrument.position.set(x, 3.35, 6.04); root.add(instrument);
   loft(instrument, "carved waist and resonating body", [[-.65, .012, .025],
     [-.57, .15, .07], [-.39, .17, .08], [-.23, .105, .066],
     [-.04, .14, .07], [.13, .11, .05], [.22, .02, .02]], tint, 16);
@@ -534,19 +555,12 @@ function person(name, x, z, height, outfit, options = {}) {
       [0, faceHeight - .35, .151], [.045, faceHeight - .336, .138]],
     .006, M.blush, 12);
   }
-  if (oleg) {
-    for (const s of [-1, 1]) {
-      curve(head, "beard following the cheek", [[s * .148, faceHeight - .19, .064],
-        [s * .139, faceHeight - .29, .111],
-        [s * .11, faceHeight - .37, .12]], .018, hair, 12);
-    }
-  }
-  if (options.glasses) for (const s of [-1, 1]) {
+  if (options.glasses && !oleg) for (const s of [-1, 1]) {
     beam(head, "glasses arm sweeping toward the ear", [s * .14,
       faceHeight - .16, .08], [s * .185, faceHeight - .165, .008],
       .008, .007, M.ink, 7);
   }
-  loft(head, "custom hairline and swept three-dimensional hair",
+  if (!oleg) loft(head, "custom hairline and swept three-dimensional hair",
     [[faceHeight + .025, .135, .125, 0, -.034],
       [faceHeight + .11, .185, .15, 0, -.025],
       [faceHeight + .21, .15, .126, 0, -.04],
@@ -577,20 +591,6 @@ function person(name, x, z, height, outfit, options = {}) {
       [[s * .17, faceHeight + .05, -.008],
         [s * .196, faceHeight - .18, .004],
         [s * .17, faceHeight - .3, .018]], .012, hair, 10);
-  } else if (oleg) {
-    for (let i = 0; i < 5; i++) curve(head,
-      "Oleg's side-parted wavy brown hair", [[-.15 + i * .066,
-        faceHeight + .12, .12], [-.1 + i * .055, faceHeight + .23, .17],
-        [.12 + i * .018, faceHeight + .06, .13]],
-    .013 + (i % 2) * .005, hair, 12);
-    for (const s of [-1, 1]) for (let i = 0; i < 3; i++) {
-      const xx = s * (.155 + i * .017);
-      curve(head, "Oleg's loose ear-length wave",
-        [[xx, faceHeight + .09, -.045],
-          [xx + s * .05, faceHeight - .18, -.075],
-          [xx + s * .025, faceHeight - .48, .005]],
-      .018 - i * .002, hair, 13);
-    }
   } else if (child) {
     for (const s of [-1, 1]) for (let i = 0; i < 3; i++) curve(head,
       "Zephrine's loose curl", [[s * (.12 + i * .025), faceHeight + .09, -.03],
@@ -638,8 +638,7 @@ person("Oleg leaning into Jane's embrace", .12, -5.48, 1.73, M.cream,
   { oleg: true, glasses: true,
     hands: { "-1": [-.41, 1.02, .45], "1": [.38, .89, .38] }, yaw: -.4 });
 
-// A quiet kitchen and ordinary work make the support concrete. Thin arcs of
-// brass tie each Jane together as one person across the impossible world.
+// A quiet kitchen and ordinary work make the support concrete.
 box(root, "home counter", -4.82, .71, -5.02, 1.55, 1.38, .58, M.plaster, true);
 box(root, "counter's orange front", -4.82, .48, -4.71, 1.39, .7, .04, M.orange);
 for (const x of [-5.18, -4.45]) {
@@ -649,31 +648,8 @@ add(root, "small cooking pan", new THREE.CylinderGeometry(.24, .21, .07, 12),
   M.ink, -4.88, 1.44, -5.01);
 beam(root, "pan handle", [-4.68, 1.46, -5.02], [-4.22, 1.46, -4.94],
   .028, .023, M.ink);
-for (let i = 0; i < 5; i++) {
-  curve(root, "gold thread of Jane's invisible labor", [
-    [-4.15 + i * .15, 1.95, -5.8], [-3.1 + i * .21, 3.0 + i * .09, -4.7],
-    [-1.2 + i * .13, 3.35 + i * .16, -2.1],
-    [.9 + i * .18, 3.08 + i * .14, -1.2],
-    [1.6 + i * .2, 2.7 + i * .12, .18]],
-    .009, i % 2 ? M.brass : M.paper, 40);
-}
-for (let i = 0; i < 5; i++) {
-  const x = -3.9 + i * 1.35, y = 4.2 + .36 * Math.sin(i * .7), z = -1.3 - .53 * i;
-  const sheet = new THREE.Shape();
-  sheet.moveTo(-.22, -.14);
-  sheet.quadraticCurveTo(-.28, -.04, -.21, .13);
-  sheet.quadraticCurveTo(-.08, .21, .03, .13);
-  sheet.lineTo(.2, .16);
-  sheet.quadraticCurveTo(.29, -.04, .18, -.16);
-  sheet.quadraticCurveTo(0, -.1, -.22, -.14);
-  const page = add(root, "a hand-folded page drifting through the search",
-    new THREE.ExtrudeGeometry(sheet, { depth: .012, bevelEnabled: true,
-      bevelSize: .007, bevelThickness: .005, bevelSegments: 1,
-      curveSegments: 7 }), M.paper, x, y, z);
-  page.rotation.set(.15 + i * .12, i * .14, .26 * Math.sin(i));
-  curve(root, "ink crease along the drifting paper", [[x - .16, y + .03, z + .028],
-    [x + .02, y + .045, z + .03], [x + .18, y + .025, z + .022]], .006, M.brass, 9);
-}
+// The connection between the simultaneous versions of Jane is instead
+// carried by the existing gold seam in the pavement and her repeated actions.
 
 async function authorRoom() {
   await facesReady;
