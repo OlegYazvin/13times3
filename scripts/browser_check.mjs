@@ -685,6 +685,16 @@ try {
   assert.ok(aroundArch.roomLocal.z > 11.15 && aroundArch.roomLocal.z < 13.2,
     "the walkable loop must extend behind the physical gallery portal");
   await aquariumPage.screenshot({ path: ".cache/room11-behind-freestanding-arch.png" });
+  await aquariumPage.evaluate(() => window.__galleryTestRoomPose(0, 13.4, Math.PI));
+  await aquariumPage.evaluate(() => window.__galleryTestRoomMove(0, 16.2));
+  const rearHabitat = await aquariumPage.evaluate(() => window.__galleryDebug());
+  assert.equal(rearHabitat.mode, "room", "the rear exhibit stays in the aquarium world");
+  assert.ok(rearHabitat.roomLocal.z > 15.9,
+    "the space behind the portal should be walkable, not a shallow painted alcove");
+  await aquariumPage.screenshot({ path: ".cache/room11-rear-aquarium.png" });
+  await aquariumPage.evaluate(() => window.__galleryTestRoomMove(0, 18.1));
+  assert.ok((await aquariumPage.evaluate(() => window.__galleryDebug().roomLocal.z)) < 17.2,
+    "the rear aquarium glass must stop the player");
   await aquariumPage.evaluate(() => window.__galleryTestRoomPose(0, 9.2, Math.PI));
   const aquariumBeforeExit = await aquariumPage.evaluate(() => window.__galleryDebug());
   await aquariumPage.evaluate(() => window.__galleryTestRoomMove(0, 11.6));

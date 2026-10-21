@@ -8,6 +8,7 @@ import { addOpenSky } from "./open_sky.mjs";
 import { addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
 import { addContactShadow } from "./stage_shadows.mjs";
+import { sculptSleevedArm } from "./sculpted_arm.mjs";
 
 // A friendship remembered across visits: two Chicago play spaces and a dance
 // floor meet in one impossible garden. The places are suggestions, not a claim
@@ -294,11 +295,9 @@ function figure(name, x, z, height, options) {
     const shoulder = [side * .2, height - .44, 0];
     const hand = options.hands?.[side] || [side * .3, height - .91, .12];
     const elbow = [side * .3, (height - .64 + hand[1]) / 2, hand[2] * .6];
-    beam(person, "sleeved arm", shoulder, elbow, .082, .07, outfit);
-    beam(person, "reaching forearm", elbow, hand, .067, .05, skin);
-    loft(person, "small formed hand", [[hand[1] - .045, .03, .032, hand[0], hand[2]],
-      [hand[1], .043, .035, hand[0], hand[2]],
-      [hand[1] + .025, .015, .015, hand[0], hand[2]]], skin, 8);
+    sculptSleevedArm(add, person, { shoulder, elbow, hand,
+      outfit, skin, trim: M.cream,
+      size: Math.min(1, height / 1.7) });
   }
   const face = height - .035;
   loft(person, "carved cheeks and chin", [[face - .4, .06, .06],

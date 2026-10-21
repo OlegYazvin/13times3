@@ -119,15 +119,12 @@ function shapeOlegPortrait(parent, faceY) {
       [side * .177, faceY - .245, .018],
       [side * .139, faceY - .305, .072],
     ], .02, hairPaint);
-    for (let lock = 0; lock < 3; lock++) {
-      const x = side * (.13 + lock * .022);
-      taperedLock(parent, "sculpted swept hair falling beside Oleg's ear", [
-        [x * .65, faceY + .205, .02],
-        [x, faceY + .045, -.07 - lock * .009],
-        [x * 1.13, faceY - .17, -.067],
-        [x * .96, faceY - .42 - lock * .02, .012],
-      ], [.008, .019 - lock * .002, .015, .002], lock === 1 ? hairGlint : hairPaint);
-    }
+    taperedLock(parent, "one swept hair lock framing Oleg's ear", [
+      [side * .115, faceY + .205, -.01],
+      [side * .16, faceY + .04, -.08],
+      [side * .182, faceY - .17, -.065],
+      [side * .155, faceY - .40, .005],
+    ], [.008, .023, .019, .002], hairGlint);
     raisedLine(parent, "short beard wrapping Oleg's jaw in profile", [
       [side * .137, faceY - .29, .095],
       [side * .12, faceY - .365, .11],

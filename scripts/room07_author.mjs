@@ -120,12 +120,8 @@ const zeph = person("Zephrine picking her own blueberries up high",
 zeph.position.y = 1.39; zeph.scale.setScalar(.72);
 const g = person("G helping Zephrine discover blueberries", 2.0, 3.05, 1.62, {
   skin: M.skin, hair: M.gHair, outfit: M.cream, pants: M.ink,
-  longHair: true,
   hands: { "-1": [-.66, 1.07, -.28], "1": [.3, .88, .24] }, yaw: .27,
 });
-for (const side of [-1, 1]) curve(g, "G's chin-length brown hair",
-  [[side * .15, 1.7, -.03], [side * .2, 1.44, .015],
-    [side * .22, 1.17, .04]], .025, M.gHair, 15);
 person("Jane enjoying the blueberry outing", -2.54, 1.33, 1.68, {
   skin: M.skin, hair: M.hair, outfit: M.paleLeaf, pants: M.ink,
   bun: true, hands: { "1": [.4, .8, .36] }, yaw: -.28,

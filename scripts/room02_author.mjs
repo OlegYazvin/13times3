@@ -9,6 +9,7 @@ import zephrineFaceURL from "./assets/room02/zephrine-face.webp";
 import { addOpenSky } from "./open_sky.mjs";
 import { addOlegPortrait, finishOlegPortraits } from "./oleg_portrait.mjs";
 import { addContactShadow } from "./stage_shadows.mjs";
+import { sculptSleevedArm } from "./sculpted_arm.mjs";
 
 // A single impossible space: Oleg's desk opens into a street and four
 // simultaneous acts of Jane's support. All figures and props have volume.
@@ -479,30 +480,19 @@ function person(name, x, z, height, outfit, options = {}) {
     const shoulder = [s * .22, height - .46, 0];
     const hand = options.hands?.[s] || [s * .33, height - 1.02, .16];
     const elbow = [s * .36, (height - .72 + hand[1]) / 2, (hand[2] + .05) / 2];
-    beam(group, "sleeved upper arm", shoulder, elbow, .105, .083, outfit, 13);
-    beam(group, "reaching forearm", elbow, hand, .086, .056, outfit, 13);
+    sculptSleevedArm(add, group, { shoulder, elbow, hand,
+      outfit, skin, trim: jane ? M.floral : M.paper,
+      size: Math.min(1, height / 1.7) });
     curve(group, "stitched sleeve seam", [[s * .25, height - .48, .09],
       [s * .34, height - .66, .092], [elbow[0], elbow[1], elbow[2] + .075]],
       .006, jane ? M.floral : M.paper, 10);
-    loft(group, "tapered garment cuff", [[hand[1] - .09, .067, .063, hand[0], hand[2]],
-      [hand[1] - .01, .078, .068, hand[0], hand[2]]], outfit, 11);
-    loft(group, "shaped open hand", [[hand[1] - .07, .036, .032, hand[0], hand[2]],
-      [hand[1], .05, .04, hand[0], hand[2]],
-      [hand[1] + .02, .018, .017, hand[0], hand[2]]], skin, 12);
-    for (let finger = 0; finger < 3; finger++) {
-      const fx = hand[0] + (finger - 1) * .026;
-      curve(group, "three individual reaching fingers",
-        [[fx, hand[1] - .01, hand[2] + .034],
-          [fx + s * .006, hand[1] - .085 - .012 * (finger === 1), hand[2] + .044]],
-        .009, skin, 5);
-    }
   }
   const head = new THREE.Group();
   head.name = `${name} modeled and painted head`;
   if (oleg) {
     const jawPivot = height - .48;
     head.position.y = jawPivot * .35;
-    head.scale.set(.9, .65, .9);
+    head.scale.set(.85, .65, .80);
   } else {
     head.position.y = (height - .26) * .2;
     head.scale.setScalar(.8);

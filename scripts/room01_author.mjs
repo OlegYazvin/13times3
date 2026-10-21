@@ -4,6 +4,7 @@ import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
 import { addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
+import { sculptSleevedArm } from "./sculpted_arm.mjs";
 
 // Frame 01 is authored once as a scene. Its GLB and painting use this same root
 // and the camera stored in gallery.json.
@@ -13,6 +14,10 @@ const C = {
 };
 const root = new THREE.Group();
 root.name = "Zephrine's first stage — a frozen paper theater";
+function addSculpt(parent, name, geometry, material) {
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.name = name; parent.add(mesh); return mesh;
+}
 function paperGrain() {
   const canvas = document.createElement("canvas");
   canvas.width = canvas.height = 256;
@@ -429,10 +434,12 @@ function sculptZephrine() {
   for(const [x,y,z] of [[-.15,.076,.24],[.29,.18,.37]]) {
     box("aqua sandal strap",x,y,z,.15,.025,.025,mat(0xa2d8cf),child);
   }
-  limb("Zephrine raised arm",[-.2,.91,0],[-.47,1.23,.05],.083,.054,rust,child);
-  limb("Zephrine open arm",[.2,.91,0],[.47,.78,.16],.083,.052,rust,child);
-  oval("Zephrine raised hand",-.49,1.255,.06,.067,.072,.04,skinZephrine,child);
-  oval("Zephrine open hand",.50,.775,.17,.072,.054,.035,skinZephrine,child);
+  sculptSleevedArm(addSculpt,child,{shoulder:[-.2,.91,0],
+    elbow:[-.36,1.085,.025],hand:[-.49,1.255,.06],
+    outfit:rust,skin:skinZephrine,trim:parchment,size:.68});
+  sculptSleevedArm(addSculpt,child,{shoulder:[.2,.91,0],
+    elbow:[.34,.83,.08],hand:[.50,.775,.17],
+    outfit:rust,skin:skinZephrine,trim:parchment,size:.68});
   for(let i=0;i<3;i++) box("sweater button",0,.84-i*.065,.171,.025,.025,.014,mat(0xe0b687),child);
 
   const head = new THREE.Group(); head.name="Zephrine's blue-eyed face and curly bob";
@@ -449,9 +456,6 @@ function sculptZephrine() {
   for(let i=0;i<3;i++) {
     const ribbon=oval("Zephrine flowing dance ribbon",-.51-i*.095,1.15-i*.035,.11+i*.055,.11,.026,.034,i%2?seaFoam:tide,child);
     ribbon.rotation.z=-.24-i*.17;
-  }
-  for(const side of [-1,1]) {
-    oval("Zephrine sweater cuff",side*.47,side<0?1.21:.79,.05,.072,.025,.075,parchment,child);
   }
   for(const x of [-.1,.1]) box("Zephrine shirt hem stitch",x,.49,.142,.11,.014,.012,parchment,child);
   return child;
@@ -470,12 +474,12 @@ function sculptJane() {
   oval("Jane left navy shoe",-.12,.055,.13,.105,.055,.16,navy,jane);
   oval("Jane right navy shoe",.13,.055,.14,.105,.055,.16,navy,jane);
   // Her hand and pen are physically over the signup paper, frozen mid-sentence.
-  limb("Jane writing upper arm",[.17,1.18,.02],[.23,1.01,.20],.075,.063,skinJane,jane);
-  limb("Jane writing forearm",[.23,1.01,.20],[.29,.956,.38],.064,.045,skinJane,jane);
-  oval("Jane writing hand",.30,.954,.39,.068,.035,.055,skinJane,jane);
-  limb("Jane resting upper arm",[-.17,1.18,.02],[-.27,1.02,.22],.075,.061,skinJane,jane);
-  limb("Jane resting forearm",[-.27,1.02,.22],[-.08,.95,.37],.061,.044,skinJane,jane);
-  oval("Jane resting hand",-.06,.949,.38,.071,.036,.055,skinJane,jane);
+  sculptSleevedArm(addSculpt,jane,{shoulder:[.17,1.18,.02],
+    elbow:[.23,1.01,.20],hand:[.30,.954,.39],
+    outfit:skinJane,skin:skinJane,trim:skinJane});
+  sculptSleevedArm(addSculpt,jane,{shoulder:[-.17,1.18,.02],
+    elbow:[-.27,1.02,.22],hand:[-.06,.949,.38],
+    outfit:skinJane,skin:skinJane,trim:skinJane});
   limb("Jane pen",[.315,.965,.43],[.35,1.075,.45],.009,.007,eyeDark,jane);
 
   const head = new THREE.Group(); head.name="Jane's dark high bun and freckled face";
@@ -490,7 +494,6 @@ function sculptJane() {
   oval("Jane navy dress brooch",-.11,1.21,.145,.033,.033,.018,gold,jane);
   oval("Jane pearly brooch center",-.11,1.21,.16,.017,.017,.012,pearl,jane);
   for(let i=0;i<5;i++) oval("Jane small pearl necklace",-.095+i*.047,1.235+Math.abs(i-2)*.009,.135,.013,.013,.012,pearl,jane);
-  for(let i=0;i<3;i++) oval("Jane hand finger",.27+i*.027,.932,.42,.012,.017,.041,skinJane,jane);
   for(const x of [-.13,-.07,-.01]) oval("Jane hair wisps",x,.17,.135,.018,.062,.014,hairJane,head);
   return jane;
 }

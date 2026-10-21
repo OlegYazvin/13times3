@@ -8,6 +8,7 @@ import { addOpenSky } from "./open_sky.mjs";
 import { addOlegPortrait, addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
 import { addContactShadow } from "./stage_shadows.mjs";
+import { sculptSleevedArm } from "./sculpted_arm.mjs";
 
 // A single authored world: the painting and exported GLB share this root.
 // The photographs stay private. Nothing here embeds a photographic image.
@@ -382,7 +383,7 @@ function face(parent, height, hair, { glasses = false, beard = false, bun = fals
       .029 - i * .003, hair);
   }
   if (shellGroup) {
-    shellGroup.scale.y = .65;
+    shellGroup.scale.set(.85, .65, .80);
     shellGroup.position.y = (height - .42) * .35;
   }
 }
@@ -414,11 +415,9 @@ function person(name, x, z, height, outfit, hair, options = {}) {
     const hand = options.handTargets?.[s] || [s * (options.armsWide ? .49 : .33), height - 1.0, .17];
     const elbow = [s * (options.armsWide ? .44 : .34),
       (height - .76 + hand[1]) / 2 + .09, (hand[2] + .04) / 2];
-    bridge(group, "sleeved arm with shaped elbow", shoulder, elbow, .105, .09, outfit, 10);
-    bridge(group, "folded sleeve", elbow, hand, .085, .06, outfit, 10);
-    sculptLoft(group, "five-finger hand silhouette", [[hand[1] - .095, .043, .036, hand[0], hand[2]],
-      [hand[1], .054, .044, hand[0], hand[2]],
-      [hand[1] + .018, .025, .02, hand[0], hand[2]]], options.child ? skinChild : skin, 9);
+    sculptSleevedArm(put, group, { shoulder, elbow, hand,
+      outfit, skin: options.child ? skinChild : skin, trim: M.cream,
+      size: Math.min(1, height / 1.7) });
   }
   face(group, height - .04, hair, { ...options, oleg: name === "Oleg",
     jane: name === "Jane", zephrine: name === "Zephrine" });

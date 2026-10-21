@@ -7,6 +7,7 @@ import { addOlegPortrait, addJanePortrait, addGPortrait,
   addZephrinePortrait, finishOlegPortraits } from "./oleg_portrait.mjs";
 import { addOpenSky } from "./open_sky.mjs";
 import { addContactShadow } from "./stage_shadows.mjs";
+import { sculptSleevedArm } from "./sculpted_arm.mjs";
 
 // Shared sculpting tools for independent storybook worlds. Each room supplies
 // its own palette, architecture, composition and narrative details.
@@ -173,22 +174,11 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
       options.skirt || outfit, 14);
     for (const side of [-1, 1]) {
       const hand = options.hands?.[side] || [side * .31, stature - .95, .14];
-      const elbow = [side * .32, (stature - .71 + hand[1]) / 2, hand[2] * .55];
-      beam(group, "formed upper arm", [side * .21, stature - .43, 0],
-        elbow, .085, .07, outfit);
-      beam(group, "formed forearm", elbow, hand, .068, .048,
-        options.bareArms ? skin : outfit);
-      loft(group, "rolled sleeve cuff following the wrist",
-        [[hand[1] - .09, .062, .055, hand[0], hand[2]],
-          [hand[1] - .025, .075, .064, hand[0], hand[2]]],
-        trim, 10);
-      loft(group, "small formed hand", [[hand[1] - .052, .033, .033, hand[0], hand[2]],
-        [hand[1], .045, .038, hand[0], hand[2]],
-        [hand[1] + .02, .014, .015, hand[0], hand[2]]], skin, 8);
-      for (let finger = -1; finger <= 1; finger++) curve(group, "individual finger",
-        [[hand[0] + finger * .021, hand[1] - .01, hand[2] + .03],
-          [hand[0] + finger * .022, hand[1] - .07, hand[2] + .045]],
-        .006, skin, 5);
+      const elbow = [side * .315, (stature - .68 + hand[1]) / 2, hand[2] * .55];
+      sculptSleevedArm(add, group, {
+        shoulder: [side * .218, stature - .43, .005], elbow, hand,
+        outfit, skin, trim, size: Math.min(1, stature / 1.7),
+      });
     }
     const headStart = group.children.length;
     const face = stature - .035;
@@ -254,15 +244,17 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
         [side * .12, face - .12, .17], [side * .12, face - .21, .16],
         [side * .015, face - .21, .18], [side * .015, face - .12, .18]],
       .01, options.glassesColor || "ink");
-    // Oleg's painted likeness needs an adult head proportion. Keep the jaw
-    // at the collar while shortening his sculpted cranium; leave the other
-    // figures' authored poses and story sightlines intact.
-    if (oleg) {
+    // The original life-size portrait was stretched over a storybook head
+    // almost half as tall as an adult torso. Scale the entire modeled head,
+    // not just its texture, around the jaw so hair and glasses stay seated.
+    if (painted) {
       const head = new THREE.Group();
-      head.name = "proportioned sculpted Oleg head and painted likeness";
+      head.name = `proportioned sculpted ${name} head and painted likeness`;
       for (const child of group.children.slice(headStart)) head.add(child);
-      head.scale.y = .65;
-      head.position.y = (stature - .445) * .35;
+      const horizontal = oleg ? .85 : zephrine ? .9 : .87;
+      const vertical = oleg ? .65 : zephrine ? .78 : .7;
+      head.scale.set(horizontal, vertical, horizontal * .94);
+      head.position.y = (stature - .445) * (1 - vertical);
       group.add(head);
     }
     curve(group, "stitched neckline", [[-.14, stature - .42, .13],

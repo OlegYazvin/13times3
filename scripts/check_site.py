@@ -286,7 +286,7 @@ def main() -> None:
     aquarium_room = frames[10]["room"]
     assert aquarium_room["title"] == "We took zephrine to the Shedd aquairum with G"
     assert aquarium_room["caption"] == "Wondering at the fish with G"
-    assert aquarium_room["dimensionsM"] == [18.4, 8.2, 26.8]
+    assert aquarium_room["dimensionsM"] == [18.4, 8.2, 34.8]
     assert aquarium_room["portalZ"] == 10.4, "Room 11's actual portal must stand inside its world"
     aquarium_preview = OUTPUT / aquarium_room["previewImage"].lstrip("/")
     aquarium_model = OUTPUT / aquarium_room["modelUrl"].lstrip("/")

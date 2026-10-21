@@ -18,14 +18,14 @@ const C = {
   paper:0xf6ead8,blue:0x6198b4,
 };
 const art=createRoomArt({index:10,title:"G and Zephrine wonder at the fish",
-  width:18.4,height:8.2,depth:26.8,colors:C,seed:111111});
+  width:18.4,height:8.2,depth:34.8,colors:C,seed:111111});
 const {root,M,random,add,box,beam,curve,loft,petal,
   wrapSky,ground,person,exportRoom}=art;
 wrapSky(C.deep);
 const floor=ground(C.ground,(x,z)=>{
-  const r=Math.hypot(x*.72,z*.67);
-  return new THREE.Color(C.marble).lerp(new THREE.Color(C.ground),
-    Math.min(.72,r/13));
+  const r=Math.hypot(x*.72,z*.57);
+  return new THREE.Color(0xb8d1c6).lerp(new THREE.Color(0x779e9b),
+    Math.min(.84,r/13));
 });
 {
   const canvas=document.createElement("canvas");
@@ -137,9 +137,9 @@ const riverWall = new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleS
 const reefVariantWall = new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide});
 const riverVariantWall = new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide});
 for(const side of [-1,1]) {
-  box(root,"continuous solid sculpted tank wall",side*9.12,3.23,-.4,
-    .15,6.45,25.35,M.deep,true);
-  for(let bay=0;bay<5;bay++) {
+  box(root,"continuous solid sculpted tank wall",side*9.12,3.23,1.6,
+    .15,6.45,30.95,M.deep,true);
+  for(let bay=0;bay<6;bay++) {
     const z=-9.85+bay*5.12;
     const habitatPaint=side===1?
       (bay%2?reefVariantWall:reefWall):
@@ -196,16 +196,43 @@ for(let x=-6.8;x<=6.8;x+=3.4) {
 curve(root,"great pearled arch around the distant reef",
   [[-8,5.95,-11.32],[-4.5,6.6,-11.32],[0,6.9,-11.32],
     [4.5,6.6,-11.32],[8,5.95,-11.32]],.09,M.gold,42);
-// A quiet habitat behind the portal makes its reverse side part of this world.
-box(root,"solid aquarium boundary beyond portal",0,3.2,13.34,
-  18.0,6.4,.1,M.deep,true);
+// The rear painting is several metres behind reachable glass. From behind
+// the free-standing portal it gains parallax instead of becoming pixel-sized
+// wallpaper when a visitor walks up to the exhibit.
+box(root,"solid rear aquarium sill beneath deep glass",0,.36,16.93,
+  17.9,.72,.35,M.marble,true);
+const rearBed=add(root,"modeled seabed continues behind rear glazing",
+  new THREE.PlaneGeometry(18,4.5,18,8),M.shadow,0,.045,18.85);
+rearBed.rotation.x=-Math.PI/2;
+curve(root,"continuous polished edge of the rear glazing",
+  [[-8.82,.77,16.82],[-4.4,.77,16.82],
+    [0,.77,16.82],[4.4,.77,16.82],[8.82,.77,16.82]],
+  .038,M.gold,29);
+for(let rock=0;rock<13;rock++) {
+  const x=-8.1+rock*1.34+(random()-.5)*.37;
+  const z=18.1+(rock%3)*.7;
+  const width=.34+random()*.47;
+  loft(root,"layered sandstone reef emerging from the seabed",
+    [[.03,width,.31,x,z],[.12,width*1.14,.4,x-.07,z],
+      [.26,width*.82,.3,x+.06,z-.04],
+      [.39,width*.36,.12,x+.11,z-.07]],
+    rock%3===0?M.kelp:rock%3===1?M.deep:M.turquoise,10);
+}
 for(const side of [-1,1]) box(root,"painted habitat behind freestanding portal",
-  side*4.45,3.2,13.24,8.9,6.2,.016,side===1?reefVariantWall:riverVariantWall);
+  side*4.45,3.2,20.55,8.9,6.2,.016,side===1?reefVariantWall:riverVariantWall);
 for(const side of [-1,1]) {
   add(root,"rear aquarium glazing beyond portal",
-    new THREE.PlaneGeometry(7.2,5.25),glass,side*5.25,3.2,12.9);
-  curve(root,"rear habitat frame",[[side*1.72,.62,12.86],
-    [side*1.72,5.8,12.86],[side*8.9,5.8,12.86]],.064,M.pearl);
+    new THREE.PlaneGeometry(7.2,5.25),glass,side*5.25,3.2,16.82);
+  curve(root,"rear habitat frame",[[side*1.72,.62,16.8],
+    [side*1.72,5.8,16.8],[side*8.9,5.8,16.8]],.064,M.pearl);
+}
+for(const z of [11.4,14.45,16.6]) {
+  curve(root,"vaulted wave rib over the aquarium behind its portal",
+    [[-8.3,5.75,z],[-5.7,7.15,z-.17],[0,7.72,z-.32],
+      [5.7,7.15,z-.17],[8.3,5.75,z]],.085,M.pearl,31);
+  curve(root,"fine inlaid waterline beneath the rear vault",
+    [[-7.5,.065,z],[-3.9,.07,z-.13],[0,.068,z-.2],
+      [3.9,.07,z-.13],[7.5,.065,z]],.024,M.gold,25);
 }
 function fishGeometry() {
   const rings=[[-.46,.02,.02],[-.32,.13,.11],[.03,.19,.15],
@@ -328,8 +355,8 @@ function jellyfish(x,y,z,scale,phase) {
 }
 // Several different schools stay inside the side and end habitats. The
 // contrast in size, orientation, and color makes the water feel inhabited.
-for(const side of [-1,1]) for(let i=0;i<8;i++) {
-  const z=-10.7+random()*23.2;
+for(const side of [-1,1]) for(let i=0;i<11;i++) {
+  const z=-10.7+random()*27.1;
   fish(side*(8.05+random()*.38),1.18+random()*4.4,z,
     .48+random()*.38,i%5===0?M.coral:i%3?M.gold:M.turquoise,
     i*.88+side,side*Math.PI/2);
@@ -347,8 +374,8 @@ for(let i=0;i<6;i++) fish(-6.8+random()*13.6,
   1.12+random()*4.7,-12.0-random()*.75,
   .47+random()*.46,i%3===0?M.coral:i%3===1?M.gold:M.turquoise,
   i*.71,Math.PI*(i%2));
-for(let i=0;i<4;i++) fish(-7+random()*14,
-  1.15+random()*4.35,13.03,.37+random()*.28,
+for(let i=0;i<8;i++) fish(-7+random()*14,
+  1.15+random()*4.35,18.45,.4+random()*.38,
   i%3?M.turquoise:M.gold,33+i*.64,Math.PI*(i%2));
 jellyfish(8.04,3.35,4.05,.82,111);
 
@@ -458,7 +485,7 @@ function fanCoral(x,z,span,height,material,sideways=false) {
   branch(0,0,Math.PI/2,.24,5,0);
   return group;
 }
-for(const side of [-1,1]) for(let patch=0;patch<5;patch++)
+for(const side of [-1,1]) for(let patch=0;patch<6;patch++)
   coralGarden(side*8.53,-10.6+patch*5.35,side===1);
 fanCoral(-3.15,-12.65,1.2,2.65,M.coral);
 fanCoral(3.7,-12.68,1.12,2.48,M.gold);
@@ -478,8 +505,16 @@ for(const side of [-1,1]) for(let shelf=0;shelf<4;shelf++) {
 }
 for(let patch=0;patch<5;patch++)
   coralGarden(-6.75+patch*3.35,-12.8,true);
-for(let patch=0;patch<3;patch++)
-  coralGarden(-6.5+patch*5.5,13.05,patch%2===0);
+for(let patch=0;patch<5;patch++)
+  coralGarden(-6.5+patch*3.25,19.43,patch%2===0);
+fanCoral(-.52,18.75,1.22,3.12,M.coral);
+fanCoral(1.05,19.12,.93,2.72,M.gold);
+for(const side of [-1,1]) {
+  fanCoral(side*4.7,19.37,1.05,2.5,
+    side<0?M.kelp:M.coral);
+  fish(side*4.45,2.5,18.2,1.15,
+    side<0?M.gold:M.turquoise,71+side,Math.PI*(side+1)/2);
+}
 
 // A free-standing tide-pool lantern gives Zephrine something close enough to
 // study from several angles. The curved glazing holds its own fish, stone,
@@ -545,7 +580,7 @@ for(let patch=0;patch<3;patch++)
   fish(x+.17,1.82,z-.51,.68,M.turquoise,85,Math.PI+.24);
   jellyfish(x-.19,3.43,z+.32,.72,113);
 }
-for(const side of [-1,1]) for(let i=0;i<8;i++) {
+for(const side of [-1,1]) for(let i=0;i<10;i++) {
   const z=-9.5+i*2.75;
   curve(root,"dappled underwater light across viewing glass",
     [[side*7.52,1.0,z-.38],[side*7.52,2.9,z+.08],
@@ -553,7 +588,7 @@ for(const side of [-1,1]) for(let i=0;i<8;i++) {
 }
 
 // Clusters of cut-paper kelp and coral rest behind the family and at edges.
-for(const side of [-1,1]) for(let patch=0;patch<8;patch++) {
+for(const side of [-1,1]) for(let patch=0;patch<10;patch++) {
   const x=side*(8.3+random()*.42),z=-10.9+patch*3.16;
   for(let strand=0;strand<5;strand++) {
     const dx=(random()-.5)*.6;
@@ -583,11 +618,7 @@ const zeph=person("Zephrine pointing at the fish in wonder",.15,6.85,1.08,{
 zeph.userData.solidFootprint=true;
 const g=person("G sharing wonder with Zephrine",1.13,6.48,1.67,{
   skin:M.skin,hair:M.gHair,outfit:M.cream,pants:M.deep,
-  longHair:true,
   hands:{"-1":[-.48,.89,.14],"1":[.5,1.15,.08]},yaw:.45});
-for(const side of [-1,1]) curve(g,"G's chin-length dark brown bob",
-  [[side*.15,1.72,-.03],[side*.24,1.49,.01],
-    [side*.23,1.25,.04]],.033,M.gHair,13);
 g.userData.solidFootprint=true;
 person("Jane near her family",-3.8,5.65,1.68,{
   skin:M.skin,hair:M.hair,outfit:M.fabric,pants:M.ink,bun:true,yaw:.24});

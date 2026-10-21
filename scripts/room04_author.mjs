@@ -8,6 +8,7 @@ import { addOpenSky } from "./open_sky.mjs";
 import { addOlegPortrait, addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
 import { addContactShadow } from "./stage_shadows.mjs";
+import { sculptSleevedArm } from "./sculpted_arm.mjs";
 
 // A Roscoe Village walk imagined as a long paper street. The blue toy car is
 // an original sculpted object informed by Oleg's Step2 product reference;
@@ -303,12 +304,11 @@ function adult(name, x, z, outfit, options = {}) {
   for (const side of [-1, 1]) {
     const hand = options.hands?.[side] || [side * .33, height - 1.0, .18];
     const elbow = [side * .35, (height - .72 + hand[1]) / 2, hand[2] * .55];
-    beam(group, "sleeved shoulder", [side * .22, height - .42, 0], elbow,
-      .09, .072, outfit);
-    beam(group, "reaching forearm", elbow, hand, .072, .05, skin);
-    loft(group, "individual formed hand", [[hand[1] - .06, .032, .034, hand[0], hand[2]],
-      [hand[1], .048, .041, hand[0], hand[2]],
-      [hand[1] + .02, .015, .015, hand[0], hand[2]]], skin, 8);
+    sculptSleevedArm(add, group, {
+      shoulder: [side * .22, height - .42, 0], elbow, hand,
+      outfit, skin, trim: M.cream,
+      size: Math.min(1, height / 1.7),
+    });
   }
   const headStart = group.children.length;
   const face = height - .04;
@@ -357,7 +357,7 @@ function adult(name, x, z, outfit, options = {}) {
     const head = new THREE.Group();
     head.name = `${name} proportioned sculpted head`;
     for (const child of group.children.slice(headStart)) head.add(child);
-    head.scale.y = .65;
+    head.scale.set(.85, .65, .80);
     head.position.y = (height - .46) * .35;
     group.add(head);
   }
