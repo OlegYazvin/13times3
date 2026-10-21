@@ -1,10 +1,12 @@
 import * as THREE from "three";
+import { foliageLobe } from "./sculpted_foliage.mjs";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
 import { openSky } from "./open_sky.mjs";
-import { addOlegPortrait, finishOlegPortraits } from "./oleg_portrait.mjs";
+import { addOlegPortrait, addJanePortrait, addZephrinePortrait,
+  finishOlegPortraits } from "./oleg_portrait.mjs";
 
 // A Roscoe Village walk imagined as a long paper street. The blue toy car is
 // an original sculpted object informed by Oleg's Step2 product reference;
@@ -209,7 +211,12 @@ for (const side of [-1, 1]) for (let i = 0; i < 4; i++) {
     curve(root, "shaped tree branch", [[x + side * .12, 1.7, z],
       [x + side * (.3 + branch * .38), 2.48, z + branch * .25],
       [x + side * (.45 + branch * .68), 3.28, z + branch * .5]], .055, M.bark);
+    foliageLobe(root, "scalloped parkway foliage among the upper branches",
+      x + side * (.45 + branch * .55), 3.29, z + branch * .43,
+      .75, .32, .54, branch < 0 ? C.leaf : C.paleLeaf, i * 3 + side + branch);
   }
+  foliageLobe(root, "overlapping central tree crown", x + side * .2,
+    3.32, z - .12, .74, .37, .62, C.leaf, i + side);
   for (let j = 0; j < 23; j++) leaf(root,
     x + (random() - .5) * 2.2, 2.9 + random() * .62,
     z + (random() - .5) * 2.1, .21 + random() * .14,
@@ -220,7 +227,7 @@ for (const side of [-1, 1]) for (let i = 0; i < 4; i++) {
 // shell. It is open at the seat, has four wheels, steering wheel and a push
 // handle, and remains one solid obstacle for a visitor.
 const car = new THREE.Group(); car.name = "sculpted blue toddler push car with Zephrine driving";
-car.position.set(0, 0, 1.0); root.add(car);
+car.position.set(0, 0, 4.0); root.add(car);
 const bodyShape = new THREE.Shape();
 bodyShape.moveTo(-.35, -.83);
 bodyShape.bezierCurveTo(-.51, -.77, -.53, -.49, -.5, -.21);
@@ -317,18 +324,21 @@ function adult(name, x, z, outfit, options = {}) {
   if (options.oleg) addOlegPortrait(group, face,
     [[-.42, .06, .055], [-.34, .14, .12], [-.16, .17, .145],
       [.03, .15, .13], [.12, .055, .055]], skin);
+  if (options.bun) addJanePortrait(group, face,
+    [[-.42, .06, .055], [-.34, .14, .12], [-.16, .17, .145],
+      [.03, .15, .13], [.12, .055, .055]], skin);
   for (const side of [-1, 1]) {
-    if (!options.oleg) add(group, "small painted eye", new THREE.SphereGeometry(.02, 7, 6), M.white,
+    if (!options.oleg && !options.bun) add(group, "small painted eye", new THREE.SphereGeometry(.02, 7, 6), M.white,
       side * .07, face - .15, .143);
-    if (!options.oleg) add(group, "dark iris", new THREE.SphereGeometry(.011, 7, 5), M.dark,
+    if (!options.oleg && !options.bun) add(group, "dark iris", new THREE.SphereGeometry(.011, 7, 5), M.dark,
       side * .07, face - .15, .163);
-    if (!options.oleg) curve(group, "eyebrow", [[side * .027, face - .09, .15],
+    if (!options.oleg && !options.bun) curve(group, "eyebrow", [[side * .027, face - .09, .15],
       [side * .075, face - .085, .155], [side * .115, face - .1, .14]],
       .008, M.hair);
   }
-  if (!options.oleg) loft(group, "small nose", [[face - .27, .016, .017, 0, .155],
+  if (!options.oleg && !options.bun) loft(group, "small nose", [[face - .27, .016, .017, 0, .155],
     [face - .16, .025, .03, 0, .17], [face - .145, .008, .008, 0, .156]], skin, 8);
-  if (!options.oleg) curve(group, "quiet smile", [[-.05, face - .31, .12],
+  if (!options.oleg && !options.bun) curve(group, "quiet smile", [[-.05, face - .31, .12],
     [0, face - .323, .13], [.05, face - .31, .12]], .008, M.coral);
   loft(group, "layered dark hair", [[face + .03, .09, .08],
     [face + .11, .17, .13, 0, -.02], [face + .2, .13, .11, 0, -.03],
@@ -354,17 +364,17 @@ function adult(name, x, z, outfit, options = {}) {
   return group;
 }
 
-adult("Oleg pushing with Jane", -1.08, -1.2, M.cream, {
+adult("Oleg pushing with Jane", -1.08, 1.8, M.cream, {
   skin: M.olegSkin, height: 1.73, oleg: true, glasses: true, beard: true, longHair: true,
   hands: { "1": [.79, 1.48, 1.14], "-1": [-.38, 1.03, .27] }, yaw: .12,
 });
-adult("Jane pushing with Oleg", 1.08, -1.2, M.plum, {
+adult("Jane pushing with Oleg", 1.08, 1.8, M.plum, {
   skin: M.janeSkin, bun: true, pants: M.dark,
   hands: { "-1": [-.79, 1.48, 1.14], "1": [.38, 1.03, .27] }, yaw: -.12,
 });
 
 const zeph = new THREE.Group(); zeph.name = "Zephrine enthusiastically steering her blue car";
-zeph.position.set(0, 0, 1.0); root.add(zeph);
+zeph.position.set(0, 0, 4.0); root.add(zeph);
 loft(zeph, "solid seated child's torso", [[.6, .17, .15, 0, -.22],
   [.82, .22, .17, 0, -.22], [1.02, .18, .14, 0, -.22]], M.pink, 12, true);
 for (const side of [-1, 1]) {
@@ -376,14 +386,11 @@ for (const side of [-1, 1]) {
 loft(zeph, "Zephrine's smiling sculpted face", [[.96, .055, .06, 0, -.21],
   [1.05, .15, .12, 0, -.21], [1.24, .17, .145, 0, -.21],
   [1.41, .14, .12, 0, -.22], [1.48, .02, .02, 0, -.22]], M.janeSkin, 14);
-for (const side of [-1, 1]) {
-  add(zeph, "wide delighted eye", new THREE.SphereGeometry(.027, 8, 6),
-    M.white, side * .068, 1.27, -.063);
-  add(zeph, "bright iris", new THREE.SphereGeometry(.013, 7, 5),
-    M.dark, side * .068, 1.27, -.037);
-}
-curve(zeph, "Zephrine's open delighted smile", [[-.063, 1.1, -.095],
-  [0, 1.068, -.07], [.063, 1.1, -.095]], .018, M.coral);
+const zephFace = new THREE.Group();
+zephFace.position.z = -.21; zeph.add(zephFace);
+addZephrinePortrait(zephFace, 1.44,
+  [[-.48, .055, .06], [-.39, .15, .12], [-.2, .17, .145],
+    [0, .14, .12], [.04, .02, .02]], M.janeSkin);
 loft(zeph, "soft crown of brown curls", [[1.42, .13, .11, 0, -.23],
   [1.51, .18, .15, 0, -.24], [1.6, .13, .11, 0, -.24],
   [1.64, .02, .02, 0, -.24]], M.zephHair, 13);

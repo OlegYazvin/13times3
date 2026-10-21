@@ -1,10 +1,12 @@
 import * as THREE from "three";
+import { foliageLobe } from "./sculpted_foliage.mjs";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
 import { openSky } from "./open_sky.mjs";
-import { addOlegPortrait, finishOlegPortraits } from "./oleg_portrait.mjs";
+import { addOlegPortrait, addJanePortrait, addZephrinePortrait,
+  finishOlegPortraits } from "./oleg_portrait.mjs";
 
 // A single authored world: the painting and exported GLB share this root.
 // The photographs stay private. Nothing here embeds a photographic image.
@@ -221,6 +223,9 @@ function orchardTree(x, z, scale, index) {
       Math.sin(a) * (.65 + .2 * rand())];
     tube(tree, "angular fruit-tree limb", [[0, 1.3, 0],
       [end[0] * .5, 1.93, end[2] * .5], end], .055, M.bark, 7);
+    foliageLobe(tree, "fruiting apple-tree canopy with a scalloped silhouette",
+      end[0] * .86, end[1] + .08, end[2] * .86,
+      .56, .28, .49, branch % 3 ? P.leaf : P.ochre, index * 7 + branch);
     for (let j = 0; j < 15; j++) {
       const lx = end[0] + (rand() - .5) * .85;
       const lz = end[2] + (rand() - .5) * .65;
@@ -344,7 +349,7 @@ for (const [offset, material] of [[0, M.ochre], [.19, M.cream]]) {
 
 // Sculpted figures use lofts, folds, seams, and raised facial features. They
 // remain three-dimensional from every side. No reference photo is in the GLB.
-function face(parent, height, hair, { glasses = false, beard = false, bun = false, longHair = false, oleg = false } = {}) {
+function face(parent, height, hair, { glasses = false, beard = false, bun = false, longHair = false, oleg = false, jane = false, zephrine = false } = {}) {
   const head = sculptLoft(parent, "faceted cheek and jaw portrait", [
     [height - .42, .065, .07], [height - .34, .145, .13],
     [height - .16, .173, .15], [height + .02, .15, .14],
@@ -354,19 +359,25 @@ function face(parent, height, hair, { glasses = false, beard = false, bun = fals
   if (oleg) addOlegPortrait(parent, height,
     [[-.42, .065, .07], [-.34, .145, .13], [-.16, .173, .15],
       [.02, .15, .14], [.13, .09, .085]], skin);
+  if (jane) addJanePortrait(parent, height,
+    [[-.42, .065, .07], [-.34, .145, .13], [-.16, .173, .15],
+      [.02, .15, .14], [.13, .09, .085]], skin);
+  if (zephrine) addZephrinePortrait(parent, height,
+    [[-.42, .065, .07], [-.34, .145, .13], [-.16, .173, .15],
+      [.02, .15, .14], [.13, .09, .085]], skin);
   for (const s of [-1, 1]) {
     put(parent, "warm ear and cheek detail", new THREE.DodecahedronGeometry(.037, 0), skin,
       s * .166, height - .22, .01);
-    if (!oleg) put(parent, "painted eye white", new THREE.SphereGeometry(.026, 9, 7), M.cream,
+    if (!oleg && !jane && !zephrine) put(parent, "painted eye white", new THREE.SphereGeometry(.026, 9, 7), M.cream,
       s * .069, height - .15, .145);
-    if (!oleg) put(parent, "small dark iris", new THREE.SphereGeometry(.013, 8, 6), M.ink,
+    if (!oleg && !jane && !zephrine) put(parent, "small dark iris", new THREE.SphereGeometry(.013, 8, 6), M.ink,
       s * .069, height - .15, .168);
-    if (!oleg) tube(parent, "expressive brow", [[s * .032, height - .09, .15],
+    if (!oleg && !jane && !zephrine) tube(parent, "expressive brow", [[s * .032, height - .09, .15],
       [s * .072, height - .08, .155], [s * .112, height - .092, .14]], .009, hair);
   }
-  if (!oleg) sculptLoft(parent, "small raised nose", [[height - .28, .017, .019, 0, .15],
+  if (!oleg && !jane && !zephrine) sculptLoft(parent, "small raised nose", [[height - .28, .017, .019, 0, .15],
     [height - .16, .024, .027, 0, .178], [height - .14, .008, .01, 0, .16]], skin, 8);
-  if (!oleg) tube(parent, "gentle portrait mouth", [[-.052, height - .315, .119],
+  if (!oleg && !jane && !zephrine) tube(parent, "gentle portrait mouth", [[-.052, height - .315, .119],
     [0, height - .329, .133], [.052, height - .315, .119]], .009, M.red);
   if (beard && !oleg) {
     for (const s of [-1, 1]) tube(parent, "short painted beard", [
@@ -434,7 +445,8 @@ function person(name, x, z, height, outfit, hair, options = {}) {
       [hand[1], .054, .044, hand[0], hand[2]],
       [hand[1] + .018, .025, .02, hand[0], hand[2]]], options.child ? skinChild : skin, 9);
   }
-  face(group, height - .04, hair, { ...options, oleg: name === "Oleg" });
+  face(group, height - .04, hair, { ...options, oleg: name === "Oleg",
+    jane: name === "Jane", zephrine: name === "Zephrine" });
   tube(group, "stitched garment neckline", [[-.15, height - .44, .1],
     [0, height - .48, .18], [.15, height - .44, .1]], .017, M.cream);
   if (options.jacket) {

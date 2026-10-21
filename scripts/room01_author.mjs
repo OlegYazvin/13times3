@@ -2,6 +2,8 @@ import * as THREE from "three";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
+import { addJanePortrait, addZephrinePortrait,
+  finishOlegPortraits } from "./oleg_portrait.mjs";
 
 // Frame 01 is authored once as a scene. Its GLB and painting use this same root
 // and the camera stored in gallery.json.
@@ -395,15 +397,22 @@ function spiralFossil(name,x,y,z,radius,material) {
 }
 function face(name, head, skin, iris, options={}) {
   oval(`${name} softly sculpted face`,0,0,0,.18,.215,.16,skin,head);
-  oval(`${name} small nose`,0,-.022,.165,.033,.048,.044,skin,head);
+  const painted = name === "Jane" || name === "Zephrine";
+  if (painted) {
+    const profile = [[-.215,.025,.025],[-.17,.105,.105],[-.05,.167,.16],
+      [.07,.175,.15],[.17,.102,.075],[.215,.025,.02]];
+    (name === "Jane" ? addJanePortrait : addZephrinePortrait)(head, 0, profile, skin);
+  } else oval(`${name} small nose`,0,-.022,.165,.033,.048,.044,skin,head);
   for (const sign of [-1,1]) {
     oval(`${name} ear`,sign*.174,-.015,-.01,.045,.07,.033,skin,head);
-    oval(`${name} eye white`,sign*.078,.034,.145,.046,.032,.018,eyeWhite,head);
-    oval(`${name} iris`,sign*.078,.033,.164,.023,.025,.012,iris,head);
-    oval(`${name} pupil`,sign*.078,.033,.175,.010,.015,.008,eyeDark,head);
-    oval(`${name} eyebrow`,sign*.078,.091,.153,.052,.010,.011,options.hair || hairZephrine,head);
+    if (!painted) {
+      oval(`${name} eye white`,sign*.078,.034,.145,.046,.032,.018,eyeWhite,head);
+      oval(`${name} iris`,sign*.078,.033,.164,.023,.025,.012,iris,head);
+      oval(`${name} pupil`,sign*.078,.033,.175,.010,.015,.008,eyeDark,head);
+      oval(`${name} eyebrow`,sign*.078,.091,.153,.052,.010,.011,options.hair || hairZephrine,head);
+    }
   }
-  oval(`${name} quiet smile`,0,-.111,.153,.062,.010,.012,rose,head);
+  if (!painted) oval(`${name} quiet smile`,0,-.111,.153,.062,.010,.012,rose,head);
 }
 function sculptZephrine() {
   const child = new THREE.Group(); child.name="Zephrine — sculpted in the middle of a dance";
@@ -442,7 +451,6 @@ function sculptZephrine() {
     ribbon.rotation.z=-.24-i*.17;
   }
   for(const side of [-1,1]) {
-    oval("Zephrine blushing cheek",side*.119,-.065,.135,.037,.022,.008,paleRose,head);
     oval("Zephrine sweater cuff",side*.47,side<0?1.21:.79,.05,.072,.025,.075,parchment,child);
   }
   for(const x of [-.1,.1]) box("Zephrine shirt hem stitch",x,.49,.142,.11,.014,.012,parchment,child);
@@ -478,7 +486,6 @@ function sculptJane() {
   oval("Jane loose bun strand",-.08,.30,-.06,.055,.07,.06,hairJane,head);
   for(const sign of [-1,1]) {
     oval("Jane pearl stud",sign*.19,-.025,.02,.019,.019,.019,eyeWhite,head);
-    for(let i=0;i<3;i++) oval("Jane freckle",sign*(.055+i*.025),-.052+(i%2)*.018,.153,.006,.006,.004,mat(0xc77b69),head);
   }
   oval("Jane navy dress brooch",-.11,1.21,.145,.033,.033,.018,gold,jane);
   oval("Jane pearly brooch center",-.11,1.21,.16,.017,.017,.012,pearl,jane);
@@ -641,6 +648,7 @@ export async function authorRoom() {
     line("undersea wall relief",[[-2.44,y,1.66],[-2.44,y+.07,1.28],[-2.44,y-.04,.91],[-2.44,y+.05,.54]],.013,y===2.48?seaFoam:gold);
   }
 
+  await finishOlegPortraits(root);
   const scene = new THREE.Scene(); scene.background = new THREE.Color(0xc6ad99);
   scene.add(new THREE.AmbientLight(0xffffff,1.65));
   const key = new THREE.DirectionalLight(0xffdfab,2.1); key.position.set(1.6,3.2,1.8); scene.add(key);

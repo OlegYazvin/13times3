@@ -8,7 +8,8 @@ const cache = resolve(".cache/room01");
 const destination = resolve("src/assets/explore/room01");
 await mkdir(cache,{recursive:true});
 await mkdir(destination,{recursive:true});
-await build({entryPoints:["scripts/room01_author.mjs"],bundle:true,format:"esm",target:"es2020",outfile:resolve(cache,"author.js")});
+await build({entryPoints:["scripts/room01_author.mjs"],bundle:true,format:"esm",target:"es2020",
+  loader:{".webp":"dataurl"},outfile:resolve(cache,"author.js")});
 const server = createServer(async (request,response)=>{
   const pathname = new URL(request.url,"http://localhost").pathname;
   if (pathname==="/") {

@@ -19,12 +19,12 @@ Oleg wants inspiration from photographs of the real Shedd Aquarium without a lit
 
 On 2026-10-21, Oleg chose **G and Zephrine wondering at the fish together** as the central moment. Give G a clear, affectionate role beside Zephrine. Keep Jane and Oleg present only as the composition supports the family memory; do not invent a named exhibit they visited.
 
-The room uses [Shedd's history of the building](https://www.sheddaquarium.org/about-shedd/vision/history) and [Wonder of Water in its historic rotunda](https://www.sheddaquarium.org/exhibits/wonder-of-water) for visual vocabulary: pale marble, a water-themed glass dome, and tall habitats. This is a symbolic aquarium, not a claim that the family saw a particular exhibit. The visit date was not supplied.
+The room uses [Shedd's history of the building](https://www.sheddaquarium.org/about-shedd/vision/history) and [Wonder of Water in its historic rotunda](https://www.sheddaquarium.org/exhibits/wonder-of-water) for visual vocabulary: pale marble, a water-themed glass dome, and contrasting tall freshwater and saltwater habitats. This is a symbolic aquarium, not a claim that the family saw a particular exhibit. The visit date was not supplied.
 
 ## Portal topology and movement requirement
 
-The interior marble return arch is freestanding, with a walkable loop behind either post. The gallery aperture sits 1.85 meters farther back; only crossing that opening exits. The aquarium and gallery now render in separate spaces through a stencil doorway, so neighboring portal worlds can overlap without intruding. The camera position, direction, and field of view remain continuous. Test the loop, aperture, collision, and visual treatment from inside before accepting it.
+The **actual gallery aperture** is now the central freestanding arch at local `z = 10.4`, while the aquarium continues to `z = 13.4`. Walking around either post and behind that aperture stays inside the aquarium. Crossing the active face from the main gallery floor exits. From the aquarium side behind the arch, the opening looks back into the aquarium rather than falsely showing a second hall exit. The hallway and aquarium remain isolated stencil worlds; the camera pose and field of view stay continuous across the active face.
 
-Painted deep-water side panoramas, small fish, and sea fans keep the gallery's plaster out of the view from behind the arch. The loop and posts were checked from both sides in browser emulation.
+Three-dimensional fish drift inside side and end habitats, behind glass, with sculpted reeds, coral, shell details, and stone mullions. Painted reef and river textures add distance at the back of those volumes; they are not fish cutouts. The illustrations were generated for this project from a storybook habitat prompt, with no real family photographs or source photo metadata included.
 
 This memory is distinct from the Open House Chicago outing in frame `08` and the Maggie Daley Park visit in frame `10`.

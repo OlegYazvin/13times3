@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { foliageLobe } from "./sculpted_foliage.mjs";
 import { createRoomArt } from "./room_art.mjs";
 
 // Blueberries of Indiana, near La Porte, becomes an expansive summer field
@@ -74,6 +75,9 @@ function bush(x, z, height = 1.45, central = false) {
     curve(group, "arching branch carrying blueberries",
       [[0, .38, 0], [dx * span * .48, height * .77, dz * span * .48],
         [dx * span, tipY, dz * span]], .036, M.bark, 18);
+    foliageLobe(group, "thick blueberry leaves surrounding the fruiting branch",
+      dx * span * .65, tipY - .04, dz * span * .65,
+      .36, .18, .31, arm % 2 ? C.leaf : C.paleLeaf, z * 2 + arm);
     for (let leafIndex = 0; leafIndex < 9; leafIndex++) {
       const t = .34 + random() * .66;
       const xx = dx * span * t + (random() - .5) * .28;
@@ -102,34 +106,34 @@ for (const side of [-1, 1]) for (const offset of [2.65, 4.75]) {
 bush(.95, -.45, 2.18, true);
 
 // Jane shares the outing; Oleg, G and Zephrine are the central memory.
-const oleg = person("Oleg with Zephrine on his shoulders", -.58, 1.12, 1.75, {
+const oleg = person("Oleg with Zephrine on his shoulders", -.58, 3.12, 1.75, {
   skin: M.skin, hair: M.hair, outfit: M.fabric, pants: M.ink,
   glasses: true, beard: true, longHair: true,
   hands: { "-1": [-.35, 1.04, .24], "1": [.37, 1.12, .31] }, yaw: -.14,
 });
 const zeph = person("Zephrine picking her own blueberries up high",
-  -.58, .86, 1.04, {
+  -.58, 2.86, 1.04, {
     skin: M.skin, hair: M.zephHair, outfit: M.rose, skirt: M.peach,
     pants: M.fabric, dress: true, curls: true,
     hands: { "1": [.66, .67, -.38], "-1": [-.29, .66, .15] }, yaw: -.1,
   });
 zeph.position.y = 1.39; zeph.scale.setScalar(.72);
-const g = person("G helping Zephrine discover blueberries", 2.0, 1.05, 1.62, {
+const g = person("G helping Zephrine discover blueberries", 2.0, 3.05, 1.62, {
   skin: M.skin, hair: M.gHair, outfit: M.cream, pants: M.ink,
-  glasses: true, longHair: true,
+  longHair: true,
   hands: { "-1": [-.66, 1.07, -.28], "1": [.3, .88, .24] }, yaw: .27,
 });
 for (const side of [-1, 1]) curve(g, "G's chin-length brown hair",
   [[side * .15, 1.7, -.03], [side * .2, 1.44, .015],
     [side * .22, 1.17, .04]], .025, M.gHair, 15);
-person("Jane enjoying the blueberry outing", -2.54, -.67, 1.68, {
+person("Jane enjoying the blueberry outing", -2.54, 1.33, 1.68, {
   skin: M.skin, hair: M.hair, outfit: M.paleLeaf, pants: M.ink,
   bun: true, hands: { "1": [.4, .8, .36] }, yaw: -.28,
 });
 
 // One woven picking pail and bright fruit connect the family with the field.
 const pail = new THREE.Group(); pail.name = "solid woven berry picking pail";
-pail.position.set(2.4, 0, 1.84); root.add(pail);
+pail.position.set(2.4, 0, 3.84); root.add(pail);
 const basket = add(pail, "solid small woven pail",
   new THREE.CylinderGeometry(.31, .25, .45, 12, 1, true), M.linen,
   0, .29, 0);

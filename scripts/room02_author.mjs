@@ -1,10 +1,12 @@
 import * as THREE from "three";
+import { foliageLobe } from "./sculpted_foliage.mjs";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
 import janeFaceURL from "./assets/room02/jane-face.webp";
 import olegFaceURL from "./assets/room02/oleg-face.webp";
+import zephrineFaceURL from "./assets/room02/zephrine-face.webp";
 import { openSky } from "./open_sky.mjs";
 
 // A single impossible space: Oleg's desk opens into a street and four
@@ -42,11 +44,13 @@ const glow = new THREE.MeshBasicMaterial({ color: C.amber, side: THREE.DoubleSid
 const paintedFaces = {};
 const facesReady = Promise.all([
   ["jane", janeFaceURL], ["oleg", olegFaceURL],
+  ["zephrine", zephrineFaceURL],
 ].map(([name, url]) => new Promise((resolve, reject) => {
   new THREE.TextureLoader().load(url, (texture) => {
     texture.colorSpace = THREE.SRGBColorSpace;
-    paintedFaces[name] = new THREE.MeshBasicMaterial({
-      map: texture, transparent: true, alphaTest: .025,
+    texture.userData.mimeType = "image/webp";
+    paintedFaces[name] = new THREE.MeshStandardMaterial({
+      map: texture, roughness: .94, transparent: true, alphaTest: .025,
       side: THREE.DoubleSide, depthWrite: true,
     });
     resolve();
@@ -368,6 +372,8 @@ for (let i = 0; i < 6; i++) {
   for (const s of [-1, 1]) {
     curve(tree, "branch sweeping over the sidewalk", [[0, 1.42, 0],
       [s * .47, 2.12, -.11], [s * .85, 2.78, -.24]], .055, M.desk);
+    foliageLobe(tree, "layered street-tree foliage around its real branches",
+      s * .72, 2.74, -.2, .77, .36, .55, s < 0 ? C.leaf : C.darkLeaf, i * 2 + s);
     for (let leafIndex = 0; leafIndex < 17; leafIndex++) {
       foldedLeaf(tree, s * (.4 + random() * 1.02), 2.45 + random() * .55,
         (random() - .5) * 1.15, .17 + random() * .15,
@@ -488,12 +494,14 @@ function person(name, x, z, height, outfit, options = {}) {
       [faceHeight - .045, jane ? .18 : .17, .151],
       [faceHeight + .07, .145, .128],
       [faceHeight + .15, .027, .03]], skin, 28);
-  if (jane || oleg) paintedFaceShell(head, jane ? "jane" : "oleg", height);
+  const zephrine = child && name.startsWith("Zephrine");
+  if (jane || oleg || zephrine) paintedFaceShell(head,
+    jane ? "jane" : oleg ? "oleg" : "zephrine", height);
   for (const s of [-1, 1]) {
     loft(head, "formed ear and earlobe", [[faceHeight - .28, .023, .031,
       s * .184, -.012], [faceHeight - .19, .037, .043, s * .184, -.012],
       [faceHeight - .085, .022, .027, s * .178, -.017]], skin, 12);
-    if (!jane && !oleg) {
+    if (!jane && !oleg && !zephrine) {
       shapedEye(head, name, s * .078, faceHeight - .17, .154,
         child ? .78 : 1, M.paper, M.ink);
       curve(head, "upper eyelid shaped along the eye", [[s * .027, faceHeight - .153, .166],
@@ -511,7 +519,7 @@ function person(name, x, z, height, outfit, options = {}) {
         s * (.11 + i * .014), faceHeight - .27 + i * .012, .147);
     }
   }
-  if (!jane && !oleg) {
+  if (!jane && !oleg && !zephrine) {
     loft(head, "rounded sculpted nose with bridge and tip",
       [[faceHeight - .285, .029, .032, 0, .17],
         [faceHeight - .265, .036, .045, 0, .181],

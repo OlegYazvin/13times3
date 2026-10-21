@@ -1,9 +1,12 @@
 import * as THREE from "three";
+import { foliageLobe } from "./sculpted_foliage.mjs";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
 import { openSky } from "./open_sky.mjs";
+import { addJanePortrait, addZephrinePortrait,
+  finishOlegPortraits } from "./oleg_portrait.mjs";
 
 // A friendship remembered across visits: two Chicago play spaces and a dance
 // floor meet in one impossible garden. The places are suggestions, not a claim
@@ -144,6 +147,12 @@ for (const [x, z] of [[-5.15, -4.7], [-5.1, -.2], [-4.7, 4.2]]) {
     [x + 1.25, 2.83, z + .35]], .08, M.bark);
   curve(root, "branch canopy", [[x, 1.72, z], [x - .45, 2.48, z - .3],
     [x - .9, 2.8, z - .75]], .07, M.bark);
+  foliageLobe(root, "overlapping leafy shade above the play nook",
+    x + .68, 2.82, z + .25, .85, .34, .6, C.leaf, x + z);
+  foliageLobe(root, "second scalloped shade crown",
+    x - .64, 2.77, z - .46, .77, .31, .55, C.paleLeaf, x - z);
+  foliageLobe(root, "deep foliage beneath the park crown",
+    x, 2.91, z, .7, .28, .64, C.leaf, z);
   for (let i = 0; i < 18; i++) petal(root, "layered park canopy leaf",
     x + (random() - .5) * 2.3, 2.55 + random() * .55,
     z + (random() - .5) * 1.7, .24 + random() * .15,
@@ -212,6 +221,8 @@ for (let i = 0; i < 7; i++) {
 }
 
 function figure(name, x, z, height, options) {
+  const jane = name.startsWith("Jane");
+  const zephrine = name.startsWith("Zephrine");
   const person = new THREE.Group(); person.name = `solid sculpted figure of ${name}`;
   person.position.set(x, 0, z); person.rotation.y = options.yaw || 0; root.add(person);
   const skin = mat(options.skin), hair = mat(options.hair);
@@ -252,17 +263,23 @@ function figure(name, x, z, height, options) {
   loft(person, "carved cheeks and chin", [[face - .4, .06, .06],
     [face - .31, .14, .115], [face - .15, .165, .14],
     [face + .04, .14, .12], [face + .14, .02, .02]], skin, 15);
+  if (jane) addJanePortrait(person, face,
+    [[-.4, .06, .06], [-.31, .14, .115], [-.15, .165, .14],
+      [.04, .14, .12], [.12, .07, .07]], skin);
+  if (zephrine) addZephrinePortrait(person, face,
+    [[-.4, .06, .06], [-.31, .14, .115], [-.15, .165, .14],
+      [.04, .14, .12], [.12, .07, .07]], skin);
   for (const side of [-1, 1]) {
-    add(person, "painted eye white", new THREE.SphereGeometry(.022, 7, 6), M.white,
+    if (!jane && !zephrine) add(person, "painted eye white", new THREE.SphereGeometry(.022, 7, 6), M.white,
       side * .067, face - .16, .143);
-    add(person, "painted iris", new THREE.SphereGeometry(.012, 7, 5), M.ink,
+    if (!jane && !zephrine) add(person, "painted iris", new THREE.SphereGeometry(.012, 7, 5), M.ink,
       side * .067, face - .16, .164);
-    curve(person, "fine eyebrow", [[side * .025, face - .105, .146],
+    if (!jane && !zephrine) curve(person, "fine eyebrow", [[side * .025, face - .105, .146],
       [side * .07, face - .093, .153], [side * .11, face - .107, .14]], .007, hair);
   }
-  loft(person, "sculpted nose", [[face - .255, .015, .017, 0, .145],
+  if (!jane && !zephrine) loft(person, "sculpted nose", [[face - .255, .015, .017, 0, .145],
     [face - .155, .025, .027, 0, .17], [face - .14, .008, .008, 0, .152]], skin, 8);
-  curve(person, "gentle smile", [[-.045, face - .3, .112],
+  if (!jane && !zephrine) curve(person, "gentle smile", [[-.045, face - .3, .112],
     [0, face - .317, .128], [.045, face - .3, .112]], .008, M.pink);
   loft(person, "layered hair, not a spherical cap", [[face + .03, .1, .085],
     [face + .11, .17, .13, 0, -.02], [face + .2, .13, .1, 0, -.04],
@@ -295,24 +312,24 @@ const zeph = figure("Zephrine", -.58, -1.8, 1.13, {
   hands: { "1": [.36, .63, .22], "-1": [-.3, .73, .1] },
 });
 zeph.rotation.z = -.045;
-zeph.position.z = 2.0;
-const charlize = figure("Charlize", .58, 2.0, 1.17, {
+zeph.position.z = 4.0;
+const charlize = figure("Charlize", .58, 4.0, 1.17, {
   skin: C.darkSkin, hair: C.darkHair, outfit: C.white, skirt: C.white,
   shoe: C.ink, dress: true, stripes: true, bun: true, yaw: .12,
   hands: { "-1": [-.36, .63, .22], "1": [.3, .73, .1] },
 });
 charlize.rotation.z = .045;
-curve(root, "linked hands of two friends", [[-.25, .63, 2.22],
-  [0, .61, 2.29], [.25, .63, 2.22]], .023, M.brass);
+curve(root, "linked hands of two friends", [[-.25, .63, 4.22],
+  [0, .61, 4.29], [.25, .63, 4.22]], .023, M.brass);
 
 // Jane and Aibike become friends too. Aibike is a stylized parent figure;
 // no unprovided face likeness or invented biographical details are claimed.
-figure("Jane making time for friendship", -2.55, -.55, 1.68, {
+figure("Jane making time for friendship", -2.55, 1.45, 1.68, {
   skin: C.warmSkin, hair: C.hair, outfit: C.blue, pants: C.deep,
   bun: true, yaw: -.28,
   hands: { "1": [.46, 1.05, .35], "-1": [-.33, .84, .15] },
 });
-figure("Aibike, Charlize's mother", 2.55, -.55, 1.66, {
+figure("Aibike, Charlize's mother", 2.55, 1.45, 1.66, {
   skin: C.darkSkin, hair: C.darkHair, outfit: C.lilac, pants: C.ink,
   bun: true, yaw: .28,
   hands: { "-1": [-.46, 1.05, .35], "1": [.33, .84, .15] },
@@ -368,6 +385,7 @@ for (const side of [-1, 1]) {
 }
 
 async function authorRoom() {
+  await finishOlegPortraits(root);
   root.updateMatrixWorld(true);
   const groups = new Map();
   root.traverse(object => {

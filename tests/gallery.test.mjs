@@ -142,6 +142,18 @@ test("room collision wins where an independent world overlaps hallway coordinate
   assert.equal(manager.canStand(place), true, "the hall remains walkable in its own world");
 });
 
+test("a long movement stops at a thin post instead of resuming beyond it", () => {
+  const manager = roomManager([{ minX: -.25, maxX: .25, minZ: -.05, maxZ: .05 }]);
+  manager.active.frame = { ...manager.active.frame, room: {
+    ...manager.active.frame.room, dimensionsM: [12, 3.6, 12],
+  } };
+  manager.mode = "room";
+  Object.assign(manager.player, manager.roomToWorld({ x: 0, z: 1 }));
+  manager.move(manager.roomToWorld({ x: 0, z: -1 }));
+  assert.ok(manager.worldToRoom(manager.player).z > .45,
+    "the player must remain on the approach side after a two-meter step");
+});
+
 test("solid footprints travel with authored 3D model parts", () => {
   const scene = new THREE.Scene();
   const person = new THREE.Group();

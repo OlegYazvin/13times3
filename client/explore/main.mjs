@@ -100,6 +100,10 @@ try {
       controls.yaw = yaw;
       rooms.setMode("room");
     };
+    window.__galleryTestRoomCanStand = (x, z) =>
+      rooms.canStand(rooms.roomToWorld({ x, z }), "room");
+    window.__galleryTestRoomMove = (x, z) =>
+      rooms.move(rooms.roomToWorld({ x, z }));
   }
 
   function resize() {
@@ -125,7 +129,7 @@ try {
   function tick(now) {
     if (!running) return;
     const elapsed = (now - lastTime) / 1000;
-    const dt = Math.min(elapsed, .05);
+    const dt = Math.min(elapsed, .2);
     lastTime = now;
     if (controls.enabled && pixelRatio > 1) {
       slowTime += elapsed;

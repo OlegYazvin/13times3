@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { paintedSkyTexture } from "./painted_sky.mjs";
 
 // A high, softly graduated enclosure keeps outdoor scenes open from every
 // walkable angle, without an abrupt low horizontal ceiling.
@@ -6,6 +7,7 @@ export function openSky(color, height) {
   const horizon = new THREE.Color(color);
   const zenith = horizon.clone().offsetHSL(-.025, -.07, .13);
   const sideMaterial = new THREE.MeshBasicMaterial({ vertexColors: true,
+    map: paintedSkyTexture(Math.floor(horizon.getHex())),
     side: THREE.DoubleSide });
   const topMaterial = new THREE.MeshBasicMaterial({ color: zenith,
     side: THREE.DoubleSide });

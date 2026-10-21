@@ -146,10 +146,10 @@
         "title": "Jane made sure Zephrine has a best friend (Charlize)",
         "caption": "A friendship Jane made room for",
         "colliders": [
-          { "shape": "circle", "x": -0.64, "z": -1.9, "radius": 0.32 },
-          { "shape": "circle", "x": 0.64, "z": -1.9, "radius": 0.32 },
-          { "shape": "circle", "x": -2.5, "z": 0.9, "radius": 0.35 },
-          { "shape": "circle", "x": 2.5, "z": 0.9, "radius": 0.35 }
+          { "shape": "circle", "x": -0.58, "z": 4.0, "radius": 0.32 },
+          { "shape": "circle", "x": 0.58, "z": 4.0, "radius": 0.32 },
+          { "shape": "circle", "x": -2.55, "z": 1.45, "radius": 0.35 },
+          { "shape": "circle", "x": 2.55, "z": 1.45, "radius": 0.35 }
         ]
       }
     },
@@ -176,9 +176,9 @@
         "title": "Jane Got zephrine the ‘blue car’",
         "caption": "Zephrine's blue car",
         "colliders": [
-          { "minX": -0.6, "maxX": 0.6, "minZ": 0.2, "maxZ": 1.7 },
-          { "shape": "circle", "x": -1.25, "z": -1, "radius": 0.34 },
-          { "shape": "circle", "x": 1.25, "z": -1, "radius": 0.34 }
+          { "minX": -0.6, "maxX": 0.6, "minZ": 3.2, "maxZ": 4.7 },
+          { "shape": "circle", "x": -1.08, "z": 1.8, "radius": 0.34 },
+          { "shape": "circle", "x": 1.08, "z": 1.8, "radius": 0.34 }
         ]
       }
     },
@@ -261,9 +261,9 @@
         "title": "The time we went blueberry picking",
         "caption": "Blueberries with G",
         "colliders": [
-          { "shape": "circle", "x": -0.7, "z": 0.2, "radius": 0.36 },
-          { "shape": "circle", "x": 1.7, "z": 0.4, "radius": 0.33 },
-          { "shape": "circle", "x": 0.9, "z": -1.1, "radius": 0.5 }
+          { "shape": "circle", "x": -0.58, "z": 3.12, "radius": 0.36 },
+          { "shape": "circle", "x": 2.0, "z": 3.05, "radius": 0.33 },
+          { "shape": "circle", "x": 0.95, "z": -0.45, "radius": 0.5 }
         ]
       }
     },
@@ -376,13 +376,14 @@
         "previewImage": "/assets/explore/room11/preview.webp",
         "modelUrl": "/assets/explore/room11/room.glb",
         "backgroundColor": "#7199a4",
-        "dimensionsM": [18.4, 8.2, 20.8],
+        "dimensionsM": [18.4, 8.2, 26.8],
+        "portalZ": 10.4,
         "entryPose": {
           "position": [0, 1.65, 9.1],
           "yaw": 0
         },
         "previewCamera": {
-          "position": [0, 1.68, 10.7],
+          "position": [0, 1.68, 11.45],
           "target": [0, 1.54, -0.5],
           "fov": 70
         },

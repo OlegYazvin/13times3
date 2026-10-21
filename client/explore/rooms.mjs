@@ -11,6 +11,10 @@ export function roomIsReady(frame) {
   return Boolean(frame.room?.previewImage && frame.room?.modelUrl);
 }
 
+function portalDepth(frame) {
+  return frame.room.portalZ ?? frame.room.dimensionsM[2] / 2;
+}
+
 function hitsObstacle(x, z, colliders = []) {
   return colliders.some((collider) => {
     if (collider.shape === "circle") {
@@ -117,6 +121,14 @@ export class RoomManager {
       return;
     }
     const inRoom = this.mode === "room";
+    // A freestanding portal has an aquarium side behind it. Seen from that
+    // side, it is an ordinary open arch into the aquarium, not a second exit.
+    if (inRoom && portalDepth(this.active.frame) < this.active.frame.room.dimensionsM[2] / 2 &&
+      this.worldToRoom(camera.position).z > portalDepth(this.active.frame) + .03) {
+      this.setStencil(this.active.materials, false);
+      renderer.render(this.roomScene, camera);
+      return;
+    }
     this.setStencil(this.hallMaterials, inRoom);
     this.setStencil(this.active.materials, !inRoom);
     renderer.render(inRoom ? this.roomScene : this.gallery.scene, camera);
@@ -172,8 +184,8 @@ export class RoomManager {
         x: frame.sectionData.right.x * frame.sideSign,
         z: frame.sectionData.right.z * frame.sideSign,
       };
-      group.position.set(frame.center.x + outward.x * frame.room.dimensionsM[2] / 2,
-        0, frame.center.z + outward.z * frame.room.dimensionsM[2] / 2);
+      group.position.set(frame.center.x + outward.x * portalDepth(frame),
+        0, frame.center.z + outward.z * portalDepth(frame));
       group.rotation.y = Math.atan2(-outward.x, -outward.z);
       group.add(gltf.scene);
       group.add(new THREE.AmbientLight(0xffffff, .45));
@@ -256,7 +268,7 @@ export class RoomManager {
       // The player's radius may straddle the wall as the camera center reaches
       // the doorway plane. Allow only this narrow part of the active opening.
       const local = this.worldToRoom(position);
-      const plane = this.active.frame.room.dimensionsM[2] / 2;
+      const plane = portalDepth(this.active.frame);
       const opening = portalOpening(this.active.frame);
       return local.z >= plane && local.z <= plane + PLAYER_RADIUS &&
         Math.abs(local.x) < opening.width / 2 - PLAYER_RADIUS;
@@ -268,8 +280,9 @@ export class RoomManager {
     const halfZ = frame.room.dimensionsM[2] / 2;
     const opening = portalOpening(frame);
     if (Math.abs(local.x) > halfX - PLAYER_RADIUS ||
-      local.z < -halfZ + PLAYER_RADIUS || local.z > halfZ + PLAYER_RADIUS) return false;
-    if (local.z > halfZ - PLAYER_RADIUS &&
+      local.z < -halfZ + PLAYER_RADIUS ||
+      local.z > halfZ + (portalDepth(frame) === halfZ ? PLAYER_RADIUS : -PLAYER_RADIUS)) return false;
+    if (portalDepth(frame) === halfZ && local.z > halfZ - PLAYER_RADIUS &&
       Math.abs(local.x) > opening.width / 2 - PLAYER_RADIUS) return false;
     return !hitsObstacle(local.x, local.z, colliders);
   }
@@ -277,7 +290,7 @@ export class RoomManager {
   regionAfterStep(from, to, region) {
     if (!this.active) return "hall";
     const near = this.worldToRoom(from), next = this.worldToRoom(to);
-    const plane = this.active.frame.room.dimensionsM[2] / 2;
+    const plane = portalDepth(this.active.frame);
     const opening = portalOpening(this.active.frame);
     if (Math.abs(next.x) > opening.width / 2 - PLAYER_RADIUS) return region;
     if (region === "hall" && near.z >= plane && next.z < plane) return "room";
@@ -290,21 +303,22 @@ export class RoomManager {
     let next = { ...start };
     let region = this.mode;
     const steps = Math.max(1, Math.ceil(Math.hypot(intended.x - start.x, intended.z - start.z) / .075));
+    const dx = (intended.x - start.x) / steps;
+    const dz = (intended.z - start.z) / steps;
     for (let step = 1; step <= steps; step++) {
-      const candidate = {
-        x: start.x + (intended.x - start.x) * step / steps,
-        z: start.z + (intended.z - start.z) * step / steps,
-      };
-      const alongX = { x: candidate.x, z: next.z };
+      // Advance from the last accepted location. Interpolating each candidate
+      // from the original start lets a later candidate land beyond a thin
+      // obstacle after earlier candidates were rejected.
+      const alongX = { x: next.x + dx, z: next.z };
       const nextXRegion = this.regionAfterStep(next, alongX, region);
       if (this.canStand(alongX, nextXRegion)) {
-        next.x = candidate.x;
+        next.x = alongX.x;
         region = nextXRegion;
       }
-      const alongZ = { x: next.x, z: candidate.z };
+      const alongZ = { x: next.x, z: next.z + dz };
       const nextZRegion = this.regionAfterStep(next, alongZ, region);
       if (this.canStand(alongZ, nextZRegion)) {
-        next.z = candidate.z;
+        next.z = alongZ.z;
         region = nextZRegion;
       }
     }

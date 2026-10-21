@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { foliageLobe } from "./sculpted_foliage.mjs";
 import { createRoomArt } from "./room_art.mjs";
 
 // Shared play is the remembered event. The park's ship, lighthouse, whale,
@@ -113,6 +114,9 @@ for(const [x,z] of [[-6,5.7],[6.25,.2],[-6.3,-.9],[6,-6.4]]) {
     curve(root,"bent leafy garden bough",[[x,2.5,z],
       [x+dx*.65,3.1,z+dz*.65],[x+dx*1.45,3.35,z+dz*1.45]],
       .047,M.timber,15);
+    foliageLobe(root,"overlapping garden canopy around a branching bough",
+      x+dx*1.08,3.34,z+dz*1.08,.62,.29,.54,
+      j%2?C.leaf:C.darkLeaf,x+z+j);
     for(let k=0;k<7;k++) petal(root,"leaf in play garden canopy",
       x+dx*(.6+random()),3.1+(random()-.5)*.65,
       z+dz*(.6+random()),.27+random()*.15,k%3?M.leaf:M.darkLeaf,a);

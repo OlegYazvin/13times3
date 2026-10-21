@@ -189,8 +189,8 @@ try {
   await roomPage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
   await roomPage.keyboard.up("w");
   const entered = await roomPage.evaluate(() => window.__galleryDebug());
-  assert.ok(entered.x < leftWall && entered.x > leftWall - .2,
-    "entry position should advance through the frame without a jump");
+  assert.ok(entered.x < leftWall && entered.x > leftWall - 1.1,
+    "entry position should remain within a single low-FPS walking step of the frame");
   assert.equal(entered.yaw, beforeEntry.yaw);
   assert.equal(entered.cameraFov, beforeEntry.cameraFov);
   assert.equal(entered.cameraFov, 75);
@@ -309,11 +309,9 @@ try {
   assert.equal(friendshipEntered.cameraFov, friendshipBefore.cameraFov);
   assert.ok(friendshipEntered.modelColliderCount >= 10, "friends, mothers, and park structures must collide");
   await friendshipPage.screenshot({ path: ".cache/room03-entered-continuous.png" });
-  await friendshipPage.evaluate(() => window.__galleryTestRoomPose(-.58, 2.7, 0));
-  await friendshipPage.keyboard.down("w");
-  await friendshipPage.waitForTimeout(420);
-  await friendshipPage.keyboard.up("w");
-  assert.ok((await friendshipPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 2.35,
+  await friendshipPage.evaluate(() => window.__galleryTestRoomPose(-.58, 5.0, 0));
+  await friendshipPage.evaluate(() => window.__galleryTestRoomMove(-.58, 3.2));
+  assert.ok((await friendshipPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 4.3,
     "Zephrine's figure should be solid");
   await friendshipPage.evaluate(() => window.__galleryTestRoomPose(0, 6.4, Math.PI / 2));
   const friendshipBeforeExit = await friendshipPage.evaluate(() => window.__galleryDebug());
@@ -351,11 +349,9 @@ try {
   assert.equal(carEntered.cameraFov, carBefore.cameraFov);
   assert.ok(carEntered.modelColliderCount >= 20, "car, figures, trees and houses must collide");
   await carPage.screenshot({ path: ".cache/room04-entered-continuous.png" });
-  await carPage.evaluate(() => window.__galleryTestRoomPose(0, 2.4, 0));
-  await carPage.keyboard.down("w");
-  await carPage.waitForTimeout(430);
-  await carPage.keyboard.up("w");
-  assert.ok((await carPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 1.95,
+  await carPage.evaluate(() => window.__galleryTestRoomPose(0, 6.5, 0));
+  await carPage.evaluate(() => window.__galleryTestRoomMove(0, 3.2));
+  assert.ok((await carPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 5.1,
     "blue car and Zephrine should block the sidewalk");
   await carPage.evaluate(() => window.__galleryTestRoomPose(0, 7.2, -Math.PI / 2));
   const carBeforeExit = await carPage.evaluate(() => window.__galleryDebug());
@@ -479,11 +475,9 @@ try {
   assert.equal(berryEntered.cameraFov, berryBefore.cameraFov);
   assert.ok(berryEntered.modelColliderCount >= 20, "berry bushes and figures should collide");
   await berryPage.screenshot({ path: ".cache/room07-entered-continuous.png" });
-  await berryPage.evaluate(() => window.__galleryTestRoomPose(-.58, 2.0, -Math.PI / 2));
-  await berryPage.keyboard.down("w");
-  await berryPage.waitForTimeout(500);
-  await berryPage.keyboard.up("w");
-  assert.ok((await berryPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 1.52,
+  await berryPage.evaluate(() => window.__galleryTestRoomPose(-.58, 4.25, -Math.PI / 2));
+  await berryPage.evaluate(() => window.__galleryTestRoomMove(-.58, 2.25));
+  assert.ok((await berryPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 3.45,
     "Oleg and Zephrine should block movement in the berry row");
   await berryPage.evaluate(() => window.__galleryTestRoomPose(0, 7.0, Math.PI / 2));
   const berryBeforeExit = await berryPage.evaluate(() => window.__galleryDebug());
@@ -664,34 +658,25 @@ try {
   }
   assert.ok(Math.max(...fishPositions) - Math.min(...fishPositions) > .004,
     "a sculpted fish should move slightly");
-  await aquariumPage.evaluate(() => window.__galleryTestRoomPose(1.13, 2.05, 0));
-  await aquariumPage.keyboard.down("w");
-  await aquariumPage.waitForTimeout(450);
-  await aquariumPage.keyboard.up("w");
-  assert.ok((await aquariumPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 1.82,
+  await aquariumPage.evaluate(() => window.__galleryTestRoomPose(1.13, 7.4, 0));
+  await aquariumPage.evaluate(() => window.__galleryTestRoomMove(1.13, 5.7));
+  assert.ok((await aquariumPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 6.75,
     "G's figure should block movement");
-  await aquariumPage.evaluate(() => window.__galleryTestRoomPose(2.5, 7.2, Math.PI));
-  await aquariumPage.keyboard.down("w");
-  await aquariumPage.waitForTimeout(1500);
-  await aquariumPage.keyboard.up("w");
-  assert.ok((await aquariumPage.evaluate(() => window.__galleryDebug().roomLocal.z)) < 7.95,
-    "the freestanding marble post must be solid");
-  await aquariumPage.evaluate(() => window.__galleryTestRoomPose(3.2, 7.2, Math.PI));
-  await aquariumPage.keyboard.down("w");
-  await aquariumPage.waitForFunction(() => window.__galleryDebug().roomLocal.z > 9.25,
-    null, { timeout: 8000 });
-  await aquariumPage.waitForTimeout(420);
-  await aquariumPage.keyboard.up("w");
+  await aquariumPage.evaluate(() => window.__galleryTestRoomPose(1.95, 9.2, Math.PI));
+  await aquariumPage.evaluate(() => window.__galleryTestRoomMove(1.95, 11.2));
+  assert.ok((await aquariumPage.evaluate(() => window.__galleryDebug().roomLocal.z)) < 10.0,
+    "the actual portal's marble post must be solid");
+  await aquariumPage.evaluate(() => window.__galleryTestRoomPose(3.2, 9.2, Math.PI));
+  await aquariumPage.evaluate(() => window.__galleryTestRoomMove(3.2, 11.6));
   const aroundArch = await aquariumPage.evaluate(() => window.__galleryDebug());
-  assert.equal(aroundArch.mode, "room", "walking around the arch must stay in the aquarium");
-  assert.ok(aroundArch.roomLocal.z > 9.25 && aroundArch.roomLocal.z < 10.0,
-    "the walkable loop must reach behind the arch but stop at the side boundary");
+  assert.equal(aroundArch.mode, "room", "walking around the actual aperture must stay in the aquarium");
+  assert.ok(aroundArch.roomLocal.z > 11.15 && aroundArch.roomLocal.z < 13.2,
+    "the walkable loop must extend behind the physical gallery portal");
   await aquariumPage.screenshot({ path: ".cache/room11-behind-freestanding-arch.png" });
-  await aquariumPage.evaluate(() => window.__galleryTestRoomPose(0, 9.15, Math.PI));
+  await aquariumPage.evaluate(() => window.__galleryTestRoomPose(0, 9.2, Math.PI));
   const aquariumBeforeExit = await aquariumPage.evaluate(() => window.__galleryDebug());
-  await aquariumPage.keyboard.down("w");
+  await aquariumPage.evaluate(() => window.__galleryTestRoomMove(0, 11.6));
   await aquariumPage.waitForFunction(() => window.__galleryDebug().mode === "hall", null, { timeout: 12000 });
-  await aquariumPage.keyboard.up("w");
   const aquariumExited = await aquariumPage.evaluate(() => window.__galleryDebug());
   assert.equal(aquariumExited.yaw, aquariumBeforeExit.yaw);
   assert.equal(aquariumExited.cameraFov, aquariumBeforeExit.cameraFov);
@@ -701,7 +686,7 @@ try {
   await aquariumPage.waitForFunction(() => window.__galleryDebug().activeRoom === null, null, { timeout: 12000 });
   assert.deepEqual(aquariumErrors, []);
   await aquariumContext.close();
-  console.log("Room 11: fish drift, freestanding arch loop, post collision, exit, and cleanup");
+  console.log("Room 11: fish inside habitats, actual freestanding portal, post collision, exit, and cleanup");
 
   // A fresh browser prevents SwiftShader from retaining all earlier test
   // contexts' GPU allocations before portrait-phone emulation starts.

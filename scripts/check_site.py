@@ -268,7 +268,8 @@ def main() -> None:
     aquarium_room = frames[10]["room"]
     assert aquarium_room["title"] == "We took zephrine to the Shedd aquairum with G"
     assert aquarium_room["caption"] == "Wondering at the fish with G"
-    assert aquarium_room["dimensionsM"] == [18.4, 8.2, 20.8]
+    assert aquarium_room["dimensionsM"] == [18.4, 8.2, 26.8]
+    assert aquarium_room["portalZ"] == 10.4, "Room 11's actual portal must stand inside its world"
     aquarium_preview = OUTPUT / aquarium_room["previewImage"].lstrip("/")
     aquarium_model = OUTPUT / aquarium_room["modelUrl"].lstrip("/")
     assert aquarium_preview.read_bytes()[:4] == b"RIFF"
@@ -278,7 +279,9 @@ def main() -> None:
     aquarium_json_length = int.from_bytes(aquarium_glb[12:16], "little")
     aquarium_json = json.loads(aquarium_glb[20:20 + aquarium_json_length])
     aquarium_names = " ".join(node.get("name", "") for node in aquarium_json["nodes"])
-    for detail in ("G sharing wonder", "Zephrine pointing", "freestanding return-door", "drifting sculpted aquarium fish"):
+    for detail in ("G sharing wonder", "Zephrine pointing", "freestanding return-door",
+                   "drifting sculpted aquarium fish", "painted saltwater reef habitat",
+                   "painted freshwater river habitat", "continuous thick aquarium viewing glass"):
         assert detail in aquarium_names, f"Room 11 missing {detail}"
     assert sum("driftPhase" in node.get("extras", {}) for node in aquarium_json["nodes"]) >= 24, "Room 11 fish need gentle motion metadata"
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in aquarium_json["nodes"]) >= 20, "Aquarium columns, tanks, figures, and doorway posts must collide"
