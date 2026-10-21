@@ -159,22 +159,8 @@ for (let i = 0; i < 42; i++) {
     random() * Math.PI * 2);
 }
 
-// The high canopy is made of paper leaves and light, while all visible
-// horizontal depth is the actual room. No tree trunks from the apple room.
-for (let i = 0; i < 5; i++) {
-  const z = -5.7 + i * 3.05;
-  curve(root, "slender summer branch high above the row",
-    [[-6.1, 4.9, z], [-3.0, 5.3, z + .18],
-      [0, 5.43, z + .27], [3.0, 5.3, z + .18],
-      [6.1, 4.9, z]], .027, M.bark, 38);
-  for (let j = 0; j < 21; j++) {
-    const x = -5.5 + j * .55;
-    petal(root, "translucent leaf canopy over summer picking",
-      x, 5.22 + (random() - .5) * .35,
-      z + (random() - .5) * .59, .18 + random() * .14,
-      j % 5 ? M.paleLeaf : M.gold, random() * 6.28);
-  }
-}
+// Blueberry bushes are low. Let the summer sky remain truly open above the
+// field rather than suspending branch-and-leaf strips across the walking path.
 
 window.__authorRoom = () => exportRoom({ key: 0xffdfb2,
   fill: 0xa1d4df, ambient: 1.68, keyPower: 2.0 });

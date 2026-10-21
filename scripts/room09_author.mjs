@@ -7,6 +7,7 @@ import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
 import { addOpenSky } from "./open_sky.mjs";
 import { addOlegPortrait, addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
+import { addContactShadow } from "./stage_shadows.mjs";
 
 // A single authored world: the painting and exported GLB share this root.
 // The photographs stay private. Nothing here embeds a photographic image.
@@ -178,25 +179,8 @@ for (const sign of [-1, 1]) {
   }
 }
 
-// Leaves curve over the path instead of ending at the tops of isolated trees.
-// This high canopy makes the first framed glance feel like an invitation into
-// a different world, while the opening itself stays clear to walk through.
-for (const sign of [-1, 1]) {
-  tube(root, "arching orchard canopy limb", [
-    [sign * 3.12, 2.12, 3.3], [sign * 2.28, 3.28, 3.16],
-    [sign * 1.2, 4.1, 3.02], [sign * .19, 4.36, 2.95],
-  ], .07, M.bark);
-  for (let i = 0; i < 33; i++) {
-    const x = sign * (2.95 - rand() * 2.9);
-    const y = 3.65 + rand() * .85;
-    const z = 2.7 + rand() * .75;
-    leaf(root, "overhead folded harvest leaf", x, y, z,
-      .19 + rand() * .18, .08 + rand() * .04, rand() * 6.28,
-      i % 4 ? M.leaf : M.ochre);
-  }
-  for (let i = 0; i < 5; i++) apple(root, sign * (.5 + i * .37),
-    3.86 + rand() * .23, 3.15 + (rand() - .5) * .25, .49, M.crimson);
-}
+// The living orchard rows below carry the fruit. The center stays open to
+// the autumn sky; floating leaf strips over the path read as stage rigging.
 
 // Orchard rows: trunks, forked branches, folded leaves, and sculpted fruit.
 function orchardTree(x, z, scale, index) {
@@ -327,16 +311,6 @@ for (const x of [-2.25, 2.25]) {
   }
 }
 
-// One thin painted memory ribbon winds through the upper branches. The fruit
-// and fallen leaves remain the real visual subjects.
-for (const [offset, material] of [[0, M.ochre], [.19, M.cream]]) {
-  tube(root, "hand-drawn harvest breeze between the trees", [
-    [-4.75, 3.36 + offset, -3.7], [-3.0, 4.05 + offset, -3.2],
-    [-1.2, 4.46 + offset, -3.6], [.7, 4.33 + offset, -3.1],
-    [2.75, 4.52 + offset, -3.8], [4.75, 4.16 + offset, -3.5],
-  ], .011, material, 5);
-}
-
 // Sculpted figures use lofts, folds, seams, and raised facial features. They
 // remain three-dimensional from every side. No reference photo is in the GLB.
 function face(parent, height, hair, { glasses = false, beard = false, bun = false, longHair = false, oleg = false, jane = false, zephrine = false } = {}) {
@@ -415,6 +389,7 @@ function face(parent, height, hair, { glasses = false, beard = false, bun = fals
 function person(name, x, z, height, outfit, hair, options = {}) {
   const group = new THREE.Group(); group.name = `three-dimensional portrait of ${name}`;
   group.position.set(x, 0, z); root.add(group);
+  addContactShadow(group, height);
   const legHeight = height * .43;
   for (const s of [-1, 1]) {
     const leg = sculptLoft(group, "cloth trouser leg with taper", [

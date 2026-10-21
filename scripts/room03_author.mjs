@@ -7,6 +7,7 @@ import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
 import { addOpenSky } from "./open_sky.mjs";
 import { addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
+import { addContactShadow } from "./stage_shadows.mjs";
 
 // A friendship remembered across visits: two Chicago play spaces and a dance
 // floor meet in one impossible garden. The places are suggestions, not a claim
@@ -128,6 +129,25 @@ for (let i = 0; i < 42; i++) {
   petal(root, "small painted leaf fallen beside the path", x, .038, z,
     .095 + random() * .09, i % 4 ? M.brass : M.pink, random() * 6.28);
 }
+for(const side of [-1,1]) for(let patch=0;patch<8;patch++) {
+  const x=side*(1.7+random()*.95),z=5.9-patch*.82;
+  const height=.26+random()*.24;
+  curve(root,"living flower stem beside the path",
+    [[x,.035,z],[x+side*.04,height*.58,z-.04],
+      [x-side*.035,height,z-.1]],.018,M.moss,10);
+  for(const wing of [-1,1]) petal(root,"low garden leaf attached to stem",
+    x+wing*.055,height*.36,z-.03,.18,
+    patch%3?M.leaf:M.paleLeaf,wing*.54);
+  for(let flower=0;flower<5;flower++) {
+    const a=flower*Math.PI*2/5;
+    const bloom=petal(root,"overlapping dimensional garden flower",
+      x+Math.cos(a)*.065,height+Math.sin(a)*.05,z-.1,
+      .13,patch%3?M.blush:M.cream,a);
+    bloom.rotation.z=a;
+  }
+  add(root,"tiny flower heart",new THREE.IcosahedronGeometry(.035,1),
+    M.brass,x,height,z-.085);
+}
 
 // A quiet, shaded Fellger-like play nook on the left. The smallness is a
 // setting cue. The flower-table is a symbolic game, not a documented event.
@@ -149,6 +169,25 @@ for (const [x, z] of [[-5.15, -4.7], [-5.1, -.2], [-4.7, 4.2]]) {
     x + (random() - .5) * 2.3, 2.55 + random() * .55,
     z + (random() - .5) * 1.7, .24 + random() * .15,
     i % 3 ? M.leaf : M.paleLeaf, random() * 6.28);
+}
+for (const [x, z] of [[4.83, 3.55], [4.95, -2.2]]) {
+  loft(root, "solid sculpted shade tree at the park edge",
+    [[0,.23,.21,x,z],[.9,.2,.17,x+.04,z],
+      [1.95,.14,.13,x-.05,z],[2.54,.075,.07,x+.02,z]],M.bark,11,true);
+  for (const side of [-1,1]) {
+    curve(root,"living side branch under the canopy",
+      [[x,1.86,z],[x+side*.4,2.49,z-.2],
+        [x+side*.76,2.94,z-.36]],.07,M.bark,17);
+    foliageLobe(root,"full rounded park tree crown",
+      x+side*.49,2.91,z-.31,.76,.36,.61,
+      side>0?C.leaf:C.paleLeaf,x+z+side);
+  }
+  foliageLobe(root,"layered foliage at the tree center",
+    x,3.16,z,.71,.32,.57,C.leaf,z);
+  for(let i=0;i<16;i++) petal(root,"attached park tree leaf",
+    x+(random()-.5)*1.65,2.65+random()*.5,
+    z+(random()-.5)*1.0,.16+random()*.11,
+    i%4?M.leaf:M.paleLeaf,random()*6.28);
 }
 box(root, "soft shaded play surface", -3.45, .035, -3.55,
   3.75, .055, 2.9, M.lilac);
@@ -204,19 +243,12 @@ for (const side of [-1, 1]) {
 box(root, "dance barre", 0, 1.34, -6.99, 4.9, .045, .055, M.bark);
 for (const x of [-2.24, 0, 2.24]) beam(root, "barre bracket", [x, 1.35, -6.99],
   [x, 1.25, -7.16], .025, .022, M.brass);
-for (let i = 0; i < 7; i++) {
-  const ribbon = curve(root, "long translucent memory ribbon",
-    [[-2.9 + i * .85, 4.2, -5.5], [-2.7 + i * .85, 3.55, -4.4],
-      [-2.5 + i * .85, 3.4, -2.8], [-2.15 + i * .85, 3.05, -1.0]],
-    .018, i % 2 ? M.pink : M.cream, 34);
-  ribbon.userData.decorative = true;
-}
-
 function figure(name, x, z, height, options) {
   const jane = name.startsWith("Jane");
   const zephrine = name.startsWith("Zephrine");
   const person = new THREE.Group(); person.name = `solid sculpted figure of ${name}`;
   person.position.set(x, 0, z); person.rotation.y = options.yaw || 0; root.add(person);
+  addContactShadow(person, height);
   const skin = mat(options.skin), hair = mat(options.hair);
   const outfit = mat(options.outfit), skirt = mat(options.skirt || options.outfit);
   const leg = height * .42;
@@ -224,8 +256,15 @@ function figure(name, x, z, height, options) {
     loft(person, "shaped leg", [[.07, .095, .09, side * .125],
       [leg, .12, .105, side * .12], [leg + .08, .13, .1, side * .12]],
     options.pants ? mat(options.pants) : skin, 9);
-    box(person, "solid shoe", side * .125, .07, .09, .22, .14, .28,
-      options.shoe ? mat(options.shoe) : M.ink);
+    loft(person,"shaped walking shoe with rounded toe",
+      [[.018,.08,.135,side*.125,.115],
+        [.055,.118,.178,side*.125,.105],
+        [.13,.108,.135,side*.125,.045],
+        [.165,.058,.08,side*.125,0]],
+      options.shoe ? mat(options.shoe) : M.ink,11);
+    curve(person,"fold across walking shoe",
+      [[side*.18,.083,.205],[side*.125,.095,.22],
+        [side*.07,.083,.205]],.006,M.cream,9);
   }
   loft(person, "tailored clothing with a solid body", [[leg, .23, .17],
     [leg + .17, .3, .19], [height - .52, .245, .15],
@@ -233,6 +272,16 @@ function figure(name, x, z, height, options) {
   if (options.dress) {
     loft(person, "flared dancing skirt", [[leg - .18, .39, .3],
       [leg, .33, .25], [leg + .19, .235, .18]], skirt, 15);
+    const fold=mat(new THREE.Color(options.skirt || options.outfit)
+      .offsetHSL(0,-.02,.08));
+    for(let pleat=0;pleat<10;pleat++) {
+      const a=pleat*Math.PI*2/10;
+      curve(person,"stitched skirt pleat following cloth drape",
+        [[Math.cos(a)*.37,leg-.14,Math.sin(a)*.28],
+          [Math.cos(a)*.31,leg+.015,Math.sin(a)*.24],
+          [Math.cos(a)*.23,leg+.18,Math.sin(a)*.17]],
+        .007,fold,10);
+    }
     if (options.stripes) for (let index = 0; index < 7; index++) {
       const angle = index * Math.PI * 2 / 7;
       beam(person, "navy stripe on Charlize's dress",
@@ -326,46 +375,8 @@ figure("Aibike, Charlize's mother", 2.55, 1.45, 1.66, {
   bun: true, yaw: .28,
   hands: { "-1": [-.46, 1.05, .35], "1": [.33, .84, .15] },
 });
-for (let i = 0; i < 5; i++) {
-  curve(root, "thread of plans and repeated visits", [[-2.1, 1.85 + i * .1, -.5],
-    [-1.25, 2.65 + i * .15, .35], [0, 2.82 + i * .16, 1.2],
-    [1.25, 2.65 + i * .15, .35], [2.1, 1.85 + i * .1, -.5]],
-    .009, i % 2 ? M.pink : M.brass, 43);
-}
-
-// A high woven canopy gives the open sky a room-like upper edge while the
-// real scene remains visible through the picture from farther down the hall.
-for (const side of [-1, 1]) {
-  curve(root, "sweeping branch above the friendship", [[side * 5.62, 3.15, 2.25],
-    [side * 4.2, 3.8, 1.92], [side * 2.2, 4.25, 1.6],
-    [0, 4.52, 1.25]], .06, M.bark, 38);
-  for (let i = 0; i < 20; i++) {
-    const x = side * (1.0 + i * .21);
-    petal(root, "folded leaves of the friendship canopy", x,
-      4.42 - .018 * i + (random() - .5) * .25,
-      1.55 + (random() - .5) * .72, .2 + random() * .16,
-      i % 4 ? M.paleLeaf : M.blush, random() * 6.28);
-  }
-}
-for (let i = 0; i < 7; i++) {
-  const x = -3.6 + i * 1.2, z = -.8 + .25 * Math.sin(i * 1.7);
-  curve(root, "hanging thread of remembered afternoons", [[x, 4.45, z],
-    [x + .05, 4.06, z + .03], [x, 3.58, z + .05]], .007, M.brass, 13);
-  for (let j = 0; j < 5; j++) {
-    const angle = j * Math.PI * 2 / 5;
-    petal(root, "little five-petal memory flower", x + Math.cos(angle) * .12,
-      3.42 + Math.sin(angle) * .12, z + .03,
-      .12, j % 2 ? M.pink : M.cream, angle);
-  }
-}
-
-// Small paper memories float overhead and painted foliage frames the center.
-for (let i = 0; i < 20; i++) {
-  const x = -4.1 + (i % 7) * 1.33, y = 3.65 + Math.sin(i * 1.8) * .65;
-  const z = -3.6 + Math.floor(i / 7) * 2.4;
-  petal(root, "floating leaf of another afternoon together", x, y, z,
-    .2 + random() * .16, i % 3 ? M.cream : M.pink, random() * 6.28);
-}
+// The trees and park architecture give the memory a real upper silhouette.
+// Keep the center open to sky rather than hanging ungrounded leaves and lines.
 for (const side of [-1, 1]) {
   curve(root, "garden border branch", [[side * 5.55, .16, 6.4],
     [side * 5.4, .28, 2.1], [side * 5.6, .26, -2.2],

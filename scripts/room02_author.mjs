@@ -8,6 +8,7 @@ import janeFaceURL from "./assets/room02/jane-face.webp";
 import zephrineFaceURL from "./assets/room02/zephrine-face.webp";
 import { addOpenSky } from "./open_sky.mjs";
 import { addOlegPortrait, finishOlegPortraits } from "./oleg_portrait.mjs";
+import { addContactShadow } from "./stage_shadows.mjs";
 
 // A single impossible space: Oleg's desk opens into a street and four
 // simultaneous acts of Jane's support. All figures and props have volume.
@@ -392,6 +393,7 @@ function person(name, x, z, height, outfit, options = {}) {
   const group = new THREE.Group();
   group.name = `fully sculpted figure of ${name}`;
   group.position.set(x, 0, z); group.rotation.y = options.yaw || 0; root.add(group);
+  addContactShadow(group, height);
   const child = Boolean(options.child);
   const jane = Boolean(options.jane);
   const oleg = Boolean(options.oleg);

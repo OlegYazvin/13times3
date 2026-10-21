@@ -7,6 +7,7 @@ import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
 import { addOpenSky } from "./open_sky.mjs";
 import { addOlegPortrait, addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
+import { addContactShadow } from "./stage_shadows.mjs";
 
 // A Roscoe Village walk imagined as a long paper street. The blue toy car is
 // an original sculpted object informed by Oleg's Step2 product reference;
@@ -289,6 +290,7 @@ function adult(name, x, z, outfit, options = {}) {
   const group = new THREE.Group(); group.name = `fully sculpted figure of ${name}`;
   group.position.set(x, 0, z); group.rotation.y = options.yaw || 0; root.add(group);
   const skin = options.skin || M.janeSkin, height = options.height || 1.69;
+  addContactShadow(group, height);
   for (const side of [-1, 1]) {
     loft(group, "trouser leg", [[.08, .105, .1, side * .125],
       [.72, .12, .1, side * .13], [.8, .14, .12, side * .13]],
@@ -416,16 +418,8 @@ for (let i = 0; i < 35; i++) {
     -7.6 + random() * 15.1, .12 + random() * .1,
     i % 4 ? M.leaf : M.coral, random() * 6.28);
 }
-for (let i = 0; i < 3; i++) {
-  const z = -5.9 + i * 5.3;
-  curve(root, "loose shade canopy across the walk", [[-3.2, 4.38, z],
-    [-1.5, 4.72, z - .17], [0, 4.79, z - .22],
-    [1.5, 4.72, z - .17], [3.2, 4.38, z]], .025, M.bark, 36);
-  for (let j = 0; j < 18; j++) leaf(root,
-    -2.8 + j * .33, 4.55 + random() * .3,
-    z + (random() - .5) * .7, .18 + random() * .12,
-    j % 5 ? M.paleLeaf : M.coral, random() * 6.28);
-}
+// The parkway trees provide shade from the sides. Keep the street's center
+// open to the sky instead of hanging disconnected twig garlands overhead.
 
 async function authorRoom() {
   await finishOlegPortraits(root);

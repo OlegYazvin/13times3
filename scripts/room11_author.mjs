@@ -264,6 +264,15 @@ for(const side of [-1,1]) for(let i=0;i<8;i++) {
     .48+random()*.38,i%5===0?M.coral:i%3?M.gold:M.turquoise,
     i*.88+side,side*Math.PI/2);
 }
+// A few larger fish stay near the glass. Their full bodies, eyes, fins and
+// moving silhouettes remain legible at ordinary walking distance, while the
+// smaller schools supply depth farther back in each habitat.
+for(const side of [-1,1]) for(let i=0;i<3;i++) {
+  const z=5.1-i*5.4;
+  fish(side*7.78,2.05+i*.77,z,.94-i*.09,
+    i===1?M.coral:i===2?M.turquoise:M.gold,
+    70+i+side*.31,side*Math.PI/2);
+}
 for(let i=0;i<6;i++) fish(-6.8+random()*13.6,
   1.12+random()*4.7,-12.0-random()*.75,
   .47+random()*.46,i%3===0?M.coral:i%3===1?M.gold:M.turquoise,
@@ -355,6 +364,19 @@ function coralGarden(x,z,marine) {
 }
 for(const side of [-1,1]) for(let patch=0;patch<5;patch++)
   coralGarden(side*8.53,-10.6+patch*5.35,side===1);
+for(const side of [-1,1]) for(let shelf=0;shelf<4;shelf++) {
+  const x=side*8.35,z=5.5-shelf*5.35;
+  loft(root,"layered reef ledge behind aquarium glass",
+    [[.12,.7,.57,x,z],[.25,.81,.63,x-.11,z+.08],
+      [.45,.62,.48,x+.08,z-.06],[.64,.32,.23,x+.14,z-.08],
+      [.68,.08,.07,x+.16,z-.09]],shelf%2?M.shadow:M.deep,14);
+  for(let frond=0;frond<5;frond++) {
+    const bx=x+(frond-2)*.2;
+    curve(root,"fine growth over layered reef shelf",
+      [[bx,.4,z],[bx+.06,.69,z+.11],[bx-.04,.9+frond*.055,z+.18]],
+      .018,side===1?M.coral:M.kelp,11);
+  }
+}
 for(let patch=0;patch<5;patch++)
   coralGarden(-6.75+patch*3.35,-12.8,true);
 for(let patch=0;patch<3;patch++)
@@ -368,8 +390,8 @@ for(let patch=0;patch<3;patch++)
   loft(root,"solid shell-carved base of the tide-pool lantern",
     [[.04,1.35,1.25,x,z],[.14,1.48,1.38,x,z],
       [.39,1.39,1.31,x,z],[.49,1.31,1.22,x,z]],M.marble,28,true);
-  const lanternGlass=new THREE.MeshPhysicalMaterial({color:0x8ec7cb,
-    transparent:true,opacity:.21,roughness:.09,metalness:0,
+  const lanternGlass=new THREE.MeshPhysicalMaterial({color:0x7dc3cb,
+    transparent:true,opacity:.29,roughness:.09,metalness:0,
     depthWrite:false,side:THREE.DoubleSide});
   const wall=loft(root,"solid curved glass habitat one can walk around",
     [[.47,1.3,1.2,x,z],[1.55,1.34,1.24,x,z],
@@ -386,7 +408,7 @@ for(let patch=0;patch<3;patch++)
     curve(root,"continuous engraved brass lip of round tank",points,
       .045,M.gold,36);
   }
-  for(const a of [-.85,-.28,.35,.92]) {
+  for(const a of [-.85,-.28,.35,.92,1.46,1.98]) {
     curve(root,"fine vertical brass seam following curved tank glazing",
       [[x+Math.cos(a)*1.29,.48,z+Math.sin(a)*1.19],
         [x+Math.cos(a)*1.32,2.2,z+Math.sin(a)*1.22],
@@ -419,6 +441,9 @@ for(let patch=0;patch<3;patch++)
       z+Math.sin(a)*.48,.32+(i%3)*.06,
       i%3?M.gold:M.coral,50+i*.53,a);
   }
+  fish(x-.36,2.58,z+.65,.72,M.gold,81,.22);
+  fish(x+.42,3.33,z+.53,.63,M.coral,83,-.36);
+  fish(x+.17,1.82,z-.51,.68,M.turquoise,85,Math.PI+.24);
 }
 for(const side of [-1,1]) for(let i=0;i<8;i++) {
   const z=-9.5+i*2.75;

@@ -6,6 +6,7 @@ import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
 import { addOlegPortrait, addJanePortrait, addGPortrait,
   addZephrinePortrait, finishOlegPortraits } from "./oleg_portrait.mjs";
 import { addOpenSky } from "./open_sky.mjs";
+import { addContactShadow } from "./stage_shadows.mjs";
 
 // Shared sculpting tools for independent storybook worlds. Each room supplies
 // its own palette, architecture, composition and narrative details.
@@ -131,6 +132,7 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
   function person(name, x, z, stature, options = {}) {
     const group = new THREE.Group(); group.name = `solid sculpted figure of ${name}`;
     group.position.set(x, 0, z); group.rotation.y = options.yaw || 0; root.add(group);
+    addContactShadow(group, stature);
     const skin = asMaterial(options.skin || "skin"), hair = asMaterial(options.hair || "hair");
     const outfit = asMaterial(options.outfit || "fabric"), pants = asMaterial(options.pants || "ink");
     const trim = options.trim ? asMaterial(options.trim) :
