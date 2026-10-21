@@ -127,6 +127,17 @@ def main() -> None:
     assert explore.select_one("#joystick") is not None
     assert explore.select_one("#fallback") is not None
     assert explore.select_one("#room-title") is not None
+    music_button = explore.select_one("#music-button")
+    assert music_button is not None and music_button.get("aria-pressed") == "false"
+    assert explore.select_one("#experience").get("data-music-url") == expected_href("/assets/explore/resolutions-scott-buckley.mp3")
+    credit = explore.select_one(".music-credit")
+    assert credit is not None and "Resolutions" in credit.get_text(" ", strip=True)
+    assert "Scott Buckley" in credit.get_text(" ", strip=True)
+    assert "compressed for web" in credit.get_text(" ", strip=True)
+    assert {link.get("href") for link in credit.select("a")} == {
+        "https://www.scottbuckley.com.au/library/resolutions/",
+        "https://creativecommons.org/licenses/by/4.0/",
+    }
     assert explore.select_one("script#gallery-data") is not None
     assert len(explore.select_one("#experience").get("data-room-version")) == 12
     assert explore.select_one(".fallback-preview").get("src").endswith("?v=" + explore.select_one("#experience").get("data-room-version"))
@@ -137,6 +148,9 @@ def main() -> None:
     assert explore.select_one("link[rel=canonical]").get("href") == DATA["canonicalOrigin"] + "/explore/"
     for asset in ("assets/explore/app.js", "assets/explore.css"):
         assert (OUTPUT / asset).is_file() and (OUTPUT / asset).stat().st_size > 0
+    music = OUTPUT / "assets/explore/resolutions-scott-buckley.mp3"
+    assert music.is_file() and music.stat().st_size < 8_000_000, "Gallery music missing or too large"
+    assert music.read_bytes()[:3] == b"ID3", "Gallery music is not an MP3"
     for font_name in ("archivo-latin-400-normal.woff2", "archivo-latin-700-normal.woff2", "ojuju-latin-600-normal.woff2"):
         assert (OUTPUT / "assets" / "fonts" / font_name).is_file(), f"Missing font: {font_name}"
 

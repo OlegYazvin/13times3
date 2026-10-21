@@ -15,7 +15,7 @@ eleventyExcludeFromCollections: true
     <link rel="stylesheet" href="{{ '/assets/explore.css' | url }}">
   </head>
   <body>
-    <main class="experience" id="experience" data-base-path="{{ '/' | url }}" data-room-version="{{ galleryRoomVersion }}">
+    <main class="experience" id="experience" data-base-path="{{ '/' | url }}" data-room-version="{{ galleryRoomVersion }}" data-music-url="{{ '/assets/explore/resolutions-scott-buckley.mp3' | url }}">
       <div class="scene" id="scene" aria-hidden="true"></div>
       <div class="vignette" aria-hidden="true"></div>
 
@@ -23,6 +23,7 @@ eleventyExcludeFromCollections: true
         <a class="site-link" href="{{ '/' | url }}" aria-label="Return to 13 Times 3">13 Times 3</a>
         <div class="topbar-right">
           <span class="section-status" id="section-status" aria-live="polite">Gallery 1 / 5</span>
+          <button class="music-button" id="music-button" type="button" aria-label="Turn music on" aria-pressed="false">Sound off</button>
           <button class="icon-button" id="help-button" type="button" aria-label="Show instructions">?</button>
         </div>
       </div>
@@ -34,6 +35,7 @@ eleventyExcludeFromCollections: true
         <div class="joystick-ring"><div class="joystick-knob" id="joystick-knob"></div></div>
         <span>Move</span>
       </div>
+      <p class="music-credit"><a href="https://www.scottbuckley.com.au/library/resolutions/" target="_blank" rel="noopener noreferrer">“Resolutions” by Scott Buckley</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a> · compressed for web</p>
 
       <div class="overlay" id="welcome" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
         <div class="welcome-card">
@@ -42,6 +44,7 @@ eleventyExcludeFromCollections: true
           <p>A winding hallway holds forty-one frames. Walk toward frame 01 to see its painting open into the moment you signed Zephrine up for dance and acting classes. The other frames are still waiting.</p>
           <p>Walk through the painting to explore the frozen scene, then turn around and walk through the gold-edged doorway to return to the gallery.</p>
           <p class="control-note"><strong>On your phone:</strong> move with the joystick. Drag anywhere else on the scene and hold left or right to keep turning; lift to stop. Drag up or down to look. <strong>On a computer:</strong> use W A S D or arrow keys and drag to look.</p>
+          <p class="music-note">Music fades in when you begin. Use Sound to turn it off or on.</p>
           <button class="primary-button" id="begin-button" type="button">Begin walking <span aria-hidden="true">→</span></button>
           <a class="back-link" href="{{ '/' | url }}">Back to the site</a>
         </div>

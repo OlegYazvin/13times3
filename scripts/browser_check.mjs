@@ -21,6 +21,15 @@ async function checkViewport(name, options) {
   if (name === "mobile") await page.screenshot({ path: ".cache/gallery-mobile-welcome.png" });
   await page.getByRole("button", { name: /begin walking/i }).click();
   await page.waitForFunction(() => Boolean(window.__galleryDebug));
+  await page.waitForFunction(() => window.__galleryDebug().music.playing && window.__galleryDebug().music.level > .02);
+  const fadeStart = await page.evaluate(() => window.__galleryDebug().music.level);
+  await page.waitForTimeout(650);
+  const fadeLater = await page.evaluate(() => window.__galleryDebug().music.level);
+  assert.ok(fadeLater > fadeStart && fadeLater < .42, `${name}: music should fade in gradually`);
+  await page.getByRole("button", { name: "Turn music off" }).click();
+  await page.waitForFunction(() => !window.__galleryDebug().music.playing);
+  await page.getByRole("button", { name: "Turn music on" }).click();
+  await page.waitForFunction(() => window.__galleryDebug().music.playing && window.__galleryDebug().music.level > .02);
   assert.equal(await page.locator("#fallback").isVisible(), false);
   assert.equal(await page.locator("#scene canvas").isVisible(), true);
   const before = await page.evaluate(() => window.__galleryDebug());

@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { GalleryControls } from "./controls.mjs";
 import { createGalleryScene } from "./gallery-scene.mjs";
+import { GalleryMusic } from "./music.mjs";
 import {
   EYE_HEIGHT, nearestSection,
 } from "./layout.mjs";
@@ -11,21 +12,26 @@ const welcome = document.getElementById("welcome");
 const fallback = document.getElementById("fallback");
 const beginButton = document.getElementById("begin-button");
 const helpButton = document.getElementById("help-button");
+const musicButton = document.getElementById("music-button");
 const status = document.getElementById("section-status");
 const roomTitle = document.getElementById("room-title");
 const announcement = document.getElementById("announcement");
 const experience = document.getElementById("experience");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+let galleryMusic;
 
 function showFallback(message) {
+  galleryMusic?.stop();
   fallback.hidden = false;
   welcome.hidden = true;
+  musicButton.hidden = true;
   document.getElementById("joystick").hidden = true;
   document.getElementById("look-hint").hidden = true;
   announcement.textContent = message;
 }
 
 try {
+  galleryMusic = new GalleryMusic(musicButton, experience.dataset.musicUrl);
   const manifest = JSON.parse(document.getElementById("gallery-data").textContent);
   const gallery = createGalleryScene(manifest, experience.dataset.basePath, experience.dataset.roomVersion);
   const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
@@ -50,6 +56,7 @@ try {
     assetVersion: experience.dataset.roomVersion,
     announce(message) { announcement.textContent = message; },
     onModeChange(mode, frame) {
+      galleryMusic.setInHall(mode === "hall");
       roomTitle.hidden = mode !== "room";
       roomTitle.textContent = mode === "room" ? frame.room.title || `Room ${frame.label}` : "";
       status.textContent = mode === "room"
@@ -70,6 +77,13 @@ try {
       roomColliders: rooms.active?.colliders ?? [],
       frame01Painting: Boolean(gallery.frameMeshes.get("01").surface.material.map?.image?.width),
       frameCount: gallery.layout.frames.length,
+      music: {
+        started: galleryMusic.started,
+        enabled: galleryMusic.enabled,
+        playing: !galleryMusic.audio.paused,
+        time: galleryMusic.audio.currentTime,
+        level: galleryMusic.gain?.gain.value ?? galleryMusic.audio.volume,
+      },
     });
     window.__galleryTestPose = (x, z, yaw) => {
       Object.assign(player, { x, z });
@@ -162,6 +176,7 @@ try {
   function closeHelp() {
     welcome.hidden = true;
     controls.setEnabled(true);
+    galleryMusic.begin();
     renderer.domElement.focus();
   }
   beginButton.addEventListener("click", closeHelp);
