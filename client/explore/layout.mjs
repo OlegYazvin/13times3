@@ -4,7 +4,7 @@ export const HALL_HEIGHT = 4.8;
 export const FRAME_WIDTH = 3.35;
 export const FRAME_HEIGHT = 4.1;
 export const EYE_HEIGHT = 1.65;
-export const PLAYER_RADIUS = 0.32;
+export const PLAYER_RADIUS = 0.45;
 
 export function framePlaqueText(frame) {
   return frame.room?.modelUrl ? frame.room.caption : frame.label;

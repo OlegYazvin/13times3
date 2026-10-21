@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import {
-  buildLayout, framePlaqueText, HALL_WIDTH, HALL_HEIGHT, FRAME_HEIGHT, FRAME_WIDTH, portalOpening,
+  buildLayout, corridorOutline, framePlaqueText, HALL_WIDTH, HALL_HEIGHT, FRAME_HEIGHT, FRAME_WIDTH, portalOpening,
 } from "./layout.mjs";
 
 // Five related plaster washes give each turn a slightly different atmosphere.
@@ -133,6 +133,18 @@ function wallBetween(start, end, material, height = HALL_HEIGHT, centerY = HALL_
   return wall;
 }
 
+function flatPolygon(points, material, y) {
+  const shape = new THREE.Shape();
+  shape.moveTo(points[0].x, points[0].z);
+  for (const point of points.slice(1)) shape.lineTo(point.x, point.z);
+  shape.closePath();
+  const geometry = new THREE.ShapeGeometry(shape);
+  geometry.rotateX(Math.PI / 2);
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.position.y = y;
+  return mesh;
+}
+
 function wallWithOpenings(scene, start, end, material, frames) {
   if (!frames.length) {
     scene.add(wallBetween(start, end, material));
@@ -243,7 +255,7 @@ function addSconce(group, sign, along) {
   group.add(shade);
 }
 
-function addArchitecture(scene, section, palette, frames, floaters, moteMaterial) {
+function addArchitecture(scene, layout, section, palette, frames, floaters, moteMaterial) {
   const group = new THREE.Group();
   group.name = `gallery section ${section.index + 1} architectural details`;
   group.position.set(section.start.x, 0, section.start.z);
@@ -251,19 +263,18 @@ function addArchitecture(scene, section, palette, frames, floaters, moteMaterial
   scene.add(group);
   const length = section.length;
   const plasterPanel = new THREE.MeshBasicMaterial({ color: palette.wall });
-  const runner = new THREE.MeshBasicMaterial({ color: section.index % 2 ? 0xb59a92 : 0xb49b8f });
-  const border = new THREE.MeshBasicMaterial({ color: 0xd8c1a4 });
-  const innerTurnSigns = [1, 1, -1, -1];
-
-  box(group, "soft fabric runner", 0, .012, -length / 2, 2.2, .018, length - .35, runner);
   for (const sign of [-1, 1]) {
-    const startInset = section.index > 0 && innerTurnSigns[section.index - 1] === sign ? HALL_WIDTH / 2 + .12 : .05;
-    const endInset = section.index < 4 && innerTurnSigns[section.index] === sign ? HALL_WIDTH / 2 + .12 : .05;
-    box(group, "runner stitched edge", sign * 1.13, .023, -length / 2, .035, .008, length - .55, border);
+    // The wall miters extend past or stop short of the path vertex at a turn.
+    // Trim must follow those actual ends, or it leaves a bare, square patch.
+    const wallSide = sign === -1 ? layout.outline.left : layout.outline.right;
+    const alongWall = (point) => (point.x - section.start.x) * section.forward.x +
+      (point.z - section.start.z) * section.forward.z;
+    const wallStart = alongWall(wallSide[section.index]) + .04;
+    const wallEnd = alongWall(wallSide[section.index + 1]) - .04;
     const openings = frames.filter((frame) => frame.section === section.index && frame.sideSign === sign && frame.room.modelUrl)
       .map((frame) => ({ start: frame.along - portalOpening(frame).width / 2,
         end: frame.along + portalOpening(frame).width / 2 })).sort((a, b) => a.start - b.start);
-    let runs = [[startInset, length - endInset]];
+    let runs = [[wallStart, wallEnd]];
     for (const opening of openings) runs = runs.flatMap(([start, end]) => [
       [start, Math.min(end, opening.start)], [Math.max(start, opening.end), end],
     ].filter(([a, b]) => b > a));
@@ -283,7 +294,7 @@ function addArchitecture(scene, section, palette, frames, floaters, moteMaterial
     for (let bay = 1; bay < centers.length; bay += 1) pilasters.push((centers[bay - 1] + centers[bay]) / 2);
     pilasters.push(centers.at(-1) + FRAME_WIDTH / 2 + .28);
     for (const along of pilasters) {
-      if (along <= startInset + .11 || along >= length - endInset - .11) continue;
+      if (along <= wallStart + .4 || along >= wallEnd - .4) continue;
       box(group, "plaster pilaster", sign * (HALL_WIDTH / 2 - .17), 2.24, -along, .15, 4.18, .22, ivory);
       box(group, "pilaster capital", sign * (HALL_WIDTH / 2 - .20), 4.38, -along, .21, .16, .39, woodHighlight);
     }
@@ -323,23 +334,21 @@ export function createGalleryScene(manifest, assetBase = "/", assetVersion = "")
   scene.fog = new THREE.FogExp2(0xc9b5ae, .009);
   scene.add(new THREE.AmbientLight(0xfff0d8, 1.2));
 
-  const polygon = new THREE.Shape();
   const outline = [...layout.outline.left, ...layout.outline.right.slice().reverse()];
-  polygon.moveTo(outline[0].x, outline[0].z);
-  for (const point of outline.slice(1)) polygon.lineTo(point.x, point.z);
-  polygon.closePath();
-  const floorGeometry = new THREE.ShapeGeometry(polygon);
-  floorGeometry.rotateX(Math.PI / 2);
-  const floor = new THREE.Mesh(floorGeometry, new THREE.MeshBasicMaterial({ color: 0xc6ad99, side: THREE.DoubleSide }));
-  floor.position.y = -.015;
-  scene.add(floor);
+  scene.add(flatPolygon(outline, new THREE.MeshBasicMaterial({ color: 0xc6ad99, side: THREE.DoubleSide }), -.015));
+  const runnerOutline = corridorOutline(layout.sections, 1.1);
+  scene.add(flatPolygon([...runnerOutline.left, ...runnerOutline.right.slice().reverse()],
+    new THREE.MeshBasicMaterial({ color: 0xb49b8f, side: THREE.DoubleSide }), .022));
+  const runnerBorder = new THREE.MeshBasicMaterial({ color: 0xd8c1a4, side: THREE.DoubleSide });
+  const borderOutline = corridorOutline(layout.sections, 1.14);
+  for (const side of ["left", "right"]) {
+    scene.add(flatPolygon([...borderOutline[side], ...runnerOutline[side].slice().reverse()], runnerBorder, .025));
+  }
   const ceilingWash = plasterTexture("#baa9ac", "#e1cbc4");
   ceilingWash.wrapS = THREE.RepeatWrapping;
   ceilingWash.wrapT = THREE.RepeatWrapping;
   ceilingWash.repeat.set(.06, .06);
-  const ceiling = new THREE.Mesh(floorGeometry, new THREE.MeshBasicMaterial({ map: ceilingWash, side: THREE.DoubleSide }));
-  ceiling.position.y = HALL_HEIGHT;
-  scene.add(ceiling);
+  scene.add(flatPolygon(outline, new THREE.MeshBasicMaterial({ map: ceilingWash, side: THREE.DoubleSide }), HALL_HEIGHT));
 
   const wallMaterials = palettes.map((palette) => new THREE.MeshBasicMaterial({ map: plasterTexture(palette.wall, palette.wash) }));
   for (const [sideIndex, side] of [layout.outline.left, layout.outline.right].entries()) {
@@ -371,7 +380,7 @@ export function createGalleryScene(manifest, assetBase = "/", assetVersion = "")
 
   const floaters = [];
   const moteMaterial = new THREE.SpriteMaterial({ map: dustTexture(), transparent: true, opacity: .65, depthWrite: false });
-  for (const section of layout.sections) addArchitecture(scene, section, palettes[section.index], layout.frames, floaters, moteMaterial);
+  for (const section of layout.sections) addArchitecture(scene, layout, section, palettes[section.index], layout.frames, floaters, moteMaterial);
 
   return {
     scene,
