@@ -64,13 +64,12 @@ export function sculptSleevedArm(add, parent, {
     const spread = (finger - 1.5) * .018 * size;
     const start = [tip[0] + spread, tip[1] + .003 * size,
       tip[2] + .015 * size];
-    const bend = [start[0] + spread * .13, start[1] - .026 * size,
-      start[2] + .01 * size];
+    const bend = [start[0] + spread * .1, start[1] - .007 * size,
+      start[2] + .012 * size];
     const end = [bend[0] + spread * .12,
-      bend[1] - (.022 + .008 * (1 - Math.abs(finger - 1.5))) * size,
-      bend[2] + .006 * size];
+      bend[1] - .004 * size, bend[2] - .004 * size];
     sweep(add, parent, "four separate tapered fingers held in a natural curl", [
-      ring(start, .010, .8), ring(bend, .009, .83), ring(end, .004, .75),
+      ring(start, .012, .8), ring(bend, .011, .83), ring(end, .007, .75),
     ], skin, 7);
   }
   const thumb = [hand[0] - side * .052 * size,
