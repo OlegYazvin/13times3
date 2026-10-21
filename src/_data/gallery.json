@@ -185,34 +185,25 @@
       "side": "left",
       "bay": 2,
       "room": {
-        "previewImage": null,
-        "modelUrl": null,
-        "dimensionsM": [
-          3.048,
-          3.048,
-          3.048
-        ],
+        "previewImage": "/assets/explore/room05/preview.webp",
+        "modelUrl": "/assets/explore/room05/room.glb",
+        "dimensionsM": [12.6, 6.5, 17.8],
         "entryPose": {
-          "position": [
-            0,
-            1.65,
-            1.15
-          ],
+          "position": [0, 1.65, 7.9],
           "yaw": 0
         },
         "previewCamera": {
-          "position": [
-            0,
-            1.65,
-            1.15
-          ],
-          "target": [
-            0,
-            1.55,
-            -1
-          ],
-          "fov": 65
-        }
+          "position": [0, 1.65, 9.8],
+          "target": [0, 1.67, -1.4],
+          "fov": 67
+        },
+        "title": "Jane moved offices",
+        "caption": "Jane held her ground",
+        "colliders": [
+          { "shape": "circle", "x": 0, "z": 1.7, "radius": 0.4 },
+          { "shape": "circle", "x": -2.0, "z": -0.8, "radius": 0.35 },
+          { "shape": "circle", "x": -1.3, "z": -0.5, "radius": 0.25 }
+        ]
       }
     },
     {

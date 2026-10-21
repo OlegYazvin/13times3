@@ -110,7 +110,7 @@ def main() -> None:
     assert len(first_room["colliders"]) == 4
     assert sum(collider.get("shape") == "circle" for collider in first_room["colliders"]) == 2
     assert all(not frame["room"]["previewImage"] and not frame["room"]["modelUrl"]
-               for index, frame in enumerate(frames) if index not in (0, 1, 2, 3, 8))
+               for index, frame in enumerate(frames) if index not in (0, 1, 2, 3, 4, 8))
     preview = OUTPUT / first_room["previewImage"].lstrip("/")
     model = OUTPUT / first_room["modelUrl"].lstrip("/")
     assert preview.read_bytes()[:4] == b"RIFF"
@@ -170,6 +170,22 @@ def main() -> None:
     assert any("Oleg" in node.get("name", "") for node in car_json["nodes"])
     assert any("Jane" in node.get("name", "") for node in car_json["nodes"])
     assert not any("Charlize" in node.get("name", "") for node in car_json["nodes"])
+    office_room = frames[4]["room"]
+    assert office_room["title"] == "Jane moved offices"
+    assert office_room["caption"] == "Jane held her ground"
+    assert office_room["dimensionsM"] == [12.6, 6.5, 17.8]
+    office_preview = OUTPUT / office_room["previewImage"].lstrip("/")
+    office_model = OUTPUT / office_room["modelUrl"].lstrip("/")
+    assert office_preview.read_bytes()[:4] == b"RIFF"
+    assert office_model.read_bytes()[:4] == b"glTF"
+    assert office_preview.stat().st_size + office_model.stat().st_size < 8_000_000
+    office_glb = office_model.read_bytes()
+    office_json_length = int.from_bytes(office_glb[12:16], "little")
+    office_json = json.loads(office_glb[20:20 + office_json_length])
+    assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in office_json["nodes"]) >= 20, "Room 05 needs solid figures and architecture"
+    assert any("Jane" in node.get("name", "") for node in office_json["nodes"])
+    assert not any("management" in node.get("name", "").lower() or "expansive" in node.get("name", "").lower()
+                   for node in office_json["nodes"]), "Office room should not depict or label identifiable management"
     orchard_room = frames[8]["room"]
     assert orchard_room["title"] == "We FINALLY visited our friends in Ithaca for the first time where Zephrine got to try apple picking for the first time."
     assert orchard_room["caption"] == "First apples with friends"
@@ -231,7 +247,7 @@ def main() -> None:
 
     total_bytes = sum(path.stat().st_size for path in OUTPUT.rglob("*") if path.is_file())
     assert total_bytes < 1_000_000_000, "GitHub Pages published-site limit exceeded"
-    print(f"Verified 39 detail pages, 2 grid routes, credits, 41 gallery frames (rooms 01–04 and 09 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
+    print(f"Verified 39 detail pages, 2 grid routes, credits, 41 gallery frames (rooms 01–05 and 09 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
 
 
 if __name__ == "__main__":
