@@ -110,7 +110,7 @@ def main() -> None:
     assert len(first_room["colliders"]) == 4
     assert sum(collider.get("shape") == "circle" for collider in first_room["colliders"]) == 2
     assert all(not frame["room"]["previewImage"] and not frame["room"]["modelUrl"]
-               for index, frame in enumerate(frames) if index not in (0, 1, 2, 3, 4, 8))
+               for index, frame in enumerate(frames) if index not in (0, 1, 2, 3, 4, 5, 8))
     preview = OUTPUT / first_room["previewImage"].lstrip("/")
     model = OUTPUT / first_room["modelUrl"].lstrip("/")
     assert preview.read_bytes()[:4] == b"RIFF"
@@ -186,6 +186,21 @@ def main() -> None:
     assert any("Jane" in node.get("name", "") for node in office_json["nodes"])
     assert not any("management" in node.get("name", "").lower() or "expansive" in node.get("name", "").lower()
                    for node in office_json["nodes"]), "Office room should not depict or label identifiable management"
+    weaning_room = frames[5]["room"]
+    assert weaning_room["title"] == "Jane ended breast feeding"
+    assert weaning_room["caption"] == "A tender ending"
+    assert weaning_room["dimensionsM"] == [9.4, 5.2, 11.8]
+    weaning_preview = OUTPUT / weaning_room["previewImage"].lstrip("/")
+    weaning_model = OUTPUT / weaning_room["modelUrl"].lstrip("/")
+    assert weaning_preview.read_bytes()[:4] == b"RIFF"
+    assert weaning_model.read_bytes()[:4] == b"glTF"
+    assert weaning_preview.stat().st_size + weaning_model.stat().st_size < 8_000_000
+    weaning_glb = weaning_model.read_bytes()
+    weaning_json_length = int.from_bytes(weaning_glb[12:16], "little")
+    weaning_json = json.loads(weaning_glb[20:20 + weaning_json_length])
+    assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in weaning_json["nodes"]) >= 12, "Room 06 needs a solid chair, people, and fabric architecture"
+    assert any("fully clothed sculpted Jane" in node.get("name", "") for node in weaning_json["nodes"])
+    assert any("Zephrine nestled at Jane's clothed chest" in node.get("name", "") for node in weaning_json["nodes"])
     orchard_room = frames[8]["room"]
     assert orchard_room["title"] == "We FINALLY visited our friends in Ithaca for the first time where Zephrine got to try apple picking for the first time."
     assert orchard_room["caption"] == "First apples with friends"
@@ -247,7 +262,7 @@ def main() -> None:
 
     total_bytes = sum(path.stat().st_size for path in OUTPUT.rglob("*") if path.is_file())
     assert total_bytes < 1_000_000_000, "GitHub Pages published-site limit exceeded"
-    print(f"Verified 39 detail pages, 2 grid routes, credits, 41 gallery frames (rooms 01–05 and 09 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
+    print(f"Verified 39 detail pages, 2 grid routes, credits, 41 gallery frames (rooms 01–06 and 09 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
 
 
 if __name__ == "__main__":

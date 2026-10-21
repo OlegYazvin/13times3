@@ -213,34 +213,23 @@
       "side": "right",
       "bay": 2,
       "room": {
-        "previewImage": null,
-        "modelUrl": null,
-        "dimensionsM": [
-          3.048,
-          3.048,
-          3.048
-        ],
+        "previewImage": "/assets/explore/room06/preview.webp",
+        "modelUrl": "/assets/explore/room06/room.glb",
+        "dimensionsM": [9.4, 5.2, 11.8],
         "entryPose": {
-          "position": [
-            0,
-            1.65,
-            1.15
-          ],
+          "position": [0, 1.65, 5.0],
           "yaw": 0
         },
         "previewCamera": {
-          "position": [
-            0,
-            1.65,
-            1.15
-          ],
-          "target": [
-            0,
-            1.55,
-            -1
-          ],
-          "fov": 65
-        }
+          "position": [0, 1.65, 6.8],
+          "target": [0, 1.22, 0.0],
+          "fov": 67
+        },
+        "title": "Jane ended breast feeding",
+        "caption": "A tender ending",
+        "colliders": [
+          { "minX": -0.85, "maxX": 0.85, "minZ": -0.55, "maxZ": 1.1 }
+        ]
       }
     },
     {
