@@ -74,6 +74,8 @@ try {
       paintingOpacity: gallery.frameMeshes.get("01").surface.material.opacity,
       cameraFov: camera.fov,
       modelColliderCount: rooms.active?.modelColliderCount ?? 0,
+      driftingFishCount: rooms.active?.driftingFish?.length ?? 0,
+      firstFishY: rooms.active?.driftingFish?.[0]?.object.position.y ?? null,
       roomColliders: rooms.active?.colliders ?? [],
       frame01Painting: Boolean(gallery.frameMeshes.get("01").surface.material.map?.image?.width),
       frameCount: gallery.layout.frames.length,
@@ -160,6 +162,7 @@ try {
     camera.rotation.y = -controls.yaw;
     camera.rotation.x = controls.pitch;
     gallery.animate(now / 1000, reducedMotion.matches);
+    rooms.animate(now / 1000, reducedMotion.matches);
     roomTitle.hidden = rooms.mode !== "room";
     if (rooms.mode === "room") {
       status.textContent = `Room ${rooms.active.frame.label}`;

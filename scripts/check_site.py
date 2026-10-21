@@ -110,7 +110,7 @@ def main() -> None:
     assert len(first_room["colliders"]) == 4
     assert sum(collider.get("shape") == "circle" for collider in first_room["colliders"]) == 2
     assert all(not frame["room"]["previewImage"] and not frame["room"]["modelUrl"]
-               for index, frame in enumerate(frames) if index not in (0, 1, 2, 3, 4, 5, 8))
+               for index, frame in enumerate(frames) if index not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
     preview = OUTPUT / first_room["previewImage"].lstrip("/")
     model = OUTPUT / first_room["modelUrl"].lstrip("/")
     assert preview.read_bytes()[:4] == b"RIFF"
@@ -201,6 +201,37 @@ def main() -> None:
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in weaning_json["nodes"]) >= 12, "Room 06 needs a solid chair, people, and fabric architecture"
     assert any("fully clothed sculpted Jane" in node.get("name", "") for node in weaning_json["nodes"])
     assert any("Zephrine nestled at Jane's clothed chest" in node.get("name", "") for node in weaning_json["nodes"])
+    berry_room = frames[6]["room"]
+    assert berry_room["title"] == "The time we went blueberry picking"
+    assert berry_room["caption"] == "Blueberries with G"
+    assert berry_room["dimensionsM"] == [12.8, 5.8, 16.6]
+    berry_preview = OUTPUT / berry_room["previewImage"].lstrip("/")
+    berry_model = OUTPUT / berry_room["modelUrl"].lstrip("/")
+    assert berry_preview.read_bytes()[:4] == b"RIFF"
+    assert berry_model.read_bytes()[:4] == b"glTF"
+    assert berry_preview.stat().st_size + berry_model.stat().st_size < 8_000_000
+    berry_glb = berry_model.read_bytes()
+    berry_json_length = int.from_bytes(berry_glb[12:16], "little")
+    berry_json = json.loads(berry_glb[20:20 + berry_json_length])
+    assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in berry_json["nodes"]) >= 20, "Room 07 needs solid berry bushes and people"
+    assert any("G helping Zephrine" in node.get("name", "") for node in berry_json["nodes"])
+    assert any("Zephrine picking her own" in node.get("name", "") for node in berry_json["nodes"])
+    route_room = frames[7]["room"]
+    assert route_room["title"] == "Chicago Open house"
+    assert route_room["caption"] == "Jane's chosen city route"
+    assert route_room["dimensionsM"] == [13.2, 6.5, 27.8]
+    route_preview = OUTPUT / route_room["previewImage"].lstrip("/")
+    route_model = OUTPUT / route_room["modelUrl"].lstrip("/")
+    assert route_preview.read_bytes()[:4] == b"RIFF"
+    assert route_model.read_bytes()[:4] == b"glTF"
+    assert route_preview.stat().st_size + route_model.stat().st_size < 8_000_000
+    route_glb = route_model.read_bytes()
+    route_json_length = int.from_bytes(route_glb[12:16], "little")
+    route_json = json.loads(route_glb[20:20 + route_json_length])
+    route_names = " ".join(node.get("name", "") for node in route_json["nodes"])
+    for stop in ("Pullman", "Avalon Regal", "Stony Island Arts Bank", "Narrow Bridge", "Palmisano", "Saint Ignatius", "Zen Buddhist Temple"):
+        assert stop in route_names, f"Missing Chicago route stop: {stop}"
+    assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in route_json["nodes"]) >= 16, "The seven architectural stops and walkers should collide"
     orchard_room = frames[8]["room"]
     assert orchard_room["title"] == "We FINALLY visited our friends in Ithaca for the first time where Zephrine got to try apple picking for the first time."
     assert orchard_room["caption"] == "First apples with friends"
@@ -214,6 +245,39 @@ def main() -> None:
     orchard_json_length = int.from_bytes(orchard_glb[12:16], "little")
     orchard_json = json.loads(orchard_glb[20:20 + orchard_json_length])
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in orchard_json["nodes"]) >= 16, "Room 09 needs solid figures, trees, and props"
+    play_room = frames[9]["room"]
+    assert play_room["title"] == "We visited maggie daley park for the first time with Zephrine!"
+    assert play_room["caption"] == "A day of shared play"
+    assert play_room["dimensionsM"] == [15.2, 6.8, 18.8]
+    play_preview = OUTPUT / play_room["previewImage"].lstrip("/")
+    play_model = OUTPUT / play_room["modelUrl"].lstrip("/")
+    assert play_preview.read_bytes()[:4] == b"RIFF"
+    assert play_model.read_bytes()[:4] == b"glTF"
+    assert play_preview.stat().st_size + play_model.stat().st_size < 8_000_000
+    play_glb = play_model.read_bytes()
+    play_json_length = int.from_bytes(play_glb[12:16], "little")
+    play_json = json.loads(play_glb[20:20 + play_json_length])
+    play_names = " ".join(node.get("name", "") for node in play_json["nodes"])
+    for detail in ("Zephrine in shared play", "friend's first child", "friend's second child", "lighthouse", "ship", "whale"):
+        assert detail in play_names, f"Room 10 missing {detail}"
+    assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in play_json["nodes"]) >= 14, "Play Garden people and props should collide"
+    aquarium_room = frames[10]["room"]
+    assert aquarium_room["title"] == "We took zephrine to the Shedd aquairum with G"
+    assert aquarium_room["caption"] == "Wondering at the fish with G"
+    assert aquarium_room["dimensionsM"] == [18.4, 8.2, 20.8]
+    aquarium_preview = OUTPUT / aquarium_room["previewImage"].lstrip("/")
+    aquarium_model = OUTPUT / aquarium_room["modelUrl"].lstrip("/")
+    assert aquarium_preview.read_bytes()[:4] == b"RIFF"
+    assert aquarium_model.read_bytes()[:4] == b"glTF"
+    assert aquarium_preview.stat().st_size + aquarium_model.stat().st_size < 8_000_000
+    aquarium_glb = aquarium_model.read_bytes()
+    aquarium_json_length = int.from_bytes(aquarium_glb[12:16], "little")
+    aquarium_json = json.loads(aquarium_glb[20:20 + aquarium_json_length])
+    aquarium_names = " ".join(node.get("name", "") for node in aquarium_json["nodes"])
+    for detail in ("G sharing wonder", "Zephrine pointing", "freestanding return-door", "drifting sculpted aquarium fish"):
+        assert detail in aquarium_names, f"Room 11 missing {detail}"
+    assert sum("driftPhase" in node.get("extras", {}) for node in aquarium_json["nodes"]) >= 24, "Room 11 fish need gentle motion metadata"
+    assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in aquarium_json["nodes"]) >= 20, "Aquarium columns, tanks, figures, and doorway posts must collide"
     assert not (OUTPUT / "room_assets").exists(), "Reference artwork should not be published separately"
     explore = parse(source_path("/explore"))
     assert explore.select_one("#welcome-title") is not None
@@ -262,7 +326,7 @@ def main() -> None:
 
     total_bytes = sum(path.stat().st_size for path in OUTPUT.rglob("*") if path.is_file())
     assert total_bytes < 1_000_000_000, "GitHub Pages published-site limit exceeded"
-    print(f"Verified 39 detail pages, 2 grid routes, credits, 41 gallery frames (rooms 01–06 and 09 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
+    print(f"Verified 39 detail pages, 2 grid routes, credits, 41 gallery frames (rooms 01–11 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
 
 
 if __name__ == "__main__":

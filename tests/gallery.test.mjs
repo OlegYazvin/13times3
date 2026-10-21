@@ -26,6 +26,20 @@ test("41 stable frame slots follow five connected winding sections", () => {
   }
 });
 
+test("large rooms beside the first bend clear neighboring hallways", () => {
+  const route = layout.frames[7];
+  const play = layout.frames[9];
+  // The Chicago room extends east from the first passage. Its southern side
+  // must stay north of the next passage's wall.
+  assert.ok(route.center.z - route.room.dimensionsM[0] / 2 >
+    PATH[1].z + HALL_WIDTH / 2,
+  "frame 08 must not intersect the second gallery passage");
+  // The Play Garden extends north from the second passage. Its western side
+  // must clear the original north/south passage.
+  assert.ok(play.center.x - play.room.dimensionsM[0] / 2 > HALL_WIDTH / 2,
+    "frame 10 must not intersect the first gallery passage");
+});
+
 test("movement stays inside the hallway and slides along its walls", () => {
   const start = { x: 0, z: -9 };
   assert.equal(isWalkable(start, layout), true);
@@ -36,7 +50,7 @@ test("movement stays inside the hallway and slides along its walls", () => {
   assert.equal(nearestSection({ x: 18, z: -10 }, layout.sections).section.index, 2);
 });
 
-test("frames 01–06 and 09 have room-sized openings and the other frames stay solid", () => {
+test("frames 01–11 have room-sized openings and the other frames stay solid", () => {
   const frame = layout.frames[0];
   assert.equal(roomIsReady(frame), true);
   assert.equal(roomIsReady(layout.frames[1]), true);
@@ -44,22 +58,34 @@ test("frames 01–06 and 09 have room-sized openings and the other frames stay s
   assert.equal(roomIsReady(layout.frames[3]), true);
   assert.equal(roomIsReady(layout.frames[4]), true);
   assert.equal(roomIsReady(layout.frames[5]), true);
+  assert.equal(roomIsReady(layout.frames[6]), true);
+  assert.equal(roomIsReady(layout.frames[7]), true);
   assert.equal(roomIsReady(layout.frames[8]), true);
-  assert.equal(layout.frames.every((record, index) => [0, 1, 2, 3, 4, 5, 8].includes(index) || !roomIsReady(record)), true);
+  assert.equal(roomIsReady(layout.frames[9]), true);
+  assert.equal(roomIsReady(layout.frames[10]), true);
+  assert.equal(layout.frames.every((record, index) => index <= 10 || !roomIsReady(record)), true);
   assert.deepEqual(portalOpening(frame), { width: 3.35, height: 3.35 });
   assert.deepEqual(portalOpening(layout.frames[1]), { width: 3.35, height: 4.1 });
   assert.deepEqual(portalOpening(layout.frames[2]), { width: 3.35, height: 4.1 });
   assert.deepEqual(portalOpening(layout.frames[3]), { width: 3.35, height: 4.1 });
   assert.deepEqual(portalOpening(layout.frames[4]), { width: 3.35, height: 4.1 });
   assert.deepEqual(portalOpening(layout.frames[5]), { width: 3.35, height: 4.1 });
+  assert.deepEqual(portalOpening(layout.frames[6]), { width: 3.35, height: 4.1 });
+  assert.deepEqual(portalOpening(layout.frames[7]), { width: 3.35, height: 4.1 });
   assert.deepEqual(portalOpening(layout.frames[8]), { width: 3.35, height: 4.1 });
+  assert.deepEqual(portalOpening(layout.frames[9]), { width: 3.35, height: 4.1 });
+  assert.deepEqual(portalOpening(layout.frames[10]), { width: 3.35, height: 4.1 });
   assert.equal(framePlaqueText(frame), "Zephrine's first stage");
   assert.equal(framePlaqueText(layout.frames[1]), "Jane kept me going");
   assert.equal(framePlaqueText(layout.frames[2]), "A friendship Jane made room for");
   assert.equal(framePlaqueText(layout.frames[3]), "Zephrine's blue car");
   assert.equal(framePlaqueText(layout.frames[4]), "Jane held her ground");
   assert.equal(framePlaqueText(layout.frames[5]), "A tender ending");
+  assert.equal(framePlaqueText(layout.frames[6]), "Blueberries with G");
+  assert.equal(framePlaqueText(layout.frames[7]), "Jane's chosen city route");
   assert.equal(framePlaqueText(layout.frames[8]), "First apples with friends");
+  assert.equal(framePlaqueText(layout.frames[9]), "A day of shared play");
+  assert.equal(framePlaqueText(layout.frames[10]), "Wondering at the fish with G");
   assert.equal(framePlaqueText(layout.frames[11]), "12");
 });
 

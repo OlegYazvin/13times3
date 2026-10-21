@@ -19,11 +19,11 @@ export function portalOpening(frame) {
 
 export const PATH = Object.freeze([
   { x: 0, z: 0 },
-  { x: 0, z: -22 },
-  { x: 22, z: -22 },
-  { x: 22, z: 0 },
-  { x: 44, z: 0 },
-  { x: 44, z: -26 },
+  { x: 0, z: -27 },
+  { x: 28, z: -27 },
+  { x: 28, z: -5 },
+  { x: 50, z: -5 },
+  { x: 50, z: -31 },
 ]);
 
 const dot = (a, b) => a.x * b.x + a.z * b.z;
@@ -99,7 +99,13 @@ export function buildLayout(manifest) {
     }
     // Keep the full painting inside the straight wall at each turn.
     const endMargin = HALL_WIDTH / 2 + FRAME_WIDTH / 2 + .4;
-    const along = endMargin + record.bay * ((section.length - 2 * endMargin) / Math.max(1, baysOnSide - 1));
+    // Give the two galleries around the first turn room for their large worlds:
+    // frame 08 needs clear space before the bend, and frame 10 needs to begin
+    // beyond the preceding passage. The paintings still read in ID order.
+    const startMargin = section.index === 1 ? 11 : endMargin;
+    const farMargin = section.index === 0 ? endMargin + 5 : endMargin;
+    const along = startMargin + record.bay *
+      ((section.length - farMargin - startMargin) / Math.max(1, baysOnSide - 1));
     const center = add(add(section.start, multiply(section.forward, along)), multiply(section.right, side * HALL_WIDTH / 2));
     sectionCounts[record.section] += 1;
     return { ...record, sectionData: section, sideSign: side, along, center };

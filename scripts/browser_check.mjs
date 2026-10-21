@@ -7,7 +7,7 @@ const base = process.env.GALLERY_TEST_BASE || "http://127.0.0.1:8080";
 const leftWall = -HALL_WIDTH / 2;
 const rightWall = HALL_WIDTH / 2;
 await mkdir(".cache", { recursive: true });
-const browser = await chromium.launch({
+let browser = await chromium.launch({
   headless: true,
   args: ["--use-gl=angle", "--use-angle=swiftshader", "--enable-webgl"],
 });
@@ -132,6 +132,7 @@ async function statusText(page) {
 }
 
 try {
+  if (process.env.GALLERY_TEST_NEW_ROOMS_ONLY !== "1") {
   const home = await browser.newPage();
   await home.goto(base, { waitUntil: "domcontentloaded" });
   assert.equal(await home.locator("a.explore-entry").getAttribute("href"), "/explore/");
@@ -150,7 +151,7 @@ try {
   await fallbackPage.goto(`${base}/explore/`, { waitUntil: "domcontentloaded" });
   await fallbackPage.locator("#fallback").waitFor({ state: "visible" });
   assert.equal(await fallbackPage.locator(".frame-list li").count(), 41);
-  assert.equal(await fallbackPage.locator(".fallback-previews img").count(), 7);
+  assert.equal(await fallbackPage.locator(".fallback-previews img").count(), 11);
   assert.equal(await fallbackPage.locator(".frame-list li").first().textContent(), "Zephrine's first stage");
   await context.close();
   console.log("WebGL fallback: 41 frames listed with the completed painting caption");
@@ -216,11 +217,11 @@ try {
   assert.equal(exited.cameraFov, beforeExit.cameraFov);
   assert.equal(exited.activeRoom, "01", "room stays visible nearby after exit");
   await roomPage.screenshot({ path: ".cache/room01-returned-continuous.png" });
-  await roomPage.evaluate(() => window.__galleryTestPose(9.0916666667, -19.35, Math.PI));
+  await roomPage.evaluate(() => window.__galleryTestPose(14.9083333333, -24.35, Math.PI));
   await roomPage.keyboard.down("w");
   await roomPage.waitForTimeout(400);
   await roomPage.keyboard.up("w");
-  assert.ok((await roomPage.evaluate(() => window.__galleryDebug().z)) < -18.8 - PLAYER_RADIUS + .02,
+  assert.ok((await roomPage.evaluate(() => window.__galleryDebug().z)) < -23.8 - PLAYER_RADIUS + .02,
     "blank frame 12 must remain solid");
   await roomPage.evaluate(() => window.__galleryTestPose(22, 0, 0));
   await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === null, null, { timeout: 12000 });
@@ -447,17 +448,103 @@ try {
   await weaningContext.close();
   console.log("Room 06: tender painting, doorway, chair collision, return, and cleanup");
 
+  const berryContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
+  const berryPage = await berryContext.newPage();
+  const berryErrors = [];
+  berryPage.on("pageerror", error => berryErrors.push(error.message));
+  await berryPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
+  await berryPage.getByRole("button", { name: /begin walking/i }).click();
+  await berryPage.evaluate(() => window.__galleryTestPose(-1.2, -16.725, -Math.PI / 2));
+  await berryPage.waitForFunction(() => window.__galleryDebug().activeRoom === "07", null, { timeout: 15000 });
+  await berryPage.screenshot({ path: ".cache/room07-painting-far.png" });
+  await berryPage.evaluate((x) => window.__galleryTestPose(x, -16.725, -Math.PI / 2), leftWall + .55);
+  await berryPage.screenshot({ path: ".cache/room07-open-doorway.png" });
+  const berryBefore = await berryPage.evaluate(() => window.__galleryDebug());
+  await berryPage.keyboard.down("w");
+  await berryPage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
+  await berryPage.keyboard.up("w");
+  const berryEntered = await berryPage.evaluate(() => window.__galleryDebug());
+  assert.equal(berryEntered.yaw, berryBefore.yaw);
+  assert.equal(berryEntered.cameraFov, berryBefore.cameraFov);
+  assert.ok(berryEntered.modelColliderCount >= 20, "berry bushes and figures should collide");
+  await berryPage.screenshot({ path: ".cache/room07-entered-continuous.png" });
+  await berryPage.evaluate(() => window.__galleryTestRoomPose(-.58, 2.0, -Math.PI / 2));
+  await berryPage.keyboard.down("w");
+  await berryPage.waitForTimeout(500);
+  await berryPage.keyboard.up("w");
+  assert.ok((await berryPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 1.52,
+    "Oleg and Zephrine should block movement in the berry row");
+  await berryPage.evaluate(() => window.__galleryTestRoomPose(0, 7.0, Math.PI / 2));
+  const berryBeforeExit = await berryPage.evaluate(() => window.__galleryDebug());
+  await berryPage.keyboard.down("w");
+  await berryPage.waitForFunction(() => window.__galleryDebug().mode === "hall", null, { timeout: 12000 });
+  await berryPage.keyboard.up("w");
+  const berryExited = await berryPage.evaluate(() => window.__galleryDebug());
+  assert.equal(berryExited.yaw, berryBeforeExit.yaw);
+  assert.equal(berryExited.cameraFov, berryBeforeExit.cameraFov);
+  assert.equal(berryExited.activeRoom, "07");
+  await berryPage.screenshot({ path: ".cache/room07-returned-continuous.png" });
+  await berryPage.evaluate(() => window.__galleryTestPose(22, 0, 0));
+  await berryPage.waitForFunction(() => window.__galleryDebug().activeRoom === null, null, { timeout: 12000 });
+  assert.deepEqual(berryErrors, []);
+  await berryContext.close();
+  console.log("Room 07: berry painting, continuous doorway, figure collision, and cleanup");
+
+  const routeContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
+  const routePage = await routeContext.newPage();
+  const routeErrors = [];
+  routePage.on("pageerror", error => routeErrors.push(error.message));
+  await routePage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
+  await routePage.getByRole("button", { name: /begin walking/i }).click();
+  await routePage.evaluate(() => window.__galleryTestPose(1.2, -16.725, Math.PI / 2));
+  await routePage.waitForFunction(() => window.__galleryDebug().activeRoom === "08", null, { timeout: 15000 });
+  await routePage.screenshot({ path: ".cache/room08-painting-far.png" });
+  await routePage.evaluate((x) => window.__galleryTestPose(x, -16.725, Math.PI / 2), rightWall - .55);
+  await routePage.screenshot({ path: ".cache/room08-open-doorway.png" });
+  const routeBefore = await routePage.evaluate(() => window.__galleryDebug());
+  await routePage.keyboard.down("w");
+  await routePage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
+  await routePage.keyboard.up("w");
+  const routeEntered = await routePage.evaluate(() => window.__galleryDebug());
+  assert.equal(routeEntered.yaw, routeBefore.yaw);
+  assert.equal(routeEntered.cameraFov, routeBefore.cameraFov);
+  assert.ok(routeEntered.modelColliderCount >= 16, "Chicago's architectural stops should collide");
+  await routePage.screenshot({ path: ".cache/room08-entered-continuous.png" });
+  await routePage.evaluate(() => window.__galleryTestRoomPose(-4.25, 11.8, -Math.PI / 2));
+  await routePage.keyboard.down("w");
+  await routePage.waitForTimeout(500);
+  await routePage.keyboard.up("w");
+  assert.ok((await routePage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 11.25,
+    "Pullman sculpture should block movement");
+  await routePage.evaluate(() => window.__galleryTestRoomPose(0, 12.5, -Math.PI / 2));
+  const routeBeforeExit = await routePage.evaluate(() => window.__galleryDebug());
+  await routePage.keyboard.down("w");
+  await routePage.waitForFunction(() => window.__galleryDebug().mode === "hall", null, { timeout: 12000 });
+  await routePage.keyboard.up("w");
+  const routeExited = await routePage.evaluate(() => window.__galleryDebug());
+  assert.equal(routeExited.yaw, routeBeforeExit.yaw);
+  assert.equal(routeExited.cameraFov, routeBeforeExit.cameraFov);
+  assert.equal(routeExited.activeRoom, "08");
+  await routePage.screenshot({ path: ".cache/room08-returned-continuous.png" });
+  await routePage.evaluate(() => window.__galleryTestPose(22, 0, 0));
+  await routePage.waitForFunction(() => window.__galleryDebug().activeRoom === null, null, { timeout: 12000 });
+  assert.deepEqual(routeErrors, []);
+  await routeContext.close();
+  console.log("Room 08: Chicago route, continuous doorway, architecture collision, and cleanup");
+  }
+
+  if (process.env.GALLERY_TEST_SHEDD_ONLY !== "1") {
   const orchardContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
   const orchardPage = await orchardContext.newPage();
   const orchardErrors = [];
   orchardPage.on("pageerror", error => orchardErrors.push(error.message));
   await orchardPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
   await orchardPage.getByRole("button", { name: /begin walking/i }).click();
-  await orchardPage.evaluate(() => window.__galleryTestPose(5.275, -19.6, 0));
+  await orchardPage.evaluate(() => window.__galleryTestPose(11, -28.0, 0));
   await orchardPage.waitForFunction(() => window.__galleryDebug().activeRoom === "09", null, { timeout: 15000 });
   assert.equal(await orchardPage.locator("#fallback").isVisible(), false);
   await orchardPage.screenshot({ path: ".cache/room09-painting-far.png" });
-  await orchardPage.evaluate(() => window.__galleryTestPose(5.275, -23.8, 0));
+  await orchardPage.evaluate(() => window.__galleryTestPose(11, -28.8, 0));
   await orchardPage.waitForTimeout(200);
   await orchardPage.screenshot({ path: ".cache/room09-open-doorway.png" });
   const orchardBefore = await orchardPage.evaluate(() => window.__galleryDebug());
@@ -493,6 +580,123 @@ try {
   await orchardContext.close();
   console.log("Room 09: far painting, live reveal, continuous doorway, figure collision, and cleanup");
 
+  const playContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
+  const playPage = await playContext.newPage();
+  const playErrors = [];
+  playPage.on("pageerror", error => playErrors.push(error.message));
+  await playPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
+  await playPage.getByRole("button", { name: /begin walking/i }).click();
+  await playPage.evaluate(() => window.__galleryTestPose(11, -25.8, Math.PI));
+  await playPage.waitForFunction(() => window.__galleryDebug().activeRoom === "10", null, { timeout: 15000 });
+  await playPage.screenshot({ path: ".cache/room10-painting-far.png" });
+  await playPage.evaluate(() => window.__galleryTestPose(11, -24.35, Math.PI));
+  await playPage.screenshot({ path: ".cache/room10-open-doorway.png" });
+  const playBefore = await playPage.evaluate(() => window.__galleryDebug());
+  await playPage.keyboard.down("w");
+  await playPage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
+  await playPage.keyboard.up("w");
+  const playEntered = await playPage.evaluate(() => window.__galleryDebug());
+  assert.equal(playEntered.yaw, playBefore.yaw);
+  assert.equal(playEntered.cameraFov, playBefore.cameraFov);
+  assert.ok(playEntered.modelColliderCount >= 14, "Play Garden figures and sculptures must collide");
+  await playPage.screenshot({ path: ".cache/room10-entered-continuous.png" });
+  await playPage.evaluate(() => window.__galleryTestRoomPose(-.23, 2.1, -Math.PI / 2));
+  await playPage.keyboard.down("w");
+  await playPage.waitForTimeout(500);
+  await playPage.keyboard.up("w");
+  assert.ok((await playPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 1.58,
+    "Zephrine's figure should block the path");
+  await playPage.evaluate(() => window.__galleryTestRoomPose(0, 8.1, 0));
+  const playBeforeExit = await playPage.evaluate(() => window.__galleryDebug());
+  await playPage.keyboard.down("w");
+  await playPage.waitForFunction(() => window.__galleryDebug().mode === "hall", null, { timeout: 12000 });
+  await playPage.keyboard.up("w");
+  const playExited = await playPage.evaluate(() => window.__galleryDebug());
+  assert.equal(playExited.yaw, playBeforeExit.yaw);
+  assert.equal(playExited.cameraFov, playBeforeExit.cameraFov);
+  assert.equal(playExited.activeRoom, "10");
+  await playPage.screenshot({ path: ".cache/room10-returned-continuous.png" });
+  await playPage.evaluate(() => window.__galleryTestPose(22, 0, 0));
+  await playPage.waitForFunction(() => window.__galleryDebug().activeRoom === null, null, { timeout: 12000 });
+  assert.deepEqual(playErrors, []);
+  await playContext.close();
+  console.log("Room 10: Play Garden, shared play, figure collision, and cleanup");
+  }
+
+  const aquariumContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
+  const aquariumPage = await aquariumContext.newPage();
+  const aquariumErrors = [];
+  aquariumPage.on("pageerror", error => aquariumErrors.push(error.message));
+  await aquariumPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
+  await aquariumPage.getByRole("button", { name: /begin walking/i }).click();
+  await aquariumPage.evaluate(() => window.__galleryTestPose(14.9083333333, -27, 0));
+  await aquariumPage.waitForFunction(() => window.__galleryDebug().activeRoom === "11", null, { timeout: 15000 });
+  await aquariumPage.screenshot({ path: ".cache/room11-painting-far.png" });
+  await aquariumPage.evaluate(() => window.__galleryTestPose(14.9083333333, -28.8, 0));
+  await aquariumPage.screenshot({ path: ".cache/room11-open-doorway.png" });
+  const aquariumBefore = await aquariumPage.evaluate(() => window.__galleryDebug());
+  await aquariumPage.keyboard.down("w");
+  await aquariumPage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
+  await aquariumPage.keyboard.up("w");
+  const aquariumEntered = await aquariumPage.evaluate(() => window.__galleryDebug());
+  assert.equal(aquariumEntered.yaw, aquariumBefore.yaw);
+  assert.equal(aquariumEntered.cameraFov, aquariumBefore.cameraFov);
+  assert.ok(aquariumEntered.modelColliderCount >= 20, "aquarium architecture and people should collide");
+  assert.ok(aquariumEntered.driftingFishCount >= 24, "fish should drift gently");
+  await aquariumPage.screenshot({ path: ".cache/room11-entered-continuous.png" });
+  const fishPositions = [];
+  for (let sample = 0; sample < 5; sample++) {
+    fishPositions.push((await aquariumPage.evaluate(() => window.__galleryDebug())).firstFishY);
+    await aquariumPage.waitForTimeout(400);
+  }
+  assert.ok(Math.max(...fishPositions) - Math.min(...fishPositions) > .004,
+    "a sculpted fish should move slightly");
+  await aquariumPage.evaluate(() => window.__galleryTestRoomPose(1.13, 2.05, 0));
+  await aquariumPage.keyboard.down("w");
+  await aquariumPage.waitForTimeout(450);
+  await aquariumPage.keyboard.up("w");
+  assert.ok((await aquariumPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 1.82,
+    "G's figure should block movement");
+  await aquariumPage.evaluate(() => window.__galleryTestRoomPose(2.5, 7.2, Math.PI));
+  await aquariumPage.keyboard.down("w");
+  await aquariumPage.waitForTimeout(1500);
+  await aquariumPage.keyboard.up("w");
+  assert.ok((await aquariumPage.evaluate(() => window.__galleryDebug().roomLocal.z)) < 7.95,
+    "the freestanding marble post must be solid");
+  await aquariumPage.evaluate(() => window.__galleryTestRoomPose(3.2, 7.2, Math.PI));
+  await aquariumPage.keyboard.down("w");
+  await aquariumPage.waitForFunction(() => window.__galleryDebug().roomLocal.z > 9.25,
+    null, { timeout: 8000 });
+  await aquariumPage.waitForTimeout(420);
+  await aquariumPage.keyboard.up("w");
+  const aroundArch = await aquariumPage.evaluate(() => window.__galleryDebug());
+  assert.equal(aroundArch.mode, "room", "walking around the arch must stay in the aquarium");
+  assert.ok(aroundArch.roomLocal.z > 9.25 && aroundArch.roomLocal.z < 10.0,
+    "the walkable loop must reach behind the arch but stop at the side boundary");
+  await aquariumPage.screenshot({ path: ".cache/room11-behind-freestanding-arch.png" });
+  await aquariumPage.evaluate(() => window.__galleryTestRoomPose(0, 9.15, Math.PI));
+  const aquariumBeforeExit = await aquariumPage.evaluate(() => window.__galleryDebug());
+  await aquariumPage.keyboard.down("w");
+  await aquariumPage.waitForFunction(() => window.__galleryDebug().mode === "hall", null, { timeout: 12000 });
+  await aquariumPage.keyboard.up("w");
+  const aquariumExited = await aquariumPage.evaluate(() => window.__galleryDebug());
+  assert.equal(aquariumExited.yaw, aquariumBeforeExit.yaw);
+  assert.equal(aquariumExited.cameraFov, aquariumBeforeExit.cameraFov);
+  assert.equal(aquariumExited.activeRoom, "11");
+  await aquariumPage.screenshot({ path: ".cache/room11-returned-continuous.png" });
+  await aquariumPage.evaluate(() => window.__galleryTestPose(22, 0, 0));
+  await aquariumPage.waitForFunction(() => window.__galleryDebug().activeRoom === null, null, { timeout: 12000 });
+  assert.deepEqual(aquariumErrors, []);
+  await aquariumContext.close();
+  console.log("Room 11: fish drift, freestanding arch loop, post collision, exit, and cleanup");
+
+  // A fresh browser prevents SwiftShader from retaining all earlier test
+  // contexts' GPU allocations before portrait-phone emulation starts.
+  await browser.close();
+  browser = await chromium.launch({ headless: true,
+    args: ["--use-gl=angle", "--use-angle=swiftshader", "--enable-webgl"] });
+
+  if (process.env.GALLERY_TEST_PHONE_FINAL_ONLY !== "1") {
   const phoneContext = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true });
   const phonePage = await phoneContext.newPage();
   const phoneErrors = [];
@@ -519,7 +723,7 @@ try {
   await phonePage.waitForFunction(() => window.__galleryDebug().mode === "hall", null, { timeout: 12000 });
   await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
-  await phonePage.evaluate(() => window.__galleryTestPose(5.275, -23.8, 0));
+  await phonePage.evaluate(() => window.__galleryTestPose(11, -28.8, 0));
   await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "09", null, { timeout: 15000 });
   await phonePage.screenshot({ path: ".cache/room09-mobile-doorway.png" });
   await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
@@ -573,9 +777,57 @@ try {
   await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
   await phonePage.screenshot({ path: ".cache/room06-mobile-entered-continuous.png" });
+  await phonePage.evaluate((x) => window.__galleryTestPose(x, -16.725, -Math.PI / 2), leftWall + .55);
+  await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "07", null, { timeout: 15000 });
+  await phonePage.screenshot({ path: ".cache/room07-mobile-doorway.png" });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ ...point, y: point.y - 38 }] });
+  await phonePage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
+  await phonePage.screenshot({ path: ".cache/room07-mobile-entered-continuous.png" });
+  await phonePage.evaluate((x) => window.__galleryTestPose(x, -16.725, Math.PI / 2), rightWall - .55);
+  await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "08", null, { timeout: 15000 });
+  await phonePage.screenshot({ path: ".cache/room08-mobile-doorway.png" });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ ...point, y: point.y - 38 }] });
+  await phonePage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
+  await phonePage.screenshot({ path: ".cache/room08-mobile-entered-continuous.png" });
   assert.deepEqual(phoneErrors, []);
   await phoneContext.close();
-  console.log("Phone emulation: joystick crossed the same doorway both ways at a stable FOV");
+  console.log("Phone emulation: rooms 01–09 passed at a stable FOV");
+  }
+
+  for (const [id, x, z, yaw] of [["10", 11, -24.35, Math.PI],
+    ["11", 14.9083333333, -28.8, 0]]) {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 },
+      deviceScaleFactor: 3, isMobile: true, hasTouch: true });
+    const page = await context.newPage();
+    const errors = [];
+    page.on("pageerror", error => errors.push(error.message));
+    await page.goto(`${base}/explore/`, { waitUntil: "networkidle" });
+    await page.getByRole("button", { name: /begin walking/i }).click();
+    await page.evaluate(([px,pz,direction]) => window.__galleryTestPose(px,pz,direction), [x,z,yaw]);
+    await page.waitForFunction(frameId => window.__galleryDebug().activeRoom === frameId,
+      id, { timeout: 20000 });
+    await page.screenshot({ path: `.cache/room${id}-mobile-doorway.png` });
+    const ring = await page.locator(".joystick-ring").boundingBox();
+    const point = { x: ring.x + ring.width/2, y: ring.y + ring.height/2, id: 5 };
+    const touch = await context.newCDPSession(page);
+    assert.equal((await page.evaluate(() => window.__galleryDebug())).cameraFov, 100);
+    await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
+    await touch.send("Input.dispatchTouchEvent", { type: "touchMove",
+      touchPoints: [{ ...point, y: point.y - 38 }] });
+    await page.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
+    await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+    assert.equal((await page.evaluate(() => window.__galleryDebug())).cameraFov, 100);
+    await page.screenshot({ path: `.cache/room${id}-mobile-entered-continuous.png` });
+    assert.deepEqual(errors, [], `phone room ${id}: page errors`);
+    await context.close();
+    console.log(`Phone emulation: room ${id} entered at a stable FOV`);
+  }
 
   const failedContext = await browser.newContext({ viewport: { width: 920, height: 700 } });
   const failedPage = await failedContext.newPage();

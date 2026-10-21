@@ -239,34 +239,25 @@
       "side": "left",
       "bay": 3,
       "room": {
-        "previewImage": null,
-        "modelUrl": null,
-        "dimensionsM": [
-          3.048,
-          3.048,
-          3.048
-        ],
+        "previewImage": "/assets/explore/room07/preview.webp",
+        "modelUrl": "/assets/explore/room07/room.glb",
+        "dimensionsM": [12.8, 5.8, 16.6],
         "entryPose": {
-          "position": [
-            0,
-            1.65,
-            1.15
-          ],
+          "position": [0, 1.65, 7.2],
           "yaw": 0
         },
         "previewCamera": {
-          "position": [
-            0,
-            1.65,
-            1.15
-          ],
-          "target": [
-            0,
-            1.55,
-            -1
-          ],
-          "fov": 65
-        }
+          "position": [0, 1.65, 7.5],
+          "target": [0, 1.56, -1.2],
+          "fov": 67
+        },
+        "title": "The time we went blueberry picking",
+        "caption": "Blueberries with G",
+        "colliders": [
+          { "shape": "circle", "x": -0.7, "z": 0.2, "radius": 0.36 },
+          { "shape": "circle", "x": 1.7, "z": 0.4, "radius": 0.33 },
+          { "shape": "circle", "x": 0.9, "z": -1.1, "radius": 0.5 }
+        ]
       }
     },
     {
@@ -276,34 +267,21 @@
       "side": "right",
       "bay": 3,
       "room": {
-        "previewImage": null,
-        "modelUrl": null,
-        "dimensionsM": [
-          3.048,
-          3.048,
-          3.048
-        ],
+        "previewImage": "/assets/explore/room08/preview.webp",
+        "modelUrl": "/assets/explore/room08/room.glb",
+        "dimensionsM": [13.2, 6.5, 27.8],
         "entryPose": {
-          "position": [
-            0,
-            1.65,
-            1.15
-          ],
+          "position": [0, 1.65, 12.6],
           "yaw": 0
         },
         "previewCamera": {
-          "position": [
-            0,
-            1.65,
-            1.15
-          ],
-          "target": [
-            0,
-            1.55,
-            -1
-          ],
-          "fov": 65
-        }
+          "position": [0, 1.7, 13.6],
+          "target": [0, 1.6, 3.8],
+          "fov": 70
+        },
+        "title": "Chicago Open house",
+        "caption": "Jane's chosen city route",
+        "colliders": []
       }
     },
     {
@@ -361,34 +339,21 @@
       "side": "right",
       "bay": 0,
       "room": {
-        "previewImage": null,
-        "modelUrl": null,
-        "dimensionsM": [
-          3.048,
-          3.048,
-          3.048
-        ],
+        "previewImage": "/assets/explore/room10/preview.webp",
+        "modelUrl": "/assets/explore/room10/room.glb",
+        "dimensionsM": [15.2, 6.8, 18.8],
         "entryPose": {
-          "position": [
-            0,
-            1.65,
-            1.15
-          ],
+          "position": [0, 1.65, 8.1],
           "yaw": 0
         },
         "previewCamera": {
-          "position": [
-            0,
-            1.65,
-            1.15
-          ],
-          "target": [
-            0,
-            1.55,
-            -1
-          ],
-          "fov": 65
-        }
+          "position": [0, 1.65, 9.8],
+          "target": [0, 1.48, -0.1],
+          "fov": 69
+        },
+        "title": "We visited maggie daley park for the first time with Zephrine!",
+        "caption": "A day of shared play",
+        "colliders": []
       }
     },
     {
@@ -398,34 +363,21 @@
       "side": "left",
       "bay": 1,
       "room": {
-        "previewImage": null,
-        "modelUrl": null,
-        "dimensionsM": [
-          3.048,
-          3.048,
-          3.048
-        ],
+        "previewImage": "/assets/explore/room11/preview.webp",
+        "modelUrl": "/assets/explore/room11/room.glb",
+        "dimensionsM": [18.4, 8.2, 20.8],
         "entryPose": {
-          "position": [
-            0,
-            1.65,
-            1.15
-          ],
+          "position": [0, 1.65, 9.1],
           "yaw": 0
         },
         "previewCamera": {
-          "position": [
-            0,
-            1.65,
-            1.15
-          ],
-          "target": [
-            0,
-            1.55,
-            -1
-          ],
-          "fov": 65
-        }
+          "position": [0, 1.68, 10.7],
+          "target": [0, 1.54, -0.5],
+          "fov": 70
+        },
+        "title": "We took zephrine to the Shedd aquairum with G",
+        "caption": "Wondering at the fish with G",
+        "colliders": []
       }
     },
     {

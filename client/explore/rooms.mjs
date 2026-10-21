@@ -143,11 +143,20 @@ export class RoomManager {
       fill.position.set(-2, 2, -1);
       group.add(fill, fill.target);
       const modelColliders = collidersFromScene(gltf.scene);
+      const driftingFish = [];
+      if (frame.id === "11") gltf.scene.traverse(object => {
+        if (typeof object.userData?.driftPhase === "number") {
+          driftingFish.push({ object, y: object.position.y,
+            yaw: object.rotation.y, phase: object.userData.driftPhase,
+            amplitude: object.userData.driftAmplitude || .05 });
+        }
+      });
       this.gallery.scene.add(group);
       this.active = {
         frame, group,
         colliders: modelColliders.length ? modelColliders : frame.room.colliders,
         modelColliderCount: modelColliders.length,
+        driftingFish,
       };
       this.loadingFrame = null;
     } catch (error) {
@@ -208,6 +217,15 @@ export class RoomManager {
     }
     this.player.x = next.x;
     this.player.z = next.z;
+  }
+
+  animate(time, reduceMotion = false) {
+    if (!this.active?.driftingFish?.length) return;
+    for (const fish of this.active.driftingFish) {
+      const motion = reduceMotion ? 0 : Math.sin(time * .62 + fish.phase);
+      fish.object.position.y = fish.y + fish.amplitude * motion;
+      fish.object.rotation.y = fish.yaw + motion * .065;
+    }
   }
 
   clearActive() {

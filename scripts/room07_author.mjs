@@ -1,0 +1,176 @@
+import * as THREE from "three";
+import { createRoomArt } from "./room_art.mjs";
+
+// Blueberries of Indiana, near La Porte, becomes an expansive summer field
+// of low bushes and deep-blue fruit. G helps Zephrine pick; Zephrine rides
+// on Oleg's shoulders. This is not frame 09's autumn apple orchard.
+const C = {
+  sky: 0xadcbd0, ground: 0xa6b7a0, grass: 0x7b9f7c,
+  deepGrass: 0x4f7568, leaf: 0x668969, paleLeaf: 0xa3b995,
+  bark: 0x665a58, berry: 0x334b85, berryLight: 0x5f74a8,
+  berryDark: 0x292f5f, bloom: 0xb6c5d2, gold: 0xe2c58d,
+  cream: 0xf2e5cd, paper: 0xf5eada, linen: 0xe8dbcc,
+  ink: 0x39475b, skin: 0xd5a184, hair: 0x3f3536,
+  gHair: 0x60494a, zephHair: 0x755448, fabric: 0x425f84,
+  rose: 0xd48d8b, peach: 0xdab19d, warm: 0xbf9374,
+};
+const art = createRoomArt({ index: 6,
+  title: "G shows Zephrine blueberries while Oleg carries her high",
+  width: 12.8, height: 5.8, depth: 16.6, colors: C, seed: 707707 });
+const { root, M, random, add, box, beam, curve, loft, petal,
+  wrapSky, ground, person, exportRoom } = art;
+wrapSky();
+ground(C.ground, (x, z) => {
+  const path = Math.exp(-Math.pow((x - .23 * Math.sin(z * .4)) / 1.45, 2));
+  return new THREE.Color(C.grass).lerp(new THREE.Color(C.linen), path * .68);
+});
+
+// The far horizon is a sequence of folded field ridges, not a fabricated
+// farm building. No date, cultivar or exact row is claimed by the scene.
+for (let layer = 0; layer < 3; layer++) {
+  const shape = new THREE.Shape();
+  shape.moveTo(-6.4, 0);
+  for (let i = 0; i <= 14; i++) {
+    const x = -6.4 + i * .92;
+    const y = 1.0 + layer * .43 + .35 * Math.sin(i * .72 + layer * .8)
+      + .12 * Math.sin(i * 1.9);
+    shape.lineTo(x, y);
+  }
+  shape.lineTo(6.4, 0); shape.closePath();
+  add(root, "folded distant blueberry-field horizon",
+    new THREE.ExtrudeGeometry(shape, { depth: .08, bevelEnabled: false }),
+    layer === 0 ? M.deepGrass : layer === 1 ? M.leaf : M.paleLeaf,
+    0, 0, -8.2 + layer * .25);
+}
+for (const side of [-1, 1]) {
+  curve(root, "natural lane edge through low rows",
+    [[side * 1.35, .05, 8.0], [side * 1.47, .05, 4.8],
+      [side * 1.36, .05, 1.0], [side * 1.55, .05, -2.5],
+      [side * 1.48, .05, -7.8]], .022, M.gold, 49);
+}
+
+const berryGeometry = new THREE.SphereGeometry(.055, 7, 5);
+function blueberry(parent, x, y, z, light = false) {
+  const berry = add(parent, "small round blueberry with pale bloom",
+    berryGeometry, light ? M.berryLight : M.berry, x, y, z);
+  berry.userData.batchPetal = true;
+  const calyx = petal(parent, "tiny pointed blueberry calyx", x - .02,
+    y + .046, z + .037, .055, M.berryDark, .6);
+  calyx.userData.batchPetal = true;
+}
+function bush(x, z, height = 1.45, central = false) {
+  const group = new THREE.Group(); group.name = central
+    ? "solid high blueberry bush G points out to Zephrine"
+    : "solid rounded blueberry shrub along a summer row";
+  group.position.set(x, 0, z); root.add(group);
+  loft(group, "solid branching bush crown and stems", [[0, .18, .18],
+    [.34, .21, .19], [height * .65, .12, .13],
+    [height, .045, .05]], M.bark, 10, true);
+  for (let arm = 0; arm < 5; arm++) {
+    const angle = arm * Math.PI * 2 / 5 + .25 * Math.sin(z);
+    const dx = Math.cos(angle), dz = Math.sin(angle);
+    const span = central ? 1.2 : .73 + .22 * random();
+    const tipY = height * (.7 + random() * .33);
+    curve(group, "arching branch carrying blueberries",
+      [[0, .38, 0], [dx * span * .48, height * .77, dz * span * .48],
+        [dx * span, tipY, dz * span]], .036, M.bark, 18);
+    for (let leafIndex = 0; leafIndex < 9; leafIndex++) {
+      const t = .34 + random() * .66;
+      const xx = dx * span * t + (random() - .5) * .28;
+      const zz = dz * span * t + (random() - .5) * .29;
+      petal(group, "overlapping cut-paper blueberry leaf", xx,
+        height * (.71 + .2 * Math.sin(t * 2.5)) + (random() - .5) * .28,
+        zz, .19 + random() * .14,
+        leafIndex % 4 ? M.leaf : M.paleLeaf, angle + random() * .6);
+    }
+    for (let fruit = 0; fruit < 4; fruit++) {
+      const t = .6 + random() * .35;
+      blueberry(group, dx * span * t + (random() - .5) * .15,
+        height * (.7 + .18 * Math.sin(t * 2.4)) - .04 - fruit * .025,
+        dz * span * t + (random() - .5) * .17,
+        fruit % 3 === 0);
+    }
+  }
+  return group;
+}
+for (const side of [-1, 1]) for (const offset of [2.65, 4.75]) {
+  for (let i = 0; i < 5; i++) {
+    const z = -6.8 + i * 3.35 + (offset > 3 ? 1.18 : 0);
+    bush(side * offset, z, 1.15 + .28 * Math.sin(i * 1.9 + offset));
+  }
+}
+bush(.95, -.45, 2.18, true);
+
+// Jane shares the outing; Oleg, G and Zephrine are the central memory.
+const oleg = person("Oleg with Zephrine on his shoulders", -.58, 1.12, 1.75, {
+  skin: M.skin, hair: M.hair, outfit: M.fabric, pants: M.ink,
+  glasses: true, beard: true, longHair: true,
+  hands: { "-1": [-.35, 1.04, .24], "1": [.37, 1.12, .31] }, yaw: -.14,
+});
+const zeph = person("Zephrine picking her own blueberries up high",
+  -.58, 1.12, 1.04, {
+    skin: M.skin, hair: M.zephHair, outfit: M.rose, skirt: M.peach,
+    pants: M.fabric, dress: true, curls: true,
+    hands: { "1": [.66, .67, -.38], "-1": [-.29, .66, .15] }, yaw: -.1,
+  });
+zeph.position.y = 1.39; zeph.scale.setScalar(.72);
+const g = person("G helping Zephrine discover blueberries", 2.0, 1.05, 1.62, {
+  skin: M.skin, hair: M.gHair, outfit: M.cream, pants: M.ink,
+  glasses: true, longHair: true,
+  hands: { "-1": [-.66, 1.07, -.28], "1": [.3, .88, .24] }, yaw: .27,
+});
+for (const side of [-1, 1]) curve(g, "G's chin-length brown hair",
+  [[side * .15, 1.7, -.03], [side * .2, 1.44, .015],
+    [side * .22, 1.17, .04]], .025, M.gHair, 15);
+person("Jane enjoying the blueberry outing", -2.54, -.67, 1.68, {
+  skin: M.skin, hair: M.hair, outfit: M.paleLeaf, pants: M.ink,
+  bun: true, hands: { "1": [.4, .8, .36] }, yaw: -.28,
+});
+
+// One woven picking pail and bright fruit connect the family with the field.
+const pail = new THREE.Group(); pail.name = "solid woven berry picking pail";
+pail.position.set(2.4, 0, 1.84); root.add(pail);
+const basket = add(pail, "solid small woven pail",
+  new THREE.CylinderGeometry(.31, .25, .45, 12, 1, true), M.linen,
+  0, .29, 0);
+basket.userData.solidFootprint = true;
+for (let stripe = 0; stripe < 5; stripe++) {
+  const ring = add(pail, "woven band around berry pail",
+    new THREE.TorusGeometry(.29 - stripe * .006, .01, 5, 18), M.bark,
+    0, .14 + stripe * .08, 0);
+  ring.rotation.x = Math.PI / 2;
+}
+curve(pail, "arched carrying handle", [[-.3, .5, 0],
+  [-.15, .8, 0], [0, .86, 0], [.15, .8, 0], [.3, .5, 0]], .025, M.bark);
+for (let i = 0; i < 10; i++) {
+  const a = i * Math.PI * 2 / 10;
+  blueberry(pail, Math.cos(a) * .19, .53 + .035 * (i % 3),
+    Math.sin(a) * .18, i % 3 === 0);
+}
+for (let i = 0; i < 42; i++) {
+  const x = (random() - .5) * 11.8, z = (random() - .5) * 15.4;
+  if (Math.abs(x) < 1.2 && z > -1.8) continue;
+  petal(root, "fallen pale summer leaf", x, .045, z,
+    .11 + random() * .1, i % 4 ? M.paleLeaf : M.gold,
+    random() * Math.PI * 2);
+}
+
+// The high canopy is made of paper leaves and light, while all visible
+// horizontal depth is the actual room. No tree trunks from the apple room.
+for (let i = 0; i < 5; i++) {
+  const z = -5.7 + i * 3.05;
+  curve(root, "slender summer branch high above the row",
+    [[-6.1, 4.9, z], [-3.0, 5.3, z + .18],
+      [0, 5.43, z + .27], [3.0, 5.3, z + .18],
+      [6.1, 4.9, z]], .027, M.bark, 38);
+  for (let j = 0; j < 21; j++) {
+    const x = -5.5 + j * .55;
+    petal(root, "translucent leaf canopy over summer picking",
+      x, 5.22 + (random() - .5) * .35,
+      z + (random() - .5) * .59, .18 + random() * .14,
+      j % 5 ? M.paleLeaf : M.gold, random() * 6.28);
+  }
+}
+
+window.__authorRoom = () => exportRoom({ key: 0xffdfb2,
+  fill: 0xa1d4df, ambient: 1.68, keyPower: 2.0 });
