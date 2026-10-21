@@ -109,7 +109,8 @@ def main() -> None:
     assert first_room["modelUrl"] == "/assets/explore/room01/room.glb"
     assert len(first_room["colliders"]) == 4
     assert sum(collider.get("shape") == "circle" for collider in first_room["colliders"]) == 2
-    assert all(not frame["room"]["previewImage"] and not frame["room"]["modelUrl"] for frame in frames[1:])
+    assert all(not frame["room"]["previewImage"] and not frame["room"]["modelUrl"]
+               for index, frame in enumerate(frames) if index not in (0, 8))
     preview = OUTPUT / first_room["previewImage"].lstrip("/")
     model = OUTPUT / first_room["modelUrl"].lstrip("/")
     assert preview.read_bytes()[:4] == b"RIFF"
@@ -122,6 +123,19 @@ def main() -> None:
     assert not any("dance card" in node.get("name", "").lower() or "acting card" in node.get("name", "").lower()
                    for node in glb_json["nodes"]), "Stage labels should not cover the scene"
     assert preview.stat().st_size + model.stat().st_size < 8_000_000
+    orchard_room = frames[8]["room"]
+    assert orchard_room["title"] == "We FINALLY visited our friends in Ithaca for the first time where Zephrine got to try apple picking for the first time."
+    assert orchard_room["caption"] == "First apples with friends"
+    assert orchard_room["dimensionsM"] == [11.6, 5.8, 14.2]
+    orchard_preview = OUTPUT / orchard_room["previewImage"].lstrip("/")
+    orchard_model = OUTPUT / orchard_room["modelUrl"].lstrip("/")
+    assert orchard_preview.read_bytes()[:4] == b"RIFF"
+    assert orchard_model.read_bytes()[:4] == b"glTF"
+    assert orchard_preview.stat().st_size + orchard_model.stat().st_size < 8_000_000
+    orchard_glb = orchard_model.read_bytes()
+    orchard_json_length = int.from_bytes(orchard_glb[12:16], "little")
+    orchard_json = json.loads(orchard_glb[20:20 + orchard_json_length])
+    assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in orchard_json["nodes"]) >= 16, "Room 09 needs solid figures, trees, and props"
     assert not (OUTPUT / "room_assets").exists(), "Reference artwork should not be published separately"
     explore = parse(source_path("/explore"))
     assert explore.select_one("#welcome-title") is not None
@@ -170,7 +184,7 @@ def main() -> None:
 
     total_bytes = sum(path.stat().st_size for path in OUTPUT.rglob("*") if path.is_file())
     assert total_bytes < 1_000_000_000, "GitHub Pages published-site limit exceeded"
-    print(f"Verified 39 detail pages, 2 grid routes, credits, 41 gallery frames (room 01 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
+    print(f"Verified 39 detail pages, 2 grid routes, credits, 41 gallery frames (rooms 01 and 09 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
 
 
 if __name__ == "__main__":

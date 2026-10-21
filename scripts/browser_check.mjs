@@ -228,6 +228,52 @@ try {
   await roomContext.close();
   console.log("Room 01: painterly reveal, continuous entry and exit, obstacles, blank frame, and cleanup");
 
+  const orchardContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
+  const orchardPage = await orchardContext.newPage();
+  const orchardErrors = [];
+  orchardPage.on("pageerror", error => orchardErrors.push(error.message));
+  await orchardPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
+  await orchardPage.getByRole("button", { name: /begin walking/i }).click();
+  await orchardPage.evaluate(() => window.__galleryTestPose(5.275, -19.6, 0));
+  await orchardPage.waitForFunction(() => window.__galleryDebug().activeRoom === "09", null, { timeout: 15000 });
+  assert.equal(await orchardPage.locator("#fallback").isVisible(), false);
+  await orchardPage.screenshot({ path: ".cache/room09-painting-far.png" });
+  await orchardPage.evaluate(() => window.__galleryTestPose(5.275, -23.8, 0));
+  await orchardPage.waitForTimeout(200);
+  await orchardPage.screenshot({ path: ".cache/room09-open-doorway.png" });
+  const orchardBefore = await orchardPage.evaluate(() => window.__galleryDebug());
+  await orchardPage.keyboard.down("w");
+  await orchardPage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
+  await orchardPage.keyboard.up("w");
+  const orchardEntered = await orchardPage.evaluate(() => window.__galleryDebug());
+  assert.equal(orchardEntered.yaw, orchardBefore.yaw);
+  assert.equal(orchardEntered.cameraFov, orchardBefore.cameraFov);
+  assert.ok(orchardEntered.z < orchardBefore.z && orchardEntered.z > orchardBefore.z - 2,
+    "orchard entry should cross the doorway without a camera jump");
+  assert.ok(orchardEntered.modelColliderCount >= 15, "orchard figures and trees need solid footprints");
+  await orchardPage.screenshot({ path: ".cache/room09-entered-continuous.png" });
+  await orchardPage.evaluate(() => window.__galleryTestRoomPose(0, 4.2, 0));
+  await orchardPage.keyboard.down("w");
+  await orchardPage.waitForTimeout(400);
+  await orchardPage.keyboard.up("w");
+  assert.ok((await orchardPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 3.7,
+    "Zephrine's figure should block the orchard path");
+  await orchardPage.evaluate(() => window.__galleryTestRoomPose(0, 6.3, Math.PI));
+  const orchardBeforeExit = await orchardPage.evaluate(() => window.__galleryDebug());
+  await orchardPage.keyboard.down("w");
+  await orchardPage.waitForFunction(() => window.__galleryDebug().mode === "hall", null, { timeout: 12000 });
+  await orchardPage.keyboard.up("w");
+  const orchardExited = await orchardPage.evaluate(() => window.__galleryDebug());
+  assert.equal(orchardExited.yaw, orchardBeforeExit.yaw);
+  assert.equal(orchardExited.cameraFov, orchardBeforeExit.cameraFov);
+  assert.equal(orchardExited.activeRoom, "09");
+  await orchardPage.screenshot({ path: ".cache/room09-returned-continuous.png" });
+  await orchardPage.evaluate(() => window.__galleryTestPose(5.275, -8, 0));
+  await orchardPage.waitForFunction(() => window.__galleryDebug().activeRoom === null, null, { timeout: 12000 });
+  assert.deepEqual(orchardErrors, []);
+  await orchardContext.close();
+  console.log("Room 09: far painting, live reveal, continuous doorway, figure collision, and cleanup");
+
   const phoneContext = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true });
   const phonePage = await phoneContext.newPage();
   const phoneErrors = [];
@@ -254,6 +300,15 @@ try {
   await phonePage.waitForFunction(() => window.__galleryDebug().mode === "hall", null, { timeout: 12000 });
   await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
+  await phonePage.evaluate(() => window.__galleryTestPose(5.275, -23.8, 0));
+  await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "09", null, { timeout: 15000 });
+  await phonePage.screenshot({ path: ".cache/room09-mobile-doorway.png" });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchMove", touchPoints: [{ ...point, y: point.y - 38 }] });
+  await phonePage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
+  await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+  assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
+  await phonePage.screenshot({ path: ".cache/room09-mobile-entered-continuous.png" });
   assert.deepEqual(phoneErrors, []);
   await phoneContext.close();
   console.log("Phone emulation: joystick crossed the same doorway both ways at a stable FOV");

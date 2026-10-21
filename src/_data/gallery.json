@@ -339,18 +339,18 @@
       "side": "left",
       "bay": 0,
       "room": {
-        "previewImage": null,
-        "modelUrl": null,
+        "previewImage": "/assets/explore/room09/preview.webp",
+        "modelUrl": "/assets/explore/room09/room.glb",
         "dimensionsM": [
-          3.048,
-          3.048,
-          3.048
+          11.6,
+          5.8,
+          14.2
         ],
         "entryPose": {
           "position": [
             0,
             1.65,
-            1.15
+            6
           ],
           "yaw": 0
         },
@@ -358,15 +358,26 @@
           "position": [
             0,
             1.65,
-            1.15
+            8.9
           ],
           "target": [
             0,
-            1.55,
-            -1
+            1.65,
+            0
           ],
-          "fov": 65
-        }
+          "fov": 70
+        },
+        "title": "We FINALLY visited our friends in Ithaca for the first time where Zephrine got to try apple picking for the first time.",
+        "caption": "First apples with friends",
+        "colliders": [
+          { "shape": "circle", "x": 0, "z": 3.05, "radius": 0.27 },
+          { "shape": "circle", "x": -1.58, "z": 1.15, "radius": 0.32 },
+          { "shape": "circle", "x": 1.65, "z": 1.12, "radius": 0.32 },
+          { "shape": "circle", "x": -3.05, "z": -0.65, "radius": 0.31 },
+          { "shape": "circle", "x": 3.05, "z": -0.75, "radius": 0.31 },
+          { "shape": "circle", "x": -2.4, "z": 0.46, "radius": 0.25 },
+          { "shape": "circle", "x": 2.45, "z": 0.42, "radius": 0.25 }
+        ]
       }
     },
     {

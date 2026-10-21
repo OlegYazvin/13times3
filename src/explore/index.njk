@@ -39,8 +39,8 @@ eleventyExcludeFromCollections: true
         <div class="welcome-card">
           <p class="eyebrow">For Jane · forty-one frames</p>
           <h1 id="welcome-title">Step into the in-between.</h1>
-          <p>A winding hallway holds forty-one frames. Walk toward frame 01 to see its painting open into the moment you signed Zephrine up for dance and acting classes. The other frames are still waiting.</p>
-          <p>Walk through the painting to explore the frozen scene, then turn around and walk through the gold-edged doorway to return to the gallery.</p>
+          <p>A winding hallway holds forty-one frames. Frame 01 opens into Zephrine's first stage. Frame 09 opens into her first apple-picking visit with friends. The other frames are still waiting.</p>
+          <p>Walk through either painting to explore its frozen scene, then turn around and walk through the gold-edged doorway to return to the gallery.</p>
           <p class="control-note"><strong>On your phone:</strong> move with the joystick. Drag anywhere else on the scene and hold left or right to keep turning; lift to stop. Drag up or down to look. <strong>On a computer:</strong> use W A S D or arrow keys and drag to look.</p>
           <p class="music-note">Music fades in when you begin. Use Sound to turn it off or on.</p>
           <button class="primary-button" id="begin-button" type="button">Begin walking <span aria-hidden="true">→</span></button>
@@ -52,8 +52,11 @@ eleventyExcludeFromCollections: true
         <div class="fallback-card">
           <p class="eyebrow">The gallery</p>
           <h1>The gallery is waiting.</h1>
-          <p>This browser could not open the 3D hallway. Frame 01 is “You signed Zephrine up for dance and acting classes!” and the other forty frames are waiting.</p>
-          <img class="fallback-preview" src="{{ gallery.frames[0].room.previewImage | url }}?v={{ galleryRoomVersion }}" alt="Jane at the signup desk while Zephrine dances on a small stage">
+          <p>This browser could not open the 3D hallway. Frames 01 and 09 are finished paintings; the other frames are waiting.</p>
+          <div class="fallback-previews">
+            <figure><img class="fallback-preview" src="{{ gallery.frames[0].room.previewImage | url }}?v={{ galleryRoomVersion }}" alt="Jane at the signup desk while Zephrine dances on a small stage"><figcaption>{{ gallery.frames[0].room.caption }}</figcaption></figure>
+            <figure><img class="fallback-preview" src="{{ gallery.frames[8].room.previewImage | url }}?v={{ galleryRoomVersion }}" alt="Zephrine holding an apple in an orchard with family and friends"><figcaption>{{ gallery.frames[8].room.caption }}</figcaption></figure>
+          </div>
           <ol class="frame-list">{% for frame in gallery.frames %}<li>{% if frame.room.modelUrl %}{{ frame.room.caption }}{% else %}{{ frame.label }}{% endif %}</li>{% endfor %}</ol>
           <button class="retry-button" type="button" onclick="window.location.reload()">Try again</button>
           <a class="primary-button" href="{{ '/' | url }}">Return to 13 Times 3</a>

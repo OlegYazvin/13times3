@@ -1,6 +1,6 @@
 # Frame 10: First visit to Maggie Daley Park with Zephrine
 
-Oleg's scene idea: “We visited maggie daley park for the first time with Zephrine!” He says Zephrine is his daughter and that the attached photos are references for the friends who went with them. This is a planned memory only. Frame `10` stays blank in the gallery manifest; do not make a painting, model, or room until asked.
+Oleg's scene idea: “We visited maggie daley park for the first time with Zephrine!” He says Zephrine is his daughter and that the attached photos are references for the friends who went with them and their two children. Oleg has since asked for the planned rooms to be built; frame `10` remains planned until a room is authored. The friends' names and the specific play structures Zephrine used remain unknown.
 
 ## Private references
 
