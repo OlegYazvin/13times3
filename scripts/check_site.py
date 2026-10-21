@@ -129,7 +129,8 @@ def main() -> None:
     assert explore.select_one("#room-title") is not None
     music_button = explore.select_one("#music-button")
     assert music_button is not None and music_button.get("aria-pressed") == "false"
-    assert explore.select_one("#experience").get("data-music-url") == expected_href("/assets/explore/resolutions-scott-buckley.mp3")
+    music_version = hashlib.sha256((OUTPUT / "assets/explore/resolutions-scott-buckley.mp3").read_bytes()).hexdigest()[:12]
+    assert explore.select_one("#experience").get("data-music-url") == expected_href("/assets/explore/resolutions-scott-buckley.mp3") + f"?v={music_version}"
     credit = explore.select_one(".music-credit")
     assert credit is not None and "Resolutions" in credit.get_text(" ", strip=True)
     assert "Scott Buckley" in credit.get_text(" ", strip=True)

@@ -42,7 +42,12 @@ module.exports = function (eleventyConfig) {
     createHash("sha256").update(readFileSync("src/assets/explore/app.js")).digest("hex").slice(0, 12),
   );
   eleventyConfig.addGlobalData("galleryRoomVersion", roomAssetVersion());
+  eleventyConfig.addGlobalData(
+    "exploreMusicVersion",
+    createHash("sha256").update(readFileSync("src/assets/explore/resolutions-scott-buckley.mp3")).digest("hex").slice(0, 12),
+  );
   eleventyConfig.addWatchTarget("src/assets/explore/app.js");
+  eleventyConfig.addWatchTarget("src/assets/explore/resolutions-scott-buckley.mp3");
   eleventyConfig.addWatchTarget("src/assets/explore/room01");
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   eleventyConfig.addPassthroughCopy("src/robots.txt");
