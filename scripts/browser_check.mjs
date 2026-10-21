@@ -666,9 +666,9 @@ try {
   }
   assert.ok(Math.max(...fishPositions) - Math.min(...fishPositions) > .004,
     "a sculpted fish should move slightly");
-  await aquariumPage.evaluate(() => window.__galleryTestRoomPose(1.13, 7.4, 0));
-  await aquariumPage.evaluate(() => window.__galleryTestRoomMove(1.13, 5.7));
-  assert.ok((await aquariumPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 6.75,
+  await aquariumPage.evaluate(() => window.__galleryTestRoomPose(1.13, 8.35, 0));
+  await aquariumPage.evaluate(() => window.__galleryTestRoomMove(1.13, 6.45));
+  assert.ok((await aquariumPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 7.45,
     "G's figure should block movement");
   await aquariumPage.evaluate(() => window.__galleryTestRoomPose(2.35, 6.5, 0));
   await aquariumPage.evaluate(() => window.__galleryTestRoomMove(2.35, 3.8));

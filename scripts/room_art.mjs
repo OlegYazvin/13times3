@@ -262,8 +262,8 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
       const head = new THREE.Group();
       head.name = `proportioned sculpted ${name} head and painted likeness`;
       for (const child of group.children.slice(headStart)) head.add(child);
-      const horizontal = oleg ? .82 : zephrine ? .9 : .85;
-      const vertical = oleg ? .59 : zephrine ? .78 : .66;
+      const horizontal = oleg ? .86 : zephrine ? .9 : .85;
+      const vertical = oleg ? .72 : zephrine ? .78 : .66;
       head.scale.set(horizontal, vertical, horizontal * .94);
       head.position.y = (stature - .445) * (1 - vertical);
       group.add(head);

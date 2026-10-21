@@ -4,6 +4,7 @@ import reefBackdropURL from "./assets/room11/reef-backdrop.webp";
 import riverBackdropURL from "./assets/room11/river-backdrop.webp";
 import reefVariantURL from "./assets/room11/reef-variant.webp";
 import riverVariantURL from "./assets/room11/river-variant.webp";
+import canopyWatercolorURL from "./assets/room11/canopy-watercolor.webp";
 
 // A dream of Shedd's aquatic dome, not a literal or dated exhibit replica.
 // G and Zephrine share the still moment; only the little fish gently breathe.
@@ -69,8 +70,9 @@ for(let i=0;i<16;i++) {
 }
 // A continuous paneled canopy gives the rotunda an actual luminous roof,
 // rather than leaving ribs hanging over a flat dark ceiling.
+let canopyMaterial;
 {
-  const positions=[],colors=[],indices=[],rings=9,slices=48;
+  const positions=[],colors=[],uv=[],indices=[],rings=9,slices=48;
   const shallow=new THREE.Color(0xa6cdd0),deep=new THREE.Color(0x6a9bab);
   for(let ring=0;ring<=rings;ring++) {
     const r=.08+ring*8.12/rings;
@@ -81,6 +83,7 @@ for(let i=0;i<16;i++) {
       const c=shallow.clone().lerp(deep,.18+.48*r/8.2+wash);
       positions.push(Math.cos(a)*r,y,Math.sin(a)*r);
       colors.push(c.r,c.g,c.b);
+      uv.push(.5+Math.cos(a)*r/16.4,.5+Math.sin(a)*r/16.4);
       if(ring<rings&&slice<slices) {
         const i=ring*(slices+1)+slice;
         indices.push(i,i+slices+1,i+1,i+1,i+slices+1,i+slices+2);
@@ -90,10 +93,12 @@ for(let i=0;i<16;i++) {
   const geometry=new THREE.BufferGeometry();
   geometry.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
   geometry.setAttribute("color",new THREE.Float32BufferAttribute(colors,3));
+  geometry.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
   geometry.setIndex(indices);geometry.computeVertexNormals();
+  canopyMaterial=new THREE.MeshBasicMaterial({color:0xffffff,
+    side:THREE.DoubleSide});
   add(root,"continuous aquamarine glass canopy between shell ribs",geometry,
-    new THREE.MeshBasicMaterial({color:0xffffff,vertexColors:true,
-      side:THREE.DoubleSide}));
+    canopyMaterial);
 }
 // Marble columns and a glass dome evoke the historic Shedd building as a
 // dream rather than a literal or dated exhibit replica.
@@ -132,10 +137,12 @@ add(root,"pearl center of aquatic dome",new THREE.OctahedronGeometry(.37,1),
 // its reflections, thick seals, and sightline-dependent edge glints.
 const glass = new THREE.MeshPhysicalMaterial({color:0xa3d9df,transparent:true,
   opacity:.09,roughness:.08,metalness:0,depthWrite:false,side:THREE.DoubleSide});
-const reefWall = new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide});
-const riverWall = new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide});
-const reefVariantWall = new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide});
-const riverVariantWall = new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide});
+// The vistas are the distant water. Keep them a quieter value than the
+// sculptures in front of the glass so a bay reads as a habitat, not wallpaper.
+const reefWall = new THREE.MeshBasicMaterial({color:0xaccbd2,side:THREE.DoubleSide});
+const riverWall = new THREE.MeshBasicMaterial({color:0xb8d1c7,side:THREE.DoubleSide});
+const reefVariantWall = new THREE.MeshBasicMaterial({color:0xacc7d0,side:THREE.DoubleSide});
+const riverVariantWall = new THREE.MeshBasicMaterial({color:0xb4d1c8,side:THREE.DoubleSide});
 for(const side of [-1,1]) {
   box(root,"continuous solid sculpted tank wall",side*9.12,3.23,1.6,
     .15,6.45,30.95,M.deep,true);
@@ -225,6 +232,30 @@ for(const side of [-1,1]) {
     new THREE.PlaneGeometry(7.2,5.25),glass,side*5.25,3.2,16.82);
   curve(root,"rear habitat frame",[[side*1.72,.62,16.8],
     [side*1.72,5.8,16.8],[side*8.9,5.8,16.8]],.064,M.pearl);
+}
+{
+  // The path behind the freestanding doorway belongs to the same enchanted
+  // aquarium. Continue the inhabited vault there instead of exposing a flat
+  // rectangular sky ceiling once the visitor rounds a post.
+  const positions=[],uv=[],indices=[],across=28,along=14;
+  for(let row=0;row<=along;row++) {
+    const z=10.08+row*7.18/along;
+    for(let col=0;col<=across;col++) {
+      const x=-8.3+col*16.6/across,u=x/8.3;
+      positions.push(x,7.77-1.92*u*u+.035*Math.sin(z*1.8+u*5),z);
+      uv.push(col/across,row/along);
+      if(row<along&&col<across) {
+        const n=row*(across+1)+col;
+        indices.push(n,n+across+1,n+1,n+1,n+across+1,n+across+2);
+      }
+    }
+  }
+  const geometry=new THREE.BufferGeometry();
+  geometry.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
+  geometry.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
+  geometry.setIndex(indices);geometry.computeVertexNormals();
+  add(root,"painted vaulted water ceiling beyond the freestanding portal",
+    geometry,canopyMaterial);
 }
 for(const z of [11.4,14.45,16.6]) {
   curve(root,"vaulted wave rib over the aquarium behind its portal",
@@ -430,6 +461,152 @@ function ray(x,y,z,scale,yaw=0) {
 ray(-2.15,3.85,-12.35,.92,.14);
 ray(4.3,2.9,-12.45,.62,-.26);
 
+// A turtle and the upright seahorses give the glazed bays their own species
+// silhouettes. Their bodies are continuous shaped surfaces; the small eye
+// beads are details, never the structure of the animals.
+function sculptedTurtle(x,y,z,scale,yaw=0) {
+  const animal=new THREE.Group();
+  animal.name="slow sea turtle behind the inhabited glass";
+  animal.position.set(x,y,z);
+  animal.rotation.y=yaw;
+  animal.scale.setScalar(scale);
+  animal.userData.driftPhase=147+x;
+  animal.userData.driftAmplitude=.025;
+  animal.userData.preserveMaterials=true;
+  root.add(animal);
+  const vertices=[],uv=[],indices=[],rings=9,sides=32;
+  for(let ring=0;ring<=rings;ring++) {
+    const t=ring/rings,r=.045+.955*t;
+    for(let side=0;side<sides;side++) {
+      const a=side*Math.PI*2/sides;
+      const scallop=1+.022*Math.cos(a*10);
+      vertices.push(Math.cos(a)*.74*r*scallop,
+        .05+.34*(1-t*t)+.012*Math.cos(a*10)*t,
+        Math.sin(a)*.98*r*scallop);
+      uv.push(side/sides,t);
+      if(ring<rings) {
+        const n=ring*sides+side,b=ring*sides+(side+1)%sides;
+        indices.push(n,n+sides,b,b,n+sides,n+sides+(side+1)%sides);
+      }
+    }
+  }
+  const shell=new THREE.BufferGeometry();
+  shell.setAttribute("position",new THREE.Float32BufferAttribute(vertices,3));
+  shell.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
+  shell.setIndex(indices);shell.computeVertexNormals();
+  add(animal,"domed continuous turtle shell",shell,M.kelp);
+  for(let seam=0;seam<10;seam++) {
+    const a=seam*Math.PI*2/10,points=[];
+    for(let step=0;step<=7;step++) {
+      const r=.18+step*.114;
+      points.push([Math.cos(a)*.74*r,
+        .05+.34*(1-r*r)+.014,
+        Math.sin(a)*.98*r]);
+    }
+    curve(animal,"carved shell scute seam",points,.009,M.gold,15);
+  }
+  for(const r of [.41,.73,.98]) {
+    const points=[];
+    for(let i=0;i<=40;i++) {
+      const a=i*Math.PI*2/40;
+      points.push([Math.cos(a)*.74*r,.05+.34*(1-r*r)+.016,
+        Math.sin(a)*.98*r]);
+    }
+    curve(animal,"irregular concentric shell growth",points,.012,M.pearl,41);
+  }
+  // The tapered beak and long paddle fins are made as closed sculpted forms.
+  {
+    const rings=[[-.83,.16,.11,.03],[-1.02,.2,.16,.05],
+      [-1.29,.23,.18,.1],[-1.5,.15,.13,.1],[-1.68,.065,.065,.075]];
+    const positions=[],uv=[],faces=[],sections=16;
+    for(let row=0;row<rings.length;row++) {
+      const [zz,rx,ry,cy]=rings[row];
+      for(let j=0;j<sections;j++) {
+        const a=j*Math.PI*2/sections;
+        positions.push(Math.cos(a)*rx,cy+Math.sin(a)*ry,zz);
+        uv.push(j/sections,row/(rings.length-1));
+        if(row<rings.length-1) {
+          const n=row*sections+j,b=row*sections+(j+1)%sections;
+          faces.push(n,b,n+sections,b,b+sections,n+sections);
+        }
+      }
+    }
+    const head=new THREE.BufferGeometry();
+    head.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
+    head.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
+    head.setIndex(faces);head.computeVertexNormals();
+    add(animal,"long neck tapering into a turtle beak",head,M.leaf);
+  }
+  for(const side of [-1,1]) {
+    const finShape=new THREE.Shape();
+    finShape.moveTo(side*.35,-.34);
+    finShape.bezierCurveTo(side*.77,-.46,side*1.53,-.86,side*1.64,-1.46);
+    finShape.bezierCurveTo(side*1.82,-1.79,side*1.71,-1.88,side*1.47,-1.71);
+    finShape.bezierCurveTo(side*.9,-1.44,side*.62,-.88,side*.35,-.34);
+    const fin=add(animal,"broad carved swimming paddle",
+      new THREE.ExtrudeGeometry(finShape,{depth:.065,bevelEnabled:true,
+        bevelThickness:.025,bevelSize:.025,bevelSegments:2,curveSegments:8}),
+      M.turquoise,0,.035,0);
+    fin.rotation.x=-Math.PI/2;
+    for(let rib=0;rib<3;rib++)
+      curve(animal,"paddle bone beneath mottled skin",
+        [[side*.43,.03,-.49],[side*(.74+rib*.08),.018,-.78-rib*.12],
+          [side*(1.33+rib*.09),-.015,-1.28-rib*.14]],
+        .011,M.pearl,11);
+    add(animal,"small dark turtle eye in the sculpted head",
+      new THREE.SphereGeometry(.025,10,8),M.ink,side*.17,.22,-1.43);
+  }
+  return animal;
+}
+function sculptedSeahorse(x,y,z,scale,yaw=0) {
+  const animal=new THREE.Group();
+  animal.name="upright seahorse with a coiled prehensile tail";
+  animal.position.set(x,y,z);animal.rotation.y=yaw;
+  animal.scale.setScalar(scale);
+  animal.userData.driftPhase=201+x+z;
+  animal.userData.driftAmplitude=.022;
+  animal.userData.preserveMaterials=true;
+  root.add(animal);
+  loft(animal,"continuous curved seahorse neck and belly",
+    [[.23,.055,.06,-.17,0],[.42,.13,.1,-.11,0],
+      [.7,.18,.14,.07,0],[.97,.15,.13,.14,0],
+      [1.22,.1,.09,.035,0],[1.37,.08,.08,-.075,0]],M.gold,17);
+  loft(animal,"long blunt seahorse muzzle",
+    [[1.17,.1,.08,-.04,0],[1.21,.095,.085,-.18,0],
+      [1.24,.075,.075,-.37,0],[1.26,.065,.065,-.48,0]],M.gold,13);
+  curve(animal,"spiraling tapered tail",[[-.17,.25,0],[-.26,.12,0],
+    [-.15,.015,.02],[.02,.08,.05],[.05,.23,.045],
+    [-.055,.3,.03]],.048,M.gold,26);
+  for(let rib=0;rib<6;rib++) {
+    const yy=.48+rib*.105,xx=.04+Math.sin(rib*.54)*.09;
+    curve(animal,"small ridged plates along seahorse body",
+      [[xx-.1,yy,-.08],[xx,yy+.025,-.125],[xx+.11,yy,-.08]],
+      .009,M.pearl,9);
+  }
+  for(let spine=0;spine<5;spine++)
+    curve(animal,"seahorse crown and back fin",
+      [[-.08-spine*.024,1.23-spine*.12,0],
+        [-.16-spine*.028,1.31-spine*.12,.015],
+        [-.2-spine*.027,1.32-spine*.12,.01]],.012,M.coral,8);
+  const fin=petal(animal,"ribbed seahorse dorsal fin",
+    -.14,.79,0,.38,M.coral,-.12);
+  fin.rotation.z=-.92;
+  for(const side of [-1,1]) add(animal,"inset seahorse eye",
+    new THREE.SphereGeometry(.019,9,7),M.ink,-.19,1.31,side*.079);
+  return animal;
+}
+sculptedTurtle(8.08,3.53,6.75,.77,Math.PI*.48);
+sculptedTurtle(-8.12,3.04,-.55,.66,-Math.PI*.55);
+sculptedTurtle(-.65,3.64,18.1,1.13,.28);
+sculptedTurtle(2.37,2.78,3.83,.49,-.32);
+for(const [x,y,z,s,yaw] of [
+  [8.08,2.37,1.4,.91,Math.PI*.47],
+  [-8.08,2.45,6.4,.96,-Math.PI*.52],
+  [8.1,1.86,-6.4,.7,Math.PI*.55],
+  [-3.55,2.1,-12.25,.88,0],
+  [3.62,2.3,18.47,.8,Math.PI]
+]) sculptedSeahorse(x,y,z,s,yaw);
+
 // Every habitat has an organic floor and species-specific shelter. The
 // branches are curved solids with fine offshoots, not freestanding polygons.
 function coralGarden(x,z,marine) {
@@ -460,6 +637,65 @@ function coralGarden(x,z,marine) {
       .031,n%2?M.coral:M.gold,12);
   }
 }
+function plateCoral(x,z,height,material,phase=0) {
+  // Each plate is a thick, uneven living shelf on a bent branching stem.
+  // The earlier open cones looked like flowerpots from the visitor path.
+  curve(root,"bent trunk of layered living coral",
+    [[x,.15,z],[x-.1,.36,z+.05],[x+.12,height*.65,z-.09],
+      [x-.06,height,z-.05]],.052,material,20);
+  for(let tier=0;tier<3;tier++) {
+    const cx=x+(tier===1?.22:tier===2?-.16:.02);
+    const cz=z+(tier===1?-.13:tier===2?.12:0);
+    const yy=.48+height*(tier+1)/3;
+    const radius=.33+tier*.13;
+    curve(root,"fork supporting a coral shelf",
+      [[x+.02,.36,z],[x+.1,yy-.25,z-.03],[cx,yy-.055,cz]],
+      .025,material,13);
+    const vertices=[],uv=[],indices=[],rings=4,sides=24;
+    for(let surface=0;surface<2;surface++)
+      for(let ring=0;ring<=rings;ring++) {
+        const r=ring/rings;
+        for(let side=0;side<sides;side++) {
+          const a=side*Math.PI*2/sides;
+          const scallop=1+.13*Math.sin(a*7+phase+tier)*r;
+          vertices.push(cx+Math.cos(a)*radius*r*scallop,
+            yy+.05*r*r+.022*Math.sin(a*7+phase+tier)*r-
+              (surface===1?.055:0),
+            cz+Math.sin(a)*radius*.78*r*scallop);
+          uv.push(side/sides,r);
+          if(ring<rings) {
+            const n=(surface*(rings+1)+ring)*sides+side;
+            const b=(surface*(rings+1)+ring)*sides+(side+1)%sides;
+            if(surface===0) indices.push(n,n+sides,b,b,n+sides,b+sides);
+            else indices.push(n,b,n+sides,b,b+sides,n+sides);
+          }
+        }
+      }
+    const geo=new THREE.BufferGeometry();
+    geo.setAttribute("position",new THREE.Float32BufferAttribute(vertices,3));
+    geo.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
+    geo.setIndex(indices);geo.computeVertexNormals();
+    add(root,"thick scalloped plate coral with carved surface",geo,material);
+    const rim=[];
+    for(let i=0;i<=24;i++) {
+      const a=i*Math.PI*2/24;
+      const edge=radius*(1+.13*Math.sin(a*7+phase+tier));
+      rim.push([cx+Math.cos(a)*edge,
+        yy+.05+.022*Math.sin(a*7+phase+tier),
+        cz+Math.sin(a)*edge*.78]);
+    }
+    curve(root,"raised wavy lip of the coral shelf",rim,.018,M.pearl,25);
+    for(let vein=0;vein<5;vein++) {
+      const a=vein*Math.PI*2/5+phase;
+      curve(root,"subtle branching grain across living coral",
+        [[cx,yy+.008,cz],
+          [cx+Math.cos(a)*radius*.44,yy+.03,
+            cz+Math.sin(a)*radius*.34],
+          [cx+Math.cos(a)*radius*.85,yy+.056,
+            cz+Math.sin(a)*radius*.66]],.006,M.pearl,9);
+    }
+  }
+}
 function fanCoral(x,z,span,height,material,sideways=false) {
   const group=new THREE.Group();
   group.name="branching three-dimensional sea fan inside the aquarium";
@@ -487,6 +723,13 @@ function fanCoral(x,z,span,height,material,sideways=false) {
 }
 for(const side of [-1,1]) for(let patch=0;patch<6;patch++)
   coralGarden(side*8.53,-10.6+patch*5.35,side===1);
+for(const side of [-1,1]) for(let bay=0;bay<6;bay++) {
+  const z=-9.85+bay*5.12;
+  plateCoral(side*8.12,z-1.08,1.02+(bay%3)*.17,
+    side===1?M.coral:M.leaf,bay*.48);
+  plateCoral(side*8.32,z+1.12,.66+(bay%2)*.22,
+    side===1?M.gold:M.turquoise,bay*.7);
+}
 fanCoral(-3.15,-12.65,1.2,2.65,M.coral);
 fanCoral(3.7,-12.68,1.12,2.48,M.gold);
 fanCoral(8.12,4.0,1.1,2.22,M.coral,true);
@@ -507,6 +750,9 @@ for(let patch=0;patch<5;patch++)
   coralGarden(-6.75+patch*3.35,-12.8,true);
 for(let patch=0;patch<5;patch++)
   coralGarden(-6.5+patch*3.25,19.43,patch%2===0);
+for(let patch=0;patch<7;patch++)
+  plateCoral(-6.9+patch*2.24,18.0+(patch%2)*.9,
+    .86+(patch%3)*.28,patch%2?M.coral:M.gold,patch*.43);
 fanCoral(-.52,18.75,1.22,3.12,M.coral);
 fanCoral(1.05,19.12,.93,2.72,M.gold);
 for(const side of [-1,1]) {
@@ -612,11 +858,11 @@ for(let i=0;i<15;i++) {
 
 // G has the older woman's brown bob and painted face from her private photo; Jane's
 // bun marks her separately. Zephrine reaches toward the swimming fish.
-const zeph=person("Zephrine pointing at the fish in wonder",.15,6.85,1.08,{
+const zeph=person("Zephrine pointing at the fish in wonder",.15,7.62,1.08,{
   skin:M.skin,hair:M.hair,outfit:M.rose,skirt:M.cream,dress:true,curls:true,
   hands:{"1":[.67,.93,.05],"-1":[-.22,.67,.22]},yaw:.72});
 zeph.userData.solidFootprint=true;
-const g=person("G sharing wonder with Zephrine",1.13,6.48,1.67,{
+const g=person("G sharing wonder with Zephrine",1.13,7.25,1.67,{
   skin:M.skin,hair:M.gHair,outfit:M.cream,pants:M.deep,
   hands:{"-1":[-.48,.89,.14],"1":[.5,1.15,.08]},yaw:.45});
 g.userData.solidFootprint=true;
@@ -692,9 +938,10 @@ for(const side of [-1,1]) curve(root,"open floor loop around return doorway",
 
 window.__authorRoom=async()=>{
   const loader=new THREE.TextureLoader();
-  const [reef,river,reefVariant,riverVariant]=await Promise.all([
+  const [reef,river,reefVariant,riverVariant,canopy]=await Promise.all([
     loader.loadAsync(reefBackdropURL),loader.loadAsync(riverBackdropURL),
-    loader.loadAsync(reefVariantURL),loader.loadAsync(riverVariantURL)]);
+    loader.loadAsync(reefVariantURL),loader.loadAsync(riverVariantURL),
+    loader.loadAsync(canopyWatercolorURL)]);
   for(const [material,texture] of [[reefWall,reef],[riverWall,river],
     [reefVariantWall,reefVariant],[riverVariantWall,riverVariant]]) {
     texture.colorSpace=THREE.SRGBColorSpace;
@@ -702,6 +949,10 @@ window.__authorRoom=async()=>{
     material.map=texture;
     material.needsUpdate=true;
   }
+  canopy.colorSpace=THREE.SRGBColorSpace;
+  canopy.userData.mimeType="image/webp";
+  canopyMaterial.map=canopy;
+  canopyMaterial.needsUpdate=true;
   return exportRoom({key:0xe8f6ef,fill:0x6ab4c7,
     ambient:1.85,keyPower:2.2,batchStatic:true});
 };

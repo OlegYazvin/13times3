@@ -492,8 +492,8 @@ function person(name, x, z, height, outfit, options = {}) {
   head.name = `${name} modeled and painted head`;
   if (oleg) {
     const jawPivot = height - .48;
-    head.position.y = jawPivot * .41;
-    head.scale.set(.82, .59, .77);
+    head.position.y = jawPivot * .28;
+    head.scale.set(.86, .72, .82);
   } else {
     head.position.y = (height - .26) * .2;
     head.scale.setScalar(.8);

@@ -384,8 +384,8 @@ function face(parent, height, hair, { glasses = false, beard = false, bun = fals
       .029 - i * .003, hair);
   }
   if (shellGroup) {
-    shellGroup.scale.set(.82, .59, .77);
-    shellGroup.position.y = (height - .42) * .41;
+    shellGroup.scale.set(.86, .72, .82);
+    shellGroup.position.y = (height - .42) * .28;
   }
 }
 function person(name, x, z, height, outfit, hair, options = {}) {

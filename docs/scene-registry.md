@@ -48,6 +48,10 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 portrait-hair refinement: Oleg's recurring head sculpt now uses a narrower, warmer-brown side and back hair shell aligned to the painted likeness. This updates frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11` without changing their stories or IDs.
 
+2026-10-21 aquarium-depth revision: frame `11` now has a painted watercolor canopy carried through the space behind its freestanding return portal, rather than a plain ceiling there. Sculpted turtles and seahorses join the drifting fish, ray, and jellyfish inside the glass; layered branching and plate corals create stronger foreground depth against the distant painted habitat vistas. G and Zephrine stand closer to the doorway so their shared wonder reads from the hall. The surrounding loop and original frame assignment remain intact.
+
+2026-10-21 Oleg head-proportion revision: the reference-based illustrated face and its matching sculpted hair, beard, and glasses are now less vertically compressed in frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11`. His pose, each memory, and every frame ID remain the same. Further whole-figure finish and likeness review are still needed; the published people remain intentionally stylized.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

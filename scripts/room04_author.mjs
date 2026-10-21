@@ -366,8 +366,8 @@ function adult(name, x, z, outfit, options = {}) {
     const head = new THREE.Group();
     head.name = `${name} proportioned sculpted head`;
     for (const child of group.children.slice(headStart)) head.add(child);
-    head.scale.set(.82, .59, .77);
-    head.position.y = (height - .46) * .41;
+    head.scale.set(.86, .72, .82);
+    head.position.y = (height - .46) * .28;
     group.add(head);
   }
   curve(group, "stitched neckline", [[-.14, height - .43, .13],
