@@ -76,6 +76,7 @@ a { color: inherit; }
   font-size: .93rem;
   line-height: 1.4;
 }
+.site-header nav { display: flex; align-items: center; gap: 1.5rem; }
 
 .site-header a:hover,
 .site-header a:focus-visible { text-decoration: underline; }
@@ -197,14 +198,37 @@ a { color: inherit; }
 .not-found { min-height: 60vh; padding: 7rem 6vw; text-align: center; }
 .not-found h1 { font-family: Ojuju, Archivo, sans-serif; font-size: clamp(2rem, 5vw, 4rem); }
 
+.credits-content {
+  width: min(100% - 3rem, 760px);
+  min-height: 68vh;
+  margin: 0 auto;
+  padding: clamp(4rem, 9vw, 8rem) 0 6rem;
+}
+.credits-eyebrow {
+  margin: 0 0 .75rem;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.credits-content h1, .credits-content h2 { font-family: Ojuju, Archivo, sans-serif; font-weight: 600; }
+.credits-content h1 { margin: 0 0 1rem; font-size: clamp(2.6rem, 7vw, 4.7rem); line-height: 1; }
+.credits-intro { max-width: 46ch; margin: 0 0 3rem; line-height: 1.7; }
+.credit-card { padding: clamp(1.5rem, 5vw, 2.5rem); border: 1px solid #cdd3dd; border-radius: 1.25rem; background: #f7f6f4; }
+.credit-card h2 { margin: 0 0 1.25rem; font-size: clamp(1.6rem, 4vw, 2.25rem); }
+.credit-card p { line-height: 1.6; }
+.credit-card p:last-child { margin-bottom: 0; }
+.credits-return { display: inline-block; margin-top: 2rem; font-weight: 700; text-underline-offset: 3px; }
+
 @media (max-width: 900px) {
   .achievement-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .intro { min-height: 300px; }
 }
 
 @media (max-width: 640px) {
-  .site-header { min-height: 80px; padding: 1.2rem 5vw; }
+  .site-header { min-height: 80px; padding: 1.2rem 5vw; flex-wrap: wrap; }
   .site-title { font-size: 1.45rem; }
+  .site-header nav { margin-left: auto; gap: .45rem 1rem; justify-content: flex-end; flex-wrap: wrap; }
   .site-header nav a { font-size: .8rem; }
   .intro { min-height: 280px; padding: 4rem 6vw; }
   .achievement-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }

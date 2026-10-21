@@ -49,6 +49,7 @@ def main() -> None:
     for route in ("/", "/achievements"):
         page = parse(source_path(route))
         assert page.select_one("a.explore-entry").get("href") == expected_href("/explore/")
+        assert page.select_one('nav[aria-label="Main navigation"] a[href="' + expected_href("/credits/") + '"]') is not None
         cards = page.select("a.grid-item")
         assert len(cards) == 39, f"{route}: wrong card count"
         assert [card.get("href") for card in cards] == [expected_href(item["path"]) for item in entries]
@@ -131,10 +132,15 @@ def main() -> None:
     assert music_button is not None and music_button.get("aria-pressed") == "false"
     music_version = hashlib.sha256((OUTPUT / "assets/explore/resolutions-scott-buckley.mp3").read_bytes()).hexdigest()[:12]
     assert explore.select_one("#experience").get("data-music-url") == expected_href("/assets/explore/resolutions-scott-buckley.mp3") + f"?v={music_version}"
-    credit = explore.select_one(".music-credit")
+    assert explore.select_one(".music-credit") is None, "Attribution belongs on the credits page"
+    credits = parse(source_path("/credits"))
+    assert credits.title.get_text(strip=True) == "Credits — " + DATA["title"]
+    assert credits.select_one("link[rel=canonical]").get("href") == DATA["canonicalOrigin"] + "/credits/"
+    assert credits.select_one('nav[aria-label="Main navigation"] a[aria-current="page"]').get("href") == expected_href("/credits/")
+    credit = credits.select_one(".credit-card")
     assert credit is not None and "Resolutions" in credit.get_text(" ", strip=True)
     assert "Scott Buckley" in credit.get_text(" ", strip=True)
-    assert "compressed for web" in credit.get_text(" ", strip=True)
+    assert "128 kbps" in credit.get_text(" ", strip=True)
     assert {link.get("href") for link in credit.select("a")} == {
         "https://www.scottbuckley.com.au/library/resolutions/",
         "https://creativecommons.org/licenses/by/4.0/",
@@ -157,14 +163,14 @@ def main() -> None:
 
     sitemap = ET.parse(OUTPUT / "sitemap.xml").getroot()
     published_urls = {node.text for node in sitemap.findall(".//{*}loc")}
-    expected_urls = {DATA["canonicalOrigin"] + "/", DATA["canonicalOrigin"] + "/explore/"} | {DATA["canonicalOrigin"] + item["path"] for item in entries}
+    expected_urls = {DATA["canonicalOrigin"] + path for path in ("/", "/explore/", "/credits/")} | {DATA["canonicalOrigin"] + item["path"] for item in entries}
     assert published_urls == expected_urls, "Generated sitemap is incomplete"
     assert (OUTPUT / "404.html").is_file()
     assert (OUTPUT / "robots.txt").is_file()
 
     total_bytes = sum(path.stat().st_size for path in OUTPUT.rglob("*") if path.is_file())
     assert total_bytes < 1_000_000_000, "GitHub Pages published-site limit exceeded"
-    print(f"Verified 39 detail pages, 2 grid routes, 41 gallery frames (room 01 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
+    print(f"Verified 39 detail pages, 2 grid routes, credits, 41 gallery frames (room 01 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
 
 
 if __name__ == "__main__":
