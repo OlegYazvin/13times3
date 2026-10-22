@@ -142,6 +142,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-22 aquarium rear-habitat revision: frame `11` keeps G and Zephrine wondering at fish in the same Shedd memory. The dark, flat rear tank bottom becomes continuous undulating painted sand. Repeated stacked plate shapes and oversized center branches are removed so the modeled fish and painted reef have a clear eye-level composition. A fluted stone dividing pier joins the two contrasting habitats at their formerly exposed painting seam. A trial of compact public-domain coral scans was rejected after the scene view exposed faceted silhouettes and display bases. No new people, event, title, frame ID, or portal position is added.
 
+2026-10-22 shared Oleg and connected-ceiling revision: Oleg's illustrated likeness in frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11` is refined from both private photos with a broader lower face and matching curved head relief. In frame `02`, loose polygon pavement pieces and bright repetitive floor bars become a quieter painted ground where the real desk meets the dream street. In frame `11`, a painted vault shoulder joins the rotunda dome to the area behind the freestanding hallway portal, closing a visible sky gap; loose turquoise floor guide lines are removed. These remain the same published memories and stable frame IDs.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

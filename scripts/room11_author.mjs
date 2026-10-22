@@ -391,6 +391,34 @@ curve(root,"thin gilded wave inside the rear shell arch",
     [4,6.64,16.66],[6.5,6.13,16.69],
     [8.78,5.71,16.72]],.026,M.gold,48);
 {
+  // The round water dome and the long rear vault meet along a curved edge.
+  // Without a joined shoulder, walking toward either side of the portal
+  // exposes a dark sky wedge between the two ceilings.
+  const positions=[],uv=[],indices=[],across=40,along=18;
+  for(let row=0;row<=along;row++) {
+    const t=row/along,s=t*t*(3-2*t);
+    for(let col=0;col<=across;col++) {
+      const x=-8.2+col*16.4/across,u=x/8.3;
+      const innerZ=Math.sqrt(Math.max(0,8.2*8.2-x*x));
+      const z=THREE.MathUtils.lerp(innerZ,10.08,t);
+      const domeY=7.75-2.65*Math.pow(8.2/8.2,2);
+      const vaultY=7.77-1.92*u*u+.035*Math.sin(10.08*1.8+u*5);
+      positions.push(x,THREE.MathUtils.lerp(domeY,vaultY,s),z);
+      uv.push(col/across,.5+(z-8.2)/18);
+      if(row<along&&col<across) {
+        const n=row*(across+1)+col;
+        indices.push(n,n+across+1,n+1,n+1,n+across+1,n+across+2);
+      }
+    }
+  }
+  const geometry=new THREE.BufferGeometry();
+  geometry.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
+  geometry.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
+  geometry.setIndex(indices);geometry.computeVertexNormals();
+  add(root,"continuous curved shoulder joining dome to rear aquarium vault",
+    geometry,canopyMaterial);
+}
+{
   // The path behind the freestanding doorway belongs to the same enchanted
   // aquarium. Continue the inhabited vault there instead of exposing a flat
   // rectangular sky ceiling once the visitor rounds a post.
@@ -400,7 +428,7 @@ curve(root,"thin gilded wave inside the rear shell arch",
     for(let col=0;col<=across;col++) {
       const x=-8.3+col*16.6/across,u=x/8.3;
       positions.push(x,7.77-1.92*u*u+.035*Math.sin(z*1.8+u*5),z);
-      uv.push(col/across,row/along);
+      uv.push(col/across,.5+(z-8.2)/18);
       if(row<along&&col<across) {
         const n=row*(across+1)+col;
         indices.push(n,n+across+1,n+1,n+1,n+across+1,n+across+2);
@@ -1244,9 +1272,6 @@ curve(root,"freestanding arched return doorway",
   [[-1.95,4.11,doorZ],[-1.15,4.36,doorZ],
     [0,4.47,doorZ],[1.15,4.36,doorZ],[1.95,4.11,doorZ]],
   .1,M.gold,30);
-for(const side of [-1,1]) curve(root,"open floor loop around return doorway",
-  [[side*1.95,.065,8.75],[side*2.72,.065,10.15],
-    [side*2.74,.065,12.1]],.027,M.turquoise,19);
 // An inhabited tide globe rewards the path behind the freestanding arch.
 // Its footprint stays outside the return route around the right post.
 {

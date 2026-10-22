@@ -202,21 +202,43 @@ for (let i = 0; i < floor.attributes.position.count; i++) {
 }
 floor.setAttribute("color", new THREE.Float32BufferAttribute(floorColors, 3));
 floor.computeVertexNormals();
-add(root, "floor where home turns into an outdoor street", floor,
-  material(0xffffff, { vertexColors: true }));
-for (let z = -7.75; z < 7.8; z += .37) {
-  const line = curve(root, "dark curved wood grain flowing toward the street",
-    [[-6.15, .014, z], [-3.2, .022, z + .07], [-.55, .026, z + .12]], .009,
-    z % 2 > 0 ? M.brass : M.orange, 12);
-  line.userData.decorative = true;
+// Fine scuffs and pigment lie within the same walkable ground, rather than
+// sitting on it as scattered polyhedra and repeated raised gold stripes.
+const floorCanvas=document.createElement("canvas");
+floorCanvas.width=floorCanvas.height=512;
+const floorCtx=floorCanvas.getContext("2d");
+floorCtx.fillStyle="#f7f3e9";floorCtx.fillRect(0,0,512,512);
+let floorSeed=0x0e1e6202;
+const floorRandom=()=>((floorSeed=(1664525*floorSeed+1013904223)>>>0)/4294967296);
+for(let i=0;i<4600;i++) {
+  const x=floorRandom()*512,y=floorRandom()*512;
+  const s=.3+floorRandom()*1.25;
+  floorCtx.fillStyle=i%3===0?"rgba(72,59,55,.11)":
+    "rgba(157,126,103,.12)";
+  floorCtx.beginPath();floorCtx.ellipse(x,y,s,s*.38,
+    floorRandom()*Math.PI,0,Math.PI*2);floorCtx.fill();
 }
-for (let i = 0; i < 70; i++) {
-  const x = .8 + random() * 5.1, z = -7.6 + random() * 15;
-  if (Math.abs(x) < 1.5 && z > 4.9) continue;
-  const stone = add(root, "small painted pavement stone", new THREE.DodecahedronGeometry(.055, 0),
-    i % 3 ? M.paper : M.brass, x, .029, z);
-  stone.scale.set(1.7, .2, 1.1);
+for(let i=0;i<78;i++) {
+  const x=floorRandom()*512,y=floorRandom()*512;
+  const length=12+floorRandom()*76;
+  floorCtx.strokeStyle=i%4===0?"rgba(79,64,61,.16)":
+    "rgba(169,146,119,.22)";
+  floorCtx.lineWidth=.5+floorRandom()*1.2;
+  floorCtx.beginPath();floorCtx.moveTo(x,y);
+  floorCtx.bezierCurveTo(x+length*.25,y+2,
+    x+length*.68,y-3,x+length,y+floorRandom()*5);
+  floorCtx.stroke();
 }
+const floorMap=new THREE.CanvasTexture(floorCanvas);
+floorMap.colorSpace=THREE.SRGBColorSpace;
+floorMap.userData.mimeType="image/png";
+const floorMaterial=material(0xffffff,{vertexColors:true,map:floorMap});
+add(root,"continuous painted floor where home becomes street",floor,
+  floorMaterial);
+for(let z=-7.35;z<7.8;z+=.73)curve(root,
+  "quiet wood plank joint dissolving into pavement",
+  [[-6.15,.014,z],[-3.2,.022,z+.04],[-1.05,.025,z+.1]],
+  .004,M.desk,12);
 
 // The desk and street belong to one outdoor world with no visible roof seam.
 addOpenSky(root, C.sky, C.street);

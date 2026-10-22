@@ -20,7 +20,7 @@ const backdrop = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="102
   <path d="M0 0H512V512H0Z" fill="url(#front)"/>
   ${strokes.join("")}
 </svg>`);
-const portrait = await sharp(fileURLToPath(new URL("./assets/room02/oleg-face-v7-reference.webp", import.meta.url)))
+const portrait = await sharp(fileURLToPath(new URL("./assets/room02/oleg-face-v8-reference.webp", import.meta.url)))
   .resize(576, 576)
   .extract({ left: 32, top: 32, width: 512, height: 512 })
   .png().toBuffer();

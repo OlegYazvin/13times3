@@ -15,7 +15,7 @@ from PIL import Image
 
 
 ROOT = Path(__file__).resolve().parent.parent
-PORTRAIT = ROOT / "scripts/assets/room02/oleg-face-v7-reference.webp"
+PORTRAIT = ROOT / "scripts/assets/room02/oleg-face-v8-reference.webp"
 MODEL = ROOT / ".cache/face_landmarker.task"
 OUTPUT = ROOT / "scripts/assets/room02/oleg-face-depth.json"
 
