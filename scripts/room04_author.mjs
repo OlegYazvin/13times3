@@ -176,6 +176,47 @@ for (const side of [-1, 1]) for (let unit = 0; unit < 4; unit++) {
           [front - side * .26, level - .76, dz + shift - .02]],
         .018, M.leaf, 9);
     }
+    if (dz < 0) {
+      // One stack of the paired windows becomes a true projecting Chicago
+      // bay. The flat glazing behind it is a dark inner reveal, not the
+      // visible facade. Give the bay three faces and a continuous stone sill
+      // so its silhouette reads from the middle of the street.
+      const projection = front - side * .27;
+      box(group, "projecting three-sided bay center glass",
+        projection, level, dz, .043, .79, .48, M.window);
+      for (const wing of [-1, 1]) {
+        const pane = box(group, "angled glazed wing of Chicago bay",
+          front - side * .15, level, dz + wing * .335,
+          .038, .79, .26, M.window);
+        pane.rotation.y = side * wing * .57;
+        beam(group, "carved vertical bay corner",
+          [projection - side * .027, level - .43, dz + wing * .25],
+          [projection - side * .027, level + .43, dz + wing * .25],
+          .034, .034, M.cream, 8);
+      }
+      box(group, "continuous limestone bay sill",
+        front - side * .18, level - .49, dz,
+        .39, .12, .99, M.cream);
+      box(group, "projecting bay canopy with a shaped lip",
+        front - side * .18, level + .48, dz,
+        .4, .13, 1.02, M.cream);
+      curve(group, "fine metal mullion across bay glazing", [
+        [projection - side * .03, level, dz - .24],
+        [projection - side * .033, level, dz],
+        [projection - side * .03, level, dz + .24]], .014, M.brass, 12);
+    }
+  }
+  box(group, "stone bay spandrel between stories",
+    front - side * .18, 2.05, -1.35, .36, .44, .84, M.mortar);
+  for (const dz of [-.75, .85]) {
+    const lamp = box(group, "wall-mounted porch lantern with metal cap",
+      front - side * .14, 1.85, dz, .17, .29, .14, M.dark);
+    lamp.rotation.x = .06;
+    box(group, "warm porch lantern glass", front - side * .185,
+      1.85, dz, .06, .17, .1, M.cream);
+    beam(group, "lantern bracket fixed to brick",
+      [front, 1.96, dz], [front - side * .21, 1.96, dz],
+      .018, .018, M.dark, 7);
   }
   for (let row = 0; row < 7; row++) for (let brick = 0; brick < 5; brick++) {
     const offset = row % 2 ? .22 : 0;
@@ -442,23 +483,32 @@ zephFace.position.z = -.21; zeph.add(zephFace);
 addZephrinePortrait(zephFace, 1.44,
   [[-.48, .055, .06], [-.39, .15, .12], [-.2, .17, .145],
     [0, .14, .12], [.04, .02, .02]], M.janeSkin);
-loft(zeph, "soft crown of brown curls", [[1.42, .13, .11, 0, -.23],
-  [1.51, .18, .15, 0, -.24], [1.6, .13, .11, 0, -.24],
-  [1.64, .02, .02, 0, -.24]], M.zephHair, 13);
-for (const side of [-1, 1]) for (let i = 0; i < 4; i++) curve(zeph,
-  "curled lock beside Zephrine's cheek", [[side * (.12 + i * .017), 1.53, -.26],
-    [side * (.18 + i * .02), 1.34, -.21],
-    [side * (.16 + i * .02), 1.15, -.17]], .018 - i * .002, M.zephHair, 13);
+loft(zeph, "close fitted back crown under Zephrine's painted curls", [
+  [1.4, .105, .085, 0, -.245], [1.48, .155, .13, 0, -.255],
+  [1.54, .142, .115, 0, -.26], [1.58, .07, .065, 0, -.26],
+  [1.59, .008, .008, 0, -.26]], M.zephHair, 20);
+for (const side of [-1, 1]) for (let i = 0; i < 3; i++) curve(zeph,
+  "fine curled hair behind Zephrine's face", [
+    [side * (.115 + i * .012), 1.47, -.29],
+    [side * (.15 + i * .015), 1.37, -.28],
+    [side * (.13 + i * .014), 1.25, -.255]],
+  .008 - i * .001, M.zephHair, 11);
 
-// Small brass wheel echoes and a few paper leaves lead the gaze along the
-// walk without implying another event, date, or companion.
-for (let i = 0; i < 8; i++) {
-  const z = -7.0 + i * 1.12;
-  for (const side of [-1, 1]) {
-    const ring = add(root, "golden remembered wheel trace",
-      new THREE.TorusGeometry(.13, .012, 6, 16), M.brass,
-      side * .8, .035, z);
-    ring.rotation.x = Math.PI / 2;
+// A few actual cast-iron utility covers ground the long block. The former
+// repeated gold wheel glyphs looked like loose rings scattered on the road.
+for(const [x,z] of [[-.65,-2.2],[.75,-6.25]]) {
+  const plate=add(root,"recessed cast-iron street utility cover",
+    new THREE.CircleGeometry(.28,28),M.dark,x,.025,z);
+  plate.rotation.x=-Math.PI/2;
+  const rim=add(root,"solid circular edge of cast-iron cover",
+    new THREE.TorusGeometry(.28,.016,7,30),M.mortar,x,.029,z);
+  rim.rotation.x=Math.PI/2;
+  for(let notch=0;notch<6;notch++) {
+    const a=notch*Math.PI/3;
+    beam(root,"radial raised casting on street cover",
+      [x+Math.cos(a)*.08,.03,z+Math.sin(a)*.08],
+      [x+Math.cos(a)*.22,.03,z+Math.sin(a)*.22],
+      .006,.006,M.mortar,5);
   }
 }
 for (let i = 0; i < 35; i++) {
@@ -478,6 +528,7 @@ async function authorRoom() {
     pose: "push", height: 1.73,
     hands: { "1": [.4, 1.48, .47], "-1": [-.38, 1.03, .27] },
     shirtColor: M.cream.color.getHex(), pantsColor: M.dark.color.getHex(),
+    shirtEmbroidery: false,
   }));
   await finishOlegPortraits(root);
   root.updateMatrixWorld(true);

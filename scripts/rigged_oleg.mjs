@@ -45,7 +45,8 @@ function turnBoneToward(model, name, childName, target) {
 }
 
 export function makeRiggedOleg(template, { pose = "desk", height = 1.73,
-  hands = null, shirtColor = 0xe7d9c4, pantsColor = 0x263448 } = {}) {
+  hands = null, shirtColor = 0xe7d9c4, pantsColor = 0x263448,
+  shirtEmbroidery = true } = {}) {
   const figure = clone(template);
   figure.name = `Oleg's clothed three-dimensional figure, ${pose} pose`;
   const unrelatedAccessory = figure.getObjectByName("Phone");
@@ -136,7 +137,8 @@ export function makeRiggedOleg(template, { pose = "desk", height = 1.73,
     [-.045, .18, .151], [.07, .145, .128], [.15, .027, .03],
   ], new THREE.MeshStandardMaterial({ color: 0xdfae94, roughness: .94 }),
   { hairShell: false });
-  if (new THREE.Color(shirtColor).getHSL({ h: 0, s: 0, l: 0 }).l > .48) {
+  if (shirtEmbroidery &&
+    new THREE.Color(shirtColor).getHSL({ h: 0, s: 0, l: 0 }).l > .48) {
     // A small wordless version of the sun-and-cloud drawing on Oleg's light
     // shirt in his reference photo makes the recurring garment his own.
     const ink = new THREE.MeshStandardMaterial({ color: 0x343139,
