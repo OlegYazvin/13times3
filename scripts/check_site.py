@@ -290,6 +290,11 @@ def main() -> None:
     berry_json = json.loads(berry_glb[20:20 + berry_json_length])
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in berry_json["nodes"]) >= 20, "Room 07 needs solid berry bushes and people"
     assert any("G helping Zephrine" in node.get("name", "") for node in berry_json["nodes"])
+    for detail in ("G's posed, clothed three-dimensional figure",
+                   "G's sculpted head with painted likeness and short bob",
+                   "G's continuous shoulder-length bob",
+                   "G's finely stitched blouse neckline"):
+        assert any(detail in node.get("name", "") for node in berry_json["nodes"]), f"Room 07 missing {detail}"
     assert any("Zephrine picking her own" in node.get("name", "") for node in berry_json["nodes"])
     assert any("fruiting blueberry bough beside Zephrine" in node.get("name", "") for node in berry_json["nodes"])
     route_room = frames[7]["room"]
@@ -361,12 +366,20 @@ def main() -> None:
     aquarium_json_length = int.from_bytes(aquarium_glb[12:16], "little")
     aquarium_json = json.loads(aquarium_glb[20:20 + aquarium_json_length])
     aquarium_names = " ".join(node.get("name", "") for node in aquarium_json["nodes"])
+    for detail in ("G's posed, clothed three-dimensional figure",
+                   "G's sculpted head with painted likeness and short bob",
+                   "G's continuous shoulder-length bob",
+                   "G's finely stitched blouse neckline"):
+        assert detail in aquarium_names, f"Room 11 missing {detail}"
     for detail in ("G sharing wonder", "Zephrine pointing", "freestanding return-door",
                    "drifting sculpted aquarium fish", "painted saltwater reef habitat",
                    "painted freshwater river habitat", "continuous thick aquarium viewing glass",
                    "curved walk-under glass beneath a living water lens",
-                   "continuous blue glass edge enclosing overhead fish habitat"):
+                   "continuous blue glass edge enclosing overhead fish habitat",
+                   "layered, broken-edged sculpted reef shelf in round habitat",
+                   "broad curved seagrass ribbon rooted in the reef shelf"):
         assert detail in aquarium_names, f"Room 11 missing {detail}"
+    assert aquarium_names.count("painted sculpted barramundi behind aquarium glass") >= 7, "Room 11 needs detailed fish in the close tank and the surrounding habitats"
     assert {"streamlined", "deep reef", "slender"}.issubset({
         node.get("extras", {}).get("bodyType") for node in aquarium_json["nodes"]
     }), "Room 11 fish must retain three distinct sculpted body shapes"

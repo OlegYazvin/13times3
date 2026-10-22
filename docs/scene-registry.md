@@ -20,6 +20,8 @@ The gallery has 41 stable frame IDs. The 39 original achievement pages are a sep
 
 Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unassigned blank portals.
 
+2026-10-22 figure and aquarium revision: the existing blueberry (`07`) and aquarium (`11`) memories now use one posed, clothed 3D figure for G with her reference-guided painted face, short rounded bob, and sewn blouse details. G reaches toward Zephrine as they look at the fish, and two detailed painted fish now inhabit the close curved tank. Oleg's existing eight appearances (`02`, `04`, `05`, `07`, `08`, `09`, `10`, `11`) gain subtle nose, cheek, and brow relief sampled from his public painted portrait. This is Oleg's mother in both rooms, not Anna. The scenes, frame IDs, people, and room assignments are unchanged.
+
 2026-10-22 shared-likeness and aquarium detail revision: Oleg's eight existing appearances (`02`, `04`, `05`, `07`, `08`, `09`, `10`, `11`) receive a newly painted, reference-guided face, a closer-fitting hair crown, and simpler 3D spectacles that no longer duplicate the painted frames. Frame `11` gains five detailed, repainted CC0 fish within its rear and overhead habitats. These revise the existing memories only; all frame IDs, room titles, and portal positions stay assigned as before. Close art review of the full figures and other rooms remains open.
 
 2026-10-22 outdoor atmosphere revision: frames `02`, `03`, `04`, `07`, `08`, `09`, and `10` retain their independent 72 m sky domes and distant terrain, with a somewhat stronger localized watercolor cloud wash in their upper skies. No room is reduced to fit the hallway or a neighboring portal world; the story, frame IDs, and collision footprints remain unchanged.

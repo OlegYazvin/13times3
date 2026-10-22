@@ -19,6 +19,10 @@ Oleg wants inspiration from photographs of the real Shedd Aquarium without a lit
 
 On 2026-10-21, Oleg chose **G and Zephrine wondering at the fish together** as the central moment. Give G a clear, affectionate role beside Zephrine. Keep Jane and Oleg present only as the composition supports the family memory; do not invent a named exhibit they visited.
 
+The October 22 figure pass replaces G's generic sculpt with a posed, clothed 3D body, curved painted likeness, continuous short bob, and subtle blouse stitching. It is shared with frame `07`; compare her front and three-quarter views beside Zephrine in the actual aquarium lighting. G's reaching gesture meets Zephrine's uplifted hand near the curved tank, which now contains two more painted sculpted fish. The child and their hand gestures still need close art review.
+
+The curved tank's original smooth dark mound and nine stiff plant stalks blocked its inhabitants from the visitor's view. A low broken-edged reef shelf, a small set of curved seagrass ribbons, layered plate coral, and branching sea fans now leave more open water in front of the fish. Check this from the viewing path as well as the preview: a dense sea plant that looks fine from above can become a flat wall of polygons through the glass.
+
 The room uses [Shedd's history of the building](https://www.sheddaquarium.org/about-shedd/vision/history) and [Wonder of Water in its historic rotunda](https://www.sheddaquarium.org/exhibits/wonder-of-water) for visual vocabulary: pale marble, a water-themed glass dome, and contrasting tall freshwater and saltwater habitats. This is a symbolic aquarium, not a claim that the family saw a particular exhibit. The visit date was not supplied.
 
 ## Portal topology and movement requirement

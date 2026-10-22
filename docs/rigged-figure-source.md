@@ -32,7 +32,7 @@ The fit of the face and hair still needs a close human art review from the
 doorway and at three-quarter angles. Matching a recognizable face to a shared
 storybook body does not automatically make every garment or pose finished.
 
-Oleg's active face illustration is `scripts/assets/room02/oleg-face-v3.webp`.
+Oleg's active face illustration is `scripts/assets/room02/oleg-face-v5-reference.webp`.
 It was generated with the built-in imagegen tool by editing the prior gouache
 texture against his private reference portrait. The prompt kept a transparent,
 head-only painted composition while asking for the reference's rectangular
@@ -43,6 +43,19 @@ curved sculpt without enlarging the entire head; the underpainting exposes
 more cheek and gives the hair subtle warmer variation. Every existing Oleg
 appearance shares this portrait. This remains stylized and needs human
 likeness review from three-quarter angles.
+
+The small `scripts/assets/room02/oleg-face-depth.json` table is generated
+offline from this public painted illustration with [Google's MediaPipe Face
+Landmarker](https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker).
+It guides only the sculpt's restrained cheek, brow, nose, mouth, and chin
+relief; it contains no pixels or landmarks from a private photograph. The
+runtime site needs no MediaPipe dependency. To regenerate it, download the
+[official task model](https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task)
+to ignored `.cache/face_landmarker.task`, install `mediapipe`, `pillow`, and
+`numpy` in a temporary Python environment, and run
+`python scripts/generate_oleg_face_depth.py`. The first full-depth trial made
+his nose too prominent in frame `02`; the committed sculpt uses a softer
+blend, checked again in the actual room.
 
 ## Jane's standing figure
 
@@ -61,3 +74,15 @@ versions of her in frame `02`. The original 20 MB file stays in ignored
 The intimate seated nursing figure in frame `06` remains an authored sculpture
 for that moment. The source model's original sleeveless top was unsuitable
 for Jane's other scenes without the modeled and painted sleeve adaptation.
+
+## G's figure
+
+G in frames `07` and `11` uses a second adaptation of the same CC0 Maya rig.
+`makeRiggedG` preserves her independently posed hands, gives her a slightly
+different adult silhouette, maps her private-reference-based gouache portrait
+onto a curved head, and adds a continuous short bob, sewn blouse neckline,
+placket, and buttons. The face texture is public painted art; the reference
+photos remain in ignored `.secrets/`. G is Oleg's mother, not Anna Shersher.
+The aquarium and blueberry field both need a close in-room likeness review;
+this shared figure improves anatomy but does not finish the child figures or
+every gesture around her.

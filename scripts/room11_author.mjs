@@ -944,25 +944,88 @@ for(const side of [-1,1]) {
         [x+Math.cos(a)*1.13,4.56,z+Math.sin(a)*1.04]],
       .012,M.gold,18);
   }
-  loft(root,"irregular reef rock inside round habitat",
-    [[.42,.76,.64,x,z],[.72,.91,.79,x-.12,z],
-      [1.1,.58,.51,x+.13,z-.12],[1.38,.15,.15,x+.24,z-.14]],
-    M.deep,15);
-  coralGarden(x,z,true);
-  for(let plant=0;plant<9;plant++) {
-    const a=plant*Math.PI*2/9;
-    const sx=x+Math.cos(a)*.7,sz=z+Math.sin(a)*.62;
-    const h=1.5+(plant%3)*.47;
-    curve(root,"tapered kelp spiraling inside glass",
-      [[sx,.55,sz],[sx+.12*Math.sin(a),h*.55,sz+.14],
-        [sx-.17*Math.cos(a),h,sz-.1]],.025,
-      plant%2?M.kelp:M.leaf,19);
-    for(let leaf=0;leaf<3;leaf++) {
-      const p=petal(root,"ribbed kelp blade inside central tank",
-        sx+.09*Math.sin(a),.9+leaf*.42,sz+.06,
-        .24+leaf*.025,plant%2?M.kelp:M.turquoise,a);
-      p.rotation.x=.45;
+  // The former smooth mound read as an egg and hid the fish. Offset rocky
+  // ledges rise only to a low shelf, with a broken rim and varied top height.
+  {
+    const positions=[],colors=[],indices=[],sides=40;
+    const lower=new THREE.Color(0x39716e),upper=new THREE.Color(0x8fb5a6);
+    const layers=[
+      [.43,.72,.66,0,0], [.54,.87,.73,-.06,.015],
+      [.78,.79,.65,.035,-.04], [1.02,.57,.45,.11,-.08],
+      [1.17,.43,.31,.12,-.09], [1.22,.10,.07,.14,-.1],
+    ];
+    for(let row=0;row<layers.length;row++) {
+      const [h,rx,rz,cx,cz]=layers[row];
+      for(let side=0;side<sides;side++) {
+        const a=side*Math.PI*2/sides;
+        const edge=1+.085*Math.sin(a*5+.4)+.048*Math.sin(a*9+row*.3);
+        positions.push(x+cx+Math.cos(a)*rx*edge,
+          h+.035*Math.sin(a*7+row*.7),
+          z+cz+Math.sin(a)*rz*edge);
+        const color=lower.clone().lerp(upper,row/(layers.length-1)*.72+
+          .09*Math.sin(a*4+row));
+        colors.push(color.r,color.g,color.b);
+        if(row<layers.length-1) {
+          const n=row*sides+side,b=row*sides+(side+1)%sides;
+          indices.push(n,b,n+sides,b,b+sides,n+sides);
+        }
+      }
     }
+    const geometry=new THREE.BufferGeometry();
+    geometry.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
+    geometry.setAttribute("color",new THREE.Float32BufferAttribute(colors,3));
+    geometry.setIndex(indices);geometry.computeVertexNormals();
+    add(root,"layered, broken-edged sculpted reef shelf in round habitat",
+      geometry,new THREE.MeshStandardMaterial({color:0xffffff,
+        vertexColors:true,roughness:.98,side:THREE.DoubleSide}));
+    for(let ledge=0;ledge<3;ledge++) {
+      const a=ledge*2.15+.5;
+      curve(root,"pale mineral vein following a reef ledge",[
+        [x+Math.cos(a)*.72,.57,z+Math.sin(a)*.63],
+        [x+Math.cos(a+.18)*.59,.82,z+Math.sin(a+.18)*.51],
+        [x+Math.cos(a+.38)*.38,1.05,z+Math.sin(a+.38)*.29]],
+      .012,M.pearl,17);
+    }
+  }
+  coralGarden(x,z,true);
+  fanCoral(x-.34,z-.22,.46,1.16,M.coral,true);
+  fanCoral(x+.38,z-.28,.42,1.03,M.gold,false);
+  plateCoral(x-.37,z+.04,.42,M.pearl,.36);
+  plateCoral(x+.35,z-.02,.37,M.turquoise,-.26);
+  for(let plant=0;plant<7;plant++) {
+    // Cluster on the far half so leaves frame the close fish without hiding
+    // them from Zephrine's side of the glazing.
+    const a=Math.PI+plant*Math.PI/6,reach=.42+(plant%3)*.06;
+    const sx=x+Math.cos(a)*reach,sz=z+Math.sin(a)*reach*.86;
+    const height=1.1+(plant%3)*.32;
+    const positions=[],colors=[],indices=[],rows=12,across=5;
+    const foot=new THREE.Color(0x3b746a),tip=new THREE.Color(0x9ebaaa);
+    for(let row=0;row<=rows;row++) {
+      const t=row/rows;
+      const width=(.035+.07*Math.sin(t*Math.PI))*(1-t*.7);
+      const sway=.14*Math.sin(t*Math.PI*1.3+plant*.7)*t;
+      const cx=sx+Math.cos(a)*(.12*t+sway);
+      const cz=sz+Math.sin(a)*(.11*t+sway)+.08*Math.sin(t*4+plant)*t;
+      for(let column=0;column<=across;column++) {
+        const u=column/across*2-1;
+        positions.push(cx+Math.cos(a+Math.PI/2)*width*u,
+          .52+height*t+.018*Math.sin(u*Math.PI),
+          cz+Math.sin(a+Math.PI/2)*width*u+.035*Math.sin(t*8+plant)*u);
+        const shade=foot.clone().lerp(tip,.16+.68*t+.09*u);
+        colors.push(shade.r,shade.g,shade.b);
+        if(row<rows&&column<across) {
+          const n=row*(across+1)+column;
+          indices.push(n,n+1,n+across+1,n+1,n+across+2,n+across+1);
+        }
+      }
+    }
+    const blade=new THREE.BufferGeometry();
+    blade.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
+    blade.setAttribute("color",new THREE.Float32BufferAttribute(colors,3));
+    blade.setIndex(indices);blade.computeVertexNormals();
+    add(root,"broad curved seagrass ribbon rooted in the reef shelf",
+      blade,new THREE.MeshStandardMaterial({color:0xffffff,
+        vertexColors:true,roughness:.94,side:THREE.DoubleSide}));
   }
   for(let i=0;i<7;i++) {
     const a=i*Math.PI*2/7;
@@ -1013,7 +1076,7 @@ const zeph=person("Zephrine pointing at the fish in wonder",.15,7.62,1.08,{
 zeph.userData.solidFootprint=true;
 const g=person("G sharing wonder with Zephrine",1.13,7.25,1.67,{
   skin:M.skin,hair:M.gHair,outfit:M.cream,pants:M.deep,
-  hands:{"-1":[-.48,.89,.14],"1":[.5,1.15,.08]},yaw:.45});
+  hands:{"-1":[-.72,1.13,.22],"1":[.35,1.05,-.23]},yaw:.45});
 g.userData.solidFootprint=true;
 person("Jane near her family",-3.8,5.65,1.68,{
   skin:M.skin,hair:M.hair,outfit:M.fabric,pants:M.ink,bun:true,yaw:.24});
@@ -1101,6 +1164,10 @@ window.__authorRoom=async()=>{
     [-2.25,5.33,3.25,1.58,.26,.86,308],
     [1.9,5.41,4.62,1.52,-.4,-.94,309],
     [.15,5.38,2.28,1.45,.3,1.08,310],
+    // Two close, richly modeled fish give the round habitat readable life
+    // where G and Zephrine actually stand, not only in the distant glass.
+    [2.12,2.46,4.22,1.04,Math.PI/2,0,311],
+    [2.78,3.43,3.48,.92,-Math.PI/2,.11,312],
   ]) {
     const swimmer=new THREE.Group();
     swimmer.name="painted sculpted barramundi behind aquarium glass";

@@ -10,7 +10,7 @@ import { addContactShadow } from "./stage_shadows.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
 import { paintedFabric } from "./painted_fabric.mjs";
 import { loadRiggedOlegBase, makeRiggedOleg } from "./rigged_oleg.mjs";
-import { loadRiggedJaneBase, makeRiggedJane } from "./rigged_jane.mjs";
+import { loadRiggedJaneBase, makeRiggedG, makeRiggedJane } from "./rigged_jane.mjs";
 
 // Shared sculpting tools for independent storybook worlds. Each room supplies
 // its own palette, architecture, composition and narrative details.
@@ -34,6 +34,7 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
   const generic = new Map();
   const olegPeople = [];
   const janePeople = [];
+  const gPeople = [];
   const asMaterial = (value) => {
     if (value?.isMaterial) return value;
     if (typeof value === "string" && M[value]) return M[value];
@@ -193,6 +194,7 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
     const painted = oleg || jane || g || zephrine;
     if (oleg) olegPeople.push({ group, stature, options });
     if (jane && !options.dress) janePeople.push({ group, stature, options });
+    if (g) gPeople.push({ group, stature, options });
     for (const side of [-1, 1]) {
       loft(group, "tailored leg with ankle, knee and thigh contour",
         [[.07, .095, .105, side * .12], [.19, .11, .11, side * .12],
@@ -345,12 +347,21 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
   }
   async function exportRoom({ key = 0xffd9ae, fill = 0xa8d4dc,
     ambient = 1.6, keyPower = 2.1, batchStatic = false } = {}) {
-    if (janePeople.length) {
+    if (janePeople.length || gPeople.length) {
       const template = await loadRiggedJaneBase();
       for (const { group, stature, options } of janePeople) {
         group.clear();
         addContactShadow(group, stature);
         group.add(makeRiggedJane(template, {
+          height: stature, hands: options.hands,
+          shirtColor: asMaterial(options.outfit || "fabric").color.getHex(),
+          pantsColor: asMaterial(options.pants || "ink").color.getHex(),
+        }));
+      }
+      for (const { group, stature, options } of gPeople) {
+        group.clear();
+        addContactShadow(group, stature);
+        group.add(makeRiggedG(template, {
           height: stature, hands: options.hands,
           shirtColor: asMaterial(options.outfit || "fabric").color.getHex(),
           pantsColor: asMaterial(options.pants || "ink").color.getHex(),

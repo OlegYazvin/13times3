@@ -3,6 +3,7 @@ import olegFaceURL from "./assets/room02/oleg-face-v5-reference.webp";
 import janeFaceURL from "./assets/room02/jane-face.webp";
 import gFaceURL from "./assets/room02/g-face.webp";
 import zephrineFaceURL from "./assets/room02/zephrine-face.webp";
+import olegFaceDepth from "./assets/room02/oleg-face-depth.json" with { type: "json" };
 
 // The illustrated likeness is wrapped around a modeled cheek and jaw. The
 // reference photographs stay private; only this small painted texture ships.
@@ -142,9 +143,11 @@ function addPortrait(parent, faceY, profile, fallbackMaterial, person) {
     const x = Math.sin(angle) * rx;
     // Real cheek, brow and nose relief prevents the likeness reading as a
     // flat photograph stuck to the front of an otherwise sculpted head.
+    // Oleg's relief is sampled from facial landmarks on the public painted
+    // portrait. This shapes the nose, cheeks, brows, mouth and chin without
+    // using or publishing the private photograph or a flat face cutout.
     const bump = person === "Oleg" ?
-      .036 * Math.exp(-Math.pow((u - .5) / .11, 2) - Math.pow((v - .48) / .2, 2)) +
-      .012 * Math.exp(-Math.pow((Math.abs(u - .5) - .23) / .13, 2) - Math.pow((v - .43) / .24, 2)) :
+      .55 * olegFaceDepth.relief[row * (columns + 1) + col] :
       .017 * Math.exp(-Math.pow((u - .5) / .14, 2) - Math.pow((v - .49) / .23, 2));
     // Oleg's earlier face sat proud of the head as a separate mask. Nest its
     // painted surface nearer the sculpted brow and cheeks while retaining the
