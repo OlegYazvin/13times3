@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import olegFaceURL from "./assets/room02/oleg-face-v3.webp";
+import olegFaceURL from "./assets/room02/oleg-face-v4-muted.webp";
 import janeFaceURL from "./assets/room02/jane-face.webp";
 import gFaceURL from "./assets/room02/g-face.webp";
 import zephrineFaceURL from "./assets/room02/zephrine-face.webp";
@@ -131,6 +131,27 @@ function shapeOlegPortrait(parent, faceY, { hairShell = true } = {}) {
       [side * .182, faceY - .17, -.065],
       [side * .155, faceY - .40, .005],
     ], [.008, .023, .019, .002], hairGlint);
+    // His reference has medium-length hair that falls around the ear and
+    // curls at the nape. Model layered, tapered masses rather than leaving
+    // the profile as a single painted edge or a smooth dark cranium.
+    taperedLock(parent, "sculpted temple sweep above Oleg's glasses", [
+      [side * .06, faceY + .255, -.045],
+      [side * .127, faceY + .19, -.012],
+      [side * .165, faceY + .07, -.014],
+      [side * .175, faceY - .11, -.05],
+    ], [.008, .024, .027, .004], hairPaint);
+    taperedLock(parent, "layered side hair ending behind the earlobe", [
+      [side * .105, faceY + .16, -.115],
+      [side * .162, faceY + .005, -.13],
+      [side * .178, faceY - .18, -.105],
+      [side * .14, faceY - .355, -.07],
+    ], [.009, .029, .025, .003], hairGlint);
+    taperedLock(parent, "loose nape curl grown from the back of the head", [
+      [side * .09, faceY - .115, -.145],
+      [side * .14, faceY - .25, -.13],
+      [side * .16, faceY - .365, -.095],
+      [side * .12, faceY - .44, -.015],
+    ], [.014, .03, .023, .001], hairPaint);
     raisedLine(parent, "short beard wrapping Oleg's jaw in profile", [
       [side * .137, faceY - .29, .095],
       [side * .12, faceY - .365, .11],

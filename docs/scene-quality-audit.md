@@ -13,7 +13,7 @@ subjects, not arbitrary ornament. Preview approval alone is insufficient.
 | Frame | Next art pass | Close-view acceptance |
 | --- | --- | --- |
 | `01` | Shape the signup desk, stage, cave shell and both figures with more physical detail; reduce loose squiggles and generic sea ornaments. | Jane's expression, Zephrine's face and the signup action remain legible from angled positions. |
-| `02` | Make each symbolic Jane action distinct through the desk, home, street, and gesture props; continue refining Oleg's specific face and body. | Oleg reads as the supplied person without a caption, and each Jane vignette reads as support rather than a copied neutral pose. |
+| `02` | Continue refining Oleg's face, body, hands and Jane's distinct gestures. The October 21 pass removed the large sheet hiding Oleg, moved notes to a sewn desk notebook, gave the real monitor and laptops unreadable work panes, shortened Jane's advising reach, and added apron, satchel and cloth blanket details to three support vignettes. | Oleg reads as the supplied person without a caption, and each Jane vignette reads as support rather than a copied neutral pose. |
 | `03` | Detail the real play and dance areas and improve Charlize and Aibike from the private references. The 2026-10-21 pass brought the girls' modeled hands together, removed the gold line between them, shaped a slatted park bench, and thinned floating leaves. | Playground, dance space, and friendship effort remain identifiable without floating strands or caption-dependent figures. |
 | `04` | Continue refining the blue car's molded shell, grip and parental hand contact, and the Roscoe Village homes' stone, brick and porch depth. The 2026-10-21 pass brought the wheels, lamps and grille forward, added cup holders and a modeled seat belt, and attached parkway leaves to branches. | Zephrine's steering and both parents' pushing hands look connected from the side. |
 | `05` | Continue shaping the abstract office's side bays, phone booths and furniture. The 2026-10-21 pass replaced floating strands and paper fragments with a continuous plaster vault, arched daylight windows, hinged partitions and a coherent floor, and brought Jane's gesture closer to the portal. | A full walkaround explains the transition from pressure to openness without a text label. |
@@ -26,8 +26,9 @@ subjects, not arbitrary ornament. Preview approval alone is insufficient.
 
 Across rooms, validate Oleg's recurring reference-based likeness in all eight
 appearances, not only in an isolated face texture. A revised gouache portrait,
-larger facial mapping, warmer underpainting, and closer face fit are in place,
-but the three-quarter hair silhouette and whole-body finish still need close
+larger facial mapping, warmer underpainting, closer face fit, a newly painted
+reference-guided Oleg head texture, and modeled
+temple/ear/nape hair locks are in place, but the three-quarter face and whole-body finish still need close
 review. Frame `11`'s aquarium and
 the outdoor worlds have different world scale; never shrink their volume to
 fit neighboring frames in hallway coordinates. Neighboring worlds may

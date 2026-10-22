@@ -311,6 +311,20 @@ curve(root, "burnished edge of the desk", [[-5.5, .99, 3.63], [-4.65, .99, 2.5],
 box(root, "large blank dark monitor", -4.45, 2.02, 3.73, 1.62, 1.32, .12, M.ink);
 box(root, "monitor's thin brass frame", -4.45, 2.02, 3.81, 1.69, 1.39, .025, M.brass);
 box(root, "blank monitor glass", -4.45, 2.02, 3.838, 1.53, 1.23, .008, M.night);
+box(root, "monitor's muted work-window header", -4.45, 2.49, 3.848,
+  1.37, .075, .009, M.blue);
+for (const [x, y, width] of [[-4.86, 2.32, .44], [-4.83, 2.17, .38],
+  [-4.84, 2.02, .4], [-4.86, 1.87, .35]]) {
+  box(root, "unreadable job-search row on the monitor",
+    x, y, 3.849, width, .018, .009, M.paleBlue);
+  box(root, "small warm row marker", x - .28, y, 3.851,
+    .027, .027, .01, M.brass);
+}
+box(root, "monitor's dark side pane", -4.1, 2.11, 3.849,
+  .41, .72, .009, M.blue);
+for (let i = 0; i < 3; i++) box(root,
+  "quiet unreadable note in the side pane", -4.13,
+  2.32 - i * .17, 3.856, .23 - .03 * i, .014, .01, M.paper);
 beam(root, "monitor stem", [-4.45, 1.02, 3.77], [-4.45, 1.38, 3.77], .045, .047, M.ink);
 box(root, "webcam above screen", -4.45, 2.735, 3.83, .33, .11, .11, M.ink);
 function laptop(x, z, scale, screen) {
@@ -325,6 +339,19 @@ function laptop(x, z, scale, screen) {
   lid.rotation.x = -.15;
   const face = box(group, "blank laptop glass", 0, .58, -.245, 1.16, .9, .008, screen);
   face.rotation.x = -.15;
+  const window = new THREE.Group();
+  window.name = "unbranded laptop windows with tiny unreadable search notes";
+  window.position.set(0, .57, -.235);
+  window.rotation.x = -.15;
+  group.add(window);
+  box(window, "thin display toolbar", 0, .36, .01, 1.04, .055, .01, M.blue);
+  for (let row = 0; row < 5; row++) {
+    box(window, "abstract unreadable laptop line", -.21, .22 - row * .115,
+      .012, .43 - (row % 2) * .09, .015, .01,
+      row === 0 ? M.brass : M.paper);
+    box(window, "small search-list inset", .31, .22 - row * .115,
+      .012, .2, .036, .01, row % 2 ? M.night : M.teal);
+  }
 }
 laptop(-4.42, 2.68, .8, M.night);
 laptop(-1.04, 2.65, .71, M.paleBlue);
@@ -604,22 +631,37 @@ function person(name, x, z, height, outfit, options = {}) {
 // Five versions of Jane are a deliberately symbolic afterimage. Distinct
 // poses and nearby props tell the story without labels or copied photos.
 person("Jane advising Oleg", -.05, 4.58, 1.68, M.janeInk,
-  { jane: true, hands: { "-1": [-.83, 1.18, .4], "1": [.35, .83, .3] }, yaw: -.42 });
+  { jane: true, hands: { "-1": [-.43, .99, .38], "1": [.28, .83, .3] }, yaw: -.42 });
 const oleg = person("Oleg at the job-search desk", -1.35, 4.82, 1.73, M.cream,
   { oleg: true, glasses: true, hands: { "-1": [-.34, 1.03, .42],
     "1": [.34, 1.02, .43] }, yaw: .42 });
-const pageInHand = box(oleg, "a blank folded page held in the long search",
-  0, 1.07, .47, .43, .42, .018, M.paper);
-pageInHand.rotation.z = -.12;
-for (let line = 0; line < 3; line++) box(oleg, "unreadable mark on the page",
-  -.03, 1.2 - line * .1, .486, .23 - line * .035, .012, .008, M.brass);
-person("Jane caring for Zephrine", -3.96, -3.5, 1.68, M.janeInk,
+// The earlier large white sheet covered Oleg's clothes and pose. Small
+// unbranded application notes now live at the real desk instead of floating
+// over his chest.
+const notes = new THREE.Group();
+notes.name = "worn open job-search notebook with many blank attempts";
+notes.position.set(-2.8, 1.045, 3.18);
+notes.rotation.y = -.18;
+root.add(notes);
+box(notes, "dark cloth notebook cover with rounded bevel", 0, 0, 0,
+  .51, .017, .37, M.ink);
+for (const side of [-1, 1]) {
+  const page = box(notes, "cream page with an uneven hand-folded edge",
+    side * .126, .016, 0, .237, .006, .345, M.paper);
+  page.rotation.y = side * .035;
+  for (let line = 0; line < 5; line++) box(notes,
+    "short unreadable penciled job-search line", side * .126, .021,
+    -.115 + line * .047, .14 - .023 * (line % 3), .003, .006, M.brass);
+}
+beam(notes, "stitched cloth notebook spine", [0, .015, -.18],
+  [0, .015, .18], .011, .011, M.desk, 8);
+const caringJane = person("Jane caring for Zephrine", -3.96, -3.5, 1.68, M.janeInk,
   { jane: true, hands: { "-1": [-.4, .74, .25], "1": [.37, .8, .27] }, yaw: -.23 });
 person("Zephrine with Jane", -3.2, -3.22, 1.05, M.paper,
   { child: true, hair: M.zephHair, pants: M.teal, hands: { "-1": [-.31, .6, .18] } });
-person("Jane keeping the household going", -4.2, -6.0, 1.68, M.janeInk,
+const householdJane = person("Jane keeping the household going", -4.2, -6.0, 1.68, M.janeInk,
   { jane: true, hands: { "1": [.54, .84, .36] }, yaw: .35 });
-person("Jane reaching out to contacts", 2.45, 1.9, 1.68, M.janeInk,
+const contactsJane = person("Jane reaching out to contacts", 2.45, 1.9, 1.68, M.janeInk,
   { jane: true, hands: { "1": [.56, .91, .38], "-1": [-.35, .66, .2] }, yaw: -.55 });
 for (const [x, z, height, color] of [[3.55, 1.3, 1.75, M.orange],
   [3.73, 2.52, 1.6, M.paleBlue]]) {
@@ -656,17 +698,63 @@ async function authorRoom() {
     addContactShadow(group, height);
     group.add(makeRiggedJane(janeRig, { height, hands }));
   }
+  // These small, physical role details let Jane's repeated presence read as
+  // separate acts of support rather than five copies of a neutral figure.
+  const apronShape = new THREE.Shape();
+  apronShape.moveTo(-.19, .66);
+  apronShape.quadraticCurveTo(-.24, .85, -.2, 1.03);
+  apronShape.lineTo(-.09, 1.25);
+  apronShape.quadraticCurveTo(0, 1.28, .09, 1.25);
+  apronShape.lineTo(.2, 1.03);
+  apronShape.quadraticCurveTo(.24, .85, .19, .66);
+  apronShape.quadraticCurveTo(0, .62, -.19, .66);
+  const apron = add(householdJane, "tailored kitchen apron with curved sewn hem",
+    new THREE.ExtrudeGeometry(apronShape, { depth: .015,
+      bevelEnabled: true, bevelSize: .006, bevelThickness: .004,
+      bevelSegments: 2, curveSegments: 8 }), M.paper, 0, 0, .24);
+  apron.rotation.x = -.06;
+  for (const side of [-1, 1]) {
+    curve(householdJane, "apron waist ties around Jane's working clothes",
+      [[side * .15, 1.04, .25], [side * .24, 1.05, .19],
+        [side * .28, 1.01, -.02]], .011, M.orange, 12);
+    curve(householdJane, "stitched apron pocket edge",
+      [[side * .02, .86, .26], [side * .09, .81, .263],
+        [side * .16, .86, .25]], .006, M.brass, 10);
+  }
+  loft(contactsJane, "worn satchel with softened corners",
+    [[.68, .18, .1, -.26, .12], [.76, .20, .12, -.26, .12],
+      [.93, .195, .105, -.26, .12], [.97, .15, .07, -.26, .12]], M.orange, 18);
+  curve(contactsJane, "satchel strap running over Jane's shoulder",
+    [[-.26, .92, .16], [-.15, 1.1, .23], [.12, 1.42, .19],
+      [.2, 1.48, .06]], .018, M.brass, 20);
+  curve(contactsJane, "satchel flap and clasp",
+    [[-.43, .87, .22], [-.26, .85, .245], [-.09, .87, .22]],
+    .012, M.desk, 11);
+  box(contactsJane, "small rounded brass satchel clasp", -.26, .82, .249,
+    .045, .038, .012, M.brass);
+  const blanketShape = new THREE.Shape();
+  blanketShape.moveTo(-.29, .8);
+  blanketShape.quadraticCurveTo(-.14, .89, .04, .83);
+  blanketShape.quadraticCurveTo(.19, .84, .23, .72);
+  blanketShape.quadraticCurveTo(.11, .63, -.02, .66);
+  blanketShape.quadraticCurveTo(-.21, .58, -.32, .7);
+  blanketShape.closePath();
+  const blanket = add(caringJane, "folded cloth blanket across Jane's forearm",
+    new THREE.ExtrudeGeometry(blanketShape, { depth: .045,
+      bevelEnabled: true, bevelSize: .015, bevelThickness: .014,
+      bevelSegments: 2, curveSegments: 10 }), M.paleBlue, 0, 0, .29);
+  blanket.rotation.z = -.11;
+  curve(caringJane, "blanket's soft stitched lower hem",
+    [[-.29, .69, .31], [-.12, .63, .34], [.05, .65, .34],
+      [.21, .71, .31]], .008, M.paper, 18);
+  for (const x of [-.14, .02, .15]) curve(caringJane,
+    "fabric fold crossing the child blanket",
+    [[x - .04, .78, .345], [x, .72, .351], [x + .02, .66, .346]],
+    .006, M.teal, 9);
   for (const [personGroup, pose] of [[oleg, "desk"], [embracedOleg, "embrace"]]) {
-    const paper = pose === "desk" ? personGroup.children.filter(child =>
-      child.name.includes("page") || child.name.includes("mark")) : [];
     personGroup.clear();
     addContactShadow(personGroup, 1.73);
     personGroup.add(makeRiggedOleg(rig, { pose }));
-    for (const child of paper) personGroup.add(child);
-    if (pose === "desk") {
-      pageInHand.position.y = .99;
-      pageInHand.position.z = .44;
-    }
   }
   await finishOlegPortraits(root);
   root.traverse((object) => {

@@ -88,6 +88,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 friendship-garden revision: frame `03` keeps Zephrine and Charlize together, with Jane and Aibike sharing the repeated park and dance visits. The two girls now hold their modeled hands close together instead of being connected by a gold line. The park bench has wood slats and a shaped back; fewer ungrounded leaves surround the play and dance areas. This revises detail in the existing memory and leaves its frame ID unchanged.
 
+2026-10-21 job-search and likeness revision: frame `02` remains Jane's repeated support of Oleg's job search in their home-and-street dreamscape. Oleg's oversized blank sheet is replaced by a sewn notebook on his actual desk, while Jane's advising, household, outreach, and caregiving poses receive more distinct gestures and props. The shared Oleg head in frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11` gains sculpted temple, ear, and nape hair layers and a new muted gouache portrait derived from his private photo. This is an art revision of the same published memories; no frame ID, title, or event changes.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.
