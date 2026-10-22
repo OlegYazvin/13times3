@@ -168,7 +168,11 @@ function addPortrait(parent, faceY, profile, fallbackMaterial, person) {
       .036 * Math.exp(-Math.pow((u - .5) / .11, 2) - Math.pow((v - .48) / .2, 2)) +
       .012 * Math.exp(-Math.pow((Math.abs(u - .5) - .23) / .13, 2) - Math.pow((v - .43) / .24, 2)) :
       .017 * Math.exp(-Math.pow((u - .5) / .14, 2) - Math.pow((v - .49) / .23, 2));
-    positions.push(x, faceY + offset, .009 + Math.cos(angle) * rz + bump);
+    // Oleg's earlier face sat proud of the head as a separate mask. Nest its
+    // painted surface nearer the sculpted brow and cheeks while retaining the
+    // modeled nose relief. Other portraits retain their established fit.
+    positions.push(x, faceY + offset,
+      (person === "Oleg" ? -.018 : .009) + Math.cos(angle) * rz + bump);
     // The source painting includes loose hair beyond the facial oval. Crop a
     // little of that margin on Oleg's 3D mapping so his actual eyes, glasses,
     // nose and jaw fill the sculpt instead of becoming a small mask inside a

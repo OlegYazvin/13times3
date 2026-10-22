@@ -67,7 +67,7 @@ export function makeRiggedOleg(template, { pose = "desk", height = 1.73,
   const skin = figure.getObjectByName("Sam_|_anatomical_body");
   skin.material = skin.material.clone();
   skin.material.map = null;
-  skin.material.color.setHex(0xc7957f);
+  skin.material.color.setHex(0xdfae94);
   skin.material.roughness = .94;
   // The body is already trimmed at the jaw. A sculpted, curved painted head
   // sits over the neck; the reference photo itself never enters the GLB.
@@ -85,7 +85,7 @@ export function makeRiggedOleg(template, { pose = "desk", height = 1.73,
   ];
   const points = [], colors = [], indices = [], sides = 48;
   const rows = (headRings.length - 1) * 4;
-  const flesh = new THREE.Color(0xc7957f),
+  const flesh = new THREE.Color(0xdfae94),
     hairBrown = new THREE.Color(0x554035),
     hairWarm = new THREE.Color(0x80604b);
   for (let row = 0; row <= rows; row++) {
@@ -130,7 +130,7 @@ export function makeRiggedOleg(template, { pose = "desk", height = 1.73,
     [-.445, .055, .055], [-.385, .136, .116],
     [-.29, .178, .147], [-.18, .196, .162],
     [-.045, .18, .151], [.07, .145, .128], [.15, .027, .03],
-  ], new THREE.MeshStandardMaterial({ color: 0xc7957f, roughness: .94 }),
+  ], new THREE.MeshStandardMaterial({ color: 0xdfae94, roughness: .94 }),
   { hairShell: false });
   if (new THREE.Color(shirtColor).getHSL({ h: 0, s: 0, l: 0 }).l > .48) {
     // A small wordless version of the sun-and-cloud drawing on Oleg's light

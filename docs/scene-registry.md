@@ -78,6 +78,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 nursing-sanctuary revision: frame `06` keeps the same fully clothed Jane and Zephrine moment. Jane's sculpt now uses her shared painted likeness, and the chair and family sit closer to the doorway. A tailored seat, continuous sewn fabric vault and walls, and arched stained daylight panes replace disconnected roof panels, loose floor fragments, and square backdrop panes. This is an art and composition revision of the same published memory, with its original frame ID, title, and portal intact. The seated arms and child pose remain open close-review work.
 
+2026-10-21 Oleg face-fit revision: all eight rooms containing Oleg (`02`, `04`, `05`, `07`, `08`, `09`, `10`, `11`) now place his existing illustrated face closer to the sculpted brow and cheek surface and use a warmer skin underpainting, reducing the separated-mask effect. The reference photographs stay private. This is a shared likeness revision of those published rooms; their scenes, titles, and frame IDs remain the same. Hair silhouette and whole-body resemblance still need close art review.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.
