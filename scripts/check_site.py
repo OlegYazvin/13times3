@@ -376,6 +376,9 @@ def main() -> None:
                    "painted freshwater river habitat", "continuous thick aquarium viewing glass",
                    "curved walk-under glass beneath a living water lens",
                    "continuous blue glass edge enclosing overhead fish habitat",
+                   "fluted carved limestone column with joined capital",
+                   "carved shell fan supporting the marble crown",
+                   "great carved shell arch above the rear water habitat",
                    "layered, broken-edged sculpted reef shelf in round habitat",
                    "broad curved seagrass ribbon rooted in the reef shelf"):
         assert detail in aquarium_names, f"Room 11 missing {detail}"

@@ -27,7 +27,7 @@ const {root,M,random,add,box,beam,curve,loft,petal,
 wrapSky(C.deep);
 const floor=ground(C.ground,(x,z)=>{
   const r=Math.hypot(x*.72,z*.57);
-  return new THREE.Color(0xb8d1c6).lerp(new THREE.Color(0x779e9b),
+  return new THREE.Color(0xaacbbd).lerp(new THREE.Color(0x628f8d),
     Math.min(.84,r/13));
 });
 {
@@ -40,14 +40,23 @@ const floor=ground(C.ground,(x,z)=>{
   for(let layer=0;layer<3;layer++) for(let i=0;i<110;i++) {
     const x=random()*720-40,y=random()*720-40;
     const radius=10+random()*46;
-    ctx.strokeStyle=layer===0?"rgba(43,127,139,.055)":
-      layer===1?"rgba(183,219,214,.20)":"rgba(255,250,223,.48)";
+    ctx.strokeStyle=layer===0?"rgba(35,105,118,.055)":
+      layer===1?"rgba(183,219,214,.25)":"rgba(255,250,223,.50)";
     ctx.lineWidth=layer===0?4+random()*5:2+random()*3;
     ctx.beginPath();
     ctx.moveTo(x-radius,y);
     ctx.bezierCurveTo(x-radius*.44,y-radius*.5,
       x+radius*.5,y+radius*.45,x+radius,y+radius*.08);
     ctx.stroke();
+  }
+  // Tiny mineral flecks sit below the larger water reflections. This texture
+  // belongs to the stone, so the open walking surface gains detail without
+  // scattering loose flat symbols across it.
+  for(let i=0;i<3200;i++) {
+    const x=random()*640,y=random()*640,r=.3+random()*1.7;
+    ctx.fillStyle=i%5===0?"rgba(233,216,179,.28)":
+      "rgba(49,114,119,.17)";
+    ctx.beginPath();ctx.ellipse(x,y,r,r*.45,random()*6.28,0,6.28);ctx.fill();
   }
   const caustics=new THREE.CanvasTexture(canvas);
   caustics.colorSpace=THREE.SRGBColorSpace;
@@ -102,22 +111,79 @@ let canopyMaterial;
   add(root,"continuous aquamarine glass canopy between shell ribs",geometry,
     canopyMaterial);
 }
-// Marble columns and a glass dome evoke the historic Shedd building as a
-// dream rather than a literal or dated exhibit replica.
+// Continuous fluted stone, with carved shell crowns, carries the water vault.
+// The custom shaft silhouette avoids a stack of cylinders and leaves a single
+// simple footprint for walking collision.
+function carvedRotundaColumn(x,z) {
+  const profile=[
+    [.08,.34],[.20,.42],[.34,.38],[.48,.29],
+    [.75,.265],[1.6,.25],[3.55,.235],[4.58,.25],
+    [4.78,.30],[4.93,.385],[5.08,.43],[5.18,.38],
+  ];
+  const sides=48,points=[],colors=[],uv=[],indices=[];
+  const pale=new THREE.Color(0xe7e1ce),shade=new THREE.Color(0xb9c9bf);
+  for(let row=0;row<profile.length;row++) {
+    const [y,base]=profile[row];
+    for(let side=0;side<sides;side++) {
+      const a=side*Math.PI*2/sides;
+      const fluting=y>.45&&y<4.8 ?
+        .016*Math.cos(12*a)+.004*Math.cos(24*a) :
+        .004*Math.cos(12*a);
+      const radius=base+fluting;
+      points.push(x+Math.cos(a)*radius,y,z+Math.sin(a)*radius);
+      uv.push(side/sides,row/(profile.length-1));
+      const c=pale.clone().lerp(shade,
+        .15+.14*(.5+.5*Math.cos(12*a))+.09*y/5.2);
+      colors.push(c.r,c.g,c.b);
+      if(row<profile.length-1) {
+        const n=row*sides+side,b=row*sides+(side+1)%sides;
+        indices.push(n,b,n+sides,b,b+sides,n+sides);
+      }
+    }
+  }
+  const geometry=new THREE.BufferGeometry();
+  geometry.setAttribute("position",new THREE.Float32BufferAttribute(points,3));
+  geometry.setAttribute("color",new THREE.Float32BufferAttribute(colors,3));
+  geometry.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
+  geometry.setIndex(indices);geometry.computeVertexNormals();
+  const shaft=add(root,"fluted carved limestone column with joined capital",
+    geometry,new THREE.MeshStandardMaterial({color:0xffffff,
+      vertexColors:true,roughness:.94,side:THREE.DoubleSide}));
+  shaft.userData.solidFootprint=true;
+  const shell=new THREE.Shape();
+  shell.moveTo(-.11,-.12);
+  shell.bezierCurveTo(-.15,-.02,-.12,.13,-.085,.18);
+  shell.quadraticCurveTo(-.045,.12,0,.22);
+  shell.quadraticCurveTo(.045,.12,.085,.18);
+  shell.bezierCurveTo(.12,.13,.15,-.02,.11,-.12);
+  shell.closePath();
+  const leafGeometry=new THREE.ExtrudeGeometry(shell,{depth:.022,
+    bevelEnabled:true,bevelSize:.008,bevelThickness:.008,
+    bevelSegments:2,curveSegments:7});
+  for(let i=0;i<12;i++) {
+    const a=i*Math.PI*2/12;
+    const leaf=add(root,"carved shell fan supporting the marble crown",
+      leafGeometry,i%3===0?M.pearl:M.marble,
+      x+Math.cos(a)*.34,4.91,z+Math.sin(a)*.34);
+    leaf.rotation.y=Math.PI/2-a;
+    curve(root,"incised shell vein in the column capital",
+      [[x+Math.cos(a)*.355,4.83,z+Math.sin(a)*.355],
+        [x+Math.cos(a)*.405,5.03,z+Math.sin(a)*.405]],
+      .005,M.gold,8);
+  }
+  curve(root,"gold waterline around the column base",
+    Array.from({length:33},(_,i)=>{
+      const a=i*Math.PI*2/32;
+      return [x+Math.cos(a)*.41,.22,z+Math.sin(a)*.41];
+    }),.009,M.gold,33);
+}
+// The column rhythm evokes Shedd's historic rotunda as a dream, rather than
+// claiming this scene reproduces a particular visit or exhibit.
 for(let i=0;i<8;i++) {
   const a=i*Math.PI*2/8+.13;
   const x=Math.cos(a)*8.1,z=Math.sin(a)*8.0;
   if (z > 7) continue; // leave the entrance sightline open
-  const column=loft(root,"solid fluted marble rotunda column",
-    [[.12,.28,.28,x,z],[.42,.31,.31,x,z],
-      [4.7,.23,.23,x,z],[5.1,.34,.34,x,z]],M.marble,12,true);
-  column.userData.solidFootprint=true;
-  for(let f=0;f<5;f++) {
-    const fa=f*Math.PI*2/5;
-    curve(root,"carved vertical marble flute",
-      [[x+Math.cos(fa)*.255,.43,z+Math.sin(fa)*.255],
-        [x+Math.cos(fa)*.23,4.73,z+Math.sin(fa)*.23]],.009,M.pearl,12);
-  }
+  carvedRotundaColumn(x,z);
   curve(root,"high dome rib like a rising wave",
     [[x,5.1,z],[x*.7,6.35,z*.7],[x*.36,7.27,z*.36],
       [0,7.65,0]],.067,M.gold,28);
@@ -228,13 +294,24 @@ for(let rock=0;rock<13;rock++) {
     rock%3===0?M.kelp:rock%3===1?M.deep:M.turquoise,10);
 }
 for(const side of [-1,1]) box(root,"painted habitat behind freestanding portal",
-  side*4.45,3.2,20.55,8.9,6.2,.016,side===1?reefVariantWall:riverVariantWall);
+  side*4.45,3.65,20.55,8.9,7.1,.016,side===1?reefVariantWall:riverVariantWall);
 for(const side of [-1,1]) {
   add(root,"rear aquarium glazing beyond portal",
     new THREE.PlaneGeometry(7.2,5.25),glass,side*5.25,3.2,16.82);
-  curve(root,"rear habitat frame",[[side*1.72,.62,16.8],
-    [side*1.72,5.8,16.8],[side*8.9,5.8,16.8]],.064,M.pearl);
+  curve(root,"carved upright on the inhabited rear glass",
+    [[side*1.72,.62,16.8],[side*1.72,3.2,16.8],
+      [side*1.72,5.85,16.8]],.064,M.pearl,22);
 }
+curve(root,"great carved shell arch above the rear water habitat",
+  [[-8.88,5.85,16.76],[-6.7,6.28,16.73],
+    [-4.05,6.82,16.7],[0,7.13,16.68],
+    [4.05,6.82,16.7],[6.7,6.28,16.73],
+    [8.88,5.85,16.76]],.12,M.marble,48);
+curve(root,"thin gilded wave inside the rear shell arch",
+  [[-8.78,5.71,16.72],[-6.5,6.13,16.69],
+    [-4,6.64,16.66],[0,6.96,16.64],
+    [4,6.64,16.66],[6.5,6.13,16.69],
+    [8.78,5.71,16.72]],.026,M.gold,48);
 {
   // The path behind the freestanding doorway belongs to the same enchanted
   // aquarium. Continue the inhabited vault there instead of exposing a flat
@@ -541,7 +618,7 @@ ray(4.3,2.9,-12.45,.62,-.26);
 {
   const cx=-.65, cz=3.9, rx=4.65, rz=3.35;
   const underside=new THREE.MeshPhysicalMaterial({color:0x70b7c2,
-    transparent:true,opacity:.46,roughness:.08,metalness:0,
+    transparent:true,opacity:.27,roughness:.08,metalness:0,
     depthWrite:false,side:THREE.DoubleSide});
   const vertices=[],indices=[],rings=12,sides=64;
   for(let ring=0;ring<=rings;ring++) {
@@ -599,13 +676,23 @@ ray(4.3,2.9,-12.45,.62,-.26);
         [px*1.03,5.82,pz+.09],
         [px*.93,6.7,pz-.08]],.035,M.pearl,18);
   }
+  const overheadPigment=[
+    new THREE.MeshStandardMaterial({color:0xb9d7c2,
+      emissive:0x6b8e83,emissiveIntensity:1.1,roughness:.88,
+      side:THREE.DoubleSide}),
+    new THREE.MeshStandardMaterial({color:0xe6c595,
+      emissive:0x8e7750,emissiveIntensity:1.1,roughness:.88,
+      side:THREE.DoubleSide}),
+    new THREE.MeshStandardMaterial({color:0xcf9da1,
+      emissive:0x84566c,emissiveIntensity:1.1,roughness:.88,
+      side:THREE.DoubleSide}),
+  ];
   for(let i=0;i<9;i++) {
     const a=i*2.399,rad=.22+.62*Math.sqrt((i+.5)/9);
     const x=cx+Math.cos(a)*rx*rad,
       z=cz+Math.sin(a)*rz*rad;
     fish(x,5.18+(i%3)*.11,z,
-      .47+(i%3)*.07,
-      i%4===0?M.coral:i%3===0?M.deep:M.gold,
+      .47+(i%3)*.07,overheadPigment[i%3],
       171+i*.57,a+Math.PI/2);
   }
 }
