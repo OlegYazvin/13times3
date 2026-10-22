@@ -70,6 +70,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 city-route finish: frame `08` removes suspended map-pane ornaments and disconnected floating fragments from Jane's seven-stop promenade. Shaped distant rooflines and grounded, glazed route lanterns carry the visual rhythm while leaving the tall sky open. The Avalon Regal sculpture gains a horseshoe arcade, window tracery, cornices, and a more articulated minaret. The seven chosen stops, their order, people, and frame ID do not change.
 
+2026-10-21 Oleg portrait refinement: the eight rooms featuring Oleg (`02`, `04`, `05`, `07`, `08`, `09`, `10`, `11`) now share a revised gouache portrait guided by his private photo. Its face mapping gives more of the modeled head to his glasses, eyes, nose, and jaw; the side-hair underpainting has warmer variation and leaves more cheek visible. This improves the repeated likeness without publishing the source photographs or changing any scene's memory. Close three-quarter appearance and hair finish remain open art-review work.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

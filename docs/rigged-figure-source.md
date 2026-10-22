@@ -32,12 +32,17 @@ The fit of the face and hair still needs a close human art review from the
 doorway and at three-quarter angles. Matching a recognizable face to a shared
 storybook body does not automatically make every garment or pose finished.
 
-Oleg's active face illustration is `scripts/assets/room02/oleg-face-v2.webp`.
-It was revised from his private reference portrait in the same painted style,
-with closer glasses, eyes, side-parted hair, and beard detail. The reference
-photo is not embedded in this texture or published. A trial taller texture
-mapping visibly stretched the face, so the original sculpted head proportions
-remain in use. Every existing Oleg appearance shares the new illustration.
+Oleg's active face illustration is `scripts/assets/room02/oleg-face-v3.webp`.
+It was generated with the built-in imagegen tool by editing the prior gouache
+texture against his private reference portrait. The prompt kept a transparent,
+head-only painted composition while asking for the reference's rectangular
+glasses, grey-green eyes, side-parted medium hair, short beard, and facial
+proportions. The photograph itself is not embedded or published. The face UVs
+crop some illustrated hair margin, so the identity features fill more of the
+curved sculpt without enlarging the entire head; the underpainting exposes
+more cheek and gives the hair subtle warmer variation. Every existing Oleg
+appearance shares this portrait. This remains stylized and needs human
+likeness review from three-quarter angles.
 
 ## Jane's standing figure
 

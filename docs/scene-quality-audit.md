@@ -25,7 +25,9 @@ subjects, not arbitrary ornament. Preview approval alone is insufficient.
 | `11` | Keep the glass habitats visually inhabited from every route position; refine fish species, Zephrine and G, the freestanding arch rear, and lighting. | Fish clearly occupy water behind glass, and visitors can walk behind the hall portal without any clipped or blank area. |
 
 Across rooms, validate Oleg's recurring reference-based likeness in all eight
-appearances, not only in an isolated face texture. Frame `11`'s aquarium and
+appearances, not only in an isolated face texture. A revised gouache portrait
+and larger facial mapping are in place, but the three-quarter hair silhouette
+and whole-body finish still need close review. Frame `11`'s aquarium and
 the outdoor worlds have different world scale; never shrink their volume to
 fit neighboring frames in hallway coordinates. Neighboring worlds may
 intersect geometrically because the renderer isolates them behind each portal.

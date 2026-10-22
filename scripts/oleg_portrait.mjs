@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import olegFaceURL from "./assets/room02/oleg-face-v2.webp";
+import olegFaceURL from "./assets/room02/oleg-face-v3.webp";
 import janeFaceURL from "./assets/room02/jane-face.webp";
 import gFaceURL from "./assets/room02/g-face.webp";
 import zephrineFaceURL from "./assets/room02/zephrine-face.webp";
@@ -169,7 +169,12 @@ function addPortrait(parent, faceY, profile, fallbackMaterial, person) {
       .012 * Math.exp(-Math.pow((Math.abs(u - .5) - .23) / .13, 2) - Math.pow((v - .43) / .24, 2)) :
       .017 * Math.exp(-Math.pow((u - .5) / .14, 2) - Math.pow((v - .49) / .23, 2));
     positions.push(x, faceY + offset, .009 + Math.cos(angle) * rz + bump);
-    uvs.push(u, v);
+    // The source painting includes loose hair beyond the facial oval. Crop a
+    // little of that margin on Oleg's 3D mapping so his actual eyes, glasses,
+    // nose and jaw fill the sculpt instead of becoming a small mask inside a
+    // much larger dark hair silhouette.
+    uvs.push(person === "Oleg" ? .15 + u * .70 : u,
+      person === "Oleg" ? .08 + v * .84 : v);
   }
   for (let row = 0; row < rows; row++) for (let col = 0; col < columns; col++) {
     const a = row * (columns + 1) + col;
