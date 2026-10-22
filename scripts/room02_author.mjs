@@ -1,7 +1,7 @@
 import * as THREE from "three";
-import { foliageLobe } from "./sculpted_foliage.mjs";
+import { loadAdaptedTree, plantAdaptedTree } from "./adapted_tree.mjs";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
-import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
+import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
 import { addRoomLighting } from "../client/explore/room-lighting.mjs";
@@ -111,15 +111,6 @@ function loft(parent, name, rings, mat, sides = 14, solid = false) {
   const mesh = add(parent, name, geometry, mat);
   if (solid) mesh.userData.solidFootprint = true;
   return mesh;
-}
-function foldedLeaf(parent, x, y, z, size, mat, angle = 0) {
-  const shape = new THREE.Shape();
-  shape.moveTo(0, 0); shape.quadraticCurveTo(-size * .46, size * .45, 0, size);
-  shape.quadraticCurveTo(size * .46, size * .45, 0, 0);
-  const mesh = add(parent, "folded street-tree leaf", new THREE.ExtrudeGeometry(shape,
-    { depth: .018, bevelEnabled: false, curveSegments: 6 }), mat, x, y, z);
-  mesh.rotation.set(Math.PI / 2 - .3, angle, .25);
-  mesh.userData.batchLeaf = true;
 }
 function shapedEye(parent, name, x, y, z, scale, white, iris) {
   const outline = new THREE.Shape();
@@ -259,13 +250,25 @@ for (const z of [-5.9, -.9, 4.1]) {
     [[-5.91, 4.47, z - .17], [-5.88, 4.62, z],
       [-5.91, 4.47, z + .17]], .035, M.brass, 12);
 }
-for (let i = 0; i < 5; i++) {
-  const x = -5.3 + i * 1.2;
-  box(root, "orange drawer cabinet under curved desk", x, .42, 2.3, .96, .81, 1.06, M.orange,
-    i === 0 || i === 4);
-  for (let drawer = 0; drawer < 2; drawer++) {
-    box(root, "drawer face", x, .28 + drawer * .36, 2.847, .76, .27, .025, M.orange);
-    box(root, "brass drawer handle", x, .28 + drawer * .36, 2.865, .18, .02, .025, M.brass);
+const cabinetShade = material(0xa85b43);
+for (const x of [-4.75, -2.35]) {
+  const cabinet = add(root, "two fitted orange drawer cabinets below the curved desk",
+    new RoundedBoxGeometry(.83, .78, .98, 4, .045), cabinetShade,
+    x, .43, 2.38);
+  cabinet.userData.solidFootprint = true;
+  for (let drawer = 0; drawer < 3; drawer++) {
+    const y = .22 + drawer * .23;
+    add(root, "inset drawer face with softened corners",
+      new RoundedBoxGeometry(.69, .184, .027, 3, .013), M.orange,
+      x, y, 2.881);
+    curve(root, "formed metal drawer pull", [[x - .105, y, 2.902],
+      [x, y + .012, 2.928], [x + .105, y, 2.902]],
+      .008, M.brass, 10);
+  }
+  for (const side of [-1, 1]) for (const depth of [-1, 1]) {
+    beam(root, "small recessed steel foot beneath drawer cabinet",
+      [x + side * .29, .03, 2.38 + depth * .36],
+      [x + side * .29, .08, 2.38 + depth * .36], .026, .026, M.ink, 8);
   }
 }
 
@@ -431,26 +434,7 @@ box(root, "small pile of blank job-search pages", -4.12, 1.04, 3.38, .48, .025, 
 for (let i = 0; i < 3; i++) box(root, "paper edge", -4.12 + i * .02,
   1.067 + i * .012, 3.35 - i * .025, .45, .008, .58, M.paper);
 
-// The open street has handmade trees, lamplights, a winding garden edge and
-// a few anonymous contacts. These are part of Jane's symbolic effort.
-for (let i = 0; i < 6; i++) {
-  const x = 4.45 + .55 * Math.sin(i * 1.3), z = -6.25 + i * 2.42;
-  const tree = new THREE.Group(); tree.name = "branching street tree";
-  tree.position.set(x, 0, z); root.add(tree);
-  const trunk = loft(tree, "solid irregular tree trunk", [[0, .17, .15],
-    [.6, .14, .12, .025], [1.4, .11, .1, -.016], [2.2, .075, .08]], M.desk, 10, true);
-  for (const s of [-1, 1]) {
-    curve(tree, "branch sweeping over the sidewalk", [[0, 1.42, 0],
-      [s * .47, 2.12, -.11], [s * .85, 2.78, -.24]], .055, M.desk);
-    foliageLobe(tree, "layered street-tree foliage around its real branches",
-      s * .72, 2.74, -.2, .77, .36, .55, s < 0 ? C.leaf : C.darkLeaf, i * 2 + s);
-    for (let leafIndex = 0; leafIndex < 17; leafIndex++) {
-      foldedLeaf(tree, s * (.4 + random() * 1.02), 2.45 + random() * .55,
-        (random() - .5) * 1.15, .17 + random() * .15,
-        leafIndex % 4 ? M.leaf : M.brass, random() * 6);
-    }
-  }
-}
+// The street trees will be placed when the shared 3D source has loaded.
 curve(root, "golden sidewalk seam carrying contacts toward Oleg's desk",
   [[1.1, .035, -7], [1.55, .04, -4.3], [2.25, .045, -1.8],
     [1.44, .035, .3], [.83, .033, 3.6], [0, .04, 6.7]], .028, M.brass, 60);
@@ -464,7 +448,7 @@ for (const [x, z] of [[3.2, -5.3], [2.7, -.9], [3.7, 3.4]]) {
   box(root, "warm lamp glass", x - .85, 3.385, z, .32, .045, .22, glow);
 }
 
-const janeFigures = [];
+const janeFigures = [], olegFigures = [];
 function person(name, x, z, height, outfit, options = {}) {
   const cloth = paintedFabric(outfit);
   const group = new THREE.Group();
@@ -475,6 +459,8 @@ function person(name, x, z, height, outfit, options = {}) {
   const jane = Boolean(options.jane);
   if (jane) janeFigures.push({ group, hands: options.hands, height });
   const oleg = Boolean(options.oleg);
+  if (oleg) olegFigures.push({ group, hands: options.hands, height,
+    pose: options.olegPose || "desk" });
   const skin = jane ? M.janeSkin : oleg ? M.olegSkin : M.skin;
   const hair = options.hair || M.hair;
   const legHeight = height * (child ? .44 : .49);
@@ -653,11 +639,11 @@ function person(name, x, z, height, outfit, options = {}) {
 
 // Five versions of Jane are a deliberately symbolic afterimage. Distinct
 // poses and nearby props tell the story without labels or copied photos.
-person("Jane advising Oleg", -.05, 4.58, 1.68, M.janeInk,
-  { jane: true, hands: { "-1": [-.43, .99, .38], "1": [.28, .83, .3] }, yaw: -.42 });
-const oleg = person("Oleg at the job-search desk", -1.35, 4.82, 1.73, M.cream,
-  { oleg: true, glasses: true, hands: { "-1": [-.34, 1.03, .42],
-    "1": [.34, 1.02, .43] }, yaw: .42 });
+person("Jane advising Oleg", -.95, 4.58, 1.68, M.janeInk,
+  { jane: true, hands: { "-1": [-.42, 1.29, .25],
+    "1": [.23, .91, .32] }, yaw: -.25 });
+person("Oleg at the job-search desk", -1.35, 4.82, 1.73, M.cream,
+  { oleg: true, glasses: true, yaw: .42 });
 // The earlier large white sheet covered Oleg's clothes and pose. Small
 // unbranded application notes now live at the real desk instead of floating
 // over his chest.
@@ -694,9 +680,10 @@ for (const [x, z, height, color] of [[3.55, 1.3, 1.75, M.orange],
 person("Jane holding Oleg when the search was hard", -.45, -5.88,
   1.68, M.janeInk, { jane: true, hands: { "-1": [-.55, 1.05, .5],
     "1": [.45, 1.02, .49] }, yaw: .38 });
-const embracedOleg = person("Oleg leaning into Jane's embrace", .12, -5.48, 1.73, M.cream,
+person("Oleg leaning into Jane's embrace", .12, -5.48, 1.73, M.cream,
   { oleg: true, glasses: true,
-    hands: { "-1": [-.41, 1.02, .45], "1": [.38, .89, .38] }, yaw: -.4 });
+    hands: { "-1": [-.41, 1.02, .45], "1": [.38, .89, .38] },
+    olegPose: "embrace", yaw: -.4 });
 
 // A quiet kitchen and ordinary work make the support concrete.
 box(root, "home counter", -4.82, .71, -5.02, 1.55, 1.38, .58, M.plaster, true);
@@ -713,9 +700,18 @@ beam(root, "pan handle", [-4.68, 1.46, -5.02], [-4.22, 1.46, -4.94],
 
 async function authorRoom() {
   await facesReady;
-  const [rig, janeRig] = await Promise.all([
-    loadRiggedOlegBase(), loadRiggedJaneBase(),
+  const [rig, janeRig, treeSource] = await Promise.all([
+    loadRiggedOlegBase(), loadRiggedJaneBase(), loadAdaptedTree(),
   ]);
+  for (let i = 0; i < 6; i++) {
+    plantAdaptedTree(root, treeSource, {
+      x: 4.45 + .55 * Math.sin(i * 1.3), z: -6.25 + i * 2.42,
+      scale: .41 + i % 3 * .018, rotation: i * 1.17 + .2,
+      leafTint: i % 2 ? 0xaec2aa : 0xbacbb4,
+      name: "branching tree along Jane's symbolic street",
+      colliderRadius: .17,
+    });
+  }
   for (const { group, hands, height } of janeFigures) {
     group.clear();
     addContactShadow(group, height);
@@ -774,30 +770,16 @@ async function authorRoom() {
     "fabric fold crossing the child blanket",
     [[x - .04, .78, .345], [x, .72, .351], [x + .02, .66, .346]],
     .006, M.teal, 9);
-  for (const [personGroup, pose] of [[oleg, "desk"], [embracedOleg, "embrace"]]) {
-    personGroup.clear();
-    addContactShadow(personGroup, 1.73);
-    personGroup.add(makeRiggedOleg(rig, { pose }));
+  for (const { group, hands, height, pose } of olegFigures) {
+    group.clear();
+    addContactShadow(group, height);
+    group.add(makeRiggedOleg(rig, { pose, height, hands,
+      shirtEmbroidery: false }));
   }
   await finishOlegPortraits(root);
   root.traverse((object) => {
     if (object.userData.paintedFace) object.material = paintedFaces[object.userData.paintedFace];
   });
-  // Batch small leaves into one mesh per pigment before exporting for phones.
-  root.updateMatrixWorld(true);
-  const groups = new Map();
-  root.traverse((object) => {
-    if (!object.userData.batchLeaf) return;
-    const list = groups.get(object.material) || [];
-    list.push(object); groups.set(object.material, list);
-  });
-  for (const [mat, objects] of groups) {
-    const geometry = mergeGeometries(objects.map(object =>
-      object.geometry.clone().applyMatrix4(object.matrixWorld)), false);
-    if (!geometry) throw new Error("Could not batch leaves");
-    for (const object of objects) object.parent.remove(object);
-    add(root, "layered leaves above the outdoor street", geometry, mat);
-  }
   const scene = new THREE.Scene(); scene.background = new THREE.Color(C.sky);
   addRoomLighting(scene);
   scene.add(root);

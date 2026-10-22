@@ -148,6 +148,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-22 shared outdoor tree follow-up: frames `03` and `10` now use the same palette-adapted CC0 shade-tree model as frame `04`, replacing their simplistic oval canopies. The five friendship-garden trees and four Play Garden trees keep narrow trunk collision. These are art revisions of the same published memories; the frame IDs, people, titles, independent sky worlds, portal positions, and reachable boundaries remain unchanged.
 
+2026-10-22 job-search scene finish: frame `02` keeps Oleg's desk, five symbolic Janes, Zephrine, and the outdoor contacts in one independent sky world. Its six street trees now use the adapted CC0 3D model with narrow trunk collision; two detailed, fitted orange drawer cabinets replace five block supports beneath the curved desk. Jane's foreground support pose is closer to Oleg. A new likeness draft that looked too similar to the existing shared `v8` head was rejected, so all eight Oleg appearances retain their established painting and sculpt. The frame ID, people, memory, title, and portal location remain unchanged.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

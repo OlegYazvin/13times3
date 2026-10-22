@@ -193,6 +193,11 @@ def main() -> None:
     job_json = json.loads(job_glb[20:20 + job_json_length])
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in job_json["nodes"]) >= 20, "Room 02 needs solid desk, figures, and props"
     assert not any("company" in node.get("name", "").lower() for node in job_json["nodes"]), "Do not name a company in room 02"
+    job_names = [node.get("name", "") for node in job_json["nodes"]]
+    assert job_names.count("branching tree along Jane's symbolic street") == 6, "Room 02 needs six modeled street trees"
+    assert job_names.count("solid tree trunk collision core") == 6, "Room 02 tree trunks must collide"
+    assert job_names.count("two fitted orange drawer cabinets below the curved desk") == 2, "Room 02 desk needs the fitted drawer cabinets"
+    assert job_names.count("Oleg's reference-based painted likeness on a sculpted head") == 2, "Room 02 needs both sculpted Oleg likenesses"
     friendship_room = frames[2]["room"]
     assert friendship_room["title"] == "Jane made sure Zephrine has a best friend (Charlize)"
     assert friendship_room["caption"] == "A friendship Jane made room for"
