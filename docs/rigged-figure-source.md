@@ -32,17 +32,15 @@ The fit of the face and hair still needs a close human art review from the
 doorway and at three-quarter angles. Matching a recognizable face to a shared
 storybook body does not automatically make every garment or pose finished.
 
-Oleg's active face illustration is `scripts/assets/room02/oleg-face-v5-reference.webp`.
-It was generated with the built-in imagegen tool by editing the prior gouache
-texture against his private reference portrait. The prompt kept a transparent,
-head-only painted composition while asking for the reference's rectangular
-glasses, grey-green eyes, side-parted medium hair, short beard, and facial
-proportions. The photograph itself is not embedded or published. The face UVs
-crop some illustrated hair margin, so the identity features fill more of the
-curved sculpt without enlarging the entire head; the underpainting exposes
-more cheek and gives the hair subtle warmer variation. Every existing Oleg
-appearance shares this portrait. This remains stylized and needs human
-likeness review from three-quarter angles.
+Oleg's active face illustration is `scripts/assets/room02/oleg-face-v7-reference.webp`.
+It was generated with the built-in imagegen tool from both private Oleg photos,
+using the earlier gouache portrait only for visual style. The revised painting
+keeps his adult proportions, rectangular glasses, grey-green eyes, side-swept
+medium hair, natural nose, and short full beard. The photograph itself is not
+embedded or published. A wider sculpted jaw supports the face, and a newly
+generated relief table follows this illustration. All eight published Oleg
+appearances share the portrait and head. This remains stylized and needs Oleg's
+human likeness review from three-quarter angles.
 
 The small `scripts/assets/room02/oleg-face-depth.json` table is generated
 offline from this public painted illustration with [Google's MediaPipe Face

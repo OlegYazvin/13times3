@@ -21,7 +21,8 @@ const { root, M, random, add, box, beam, curve, loft, petal,
   wrapSky, ground, person, exportRoom } = art;
 wrapSky(C.sky, true);
 ground(C.ground, (x,z) => new THREE.Color(C.grass).lerp(
-  new THREE.Color(C.sand), Math.exp(-Math.pow((x-.28*Math.sin(z*.4))/1.8,2))*.85));
+  new THREE.Color(C.sand), Math.exp(-Math.pow((x-.34*Math.sin(z*.4))/2.2,2))*.45),
+  { width: 52, depth: 52 });
 
 // A modeled, muted skyline stands beyond the Play Garden. Setbacks, roof
 // contours, masonry ribs and arched windows let each distant building read
@@ -124,8 +125,43 @@ wave(-4.2,4.9,3.3);wave(4.15,1.6,3.4,1.3);
     M.red,x,.58+i*.79,z);
   add(root,"lighthouse lantern roof",new THREE.ConeGeometry(.65,.38,12),
     M.red,x,3.37,z);
-  box(root,"lighthouse blue slide",x+.72,1.07,z+.45,.74,.11,2.8,M.blue,true)
-    .rotation.x=.42;
+  const slidePositions=[],slideColors=[],slideIndices=[],slideRows=24,slideSides=8;
+  const slidePoint=(t,lateral)=>{
+    const channel=Math.pow(Math.abs(lateral),3)*.072;
+    return [x+.73+lateral*.38,
+      1.71-1.42*t+.075*Math.sin(Math.PI*t)+channel,
+      z+.48+2.76*t];
+  };
+  for(let row=0;row<=slideRows;row++) for(let side=0;side<=slideSides;side++) {
+    const t=row/slideRows,lateral=side/slideSides*2-1;
+    slidePositions.push(...slidePoint(t,lateral));
+    const tone=.87+.13*(1-Math.abs(lateral));
+    slideColors.push(tone,tone,tone);
+    if(row<slideRows&&side<slideSides) {
+      const n=row*(slideSides+1)+side;
+      slideIndices.push(n,n+slideSides+1,n+1,
+        n+1,n+slideSides+1,n+slideSides+2);
+    }
+  }
+  const slideGeometry=new THREE.BufferGeometry();
+  slideGeometry.setAttribute("position",
+    new THREE.Float32BufferAttribute(slidePositions,3));
+  slideGeometry.setAttribute("color",
+    new THREE.Float32BufferAttribute(slideColors,3));
+  slideGeometry.setIndex(slideIndices);slideGeometry.computeVertexNormals();
+  const slideMaterial=M.blue.clone();slideMaterial.vertexColors=true;
+  const slide=add(root,"solid molded channel of the lighthouse play slide",
+    slideGeometry,slideMaterial);
+  slide.userData.solidFootprint=true;
+  for(const side of [-1,1]) curve(root,
+    "continuous raised safety rim joined to the curved slide",
+    Array.from({length:21},(_,i)=>{
+      const [sx,sy,sz]=slidePoint(i/20,side);
+      return [sx,sy+.095,sz];
+    }),.032,M.paleBlue,38);
+  curve(root,"rounded landing lip at the foot of the play slide",
+    [slidePoint(1,-1),slidePoint(1,0),slidePoint(1,1)],
+    .028,M.paleBlue,17);
   // The tower is a play structure rather than an empty striped cone: a low
   // arched entrance, raised lookout and climb ropes are visible from the path.
   const door=new THREE.Shape();
@@ -240,7 +276,7 @@ for(const [x,z] of [[-6,5.7],[6.25,.2],[-6.3,-.9],[6,-6.4]]) {
       [x+dx*.65,3.1,z+dz*.65],[x+dx*1.45,3.35,z+dz*1.45]],
       .047,M.timber,15);
     foliageLobe(root,"overlapping garden canopy around a branching bough",
-      x+dx*1.08,3.34,z+dz*1.08,.62,.29,.54,
+      x+dx*1.08,3.34,z+dz*1.08,.62,.48,.54,
       j%2?C.leaf:C.darkLeaf,x+z+j);
     for(let k=0;k<7;k++) petal(root,"leaf in play garden canopy",
       x+dx*(.6+random()),3.1+(random()-.5)*.65,
@@ -309,10 +345,40 @@ const friendB=person("friend with knit cap beard and round dark glasses",
 loft(friendB,"knit cap with ridged crown",[[1.78,.13,.12],
   [1.94,.18,.17],[2.05,.1,.1]],M.arch||M.fabric,12);
 friendB.userData.solidFootprint=true;
-// Shared play is represented by curved parallel tracks at child scale.
-for(const side of [-1,1]) curve(root,"shared play ribbon sweeping among three children",
-  [[side*.92,.07,2.45],[side*1.25,.07,1.35],
-    [side*.97,.07,.17],[side*1.5,.07,-1.9]],.05,
-  side<0?M.gold:M.paleBlue,32);
+// The shared-play moment sits on one formed surface, inspired by the park's
+// rolling blue ground. The former pair of unconnected tubes read as hoses.
+const playPositions=[],playColors=[],playIndices=[],playRows=36,playAcross=14;
+const playSide=(z,side)=>side*(1.47+.09*Math.sin(z*.8));
+for(let row=0;row<=playRows;row++) for(let col=0;col<=playAcross;col++) {
+  const t=row/playRows,z=2.53-t*4.48,lateral=col/playAcross*2-1;
+  const center=.16*Math.sin(z*.65);
+  const x=center+playSide(z,lateral);
+  const wave=.014*Math.sin(z*2.3+lateral*4)*(1-lateral*lateral);
+  const y=.035+wave-.012*Math.pow(Math.abs(lateral),5);
+  playPositions.push(x,y,z);
+  const color=new THREE.Color(C.paleBlue).lerp(new THREE.Color(C.blue),
+    .28+.19*Math.sin(z*1.35+lateral*3)+.14*Math.abs(lateral));
+  playColors.push(color.r,color.g,color.b);
+  if(row<playRows&&col<playAcross) {
+    const n=row*(playAcross+1)+col;
+    playIndices.push(n,n+playAcross+1,n+1,
+      n+1,n+playAcross+1,n+playAcross+2);
+  }
+}
+const playGeometry=new THREE.BufferGeometry();
+playGeometry.setAttribute("position",
+  new THREE.Float32BufferAttribute(playPositions,3));
+playGeometry.setAttribute("color",
+  new THREE.Float32BufferAttribute(playColors,3));
+playGeometry.setIndex(playIndices);playGeometry.computeVertexNormals();
+add(root,"continuous gently rolling blue play surface under the three children",
+  playGeometry,new THREE.MeshStandardMaterial({vertexColors:true,
+    roughness:.98,side:THREE.DoubleSide}));
+for(const side of [-1,1]) curve(root,
+  "low sewn edge fixed to the shared play surface",
+  Array.from({length:37},(_,i)=>{
+    const z=2.53-i*4.48/36;
+    return [.16*Math.sin(z*.65)+playSide(z,side),.028,z];
+  }),.012,side<0?M.gold:M.paleBlue,50);
 
 window.__authorRoom=()=>exportRoom();

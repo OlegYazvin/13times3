@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import olegFaceURL from "./assets/room02/oleg-face-v5-reference.webp";
+import olegFaceURL from "./assets/room02/oleg-face-v7-reference.webp";
 import janeFaceURL from "./assets/room02/jane-face.webp";
 import gFaceURL from "./assets/room02/g-face.webp";
 import zephrineFaceURL from "./assets/room02/zephrine-face.webp";

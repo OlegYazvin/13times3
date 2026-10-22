@@ -120,8 +120,16 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
     const top = new THREE.PlaneGeometry(width, depth); top.rotateX(Math.PI / 2);
     add(root, "world-wrapping sky or ceiling", top, sky, 0, height - .01, 0);
   }
-  function ground(color = colors.ground, colorAt = null) {
-    const plane = new THREE.PlaneGeometry(width, depth, 34, 42);
+  function ground(color = colors.ground, colorAt = null,
+    visualExtent = null) {
+    // An outdoor world may need more painted terrain than its walkable
+    // collision bounds. Its scenery lives in an isolated portal scene, so
+    // extending it never puts visible ground inside the neighboring room.
+    const visualWidth = visualExtent?.width ?? width;
+    const visualDepth = visualExtent?.depth ?? depth;
+    const plane = new THREE.PlaneGeometry(visualWidth, visualDepth,
+      Math.max(34, Math.ceil(visualWidth * 2.3)),
+      Math.max(42, Math.ceil(visualDepth * 2.3)));
     plane.rotateX(-Math.PI / 2);
     const shades = [];
     for (let i = 0; i < plane.attributes.position.count; i++) {

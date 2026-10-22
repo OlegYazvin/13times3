@@ -35,7 +35,7 @@ audit below remains open.
 | `07` | Continue refining Zephrine's position and Oleg's supporting hands. The October 21 planting pass gave the berry bushes attached shaped leaves, several leaf masses per branch, and pedicel-hung fruit clusters. An October 22 pass replaced G's generic body with a posed clothed figure, her curved illustrated likeness, rounded bob, and blouse stitching. | Oleg's likeness reads from the doorway, and G with Zephrine's picking action is discoverable from within the field. Check G and the child at close three-quarter distance. |
 | `08` | Continue shaping Palmisano's quarry, the Zen gate, and the deeper volume of every stop. The October 21 pass added drawn masonry courses, moved Pullman into the doorway view, sculpted the Arts Bank pediment and entry, and gave five stops path-facing facades with angled labels. | Each route stop reads as a different designed place from the path as well as the painting, not a differently labeled cuboid. |
 | `09` | Continue shaping the orchard crowns, farm stand and family poses. The 2026-10-21 pass attached leaf clusters and apples to fruiting twigs, raised the canopy volume, scaled fruit closer to the figures, and gave the harvest basket an actual woven rim and crossing courses. | The orchard reads as a first apple-picking visit with friends rather than people in front of a barn. |
-| `10` | Continue the planted Play Garden, modeled play ship and lighthouse, and figure detail; inspect the newly revised park at close phone distance. | Shared play stays the focus while its park structures remain recognizable from multiple viewpoints. |
+| `10` | The October 22 follow-up joins the children on a low blue play surface, shapes the lighthouse slide as a real channel with rails and lip, and extends the painted ground beyond collision bounds. Continue the planted Play Garden, modeled ship, people and side-view finish. | Shared play stays the focus while its park structures remain recognizable from multiple viewpoints. |
 | `11` | Continue refining Zephrine, G's gesture beside her, the freestanding arch rear, habitat lighting, and species detail. G now shares a posed clothed figure, painted face, rounded bob, and blouse stitching with frame `07`; her hand reaches toward Zephrine. The close tank replaces its dark egg-shaped mound and straight kelp stems with a broken-edged reef shelf, curved seagrass, branching coral and two detailed fish. The rear glass has a composed school at eye height and a turtle off to one side. Nine repainted CC0 sculpted fish now show gills, lips, fins and scales; two newly inhabit the flanking tanks, while many smaller fish remain simplified. October 22 passes replace plain rotunda shafts with carved fluted stone and shell capitals, shape the long rear sill into a carved wave plinth, carry the painted deep water into the rear vault, and give the overhead school lighter pigment. | Fish clearly occupy water behind glass from both the portal loop and the near sill, and visitors can walk behind the hall portal without any clipped or blank area. |
 
 The October 22 aquarium rotunda pass removed target-like floor and dome rings
@@ -61,6 +61,12 @@ in every Oleg room; it does not settle the character art audit. Frame `11`'s aqu
 the outdoor worlds have different world scale; never shrink their volume to
 fit neighboring frames in hallway coordinates. Neighboring worlds may
 intersect geometrically because the renderer isolates them behind each portal.
+
+After Oleg requested a more recognizable figure, a new `v7` painting based on
+both private portraits replaced the older shared head texture in all eight
+rooms. The wraparound atlas and face relief now follow it, and the jaw is
+rounder. Inspect the actual figure beside each memory, especially close side
+views and hand poses; this is an identity improvement, not final art approval.
 
 Keep each published GLB plus preview under the 8 MB target and preserve the
 39 achievement pages and 41 stable frame IDs after every revision. A physical
