@@ -84,8 +84,8 @@ export function makeRiggedOleg(template, { pose = "desk", height = 1.73,
   // The former head ended well below the rig's natural crown and its face
   // became anonymous at hallway distance. Keep the jaw seated at the trimmed
   // neck while restoring a human-sized cranium and readable features.
-  const headHeight = .585;
-  head.scale.set(.72, headHeight, .68);
+  const headHeight = .64;
+  head.scale.set(.85, headHeight, .76);
   head.position.y = 1.47 - 1.315 * headHeight;
   figure.add(head);
   const headRings = [

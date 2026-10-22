@@ -8,6 +8,7 @@ import riverVariantURL from "./assets/room11/river-variant-painted-v2.webp";
 import canopyWatercolorURL from "./assets/room11/canopy-watercolor.webp";
 import paintedBarramundiURL from "./assets/room11/barramundi-painted.glb";
 import mantaURL from "./assets/room11/quaternius-manta.glb";
+import sculptedSchoolURL from "./assets/room11/babylon-fish-unskinned.glb";
 
 // A dream of Shedd's aquatic dome, not a literal or dated exhibit replica.
 // G and Zephrine share the still moment; only the little fish gently breathe.
@@ -1318,12 +1319,46 @@ curve(root,"freestanding arched return doorway",
 
 window.__authorRoom=async()=>{
   const loader=new THREE.TextureLoader();
-  const [reef,river,reefVariant,riverVariant,canopy,barramundi,manta]=await Promise.all([
+  const [reef,river,reefVariant,riverVariant,canopy,barramundi,manta,sculptedSchool]=await Promise.all([
     loader.loadAsync(reefBackdropURL),loader.loadAsync(riverBackdropURL),
     loader.loadAsync(reefVariantURL),loader.loadAsync(riverVariantURL),
     loader.loadAsync(canopyWatercolorURL),
     new GLTFLoader().loadAsync(paintedBarramundiURL),
-    new GLTFLoader().loadAsync(mantaURL)]);
+    new GLTFLoader().loadAsync(mantaURL),
+    new GLTFLoader().loadAsync(sculptedSchoolURL)]);
+  // Each source mesh contains a few fish of one kind. Recenter its actual
+  // three-dimensional geometry, then distribute those small schools through
+  // the rear water. Their side profiles face the visitor; the source X-axis
+  // spacing becomes physical depth, so walking along the glass reveals them.
+  sculptedSchool.scene.updateMatrixWorld(true);
+  const species=[];
+  sculptedSchool.scene.traverse(object=>{
+    if(!object.isMesh)return;
+    const geometry=object.geometry.clone();
+    geometry.applyMatrix4(object.matrixWorld);
+    geometry.computeBoundingBox();
+    const center=geometry.boundingBox.getCenter(new THREE.Vector3());
+    geometry.translate(-center.x,-center.y,-center.z);
+    const material=object.material.clone();
+    material.color.multiplyScalar(.72);
+    material.roughness=.92;
+    material.metalness=0;
+    species.push({geometry,material});
+  });
+  for(const [index,fishType] of species.entries()) {
+    const school=new THREE.Group();
+    school.name=`painted three-dimensional rear-water fish species ${index+1}`;
+    school.position.set([-4.4,-2.4,2.45,4.2][index],
+      [2.65,3.18,2.82,2.45][index],
+      [18.3,19.1,18.45,19.05][index]);
+    school.rotation.y=Math.PI/2+[.08,-.07,.1,-.09][index];
+    school.scale.setScalar(.15);
+    school.userData.driftPhase=421+index;
+    school.userData.driftAmplitude=.012;
+    school.userData.preserveMaterials=true;
+    school.add(new THREE.Mesh(fishType.geometry,fishType.material));
+    root.add(school);
+  }
   const overheadRay=new THREE.Group();
   overheadRay.name="sculpted manta swimming above the aquarium's glass lens";
   overheadRay.position.set(-.65,5.28,4.05);

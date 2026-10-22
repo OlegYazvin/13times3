@@ -715,6 +715,10 @@ try {
   if (process.env.GALLERY_TEST_PHONE_FINAL_ONLY !== "1") {
   const phoneContext = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true });
   const phonePage = await phoneContext.newPage();
+  // Capture at CSS size: WebGL still renders with the phone's pixel ratio,
+  // while SwiftShader need not read back a 1170×2532 image for every pose.
+  const capturePhone = phonePage.screenshot.bind(phonePage);
+  phonePage.screenshot = options => capturePhone({ scale: "css", timeout: 60000, ...options });
   const phoneErrors = [];
   phonePage.on("pageerror", error => phoneErrors.push(error.message));
   await phonePage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
@@ -822,6 +826,8 @@ try {
     const context = await browser.newContext({ viewport: { width: 390, height: 844 },
       deviceScaleFactor: 3, isMobile: true, hasTouch: true });
     const page = await context.newPage();
+    const captureFinalPhone = page.screenshot.bind(page);
+    page.screenshot = options => captureFinalPhone({ scale: "css", timeout: 60000, ...options });
     const errors = [];
     page.on("pageerror", error => errors.push(error.message));
     await page.goto(`${base}/explore/`, { waitUntil: "networkidle" });

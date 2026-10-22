@@ -158,6 +158,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-22 Ithaca orchard-crown revision: frame `09` keeps the first visit to Matt and Tanya with their two children and Zephrine's first apple picking. Its ten rounded procedural tree crowns are replaced with adapted 3D foliage joined to the existing forked fruit trees. Smaller apples hang from stems that begin at branch ends. Zephrine's teal vest is shaped around her torso so it no longer obscures her face, and the oversized loose ground apples are removed. This remains the same independent open-sky world and stable frame ID, not a new fruit-picking memory.
 
+2026-10-22 recurring likeness and aquarium-fish revision: Oleg's eight existing appearances (`02`, `04`, `05`, `07`, `08`, `09`, `10`, `11`) now share a new painted face study made from his two private reference photos, mapped to a broader, taller continuous sculpted head. The original photos remain private. Frame `11` keeps G and Zephrine's same Shedd memory and freestanding portal, while four separated groups of detailed 3D reef fish occupy the rear water at viewing height. No memory, person, title, frame ID, independent sky world, or portal position changes.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.
