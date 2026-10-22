@@ -643,15 +643,9 @@ for(const side of [-1,1]) for(let i=0;i<11;i++) {
     .48+random()*.38,i%5===0?M.coral:i%3?M.gold:M.turquoise,
     i*.88+side,side*Math.PI/2);
 }
-// A few larger fish stay near the glass. Their full bodies, eyes, fins and
-// moving silhouettes remain legible at ordinary walking distance, while the
-// smaller schools supply depth farther back in each habitat.
-for(const side of [-1,1]) for(let i=0;i<3;i++) {
-  const z=5.1-i*5.4;
-  fish(side*7.78,2.05+i*.77,z,.94-i*.09,
-    i===1?M.coral:i===2?M.turquoise:M.gold,
-    70+i+side*.31,side*Math.PI/2);
-}
+// Keep the small procedural fish in distant schools. The large specimens
+// near the side glass are now the formed, textured models loaded below;
+// enlarging the simple school geometry here made it look like primitives.
 for(let i=0;i<6;i++) fish(-6.8+random()*13.6,
   1.12+random()*4.7,-12.0-random()*.75,
   .47+random()*.46,i%3===0?M.coral:i%3===1?M.gold:M.turquoise,
@@ -1359,6 +1353,27 @@ window.__authorRoom=async()=>{
     school.add(new THREE.Mesh(fishType.geometry,fishType.material));
     root.add(school);
   }
+  // The side bays are a large part of the walk, not just peripheral painted
+  // scenery. Reuse the four sculpted species behind their glass at different
+  // depths and heights. Keep a quiet center aisle and avoid the round tank so
+  // G and Zephrine remain the first read from the portal.
+  for(const [index,side,z,y,speciesIndex] of [
+    [0,-1,-6.0,2.65,0], [1,-1,.15,3.15,2],
+    [2,-1,7.75,2.32,1], [3,1,-7.65,3.05,3],
+    [4,1,-1.55,2.4,0], [5,1,8.15,3.38,2],
+  ]) {
+    const swimmer=new THREE.Group();
+    swimmer.name=`painted three-dimensional side-water fish species ${index+1}`;
+    swimmer.position.set(side*8.16,y,z);
+    swimmer.rotation.y=side<0?Math.PI:.08;
+    swimmer.scale.setScalar(.115+(index%3)*.012);
+    swimmer.userData.driftPhase=431+index;
+    swimmer.userData.driftAmplitude=.012;
+    swimmer.userData.preserveMaterials=true;
+    const fishType=species[speciesIndex];
+    swimmer.add(new THREE.Mesh(fishType.geometry,fishType.material));
+    root.add(swimmer);
+  }
   const overheadRay=new THREE.Group();
   overheadRay.name="sculpted manta swimming above the aquarium's glass lens";
   overheadRay.position.set(-.65,5.28,4.05);
@@ -1367,7 +1382,9 @@ window.__authorRoom=async()=>{
   manta.scene.traverse(object=>{
     if(!object.isMesh)return;
     object.material=object.material.clone();
-    object.material.color.set(object.material.name==="Bottom"?0xd7d9c8:0x527c83);
+    object.material.color.set(object.material.name==="Bottom"?0xe5dec6:0x8ab9bf);
+    object.material.emissive=new THREE.Color(0x47747c);
+    object.material.emissiveIntensity=.12;
     object.material.roughness=.94;
     object.material.metalness=0;
     object.material.side=THREE.DoubleSide;

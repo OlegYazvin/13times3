@@ -13,6 +13,7 @@ export function loadAdaptedTree() {
 export function plantAdaptedTree(parent, source, {
   x, z, scale = .5, rotation = 0, leafTint = 0xb5c5ad,
   name = "detailed branching tree", colliderRadius = .15,
+  collidable = true,
 }) {
   const tree = source.clone(true);
   tree.name = name;
@@ -31,13 +32,15 @@ export function plantAdaptedTree(parent, source, {
   });
   parent.add(tree);
   // Only the trunk obstructs walking; its canopy is above head height.
-  const core = new THREE.Mesh(new THREE.CylinderGeometry(
-    colliderRadius * .82, colliderRadius, 2.1, 10),
-    new THREE.MeshStandardMaterial({ color: 0x59493f, roughness: .98 }));
-  core.name = "solid tree trunk collision core";
-  core.position.set(x, 1.08, z);
-  core.userData.solidFootprint = true;
-  parent.add(core);
+  if (collidable) {
+    const core = new THREE.Mesh(new THREE.CylinderGeometry(
+      colliderRadius * .82, colliderRadius, 2.1, 10),
+      new THREE.MeshStandardMaterial({ color: 0x59493f, roughness: .98 }));
+    core.name = "solid tree trunk collision core";
+    core.position.set(x, 1.08, z);
+    core.userData.solidFootprint = true;
+    parent.add(core);
+  }
   return tree;
 }
 

@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { foliageLobe } from "./sculpted_foliage.mjs";
 import { createRoomArt } from "./room_art.mjs";
 
 // Blueberries of Indiana, near La Porte, becomes an expansive summer field
@@ -50,15 +49,17 @@ for (const side of [-1, 1]) {
       [side * 1.48, .05, -7.8]], .022, M.gold, 49);
 }
 
-const berryGeometry = new THREE.SphereGeometry(.055, 7, 5);
+const berryGeometry = new THREE.SphereGeometry(.034, 10, 8);
 const leafGeometry = (() => {
   const positions = [], uv = [], indices = [];
   const rows = 8;
   for (let row = 0; row <= rows; row++) {
     const t = row / rows;
-    const half = .17 * Math.pow(Math.sin(Math.PI * t), .82);
+    const half = .17 * Math.pow(Math.sin(Math.PI * t), .82)
+      * (1 + .026 * Math.sin(t * 17));
     for (const side of [-1, 0, 1]) {
-      positions.push(side * half, t, .055 * Math.sin(Math.PI * t) * (1 - Math.abs(side) * .65));
+      positions.push(side * half, t,
+        .06 * Math.sin(Math.PI * t) * (1 - Math.abs(side) * .65));
       uv.push((side + 1) / 2, t);
     }
   }
@@ -86,8 +87,8 @@ function blueberry(parent, x, y, z, light = false) {
   const berry = add(parent, "small round blueberry with pale bloom",
     berryGeometry, light ? M.berryLight : M.berry, x, y, z);
   berry.userData.batchPetal = true;
-  const calyx = petal(parent, "tiny pointed blueberry calyx", x - .02,
-    y + .046, z + .037, .055, M.berryDark, .6);
+  const calyx = petal(parent, "tiny pointed blueberry calyx", x - .012,
+    y + .029, z + .022, .035, M.berryDark, .6);
   calyx.userData.batchPetal = true;
 }
 function bush(x, z, height = 1.45, central = false) {
@@ -98,34 +99,30 @@ function bush(x, z, height = 1.45, central = false) {
   loft(group, "solid branching bush crown and stems", [[0, .18, .18],
     [.34, .21, .19], [height * .65, .12, .13],
     [height, .045, .05]], M.bark, 10, true);
-  for (let arm = 0; arm < 5; arm++) {
-    const angle = arm * Math.PI * 2 / 5 + .25 * Math.sin(z);
+  for (let arm = 0; arm < 7; arm++) {
+    const angle = arm * Math.PI * 2 / 7 + .25 * Math.sin(z);
     const dx = Math.cos(angle), dz = Math.sin(angle);
     const span = central ? 1.2 : .73 + .22 * random();
     const tipY = height * (.7 + random() * .33);
     curve(group, "arching branch carrying blueberries",
       [[0, .38, 0], [dx * span * .48, height * .77, dz * span * .48],
         [dx * span, tipY, dz * span]], .036, M.bark, 18);
-    for (const [t, scale] of [[.48, .82], [.72, 1], [.91, .7]]) {
-      const branchY = .38 + (tipY - .38) * t + .12 * Math.sin(Math.PI * t);
-      foliageLobe(group, "small leaf mass grown around the berry stem",
-        dx * span * t, branchY, dz * span * t,
-        .29 * scale, .13 * scale, .24 * scale,
-        arm % 2 ? C.leaf : C.paleLeaf, z * 2 + arm + t * 3);
-    }
+    // Earlier broad foliage lobes hid all of the branch and leaf work and
+    // turned each shrub into a stack of oval trays. Let the leaves themselves
+    // make the canopy; their small stems stay visibly attached to the wood.
     const acrossX = -dz, acrossZ = dx;
-    for (let leafIndex = 0; leafIndex < 7; leafIndex++) {
-      const t = .31 + leafIndex * .095;
+    for (let leafIndex = 0; leafIndex < 18; leafIndex++) {
+      const t = .22 + leafIndex * .04;
       const side = leafIndex % 2 ? -1 : 1;
       const base = [dx * span * t, .38 + (tipY - .38) * t + .12 * Math.sin(Math.PI * t), dz * span * t];
-      const stem = [base[0] + acrossX * side * .09, base[1] + .025,
-        base[2] + acrossZ * side * .09];
+      const stem = [base[0] + acrossX * side * .046, base[1] + .014,
+        base[2] + acrossZ * side * .046];
       beam(group, "fine woody stem holding a blueberry leaf", base, stem,
         .009, .005, M.bark, 6);
-      const tip = [stem[0] + acrossX * side * (.18 + .025 * (leafIndex % 3)) + dx * .08,
-        stem[1] + .085 + .025 * (leafIndex % 2),
-        stem[2] + acrossZ * side * (.18 + .025 * (leafIndex % 3)) + dz * .08];
-      blueberryLeaf(group, stem, tip, .087 + .012 * (leafIndex % 3),
+      const tip = [stem[0] + acrossX * side * (.085 + .012 * (leafIndex % 3)) + dx * .045,
+        stem[1] + .06 + .012 * (leafIndex % 2),
+        stem[2] + acrossZ * side * (.085 + .012 * (leafIndex % 3)) + dz * .045];
+      blueberryLeaf(group, stem, tip, .044 + .006 * (leafIndex % 3),
         leafIndex % 3 ? M.leaf : M.paleLeaf);
     }
     for (let cluster = 0; cluster < 2; cluster++) {
@@ -133,11 +130,11 @@ function bush(x, z, height = 1.45, central = false) {
       const stem = [dx * span * t, .38 + (tipY - .38) * t + .12 * Math.sin(Math.PI * t), dz * span * t];
       for (let fruit = 0; fruit < 3; fruit++) {
         const side = fruit - 1;
-        const berryAt = [stem[0] + acrossX * side * .085 + dx * .045,
-          stem[1] - .12 - fruit * .025,
-          stem[2] + acrossZ * side * .085 + dz * .045];
+        const berryAt = [stem[0] + acrossX * side * .058 + dx * .035,
+          stem[1] - .09 - fruit * .018,
+          stem[2] + acrossZ * side * .058 + dz * .035];
         beam(group, "short pedicel connecting blueberry to branch", stem,
-          [berryAt[0], berryAt[1] + .045, berryAt[2]], .008, .004, M.bark, 6);
+          [berryAt[0], berryAt[1] + .029, berryAt[2]], .006, .003, M.bark, 6);
         blueberry(group, ...berryAt, fruit % 3 === 0);
       }
     }
@@ -150,7 +147,7 @@ for (const side of [-1, 1]) for (const offset of [2.65, 4.75]) {
     bush(side * offset, z, 1.15 + .28 * Math.sin(i * 1.9 + offset));
   }
 }
-bush(.95, -.45, 2.18, true);
+bush(.95, -.45, 1.65, true);
 // This single low bough gives Zephrine something she can actually reach from
 // Oleg's shoulders. The shrub roots outside the walking lane; its fruit hangs
 // at her hand height instead of floating somewhere across the field.

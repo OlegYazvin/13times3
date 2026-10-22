@@ -432,6 +432,7 @@ def main() -> None:
         assert detail in aquarium_names, f"Room 11 missing {detail}"
     assert aquarium_names.count("painted sculpted barramundi behind aquarium glass") >= 9, "Room 11 needs detailed fish in the close tank and the surrounding habitats"
     assert aquarium_names.count("painted three-dimensional rear-water fish species") == 4, "Room 11 needs four separated sculpted reef-fish schools at the rear glass"
+    assert aquarium_names.count("painted three-dimensional side-water fish species") == 6, "Room 11 needs sculpted fish distributed behind both long side aquariums"
     assert {"streamlined", "deep reef", "slender"}.issubset({
         node.get("extras", {}).get("bodyType") for node in aquarium_json["nodes"]
     }), "Room 11 fish must retain three distinct sculpted body shapes"

@@ -2,6 +2,8 @@
 
 These are decisions and corrections from developing frame `01`. Read them with the [scene registry](scene-registry.md) before building another room. Apply the interaction lessons to every room; choose each new room's own visual theme from its memory.
 
+For ongoing refinement of the published rooms, use the [visual quality audit](visual-quality-backlog.md) alongside this guide. Functional portal checks do not establish that every scene has reached the requested art finish.
+
 ## Art direction
 
 - Make the hallway spacious, dreamlike, and architectural. Avoid a narrow digital tunnel, repeated hexagons, empty flat walls, and decorative elements that hide labels or signs.
@@ -120,4 +122,5 @@ These are decisions and corrections from developing frame `01`. Read them with t
 - Do not publish a new Oleg face merely because it looks sharper by itself. A later image draft barely changed his actual room-scale likeness, and a face-landmark surface laid over the established head warped his eyes and mouth in a close walk-through. Replacing the sculpt with the anatomical head from the body rig distorted the glasses, narrowed the face, and exposed a neck seam. Retain the clearer shared sculpt until a replacement improves the front and three-quarter views in all eight rooms; keep the reference photos private.
 - Judge a model by its silhouette from the visitor's view. A procedural aquarium ray made from a smooth oval looked like another primitive when seen from below. A small licensed sculpt with formed fins and tail reads more clearly in the overhead water lens; keep its material subdued and test it from the phone doorway before publishing.
 - For schools of sculpted fish, inspect the source from the player's side and front. A source arranged for a model viewer can collapse into a single pile after rotation; separate its species and distribute them across water depth and width, then inspect from the rear-glass path. Strip unused animation channels, skinning, and oversized textures before bundling a frozen scene, and retain the required credit for licensed source geometry.
+- Repeat that eye-level composition along side aquariums, not only at the rear focal tank. A few close, oversized procedural fish can dominate the visitor's view as obvious primitives even when the room also contains detailed animals. Use formed 3D models near the glass and keep simpler schools small and deeper in the painted water.
 - Outdoor skies need local painted cloud forms that remain readable from the portal, not just a smooth color gradient. Keep them soft and scale them against the full-height scene. Tinting only the distant ground toward the sky did not hide a nearer authored floor edge in frame `02`; inspect the actual seam from a side walk before treating horizon color as a fix.

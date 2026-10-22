@@ -633,6 +633,18 @@ async function authorRoom() {
     name: "detailed shade tree in the friendship garden",
     colliderRadius: .2,
   }));
+  // The garden continues beyond its reachable edge as a shaded neighborhood
+  // park. Reuse complete modeled trees rather than stretching the playable
+  // ground into a blank horizon or surrounding the children with a low roof.
+  for(const [index,x,z,scale] of [
+    [0,-12.1,-17.2,.84],[1,-8.5,-12.8,.8],[2,-4.0,-12.6,.74],
+    [3,4.0,-12.5,.76],[4,8.3,-13.1,.81],[5,12.2,-17.0,.88],
+  ]) plantAdaptedTree(root, parkTree, {
+    x,z,scale,rotation:index*1.17,
+    leafTint:index%3===0?0xb8c8aa:index%3===1?0x8fae97:0xa9baa7,
+    name:"distant modeled park tree beyond the walkable friendship garden",
+    collidable:false,
+  });
   await finishOlegPortraits(root);
   root.updateMatrixWorld(true);
   const groups = new Map();

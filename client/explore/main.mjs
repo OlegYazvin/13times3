@@ -79,6 +79,8 @@ try {
       modelColliderCount: rooms.active?.modelColliderCount ?? 0,
       driftingFishCount: rooms.active?.driftingFish?.length ?? 0,
       firstFishY: rooms.active?.driftingFish?.[0]?.object.position.y ?? null,
+      fishProbeY: rooms.active?.driftingFish?.slice(0, 12)
+        .map(fish => fish.object.position.y) ?? [],
       roomColliders: rooms.active?.colliders ?? [],
       frame01Painting: Boolean(gallery.frameMeshes.get("01").surface.material.map?.image?.width),
       frameCount: gallery.layout.frames.length,

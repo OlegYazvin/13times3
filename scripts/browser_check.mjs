@@ -659,11 +659,13 @@ try {
   await aquariumPage.screenshot({ path: ".cache/room11-entered-continuous.png" });
   const fishPositions = [];
   for (let sample = 0; sample < 5; sample++) {
-    fishPositions.push((await aquariumPage.evaluate(() => window.__galleryDebug())).firstFishY);
+    fishPositions.push((await aquariumPage.evaluate(() => window.__galleryDebug())).fishProbeY);
     await aquariumPage.waitForTimeout(400);
   }
-  assert.ok(Math.max(...fishPositions) - Math.min(...fishPositions) > .004,
-    "a sculpted fish should move slightly");
+  assert.ok(fishPositions[0].some((_, index) => {
+    const samples = fishPositions.map(row => row[index]);
+    return Math.max(...samples) - Math.min(...samples) > .004;
+  }), "sculpted fish should move slightly across the inhabited tanks");
   await aquariumPage.evaluate(() => window.__galleryTestRoomPose(1.13, 8.35, 0));
   await aquariumPage.evaluate(() => window.__galleryTestRoomMove(1.13, 6.45));
   assert.ok((await aquariumPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 7.45,
