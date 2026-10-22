@@ -155,7 +155,7 @@ function addPortrait(parent, faceY, profile, fallbackMaterial, person) {
     // little of that margin on Oleg's 3D mapping so his actual eyes, glasses,
     // nose and jaw fill the sculpt instead of becoming a small mask inside a
     // much larger dark hair silhouette.
-    uvs.push(person === "Oleg" ? .15 + u * .70 : u,
+    uvs.push(person === "Oleg" ? .12 + u * .76 : u,
       person === "Oleg" ? .08 + v * .84 : v);
   }
   for (let row = 0; row < rows; row++) for (let col = 0; col < columns; col++) {
