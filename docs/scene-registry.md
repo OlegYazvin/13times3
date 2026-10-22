@@ -140,6 +140,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-22 Oleg identity and outdoor play revision: the same Oleg figure in frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11` now uses a new `v7` painted portrait derived from both private reference photos, a matching relief table, and a broader sculpted jaw. Frame `10` replaces loose play tubes with one formed surface, makes its lighthouse slide a channeled structure, and extends its painted terrain beyond the collision bounds beneath the open sky. The remembered events, people, titles, frame IDs, and portal locations are unchanged. Adjacent portal worlds remain isolated; their outside scenery may overlap in coordinates without visibly intersecting.
 
+2026-10-22 aquarium rear-habitat revision: frame `11` keeps G and Zephrine wondering at fish in the same Shedd memory. The dark, flat rear tank bottom becomes continuous undulating painted sand. Repeated stacked plate shapes and oversized center branches are removed so the modeled fish and painted reef have a clear eye-level composition. A fluted stone dividing pier joins the two contrasting habitats at their formerly exposed painting seam. A trial of compact public-domain coral scans was rejected after the scene view exposed faceted silhouettes and display bases. No new people, event, title, frame ID, or portal position is added.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

@@ -323,25 +323,56 @@ for(const x of [-6.6,-3.3,0,3.3,6.6]) {
       [x+rib*.15,.51-Math.abs(rib)*.014,16.677]],
     .007,M.pearl,12);
 }
-const rearBed=add(root,"modeled seabed continues behind rear glazing",
-  new THREE.PlaneGeometry(18,4.5,18,8),M.shadow,0,.045,18.85);
-rearBed.rotation.x=-Math.PI/2;
+// The deep aquarium needs an inhabited foreground, not a dark rectangular
+// shelf under an elaborate painted backdrop. Its sandy tide channels are
+// one continuous 3D bed several metres behind glass.
+function rearSandHeight(x,z) {
+  const localZ=z-18.85;
+  const ridge=.2*Math.exp(-Math.pow((localZ+.1)/1.18,2))*
+    (.65+.35*Math.sin(x*1.48+localZ*.73));
+  const ripple=.035*Math.sin(x*2.2+localZ*3.4)+
+    .018*Math.sin(x*5.1-localZ*2.7);
+  return .045+ridge+ripple;
+}
+const rearBedGeometry=new THREE.PlaneGeometry(18,4.5,72,22);
+rearBedGeometry.rotateX(-Math.PI/2);
+const rearBedColors=[];
+for(let i=0;i<rearBedGeometry.attributes.position.count;i++) {
+  const x=rearBedGeometry.attributes.position.getX(i);
+  const z=rearBedGeometry.attributes.position.getZ(i);
+  const height=rearSandHeight(x,z+18.85)-.045;
+  rearBedGeometry.attributes.position.setY(i,height);
+  const ridge=.2*Math.exp(-Math.pow((z+.1)/1.18,2))*
+    (.65+.35*Math.sin(x*1.48+z*.73));
+  const sand=.31+ridge*.98+.18*Math.sin(x*.7+z*1.4)+
+    .13*Math.cos(x*1.9-z*.65);
+  const pigment=new THREE.Color(0x376f78).lerp(new THREE.Color(0xc1c5aa),
+    THREE.MathUtils.clamp(sand,.08,.78));
+  pigment.offsetHSL(0,0,(random()-.5)*.028);
+  rearBedColors.push(pigment.r,pigment.g,pigment.b);
+}
+rearBedGeometry.setAttribute("color",
+  new THREE.Float32BufferAttribute(rearBedColors,3));
+rearBedGeometry.computeVertexNormals();
+add(root,"undulating painted seabed beneath the inhabited rear glass",
+  rearBedGeometry,new THREE.MeshStandardMaterial({vertexColors:true,
+    map:floor.material.map,roughness:.98,side:THREE.DoubleSide}),0,.045,18.85);
 curve(root,"continuous polished edge of the rear glazing",
   [[-8.82,.77,16.82],[-4.4,.77,16.82],
     [0,.77,16.82],[4.4,.77,16.82],[8.82,.77,16.82]],
   .038,M.gold,29);
-for(let rock=0;rock<13;rock++) {
-  const x=-8.1+rock*1.34+(random()-.5)*.37;
-  const z=18.1+(rock%3)*.7;
-  const width=.34+random()*.47;
-  loft(root,"layered sandstone reef emerging from the seabed",
-    [[.03,width,.31,x,z],[.12,width*1.14,.4,x-.07,z],
-      [.26,width*.82,.3,x+.06,z-.04],
-      [.39,width*.36,.12,x+.11,z-.07]],
-    rock%3===0?M.kelp:rock%3===1?M.deep:M.turquoise,10);
-}
 for(const side of [-1,1]) box(root,"painted habitat behind freestanding portal",
   side*4.45,4.05,20.55,8.9,8.0,.016,side===1?reefVariantWall:riverVariantWall);
+// A carved dividing pier makes the two differently colored habitats read as
+// adjacent tanks and masks their hard painting seam from the visitor path.
+loft(root,"fluted stone pier dividing the two rear water habitats",
+  [[.05,.28,.25,0,20.42],[.2,.31,.27,0,20.42],
+    [.47,.19,.2,0,20.42],[6.75,.18,.2,0,20.42],
+    [7.42,.26,.25,0,20.42],[7.9,.35,.29,0,20.42]],M.marble,20);
+for(const x of [-.1,0,.1])curve(root,
+  "fine flutes carved into the rear habitat dividing pier",
+  [[x,.4,20.2],[x,3.85,20.2],[x,7.35,20.2]],
+  .009,M.pearl,22);
 for(const side of [-1,1]) {
   add(root,"rear aquarium glazing beyond portal",
     new THREE.PlaneGeometry(7.2,5.25),glass,side*5.25,3.2,16.82);
@@ -920,65 +951,6 @@ function coralGarden(x,z,marine) {
       .031,n%2?M.coral:M.gold,12);
   }
 }
-function plateCoral(x,z,height,material,phase=0) {
-  // Each plate is a thick, uneven living shelf on a bent branching stem.
-  // The earlier open cones looked like flowerpots from the visitor path.
-  curve(root,"bent trunk of layered living coral",
-    [[x,.15,z],[x-.1,.36,z+.05],[x+.12,height*.65,z-.09],
-      [x-.06,height,z-.05]],.052,material,20);
-  for(let tier=0;tier<3;tier++) {
-    const cx=x+(tier===1?.22:tier===2?-.16:.02);
-    const cz=z+(tier===1?-.13:tier===2?.12:0);
-    const yy=.48+height*(tier+1)/3;
-    const radius=.33+tier*.13;
-    curve(root,"fork supporting a coral shelf",
-      [[x+.02,.36,z],[x+.1,yy-.25,z-.03],[cx,yy-.055,cz]],
-      .025,material,13);
-    const vertices=[],uv=[],indices=[],rings=4,sides=24;
-    for(let surface=0;surface<2;surface++)
-      for(let ring=0;ring<=rings;ring++) {
-        const r=ring/rings;
-        for(let side=0;side<sides;side++) {
-          const a=side*Math.PI*2/sides;
-          const scallop=1+.13*Math.sin(a*7+phase+tier)*r;
-          vertices.push(cx+Math.cos(a)*radius*r*scallop,
-            yy+.05*r*r+.022*Math.sin(a*7+phase+tier)*r-
-              (surface===1?.055:0),
-            cz+Math.sin(a)*radius*.78*r*scallop);
-          uv.push(side/sides,r);
-          if(ring<rings) {
-            const n=(surface*(rings+1)+ring)*sides+side;
-            const b=(surface*(rings+1)+ring)*sides+(side+1)%sides;
-            if(surface===0) indices.push(n,n+sides,b,b,n+sides,b+sides);
-            else indices.push(n,b,n+sides,b,b+sides,n+sides);
-          }
-        }
-      }
-    const geo=new THREE.BufferGeometry();
-    geo.setAttribute("position",new THREE.Float32BufferAttribute(vertices,3));
-    geo.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
-    geo.setIndex(indices);geo.computeVertexNormals();
-    add(root,"thick scalloped plate coral with carved surface",geo,material);
-    const rim=[];
-    for(let i=0;i<=24;i++) {
-      const a=i*Math.PI*2/24;
-      const edge=radius*(1+.13*Math.sin(a*7+phase+tier));
-      rim.push([cx+Math.cos(a)*edge,
-        yy+.05+.022*Math.sin(a*7+phase+tier),
-        cz+Math.sin(a)*edge*.78]);
-    }
-    curve(root,"raised wavy lip of the coral shelf",rim,.018,M.pearl,25);
-    for(let vein=0;vein<5;vein++) {
-      const a=vein*Math.PI*2/5+phase;
-      curve(root,"subtle branching grain across living coral",
-        [[cx,yy+.008,cz],
-          [cx+Math.cos(a)*radius*.44,yy+.03,
-            cz+Math.sin(a)*radius*.34],
-          [cx+Math.cos(a)*radius*.85,yy+.056,
-            cz+Math.sin(a)*radius*.66]],.006,M.pearl,9);
-    }
-  }
-}
 function fanCoral(x,z,span,height,material,sideways=false) {
   const group=new THREE.Group();
   group.name="branching three-dimensional sea fan inside the aquarium";
@@ -1008,10 +980,8 @@ for(const side of [-1,1]) for(let patch=0;patch<6;patch++)
   coralGarden(side*8.53,-10.6+patch*5.35,side===1);
 for(const side of [-1,1]) for(let bay=0;bay<6;bay++) {
   const z=-9.85+bay*5.12;
-  plateCoral(side*8.12,z-1.08,1.02+(bay%3)*.17,
-    side===1?M.coral:M.leaf,bay*.48);
-  plateCoral(side*8.32,z+1.12,.66+(bay%2)*.22,
-    side===1?M.gold:M.turquoise,bay*.7);
+  fanCoral(side*8.18,z-.95,.58+(bay%3)*.1,
+    1.16+(bay%3)*.15,side===1?M.coral:M.leaf);
 }
 fanCoral(-3.15,-12.65,1.2,2.65,M.coral);
 fanCoral(3.7,-12.68,1.12,2.48,M.gold);
@@ -1031,13 +1001,12 @@ for(const side of [-1,1]) for(let shelf=0;shelf<4;shelf++) {
 }
 for(let patch=0;patch<5;patch++)
   coralGarden(-6.75+patch*3.35,-12.8,true);
-for(let patch=0;patch<5;patch++)
-  coralGarden(-6.5+patch*3.25,19.43,patch%2===0);
-for(let patch=0;patch<7;patch++)
-  plateCoral(-6.9+patch*2.24,18.0+(patch%2)*.9,
-    .86+(patch%3)*.28,patch%2?M.coral:M.gold,patch*.43);
-fanCoral(-.52,18.75,1.22,3.12,M.coral);
-fanCoral(1.05,19.12,.93,2.72,M.gold);
+for(const [x,z,s,h,ink] of [
+  [-6.1,18.4,.82,1.7,M.gold],[-2.55,18.85,.7,1.95,M.coral],
+  [2.8,18.35,.76,1.62,M.pearl],[6.1,18.75,.85,1.82,M.coral]
+]) fanCoral(x,z,s,h,ink);
+fanCoral(-2.95,18.75,.82,1.68,M.coral);
+fanCoral(2.55,19.12,.78,1.58,M.gold);
 for(const side of [-1,1]) {
   fanCoral(side*4.7,19.37,1.05,2.5,
     side<0?M.kelp:M.coral);
@@ -1141,8 +1110,8 @@ for(const side of [-1,1]) {
   coralGarden(x,z,true);
   fanCoral(x-.34,z-.22,.46,1.16,M.coral,true);
   fanCoral(x+.38,z-.28,.42,1.03,M.gold,false);
-  plateCoral(x-.37,z+.04,.42,M.pearl,.36);
-  plateCoral(x+.35,z-.02,.37,M.turquoise,-.26);
+  fanCoral(x-.37,z+.04,.31,.68,M.pearl,true);
+  fanCoral(x+.35,z-.02,.3,.62,M.turquoise);
   for(let plant=0;plant<7;plant++) {
     // Cluster on the far half so leaves frame the close fish without hiding
     // them from Zephrine's side of the glazing.
