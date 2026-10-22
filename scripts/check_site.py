@@ -257,6 +257,9 @@ def main() -> None:
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in weaning_json["nodes"]) >= 12, "Room 06 needs a solid chair, people, and fabric architecture"
     assert any("fully clothed sculpted Jane" in node.get("name", "") for node in weaning_json["nodes"])
     assert any("Zephrine nestled at Jane's clothed chest" in node.get("name", "") for node in weaning_json["nodes"])
+    assert any("continuous gathered linen vault panel" in node.get("name", "") for node in weaning_json["nodes"])
+    assert any("tall arched stained daylight pane" in node.get("name", "") for node in weaning_json["nodes"])
+    assert not any("overlapping linen sail under" in node.get("name", "") for node in weaning_json["nodes"])
     berry_room = frames[6]["room"]
     assert berry_room["title"] == "The time we went blueberry picking"
     assert berry_room["caption"] == "Blueberries with G"

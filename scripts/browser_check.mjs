@@ -431,11 +431,11 @@ try {
   assert.equal(weaningEntered.cameraFov, weaningBefore.cameraFov);
   assert.ok(weaningEntered.modelColliderCount >= 12, "chair, people and room details must collide");
   await weaningPage.screenshot({ path: ".cache/room06-entered-continuous.png" });
-  await weaningPage.evaluate(() => window.__galleryTestRoomPose(0, 1.55, 0));
+  await weaningPage.evaluate(() => window.__galleryTestRoomPose(0, 3.55, 0));
   await weaningPage.keyboard.down("w");
   await weaningPage.waitForTimeout(430);
   await weaningPage.keyboard.up("w");
-  assert.ok((await weaningPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 1.02,
+  assert.ok((await weaningPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 3.02,
     "Jane, Zephrine and the nursing chair should block movement");
   await weaningPage.evaluate(() => window.__galleryTestRoomPose(0, 5.0, -Math.PI / 2));
   const weaningBeforeExit = await weaningPage.evaluate(() => window.__galleryDebug());
