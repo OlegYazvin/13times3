@@ -40,3 +40,32 @@ export function plantAdaptedTree(parent, source, {
   parent.add(core);
   return tree;
 }
+
+// Preserve a room's hand-authored fruiting branches and their attached apples
+// while replacing only its smooth placeholder crown with modeled foliage.
+export function attachAdaptedCanopy(parent, source, {
+  y = .85, scale = .43, tint = 0xb7aa73,
+  name = "branch-connected modeled fruit-tree foliage",
+} = {}) {
+  source.updateMatrixWorld(true);
+  const canopy = new THREE.Group();
+  canopy.name = name;
+  canopy.position.y = y;
+  canopy.scale.setScalar(scale);
+  source.traverse(part => {
+    if (!part.isMesh || !part.material.name.includes("Leaves")) return;
+    const leaves = part.clone();
+    leaves.name = "shaped overlapping leaves in the orchard crown";
+    leaves.material = part.material.clone();
+    leaves.material.color.set(tint);
+    leaves.material.normalMap = null;
+    leaves.material.roughness = .98;
+    leaves.material.side = THREE.DoubleSide;
+    leaves.matrix.copy(part.matrixWorld);
+    leaves.matrix.decompose(leaves.position, leaves.quaternion, leaves.scale);
+    canopy.add(leaves);
+  });
+  if (canopy.children.length === 0) throw new Error("Adapted tree has no foliage mesh");
+  parent.add(canopy);
+  return canopy;
+}

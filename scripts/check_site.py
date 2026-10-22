@@ -368,6 +368,10 @@ def main() -> None:
     orchard_json = json.loads(orchard_glb[20:20 + orchard_json_length])
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in orchard_json["nodes"]) >= 16, "Room 09 needs solid figures, trees, and props"
     orchard_names = [node.get("name", "") for node in orchard_json["nodes"]]
+    assert orchard_names.count("branch-connected modeled fruit-tree foliage") == 10, "Room 09 needs ten modeled orchard crowns"
+    assert "fruiting apple-tree canopy with a scalloped silhouette" not in orchard_names, "Room 09 must not retain the rounded placeholder canopies"
+    assert orchard_names.count("shaped quilted teal vest panel following Zephrine's torso") == 2, "Zephrine's vest must leave her face clear"
+    assert "quilted teal vest panel" not in orchard_names, "Room 09 must not retain face-obscuring vest boxes"
     assert any("visible fruiting twig holding its leaves" in name for name in orchard_names)
     assert any("continuous horizontal wicker course" in name for name in orchard_names)
     assert any("apple pedicel tied back to the branch" in name for name in orchard_names)

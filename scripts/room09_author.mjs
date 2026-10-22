@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { foliageLobe } from "./sculpted_foliage.mjs";
+import { loadAdaptedTree, attachAdaptedCanopy } from "./adapted_tree.mjs";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
@@ -187,9 +187,11 @@ for (const sign of [-1, 1]) {
 // the autumn sky; floating leaf strips over the path read as stage rigging.
 
 // Orchard rows: trunks, forked branches, folded leaves, and sculpted fruit.
+const orchardCrowns = [];
 function orchardTree(x, z, scale, index) {
   const tree = new THREE.Group(); tree.name = `apple tree ${index} with a forked crown`;
   tree.position.set(x, 0, z); tree.scale.setScalar(scale); root.add(tree);
+  orchardCrowns.push({ tree, index });
   const trunk = sculptLoft(tree, "irregular solid apple trunk", [
     [0, .19, .18], [.35, .17, .15, .025], [.85, .15, .14, -.02],
     [1.5, .125, .12, .045], [2.0, .1, .09],
@@ -201,9 +203,6 @@ function orchardTree(x, z, scale, index) {
       Math.sin(a) * (.65 + .2 * rand())];
     tube(tree, "angular fruit-tree limb", [[0, 1.3, 0],
       [end[0] * .5, 1.93, end[2] * .5], end], .055, M.bark, 7);
-    foliageLobe(tree, "fruiting apple-tree canopy with a scalloped silhouette",
-      end[0] * .86, end[1] + .08, end[2] * .86,
-      .56, .39, .53, branch % 3 ? P.leaf : P.ochre, index * 7 + branch);
     for (let twig = 0; twig < 3; twig++) {
       const spread = (twig - 1) * .35;
       const tip = [end[0] + spread, end[1] + .03 + rand() * .08,
@@ -225,10 +224,12 @@ function orchardTree(x, z, scale, index) {
       const fruitX = end[0] + (rand() - .5) * .4;
       const fruitY = end[1] - .38 - rand() * .2;
       const fruitZ = end[2] + (rand() - .5) * .35;
-      const fruitScale = .51 + rand() * .16;
+      const fruitScale = .40 + rand() * .13;
       tube(tree, "apple pedicel tied back to the branch",
-        [[fruitX, end[1] - .08, fruitZ],
-          [fruitX, fruitY + fruitScale * .38, fruitZ]], .008, M.bark, 5);
+        [end,
+          [THREE.MathUtils.lerp(end[0], fruitX, .55), end[1] - .15,
+            THREE.MathUtils.lerp(end[2], fruitZ, .55)],
+          [fruitX, fruitY + fruitScale * .38, fruitZ]], .009, M.bark, 5);
       apple(tree, fruitX, fruitY, fruitZ, fruitScale,
         index % 3 ? M.red : M.crimson);
     }
@@ -462,18 +463,30 @@ const zephrine = person("Zephrine", 0, 3.05, 1.16, M.cream, hairWarm,
   { child: true, pants: M.cream, shoes: M.blue,
     handTargets: { "-1": [-.13, .66, .31], "1": [.16, .62, .31] } });
 for (const s of [-1, 1]) {
-  const panel = box(zephrine, "quilted teal vest panel", s * .12, .67, .175,
-    .18, .42, .035, M.teal);
-  panel.rotation.z = s * -.05;
-  for (let row = 0; row < 4; row++) box(zephrine, "vest quilting seam",
-    s * .12, .5 + row * .1, .198, .17, .006, .008, M.blue);
+  const vest = new THREE.Shape();
+  vest.moveTo(.018, .4);
+  vest.quadraticCurveTo(.13, .385, .224, .42);
+  vest.quadraticCurveTo(.252, .58, .224, .735);
+  vest.quadraticCurveTo(.17, .755, .133, .742);
+  vest.lineTo(.04, .645);
+  vest.quadraticCurveTo(.018, .55, .018, .4);
+  const panel = put(zephrine, "shaped quilted teal vest panel following Zephrine's torso",
+    new THREE.ExtrudeGeometry(vest, {depth:.025,bevelEnabled:true,
+      bevelSize:.009,bevelThickness:.007,bevelSegments:2,curveSegments:10}),
+    M.teal, 0, 0, .19);
+  panel.scale.x = s;
+  for (let row = 0; row < 3; row++) tube(zephrine, "vest's sewn curved quilting line",
+    [[s * .04, .465 + row * .074, .228],
+      [s * .13, .47 + row * .074, .231],
+      [s * .215, .465 + row * .074, .222]], .004, M.blue, 5);
   for (let i = 0; i < 3; i++) {
     const patch = put(zephrine, "tiny painted apple motif on the dress",
       new THREE.DodecahedronGeometry(.032, 0), M.red, s * (.08 + i * .08), .32 + i * .13, .179);
     patch.scale.set(1, 1.15, .42);
   }
 }
-box(zephrine, "teal vest zipper", 0, .69, .21, .012, .42, .012, M.cream);
+bridge(zephrine, "short stitched teal vest zipper", [0, .42, .231],
+  [0, .65, .231], .005, .005, M.cream, 6);
 apple(zephrine, .11, .55, .3, .67, M.crimson);
 const bite = put(zephrine, "pale bitten spot on Zephrine's first apple",
   new THREE.DodecahedronGeometry(.043, 1), M.cream, .08, .748, .35);
@@ -533,14 +546,17 @@ for (const side of [-1, 1]) tube(basket, "paired carved handle edge",
   .01, M.ochre, 5);
 for (let i = 0; i < 6; i++) apple(basket, (rand() - .5) * .45,
   .39 + rand() * .09, (rand() - .5) * .34, .58, i % 3 ? M.red : M.ochre);
-for (let i = 0; i < 7; i++) {
-  const x = -4.25 + rand() * 8.5, z = -4.7 + rand() * 9.7;
-  if (Math.abs(x) < 1.15 && z > -2 && z < 3) continue;
-  apple(root, x, .045, z, .45 + rand() * .2, i % 4 ? M.red : M.ochre);
-}
 
 async function authorRoom() {
-  const rig = await loadRiggedOlegBase();
+  const [rig, treeSource] = await Promise.all([
+    loadRiggedOlegBase(), loadAdaptedTree(),
+  ]);
+  for (const { tree, index } of orchardCrowns) {
+    attachAdaptedCanopy(tree, treeSource, {
+      y: .27, scale: .52,
+      tint: index % 3 === 0 ? 0xcfb376 : index % 3 === 1 ? 0x9aa879 : 0xb8a56e,
+    });
+  }
   oleg.clear();
   addContactShadow(oleg, 1.75);
   oleg.add(makeRiggedOleg(rig, {
