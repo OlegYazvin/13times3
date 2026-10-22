@@ -138,7 +138,7 @@ def main() -> None:
                    for node in room_nodes), f"Room {frame_id} lost Jane's posed figure"
         assert any("Jane's sculpted head with her painted likeness" in node.get("name", "")
                    for node in room_nodes), f"Room {frame_id} lost Jane's painted likeness"
-    for frame_id in ("05", "06", "07", "10", "11"):
+    for frame_id in ("05", "07", "10", "11"):
         room_model = OUTPUT / frames[int(frame_id) - 1]["room"]["modelUrl"].lstrip("/")
         room_bytes = room_model.read_bytes()
         json_size = int.from_bytes(room_bytes[12:16], "little")
@@ -285,6 +285,14 @@ def main() -> None:
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in weaning_json["nodes"]) >= 12, "Room 06 needs a solid chair, people, and fabric architecture"
     assert any("fully clothed sculpted Jane" in node.get("name", "") for node in weaning_json["nodes"])
     assert any("Zephrine nestled at Jane's clothed chest" in node.get("name", "") for node in weaning_json["nodes"])
+    assert any("tailored solid clothing with waist and shoulder contours" in node.get("name", "")
+               for node in weaning_json["nodes"]), "Room 06 needs a fully clothed child"
+    assert any("solid sculpted wingback upholstery with a shaped crest" in node.get("name", "")
+               for node in weaning_json["nodes"])
+    assert any("joined upholstered side wing of the nursing chair" in node.get("name", "")
+               for node in weaning_json["nodes"])
+    assert sum("irregular stitched thread circling the family" in node.get("name", "")
+               for node in weaning_json["nodes"]) == 3
     assert any("continuous gathered linen vault panel" in node.get("name", "") for node in weaning_json["nodes"])
     assert any("tall arched stained daylight pane" in node.get("name", "") for node in weaning_json["nodes"])
     assert any("continuous bent trouser leg with a formed knee" in node.get("name", "") for node in weaning_json["nodes"])

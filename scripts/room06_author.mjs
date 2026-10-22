@@ -148,8 +148,8 @@ const rugGeometry=new THREE.ExtrudeGeometry(rugOutline,{depth:.03,
 rugGeometry.rotateX(Math.PI/2);
 add(root,"thick woven rug with an uneven hand-finished edge",
   rugGeometry,M.cream,0,.065,.15+memoryZ);
-for (let i = 0; i < 5; i++) {
-  const radius=1.15+i*.24;
+for (let i = 0; i < 3; i++) {
+  const radius=1.28+i*.42;
   curve(root,"irregular stitched thread circling the family",
     Array.from({length:65},(_,step)=>{
       const a=step*Math.PI*2/64;
@@ -199,9 +199,36 @@ for (const side of [-1, 1]) {
   box(chair, "short inset chair side apron", side * .59, .32, -.13,
     .075, .26, .92, M.wood, true);
 }
-loft(chair, "high sculpted upholstered chair back", [[.55, .66, .15, 0, -.55],
-  [.92, .75, .19, 0, -.59], [1.45, .69, .2, 0, -.64],
-  [1.78, .48, .16, 0, -.68], [1.89, .29, .1, 0, -.68]], M.blue, 19, true);
+const backOutline = new THREE.Shape();
+backOutline.moveTo(-.6,.55);
+backOutline.bezierCurveTo(-.74,.75,-.8,1.16,-.73,1.5);
+backOutline.bezierCurveTo(-.67,1.75,-.45,1.88,0,1.91);
+backOutline.bezierCurveTo(.45,1.88,.67,1.75,.73,1.5);
+backOutline.bezierCurveTo(.8,1.16,.74,.75,.6,.55);
+backOutline.closePath();
+const backGeometry=new THREE.ExtrudeGeometry(backOutline,{
+  depth:.23,bevelEnabled:true,bevelSize:.045,bevelThickness:.04,
+  bevelSegments:3,curveSegments:18});
+const back=add(chair,"solid sculpted wingback upholstery with a shaped crest",
+  backGeometry,M.blue,0,0,-.86);
+back.userData.solidFootprint=true;
+for(const side of [-1,1]) {
+  loft(chair,"joined upholstered side wing of the nursing chair",[
+    [.74,.12,.24,side*.65,-.48],
+    [1.04,.17,.26,side*.7,-.51],
+    [1.48,.14,.23,side*.71,-.59],
+    [1.73,.055,.11,side*.58,-.66]],M.fabric,14,true);
+  curve(chair,"piped edge following the shaped chair back",[
+    [side*.59,.67,-.59],[side*.7,1.0,-.59],
+    [side*.71,1.43,-.59],[side*.54,1.73,-.59],
+    [side*.3,1.84,-.59]],.013,M.paleBlue,28);
+  for(const y of [.99,1.31,1.57]) {
+    curve(chair,"short stitched upholstery dart",[
+      [side*.53,y-.07,-.586],
+      [side*.48,y,-.58],
+      [side*.42,y+.045,-.583]],.0045,M.silver,9);
+  }
+}
 for (const side of [-1, 1]) {
   loft(chair, "formed upholstered armrest", [[.44, .17, .54, side * .68, .13],
     [.7, .22, .55, side * .71, .11], [.96, .21, .49, side * .72, .08]],
@@ -265,10 +292,10 @@ for(const side of [-1,1]) {
       [side*.2+.1,.105,.76]],.006,M.silver,12);
 }
 sculptSleevedArm(add,jane,{shoulder:[-.25,1.33,-.02],
-  elbow:[-.37,.91,.38],hand:[.32,.76,.53],
+  elbow:[-.24,1.04,.25],hand:[.14,.79,.57],
   outfit:M.sweater,skin:M.skin,trim:M.rose,size:.82});
 sculptSleevedArm(add,jane,{shoulder:[.24,1.33,-.02],
-  elbow:[.58,.96,.37],hand:[.82,.88,.43],
+  elbow:[.38,1.02,.27],hand:[.57,.8,.55],
   outfit:M.sweater,skin:M.skin,trim:M.rose,size:.82});
 const head = new THREE.Group(); head.name = "Jane's quiet face looking toward Zephrine";
 head.position.set(-.03, 0, -.06); head.rotation.z = -.07; jane.add(head);
@@ -291,16 +318,16 @@ for(let strand=0;strand<6;strand++) {
   ],.0045,strand%2?M.wood:M.hair,15);
 }
 
-// A small fully sculpted, clothed Zephrine leans across Jane's lap. Turning
-// the whole figure keeps the face, curls, hands, dress, and shoes dimensional
-// from every angle instead of making the child a side-view cutout or oval.
-const child = person("Zephrine nestled at Jane's clothed chest", .64, .47+memoryZ, 1.07, {
+// Zephrine remains fully clothed on Jane's lap. A purpose-built horizontal
+// torso was tested but read as a long oval at phone distance, so retain the
+// more recognizable sculpted child while a suitable posed model is sourced.
+const child = person("Zephrine nestled at Jane's clothed chest", .5, .47+memoryZ, 1.07, {
   skin: M.skin, hair: M.zephHair, outfit: M.peach, skirt: M.rose,
-  pants: M.blue, shoes: M.rose, dress: true, curls: false,
+  pants: M.blue, shoes: M.rose, dress: false, curls: false,
   hands: { "-1": [-.27, .72, .2], "1": [.31, .63, .17] },
 });
-child.position.y = .61;
-child.rotation.z = .87;
+child.position.y = .48;
+child.rotation.z = .6;
 child.scale.setScalar(.9);
 
 window.__authorRoom = () => exportRoom();

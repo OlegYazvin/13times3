@@ -20,6 +20,8 @@ The gallery has 41 stable frame IDs. The 39 original achievement pages are a sep
 
 Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unassigned blank portals.
 
+2026-10-22 nursing-sanctuary revision: frame `06` remains Jane and Zephrine's fully clothed, tender transition. The chair has a shaped wingback and side upholstery, Jane's arms cradle closer, and the woven rug has fewer contours. A tested horizontal child sculpt was rejected after phone review; the published child remains a clothed volumetric figure. The memory, title, people, and frame ID do not change.
+
 2026-10-22 aquarium architecture revision: frame `11` keeps the same Shedd visit and freestanding walk-behind portal. Its rotunda columns now have continuous carved flutes, shaped limestone profiles, and small shell-fan capitals; a curved stone and gold arch frames the far habitat; the stone floor carries a finer mineral wash; the overhead fish receive their own lighter aquatic pigments beneath the glass lens. The aquarium remains an impression of the place, with no newly claimed exhibit or encounter. The people, frame ID, and room boundary are unchanged.
 
 2026-10-22 doorway-painting and Oleg figure revision: all eleven published room previews now share the live room's light rig, so the still image has the same dimensional shading when its portal opens. Oleg's eight appearances (`02`, `04`, `05`, `07`, `08`, `09`, `10`, `11`) use a larger shared sculpted head seated at the neck. An added neck seam was rejected after a room-scale review because it read as a floating necklace. These are visual revisions to the existing memories; no frame assignment, title, or room boundary changes.
