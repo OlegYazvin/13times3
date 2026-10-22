@@ -60,6 +60,14 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 Oleg illustration refinement: frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11` share a new gouache face illustration checked against Oleg's private portrait for the glasses, eyes, side-parted medium hair, and close beard. The existing 3D head size stays in place because an enlarged mapping distorted his features in the room. This is the same person and same eight memories, with no frame assignment or portal change.
 
+2026-10-21 aquarium overhead habitat revision: frame `11` now surrounds the visitor above as well as beside them. A shallow curved glass water lens hangs under the rotunda dome, holds a school of larger volumetric fish, and has its own enclosing blue glass edge and pearl rim. The fish bodies now vary between streamlined, deep reef, and slender forms, with graduated painted flanks. The first trial's giant overhead ray and small flat floor-shell symbols were removed after visual review because they read as simple shapes. The freestanding return portal, path behind it, side aquariums, and the same G-and-Zephrine memory remain unchanged.
+
+2026-10-21 shared child-clothing revision: the existing Zephrine and other child appearances in frames `05`, `06`, `07`, `10`, and `11` have narrower, layered sculpted skirts with fluted hems instead of broad cone shapes. Zephrine's hair volume follows the painted face more closely. The children keep their original actions and relationships; no new scene is added or assigned.
+
+2026-10-21 Play Garden finish revision: frame `10` replaces its plain skyline blocks with varied rooflines, architectural trim, and arched windows. Rooted flowering islands and an inlaid winding promenade lead to the children. The symbolic play ship now has a shaped sail, deck boards, railings, portholes, and a wheel; the lighthouse has a recessed entrance, lookout rail, and climbing rungs. These are details of the same first shared-play visit, with no change to the people, memory, or frame ID.
+
+2026-10-21 outdoor sky finish: the seven outdoor or outdoor-blended published worlds (`02`, `03`, `04`, `07`, `08`, `09`, `10`) retain their tall separate sky domes but gain soft cloud and warm pigment variation higher above the horizon. The rebuilt previews were compared to confirm that the painted sky reads as open air rather than a low ceiling. No scene memory or frame assignment changes.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

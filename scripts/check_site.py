@@ -138,6 +138,14 @@ def main() -> None:
                    for node in room_nodes), f"Room {frame_id} lost Jane's posed figure"
         assert any("Jane's sculpted head with her painted likeness" in node.get("name", "")
                    for node in room_nodes), f"Room {frame_id} lost Jane's painted likeness"
+    for frame_id in ("05", "06", "07", "10", "11"):
+        room_model = OUTPUT / frames[int(frame_id) - 1]["room"]["modelUrl"].lstrip("/")
+        room_bytes = room_model.read_bytes()
+        json_size = int.from_bytes(room_bytes[12:16], "little")
+        room_names = [node.get("name", "") for node in
+                      json.loads(room_bytes[20:20 + json_size])["nodes"]]
+        assert any("fitted child skirt with formed cloth pleats" in name
+                   for name in room_names), f"Room {frame_id} lost the sculpted child skirt"
     aquarium_model = OUTPUT / frames[10]["room"]["modelUrl"].lstrip("/")
     aquarium_bytes = aquarium_model.read_bytes()
     aquarium_size = int.from_bytes(aquarium_bytes[12:16], "little")
@@ -306,7 +314,10 @@ def main() -> None:
     play_json_length = int.from_bytes(play_glb[12:16], "little")
     play_json = json.loads(play_glb[20:20 + play_json_length])
     play_names = " ".join(node.get("name", "") for node in play_json["nodes"])
-    for detail in ("Zephrine in shared play", "friend's first child", "friend's second child", "lighthouse", "ship", "whale"):
+    for detail in ("Zephrine in shared play", "friend's first child", "friend's second child", "lighthouse", "ship", "whale",
+                   "shaped distant Chicago facade", "rooted flower stem in the Play Garden",
+                   "hand-laid winding garden path seam", "ship steering wheel with spokes",
+                   "recessed arched play-tower entrance"):
         assert detail in play_names, f"Room 10 missing {detail}"
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in play_json["nodes"]) >= 14, "Play Garden people and props should collide"
     aquarium_room = frames[10]["room"]
@@ -325,8 +336,13 @@ def main() -> None:
     aquarium_names = " ".join(node.get("name", "") for node in aquarium_json["nodes"])
     for detail in ("G sharing wonder", "Zephrine pointing", "freestanding return-door",
                    "drifting sculpted aquarium fish", "painted saltwater reef habitat",
-                   "painted freshwater river habitat", "continuous thick aquarium viewing glass"):
+                   "painted freshwater river habitat", "continuous thick aquarium viewing glass",
+                   "curved walk-under glass beneath a living water lens",
+                   "continuous blue glass edge enclosing overhead fish habitat"):
         assert detail in aquarium_names, f"Room 11 missing {detail}"
+    assert {"streamlined", "deep reef", "slender"}.issubset({
+        node.get("extras", {}).get("bodyType") for node in aquarium_json["nodes"]
+    }), "Room 11 fish must retain three distinct sculpted body shapes"
     assert sum("driftPhase" in node.get("extras", {}) for node in aquarium_json["nodes"]) >= 24, "Room 11 fish need gentle motion metadata"
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in aquarium_json["nodes"]) >= 20, "Aquarium columns, tanks, figures, and doorway posts must collide"
     for frame_id in (2, 4, 5, 7, 8, 9, 10, 11):

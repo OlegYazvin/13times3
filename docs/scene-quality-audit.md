@@ -1,0 +1,35 @@
+# Published scene art audit
+
+This is an open art checklist, not a list of completed scenes. Recheck each
+room at hallway painting distance, just inside the portal, and from a close
+three-quarter walkaround view on a portrait phone. The registry owns the
+memory and frame assignments; the scene guide owns the art and movement rules.
+
+The October 21 doorway previews show that every room is navigable and has a
+readable subject, but several major objects still simplify into basic shapes.
+The next passes should spend geometry and texture budget on story-critical
+subjects, not arbitrary ornament. Preview approval alone is insufficient.
+
+| Frame | Next art pass | Close-view acceptance |
+| --- | --- | --- |
+| `01` | Shape the signup desk, stage, cave shell and both figures with more physical detail; reduce loose squiggles and generic sea ornaments. | Jane's expression, Zephrine's face and the signup action remain legible from angled positions. |
+| `02` | Make each symbolic Jane action distinct through the desk, home, street, and gesture props; continue refining Oleg's specific face and body. | Oleg reads as the supplied person without a caption, and each Jane vignette reads as support rather than a copied neutral pose. |
+| `03` | Detail the real play and dance areas, grounded landscape, and the children's handhold; improve Charlize and Aibike from the private references. | Playground, dance space, and friendship effort remain identifiable without floating strands or caption-dependent figures. |
+| `04` | Refine the blue car's molded body, wheels, grip and child seat; give the Roscoe Village homes specific stone, brick and porch depth. | Zephrine's steering and both parents' pushing hands look connected from the side. |
+| `05` | Turn generic boxes, posts and threads into a coherent abstract office space; use material and lighting to make Jane's stance triumphant. | A full walkaround explains the transition from pressure to openness without a text label. |
+| `06` | Sculpt the seated nursing embrace and layered clothing as a continuous pose; replace loose floor and roof polygons with intentional textiles and architecture. | Jane and Zephrine remain fully clothed; the tender, sad and self-reclaiming mood is legible at human scale. |
+| `07` | Give berry bushes layered stems, leaves and blue fruit clusters; make Zephrine's position and Oleg's supporting hands anatomically credible. | Oleg's likeness reads from the doorway, and G with Zephrine's picking action is discoverable from within the field. |
+| `08` | Replace monument-like building stand-ins with distinctive architectural volumes, proper signs and grounded details for each of Jane's seven stops. | Each route stop reads as a different designed place, not a differently labeled cuboid. |
+| `09` | Detail the apple tree silhouettes, basket weave, farm stand and families; improve poses and fruit texture. | The orchard reads as a first apple-picking visit with friends rather than people in front of a barn. |
+| `10` | Continue the planted Play Garden, modeled play ship and lighthouse, and figure detail; inspect the newly revised park at close phone distance. | Shared play stays the focus while its park structures remain recognizable from multiple viewpoints. |
+| `11` | Keep the glass habitats visually inhabited from every route position; refine fish species, Zephrine and G, the freestanding arch rear, and lighting. | Fish clearly occupy water behind glass, and visitors can walk behind the hall portal without any clipped or blank area. |
+
+Across rooms, validate Oleg's recurring reference-based likeness in all eight
+appearances, not only in an isolated face texture. Frame `11`'s aquarium and
+the outdoor worlds have different world scale; never shrink their volume to
+fit neighboring frames in hallway coordinates. Neighboring worlds may
+intersect geometrically because the renderer isolates them behind each portal.
+
+Keep each published GLB plus preview under the 8 MB target and preserve the
+39 achievement pages and 41 stable frame IDs after every revision. A physical
+iPhone performance and feel review remains open.

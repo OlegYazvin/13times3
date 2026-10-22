@@ -135,6 +135,44 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
     return add(root, "walkable painted ground", plane,
       material(0xffffff, { vertexColors: true }));
   }
+  function sculptedChildSkirt(parent, hem, waist, cloth, trim) {
+    const sides=28, rows=9, points=[],uv=[],indices=[];
+    const foldCount=9;
+    for(let row=0;row<=rows;row++) {
+      const t=row/rows;
+      const y=THREE.MathUtils.lerp(hem,waist,t);
+      const base=THREE.MathUtils.lerp(.294,.177,t);
+      for(let side=0;side<sides;side++) {
+        const a=side*Math.PI*2/sides;
+        const fold=.021*Math.sin(a*foldCount+.3*t)*(1-t*.78);
+        const radius=base+fold;
+        const flutedHem=row===0?.014*Math.sin(a*foldCount):0;
+        points.push(Math.cos(a)*radius,y+flutedHem,
+          Math.sin(a)*radius*.83);
+        uv.push(side/sides,t);
+        if(row<rows) {
+          const n=row*sides+side,b=row*sides+(side+1)%sides;
+          indices.push(n,b,n+sides,b,b+sides,n+sides);
+        }
+      }
+    }
+    const geometry=new THREE.BufferGeometry();
+    geometry.setAttribute("position",new THREE.Float32BufferAttribute(points,3));
+    geometry.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
+    geometry.setIndex(indices);geometry.computeVertexNormals();
+    add(parent,"fitted child skirt with formed cloth pleats and a fluted hem",
+      geometry,cloth);
+    const edge=[];
+    for(let i=0;i<=sides;i++) {
+      const a=i*Math.PI*2/sides;
+      const radius=.294+.021*Math.sin(a*foldCount);
+      edge.push([Math.cos(a)*radius,
+        hem+.014*Math.sin(a*foldCount)+.006,
+        Math.sin(a)*radius*.83]);
+    }
+    curve(parent,"stitched curved edge of the child's skirt",edge,
+      .0065,trim,36);
+  }
   function person(name, x, z, stature, options = {}) {
     const group = new THREE.Group(); group.name = `solid sculpted figure of ${name}`;
     group.position.set(x, 0, z); group.rotation.y = options.yaw || 0; root.add(group);
@@ -186,9 +224,8 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
     loft(group, "modeled neck above folded collar",
       [[stature - .435, .074, .071], [stature - .34, .069, .066],
         [stature - .31, .063, .06]], skin, 12);
-    if (options.dress) loft(group, "shaped dress or skirt",
-      [[leg - .16, .38, .29], [leg, .33, .25], [leg + .16, .23, .18]],
-      options.skirt || outfit, 14);
+    if (options.dress) sculptedChildSkirt(group,leg-.21,
+      leg+.16,paintedFabric(asMaterial(options.skirt || outfit)),trim);
     for (const side of [-1, 1]) {
       const hand = options.hands?.[side] || [side * .31, stature - .95, .14];
       const elbow = [side * .315, (stature - .68 + hand[1]) / 2, hand[2] * .55];
@@ -236,9 +273,15 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
     if (!painted) curve(group, "gentle expression", [[-.047, face - .3, .119],
       [0, face - .315, .133], [.047, face - .3, .119]],
       .009, options.lips || "rose");
-    if (!oleg) loft(group, "layered hair rather than a round cap", [[face + .035, .095, .08],
-      [face + .11, .17, .14, 0, -.02], [face + .2, .13, .11, 0, -.03],
-      [face + .25, .02, .02, 0, -.03]], hair, 14);
+    if (!oleg) loft(group, "layered hair following the painted hairline",
+      zephrine ? [[face + .015, .09, .08],
+        [face + .08, .153, .13, 0, -.018],
+        [face + .16, .125, .105, 0, -.03],
+        [face + .195, .018, .018, 0, -.035]] :
+        [[face + .035, .095, .08],
+          [face + .11, .17, .14, 0, -.02],
+          [face + .2, .13, .11, 0, -.03],
+          [face + .25, .02, .02, 0, -.03]], hair, 18);
     if (options.bun) loft(group, "high tied hair", [[face + .18, .05, .04, 0, -.07],
       [face + .29, .13, .11, 0, -.07], [face + .4, .07, .06, 0, -.07],
       [face + .44, .01, .01, 0, -.07]], hair, 12);

@@ -265,14 +265,14 @@ for(const z of [11.4,14.45,16.6]) {
     [[-7.5,.065,z],[-3.9,.07,z-.13],[0,.068,z-.2],
       [3.9,.07,z-.13],[7.5,.065,z]],.024,M.gold,25);
 }
-function fishGeometry() {
-  const rings=[[-.46,.02,.02],[-.32,.13,.11],[.03,.19,.15],
-    [.3,.145,.12],[.52,.035,.04]];
-  const vertices=[],uv=[],indices=[],sides=10;
+function fishGeometry(rings) {
+  const vertices=[],uv=[],colors=[],indices=[],sides=14;
   for(let row=0;row<rings.length;row++) for(let s=0;s<sides;s++) {
     const [x,ry,rz]=rings[row],a=s*Math.PI*2/sides;
     vertices.push(x,Math.cos(a)*ry,Math.sin(a)*rz);
     uv.push(row/(rings.length-1),s/sides);
+    const upper=(Math.cos(a)+1)/2;
+    colors.push(1-.23*upper,1-.12*upper,1-.07*upper);
   }
   for(let row=0;row<rings.length-1;row++) for(let s=0;s<sides;s++) {
     const a=row*sides+s,b=row*sides+(s+1)%sides;
@@ -281,25 +281,44 @@ function fishGeometry() {
   const geometry=new THREE.BufferGeometry();
   geometry.setAttribute("position",new THREE.Float32BufferAttribute(vertices,3));
   geometry.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
+  geometry.setAttribute("color",new THREE.Float32BufferAttribute(colors,3));
   geometry.setIndex(indices);geometry.computeVertexNormals();
   return geometry;
 }
-const fishBody=fishGeometry();
+const fishBodies=[
+  fishGeometry([[-.46,.02,.02],[-.32,.13,.11],[.03,.19,.15],
+    [.3,.145,.12],[.52,.035,.04]]),
+  fishGeometry([[-.43,.02,.02],[-.29,.17,.095],[.02,.28,.13],
+    [.25,.23,.11],[.45,.03,.025]]),
+  fishGeometry([[-.56,.015,.015],[-.37,.083,.075],[.03,.115,.1],
+    [.34,.09,.075],[.61,.022,.02]]),
+];
+const fishBodyMaterials=new Map();
 function fish(x,y,z,scale,mat,phase,yaw=0) {
   const group=new THREE.Group();group.name="drifting sculpted aquarium fish";
   group.position.set(x,y,z);group.scale.setScalar(scale);group.rotation.y=yaw;
   group.userData.driftPhase=phase;
   group.userData.driftAmplitude=.045+random()*.04;
   root.add(group);
-  add(group,"volumetric tapered fish body",fishBody,mat);
+  const species=Math.abs(Math.floor(phase*2.3))%fishBodies.length;
+  group.userData.bodyType=["streamlined","deep reef","slender"][species];
+  if(!fishBodyMaterials.has(mat)) {
+    const shaded=mat.clone();shaded.vertexColors=true;
+    fishBodyMaterials.set(mat,shaded);
+  }
+  add(group,["volumetric tapered fish body",
+    "deep-bodied reef fish with continuous cheek and belly",
+    "slender darting fish with modeled tapered flanks"][species],
+  fishBodies[species],fishBodyMaterials.get(mat));
+  const tailX=species===1?-.45:species===2?-.58:-.51;
   for(const fork of [-1,1]) {
     const tail=petal(group,"forked sculpted fish tail lobe",
-      -.51,fork*.11,-.02,.33,mat,fork*.18);
+      tailX,fork*.11,-.02,.33,mat,fork*.18);
     tail.rotation.z=fork*.72;
   }
   for(let ridge=0;ridge<2;ridge++) {
     const fin=petal(group,"ribbed raised dorsal fin",-.15+ridge*.18,
-      .135,-.01,.26-ridge*.055,M.pearl,.22);
+      .135,-.01,(species===1?.33:.26)-ridge*.055,M.pearl,.22);
     fin.rotation.z=-.62;
   }
   const ventral=petal(group,"small swept belly fin",-.07,-.15,0,.22,mat,.1);
@@ -460,6 +479,82 @@ function ray(x,y,z,scale,yaw=0) {
 }
 ray(-2.15,3.85,-12.35,.92,.14);
 ray(4.3,2.9,-12.45,.62,-.26);
+
+// A suspended, shallow water lens makes the visitor feel surrounded by
+// inhabited glass, not simply flanked by wall paintings. The fish and ray
+// occupy the water volume ABOVE its curved lower pane. This is a storybook
+// aquarium canopy rather than a literal reconstruction of a Shedd gallery.
+{
+  const cx=-.65, cz=3.9, rx=4.65, rz=3.35;
+  const underside=new THREE.MeshPhysicalMaterial({color:0x70b7c2,
+    transparent:true,opacity:.46,roughness:.08,metalness:0,
+    depthWrite:false,side:THREE.DoubleSide});
+  const vertices=[],indices=[],rings=12,sides=64;
+  for(let ring=0;ring<=rings;ring++) {
+    const r=ring/rings;
+    for(let side=0;side<=sides;side++) {
+      const a=side*Math.PI*2/sides;
+      const ripple=.035*Math.sin(a*8+r*9)*r*r;
+      vertices.push(cx+Math.cos(a)*rx*r,
+        4.72+.34*(1-r*r)+ripple,
+        cz+Math.sin(a)*rz*r);
+      if(ring<rings&&side<sides) {
+        const n=ring*(sides+1)+side;
+        indices.push(n,n+sides+1,n+1,n+1,n+sides+1,n+sides+2);
+      }
+    }
+  }
+  const geometry=new THREE.BufferGeometry();
+  geometry.setAttribute("position",new THREE.Float32BufferAttribute(vertices,3));
+  geometry.setIndex(indices);geometry.computeVertexNormals();
+  add(root,"curved walk-under glass beneath a living water lens",
+    geometry,underside);
+  const sidePoints=[],sideIndices=[];
+  for(let level=0;level<2;level++) for(let i=0;i<=64;i++) {
+    const a=i*Math.PI*2/64;
+    sidePoints.push(cx+Math.cos(a)*rx,
+      level?5.95:4.74+.025*Math.sin(8*a),
+      cz+Math.sin(a)*rz);
+    if(level===0&&i<64) {
+      sideIndices.push(i,i+65,i+1,i+1,i+65,i+66);
+    }
+  }
+  const sideGeometry=new THREE.BufferGeometry();
+  sideGeometry.setAttribute("position",
+    new THREE.Float32BufferAttribute(sidePoints,3));
+  sideGeometry.setIndex(sideIndices);sideGeometry.computeVertexNormals();
+  add(root,"continuous blue glass edge enclosing overhead fish habitat",
+    sideGeometry,new THREE.MeshPhysicalMaterial({color:0x72b5c0,
+      transparent:true,opacity:.34,roughness:.1,metalness:0,
+      depthWrite:false,side:THREE.DoubleSide}));
+  for(const y of [4.74,5.95]) {
+    const rim=[];
+    for(let i=0;i<=64;i++) {
+      const a=i*Math.PI*2/64;
+      rim.push([cx+Math.cos(a)*rx,y+.025*Math.sin(8*a),
+        cz+Math.sin(a)*rz]);
+    }
+    curve(root,"scalloped shell rim around the overhead aquarium",
+      rim,y<5?.058:.035,y<5?M.pearl:M.gold,65);
+  }
+  for(let i=0;i<8;i++) {
+    const a=i*Math.PI*2/8+.18;
+    const px=cx+Math.cos(a)*rx,pz=cz+Math.sin(a)*rz;
+    curve(root,"swept pearl support joining water lens to dome",
+      [[px,4.74,pz],
+        [px*1.03,5.82,pz+.09],
+        [px*.93,6.7,pz-.08]],.035,M.pearl,18);
+  }
+  for(let i=0;i<13;i++) {
+    const a=i*2.399,rad=.22+.62*Math.sqrt((i+.5)/13);
+    const x=cx+Math.cos(a)*rx*rad,
+      z=cz+Math.sin(a)*rz*rad;
+    fish(x,5.18+(i%3)*.11,z,
+      .79+(i%4)*.09,
+      i%4===0?M.coral:i%3===0?M.turquoise:M.gold,
+      171+i*.57,a+Math.PI/2);
+  }
+}
 
 // A turtle and the upright seahorses give the glazed bays their own species
 // silhouettes. Their bodies are continuous shaped surfaces; the small eye

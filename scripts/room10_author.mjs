@@ -23,17 +23,75 @@ wrapSky(C.sky, true);
 ground(C.ground, (x,z) => new THREE.Color(C.grass).lerp(
   new THREE.Color(C.sand), Math.exp(-Math.pow((x-.28*Math.sin(z*.4))/1.8,2))*.85));
 
-// Painted skyline sits beyond the Play Garden, but the world itself is grass,
-// blue rubber waves, children, trees and unreasonably generous open air.
-for (let i=0;i<13;i++) {
-  const x=-7.1+i*1.19, h=1.6+(i*11%7)*.37;
-  box(root,"far soft Chicago skyline",x,h/2,-9.28,
-    .96,h,.1,i%3?M.paleBlue:M.blueDark);
+// A modeled, muted skyline stands beyond the Play Garden. Setbacks, roof
+// contours, masonry ribs and arched windows let each distant building read
+// as architecture instead of a row of rectangular placeholder blocks.
+const skylineGlass=M.blueDark;
+const windowShape=new THREE.Shape();
+windowShape.moveTo(-.067,-.095);windowShape.lineTo(.067,-.095);
+windowShape.lineTo(.067,.053);
+windowShape.quadraticCurveTo(.067,.101,0,.103);
+windowShape.quadraticCurveTo(-.067,.101,-.067,.053);
+windowShape.closePath();
+const windowGeometry=new THREE.ExtrudeGeometry(windowShape,
+  {depth:.012,bevelEnabled:false,curveSegments:6});
+for(let i=0;i<13;i++) {
+  const x=-7.1+i*1.19, h=1.6+(i*11%7)*.37, w=.98;
+  const facade=new THREE.Shape();
+  facade.moveTo(-w/2,0);facade.lineTo(w/2,0);
+  if(i%4===0) {
+    facade.lineTo(w/2,h-.3);facade.lineTo(w*.31,h-.3);
+    facade.lineTo(w*.31,h);facade.lineTo(-w*.31,h);
+    facade.lineTo(-w*.31,h-.3);facade.lineTo(-w/2,h-.3);
+  } else if(i%4===1) {
+    facade.lineTo(w/2,h-.16);facade.lineTo(0,h);
+    facade.lineTo(-w/2,h-.16);
+  } else if(i%4===2) {
+    facade.lineTo(w/2,h-.22);
+    facade.quadraticCurveTo(0,h+.13,-w/2,h-.22);
+  } else {
+    facade.lineTo(w/2,h);facade.lineTo(-w/2,h);
+  }
+  facade.closePath();
+  const body=add(root,"shaped distant Chicago facade with an authored roofline",
+    new THREE.ExtrudeGeometry(facade,{depth:.27,bevelEnabled:false,
+      curveSegments:8}),
+    i%4===0?M.blueDark:i%3===0?M.blue:M.paleBlue,x,0,-9.29);
+  body.userData.solidFootprint=true;
+  const top=h-(i%4===1?.18:.08);
+  curve(root,"masonry cornice below the skyline roof",
+    [[x-w*.47,top,-8.985],[x,top+.015,-8.985],
+      [x+w*.47,top,-8.985]],.017,i%2?M.white:M.ochre,12);
+  for(const side of [-1,1]) curve(root,"thin vertical skyline pilaster",
+    [[x+side*w*.43,.12,-8.988],
+      [x+side*w*.43,h*.5,-8.988],
+      [x+side*w*.43,top,-8.988]],.012,M.white,10);
+  const rows=Math.max(2,Math.floor((h-.35)/.37));
+  for(let row=0;row<rows;row++) for(const col of [-1,1]) {
+    const yy=.25+row*.37;
+    if(yy>top-.13) continue;
+    const wx=x+col*.22;
+    add(root,"arched recessed window in the distant city",
+      windowGeometry,skylineGlass,wx,yy,-8.996);
+    box(root,"fine projecting stone sill beneath an arched window",
+      wx,yy-.108,-8.974,.17,.018,.045,M.white);
+  }
 }
 for (const side of [-1,1]) curve(root,"curving garden promenade edge",
   [[side*1.45,.05,8.8],[side*1.6,.05,4],
     [side*1.3,.05,-1],[side*1.7,.05,-5.3],
     [side*1.4,.05,-8.8]],.025,M.ochre,54);
+// Gently uneven inlaid seams make the approach read as a made garden path,
+// not an untextured beige plane. They stay low enough to remain non-solid.
+for(let row=0;row<20;row++) {
+  const z=8.05-row*.79;
+  const width=1.42+.17*Math.sin(z*.42);
+  curve(root,"hand-laid winding garden path seam",
+    [[-width,.057,z-.035],[-width*.53,.057,z+.045],
+      [0,.057,z-.025],[width*.48,.057,z+.065],
+      [width,.057,z-.035]],.008,
+    row%4===0?M.white:M.ochre,18);
+}
 
 function wave(x,z,length,scale=1) {
   const shape=new THREE.Shape();
@@ -68,6 +126,39 @@ wave(-4.2,4.9,3.3);wave(4.15,1.6,3.4,1.3);
     M.red,x,3.37,z);
   box(root,"lighthouse blue slide",x+.72,1.07,z+.45,.74,.11,2.8,M.blue,true)
     .rotation.x=.42;
+  // The tower is a play structure rather than an empty striped cone: a low
+  // arched entrance, raised lookout and climb ropes are visible from the path.
+  const door=new THREE.Shape();
+  door.moveTo(-.26,0);door.lineTo(.26,0);door.lineTo(.26,.55);
+  door.quadraticCurveTo(.26,.85,0,.86);
+  door.quadraticCurveTo(-.26,.85,-.26,.55);door.closePath();
+  add(root,"recessed arched play-tower entrance",
+    new THREE.ExtrudeGeometry(door,{depth:.018,bevelEnabled:false,
+      curveSegments:8}),M.blueDark,x,.08,z+.503);
+  curve(root,"carved doorway arch in lighthouse",
+    [[x-.3,.59,z+.525],[x-.23,.83,z+.525],[x,.93,z+.525],
+      [x+.23,.83,z+.525],[x+.3,.59,z+.525]],.025,M.ochre,18);
+  for(let i=0;i<8;i++) {
+    const a=i*Math.PI/4;
+    const px=x+Math.sin(a)*.39,pz=z+Math.cos(a)*.39;
+    beam(root,"lighthouse lookout baluster",
+      [px,2.72,pz],[px,3.03,pz],.018,.016,M.timber);
+  }
+  for(const yy of [2.74,3.03]) {
+    const rail=[];
+    for(let i=0;i<=24;i++) {
+      const a=i*Math.PI/12;
+      rail.push([x+Math.sin(a)*.41,yy,z+Math.cos(a)*.41]);
+    }
+    curve(root,"continuous timber lookout rail",rail,.023,M.timber,32);
+  }
+  for(let i=0;i<5;i++) {
+    const yy=.55+i*.33;
+    beam(root,"lighthouse climbing rung",
+      [x-.28,yy,z-.525],[x+.28,yy,z-.525],.019,.018,M.ochre);
+  }
+  for(const xx of [-.29,.29]) beam(root,"lighthouse climbing rail",
+    [x+xx,.5,z-.52],[x+xx,2.12,z-.52],.023,.021,M.timber);
   for(let i=0;i<9;i++) {
     const a=i*Math.PI*2/9;
     add(root,"dotted lighthouse porthole",new THREE.TorusGeometry(.06,.015,5,12),
@@ -80,8 +171,42 @@ wave(-4.2,4.9,3.3);wave(4.15,1.6,3.4,1.3);
     [.51,1.75,.73,x,z],[.77,1.56,.62,x,z]],M.blueDark,15,true);
   box(root,"ship raised deck",x,.78,z,2.68,.12,.85,M.timber,true);
   beam(root,"ship mast",[x,.83,z],[x,2.85,z],.065,.05,M.timber);
-  const sail=add(root,"small curved ship sail",new THREE.PlaneGeometry(.85,1.35),
-    M.white,x+.4,2.1,z); sail.rotation.y=.22;
+  const sailShape=new THREE.Shape();
+  sailShape.moveTo(0,0);sailShape.lineTo(.85,.18);
+  sailShape.quadraticCurveTo(.96,.57,.84,1.08);
+  sailShape.lineTo(.04,1.34);sailShape.closePath();
+  const sail=add(root,"thick billowing ship sail with curved edge",
+    new THREE.ExtrudeGeometry(sailShape,{depth:.055,bevelEnabled:true,
+      bevelSize:.012,bevelThickness:.012,bevelSegments:2,
+      curveSegments:8}),M.white,x+.06,1.24,z);
+  sail.rotation.y=.22;
+  for(const sx of [-1.06,-.53,0,.53,1.06])
+    box(root,"individual warm timber deck board",x+sx,.85,z,
+      .5,.021,.83,sx===0?M.ochre:M.timber);
+  for(const side of [-1,1]) {
+    for(let j=0;j<5;j++) {
+      const rx=x-1.13+j*.56,rz=z+side*.48;
+      beam(root,"ship play-deck upright",[rx,.8,rz],[rx,1.2,rz],
+        .025,.022,M.timber);
+    }
+    curve(root,"ship continuous side rail",
+      [[x-1.14,1.2,z+side*.48],[x,1.23,z+side*.48],
+        [x+1.14,1.2,z+side*.48]],.028,M.ochre,24);
+    for(const dx of [-.78,0,.78]) {
+      add(root,"round recessed ship porthole",
+        new THREE.TorusGeometry(.082,.018,6,16),M.ochre,
+        x+dx,.48,z+side*.69).rotation.y=side>0?0:Math.PI;
+    }
+  }
+  const wheel=new THREE.Group();wheel.name="ship steering wheel with spokes";
+  root.add(wheel);wheel.position.set(x+.64,1.36,z+.04);
+  add(wheel,"ship steering wheel rim",new THREE.TorusGeometry(.16,.022,6,18),
+    M.ochre,0,0,0);
+  for(let i=0;i<8;i++) {
+    const a=i*Math.PI/4;
+    beam(wheel,"steering wheel spoke",[0,0,0],
+      [Math.cos(a)*.2,Math.sin(a)*.2,0],.015,.012,M.timber);
+  }
   for(const dx of [-1.2,1.2]) curve(root,"ship curved prow detail",
     [[x+dx,.25,z+.47],[x+dx*1.15,.63,z+.5],
       [x+dx*.87,.82,z+.47]],.045,M.ochre);
@@ -122,13 +247,39 @@ for(const [x,z] of [[-6,5.7],[6.25,.2],[-6.3,-.9],[6,-6.4]]) {
       z+dz*(.6+random()),.27+random()*.15,k%3?M.leaf:M.darkLeaf,a);
   }
 }
-for(let i=0;i<45;i++) {
-  const x=(random()-.5)*14.5,z=(random()-.5)*17.5;
-  if(Math.abs(x)<1.4&&z>0) continue;
-  petal(root,"garden flower or fallen leaf",x,.065,z,
-    .1+random()*.12,i%3?M.ochre:M.rose,random()*6.28);
+// Small planted islands give the long approach a garden scale. Every bloom
+// grows from a stem and paired leaves; loose confetti would make the ground
+// look unfinished and would not read as the park's planted landscape.
+for(const side of [-1,1]) for(const z of [6.4,4.25,1.9,-1.55,-4.6,-7.1]) {
+  const x=side*(2.45+.27*Math.sin(z*1.4));
+  loft(root,"low sculpted garden mound supporting rooted flowers",
+    [[.025,.46,.72,x,z],[.105,.52,.7,x,z],
+      [.18,.36,.49,x,z],[.21,.035,.05,x,z]],M.deepGrass,16);
+  for(let plant=0;plant<4;plant++) {
+    const px=x+(plant-1.5)*.19,
+      pz=z+.18*Math.sin(plant*2.3),
+      h=.36+.12*((plant+z*3+12)%3);
+    curve(root,"rooted flower stem in the Play Garden",
+      [[px,.15,pz],[px+.035,h*.58,pz-.025],[px,h,pz]],
+      .012,plant%2?M.darkLeaf:M.leaf,11);
+    for(const leafSide of [-1,1]) {
+      const leaf=petal(root,"veined leaf attached to a garden stem",
+        px+leafSide*.085,.21+plant%2*.055,pz+.018,
+        .18,plant%3?M.leaf:M.darkLeaf,leafSide*.5);
+      leaf.rotation.z=leafSide*.66;
+    }
+    const flowerColor=plant%3===0?M.rose:plant%3===1?M.ochre:M.white;
+    for(let petalIndex=0;petalIndex<5;petalIndex++) {
+      const a=petalIndex*Math.PI*2/5;
+      const bloom=petal(root,"five-petal garden blossom with real thickness",
+        px+Math.cos(a)*.055,h+Math.sin(a)*.055,pz+.04,
+        .13,flowerColor,a);
+      bloom.rotation.z=a-Math.PI/2;
+    }
+    add(root,"small center of a modeled garden blossom",
+      new THREE.IcosahedronGeometry(.026,0),M.gold,px,h,pz+.075);
+  }
 }
-
 // The three children gather around a shared play ribbon. Jane, Oleg and the
 // two friends form a supportive ring; likeness details use private photos.
 const zeph=person("Zephrine in shared play",-.23,1.37,1.03,{
