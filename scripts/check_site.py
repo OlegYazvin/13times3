@@ -222,6 +222,11 @@ def main() -> None:
     car_json_length = int.from_bytes(car_glb[12:16], "little")
     car_json = json.loads(car_glb[20:20 + car_json_length])
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in car_json["nodes"]) >= 10, "Room 04 needs solid car, people, houses and trees"
+    car_names = [node.get("name", "") for node in car_json["nodes"]]
+    assert any("domed pale headlamp" in name for name in car_names)
+    assert any("deep molded cup holder" in name for name in car_names)
+    assert any("fastened seat belt" in name for name in car_names)
+    assert any("small twig connected to a parkway branch" in name for name in car_names)
     assert any("Zephrine" in node.get("name", "") for node in car_json["nodes"])
     assert any("Oleg" in node.get("name", "") for node in car_json["nodes"])
     assert any("Jane" in node.get("name", "") for node in car_json["nodes"])

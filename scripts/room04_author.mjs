@@ -203,19 +203,30 @@ for (const side of [-1, 1]) for (let i = 0; i < 4; i++) {
     [1.65, .105, .09, x + side * .12, z - .06],
     [2.45, .065, .06, x + side * .18, z - .12]], M.bark, 10, true);
   for (const branch of [-1, 1]) {
+    const branchTip = [x + side * (.45 + branch * .68), 3.28, z + branch * .5];
     curve(root, "shaped tree branch", [[x + side * .12, 1.7, z],
       [x + side * (.3 + branch * .38), 2.48, z + branch * .25],
-      [x + side * (.45 + branch * .68), 3.28, z + branch * .5]], .055, M.bark);
+      branchTip], .055, M.bark);
     foliageLobe(root, "scalloped parkway foliage among the upper branches",
       x + side * (.45 + branch * .55), 3.29, z + branch * .43,
       .75, .32, .54, branch < 0 ? C.leaf : C.paleLeaf, i * 3 + side + branch);
+    for (let twig = 0; twig < 2; twig++) {
+      const tx = branchTip[0] + side * (twig ? .28 : -.22);
+      const ty = 3.22 + random() * .14;
+      const tz = branchTip[2] + (twig ? .24 : -.22);
+      curve(root, "small twig connected to a parkway branch",
+        [branchTip, [(branchTip[0] + tx) / 2, ty, (branchTip[2] + tz) / 2],
+          [tx, ty + .06, tz]], .009, M.bark, 10);
+      for (let j = 0; j < 3; j++) leaf(root,
+        THREE.MathUtils.lerp(branchTip[0], tx, .35 + j * .25),
+        ty + .02 * j,
+        THREE.MathUtils.lerp(branchTip[2], tz, .35 + j * .25),
+        .19 + random() * .08, j % 2 ? M.leaf : M.paleLeaf,
+        random() * 6.28);
+    }
   }
   foliageLobe(root, "overlapping central tree crown", x + side * .2,
     3.32, z - .12, .74, .37, .62, C.leaf, i + side);
-  for (let j = 0; j < 23; j++) leaf(root,
-    x + (random() - .5) * 2.2, 2.9 + random() * .62,
-    z + (random() - .5) * 2.1, .21 + random() * .14,
-    j % 5 ? M.leaf : M.paleLeaf, random() * 6.28);
 }
 
 // The toy body has a purpose-drawn footprint and a raised, gently beveled
@@ -249,8 +260,6 @@ add(car, "rounded sculpted front of Zephrine's blue car",
   new THREE.ExtrudeGeometry(noseShape, { depth: .07, bevelEnabled: true,
     bevelSize: .04, bevelThickness: .025, bevelSegments: 3, curveSegments: 14 }),
   M.blue, 0, 0, .89);
-curve(car, "silver contour of rounded front bumper",
-  [[-.39, .29, .979], [0, .26, .991], [.39, .29, .979]], .018, M.silver);
 box(car, "dark recessed seat", 0, .61, -.24, .58, .12, .43, M.dark);
 box(car, "solid rising seat back", 0, .79, -.49, .57, .38, .12, M.blueShade, true);
 const hoodShape = new THREE.Shape();
@@ -263,25 +272,48 @@ hoodGeometry.rotateX(-Math.PI / 2);
 add(car, "raised sculpted blue bonnet", hoodGeometry, M.blueShade, 0, .62, 0);
 for (const side of [-1, 1]) for (const z of [-.56, .55]) {
   const wheel = add(car, "four quiet white wheels", new THREE.CylinderGeometry(.2, .2, .11, 15),
-    M.silver, side * .49, .23, z);
+    M.silver, side * .585, .23, z);
   wheel.rotation.z = Math.PI / 2;
   const hub = add(car, "dark wheel hub", new THREE.CylinderGeometry(.08, .08, .118, 12),
-    M.dark, side * .5, .23, z);
+    M.dark, side * .597, .23, z);
   hub.rotation.z = Math.PI / 2;
+  curve(car, "molded blue arch above a visible white wheel",
+    [[side * .53, .25, z - .22], [side * .54, .46, z],
+      [side * .53, .25, z + .22]], .025, M.blueShade, 14);
 }
 for (const side of [-1, 1]) {
-  const lamp = box(car, "large pale curved toy headlamp",
-    side * .3, .51, .973, .19, .115, .02, M.white);
-  lamp.rotation.z = -side * .2;
+  const lamp = add(car, "domed pale headlamp on the car's front",
+    new THREE.SphereGeometry(1, 16, 10), M.white,
+    side * .31, .52, 1.025);
+  lamp.scale.set(.115, .068, .035);
+  curve(car, "small painted surround for each headlamp",
+    [[side * .22, .55, 1.021], [side * .31, .595, 1.027],
+      [side * .4, .55, 1.021]], .01, M.silver, 12);
   curve(car, "molded side crease", [[side * .51, .5, -.57],
     [side * .55, .53, .05], [side * .47, .56, .62]], .018, M.blueShade);
 }
-box(car, "small dark front grille", 0, .38, .92, .3, .095, .025, M.dark);
+const grille = box(car, "recessed dark front grille", 0, .39, 1.024,
+  .32, .095, .025, M.dark);
+grille.rotation.x = -.05;
+for (const offset of [-.085, 0, .085]) box(car,
+  "fine silver divider in the front grille", offset, .39, 1.044,
+  .012, .073, .008, M.silver);
+curve(car, "silver contour of rounded front bumper",
+  [[-.4, .27, 1.05], [0, .25, 1.06], [.4, .27, 1.05]],
+  .02, M.silver);
 beam(car, "steering column", [0, .65, .34], [0, .86, .28], .035, .035, M.dark);
 const wheel = add(car, "working-looking toy steering wheel",
   new THREE.TorusGeometry(.17, .024, 7, 20), M.dark, 0, .9, .32);
 wheel.rotation.x = Math.PI / 2.5;
 beam(car, "steering-wheel spoke", [-.12, .9, .32], [.12, .9, .32], .012, .012, M.dark, 5);
+for (const side of [-1, 1]) {
+  const holder = add(car, "deep molded cup holder beside the steering wheel",
+    new THREE.TorusGeometry(.07, .018, 7, 18), M.blueShade,
+    side * .335, .7, .28);
+  holder.rotation.x = Math.PI / 2;
+  box(car, "cup-holder dark well", side * .335, .691, .28,
+    .1, .012, .1, M.dark);
+}
 for (const side of [-1, 1]) {
   beam(car, "tall black parent push-handle shaft",
     [side * .22, .46, -.75], [side * .24, 1.48, -1.05], .039, .034, M.dark);
@@ -395,6 +427,12 @@ for (const side of [-1, 1]) {
   add(zeph, "tiny hand on wheel", new THREE.SphereGeometry(.046, 8, 6),
     M.janeSkin, side * .12, .89, .25);
 }
+for (const side of [-1, 1]) curve(zeph,
+  "fastened seat belt across Zephrine's clothed torso",
+  [[side * .22, .88, -.04], [side * .16, .73, -.007],
+    [side * .045, .62, .035]], .012, M.silver, 14);
+box(zeph, "small central seat belt buckle", 0, .62, .04,
+  .09, .05, .025, M.dark);
 loft(zeph, "Zephrine's smiling sculpted face", [[.96, .055, .06, 0, -.21],
   [1.05, .15, .12, 0, -.21], [1.24, .17, .145, 0, -.21],
   [1.41, .14, .12, 0, -.22], [1.48, .02, .02, 0, -.22]], M.janeSkin, 14);
