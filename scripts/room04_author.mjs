@@ -36,10 +36,29 @@ for (let i = 0; i < pixels.data.length; i += 4) {
 }
 context.putImageData(pixels, 0, 0);
 const grain = new THREE.CanvasTexture(canvas); grain.colorSpace = THREE.SRGBColorSpace;
+const masonryCanvas=document.createElement("canvas");
+masonryCanvas.width=masonryCanvas.height=256;
+const masonry=masonryCanvas.getContext("2d");
+masonry.fillStyle="#d9d4cb";masonry.fillRect(0,0,256,256);
+for(let row=0;row<13;row++) for(let col=-1;col<7;col++) {
+  const x=col*44+(row%2)*22,y=row*20;
+  const tone=226+Math.floor(random()*22);
+  masonry.fillStyle=`rgb(${tone},${tone-2},${tone-4})`;
+  masonry.fillRect(x+2,y+2,41,17);
+  masonry.fillStyle="rgba(69,49,48,.055)";
+  masonry.fillRect(x+5+random()*20,y+5,8+random()*12,1.3);
+}
+const brickTexture=new THREE.CanvasTexture(masonryCanvas);
+brickTexture.colorSpace=THREE.SRGBColorSpace;
+brickTexture.wrapS=brickTexture.wrapT=THREE.RepeatWrapping;
+brickTexture.repeat.set(2,3);
+brickTexture.userData.mimeType="image/png";
 const material = (color, extra = {}) => new THREE.MeshStandardMaterial({
   color, map: grain, roughness: .93, metalness: 0, side: THREE.DoubleSide, ...extra,
 });
 const M = Object.fromEntries(Object.entries(C).map(([key, value]) => [key, material(value)]));
+const brickFacades=[C.brick,C.coral,C.plum,C.brick].map(color=>
+  material(color,{map:brickTexture}));
 function add(parent, name, geometry, mat, x = 0, y = 0, z = 0) {
   const mesh = new THREE.Mesh(geometry, mat);
   mesh.name = name; mesh.position.set(x, y, z); parent.add(mesh); return mesh;
@@ -104,7 +123,7 @@ for (let i = 0; i < floor.attributes.position.count; i++) {
   const x = floor.attributes.position.getX(i), z = floor.attributes.position.getZ(i);
   floor.attributes.position.setY(i, .008 * Math.sin(x * 3 + z * 2));
   const distance = Math.abs(x - .18 * Math.sin(z * .35));
-  const pigment = new THREE.Color(distance < 2.1 ? C.sidewalk : C.road);
+  const pigment = new THREE.Color(distance < 2.1 ? C.road : C.sidewalk);
   pigment.offsetHSL(0, 0, (random() - .5) * .045);
   floorColors.push(pigment.r, pigment.g, pigment.b);
 }
@@ -112,28 +131,64 @@ floor.setAttribute("color", new THREE.Float32BufferAttribute(floorColors, 3));
 floor.computeVertexNormals();
 add(root, "walkable Chicago sidewalk widening into a memory street", floor,
   material(0xffffff, { vertexColors: true }));
+const streetContinuation=new THREE.PlaneGeometry(10.8,20,30,44);
+streetContinuation.rotateX(-Math.PI/2);
+streetContinuation.translate(0,-.006,-18.2);
+const distantPigment=[];
+for(let i=0;i<streetContinuation.attributes.position.count;i++) {
+  const x=streetContinuation.attributes.position.getX(i),
+    z=streetContinuation.attributes.position.getZ(i);
+  const lane=Math.abs(x-.18*Math.sin(z*.35));
+  const color=new THREE.Color(lane<2.1?C.road:C.sidewalk);
+  color.offsetHSL(0,0,(random()-.5)*.035);
+  distantPigment.push(color.r,color.g,color.b);
+}
+streetContinuation.setAttribute("color",
+  new THREE.Float32BufferAttribute(distantPigment,3));
+streetContinuation.computeVertexNormals();
+add(root,"nonwalkable continuation of the Roscoe Village block into the open sky",
+  streetContinuation,material(0xffffff,{vertexColors:true}));
 for (const side of [-1, 1]) {
   for (let z = -7.9; z < 8.0; z += 1.4) {
-    box(root, "hand-laid sidewalk joint", side * 1.92, .021, z,
+    box(root, "hand-laid sidewalk joint", side * 2.65, .021, z,
       .018, .009, 1.38, M.mortar);
   }
   curve(root, "continuous curb", [[side * 2.21, .12, 8.15],
     [side * 2.18, .12, 3.9], [side * 2.23, .12, -.7],
-    [side * 2.18, .12, -4.4], [side * 2.23, .12, -8.15]], .075, M.cream, 55);
+    [side * 2.18, .12, -4.4], [side * 2.23, .12, -8.15],
+    [side*2.2,.12,-17.8],[side*2.2,.12,-28]], .075, M.cream, 80);
 }
 addOpenSky(root, C.sky, C.sidewalk);
 
 // Repeating stoops, bay windows and brick patterns suggest a Roscoe Village
 // block without copying a private house or asserting an exact address.
-for (const side of [-1, 1]) for (let unit = 0; unit < 4; unit++) {
+for (const side of [-1, 1]) for (let unit = -3; unit < 4; unit++) {
   const z = -6.6 + unit * 4.1;
   const group = new THREE.Group(); group.name = "unaddressed brick two-flat with stoop";
   group.position.set(side * 4.58, 0, z); root.add(group);
   const front = -side * .63;
-  const tint = [M.brick, M.coral, M.plum, M.brick][(unit + (side > 0 ? 1 : 0)) % 4];
-  box(group, "solid brick facade", 0, 2.05, 0, 1.45, 4.1, 3.82, tint, true);
+  const tint = brickFacades[((unit + (side > 0 ? 1 : 0)) % 4 + 4) % 4];
+  box(group, "solid brick facade", 0, 2.05, 0, 1.45, 4.1, 3.82,
+    tint, unit>=0);
   box(group, "stone foundation", 0, .45, 0, 1.5, .9, 3.87, M.mortar);
   box(group, "projecting cornice", 0, 4.18, 0, 1.58, .16, 4.05, M.cream);
+  if(unit%2===0) {
+    curve(group,"shaped limestone parapet rising above the two-flat",[
+      [front-side*.12,4.26,-1.9],
+      [front-side*.12,4.43,-1.22],
+      [front-side*.12,4.49,0],
+      [front-side*.12,4.43,1.22],
+      [front-side*.12,4.26,1.9]],.065,M.cream,32);
+    for(const dz of [-1.24,1.24]) box(group,
+      "short carved roof pier joined to the parapet",
+      front-side*.12,4.33,dz,.21,.28,.23,M.mortar);
+  } else {
+    for(const dz of [-1.43,-.48,.48,1.43]) box(group,
+      "stepped brick parapet above the cornice",
+      front-side*.07,4.34,dz,.24,.32,.49,tint);
+    box(group,"continuous limestone cap across stepped roofline",
+      front-side*.12,4.51,0,.25,.07,3.8,M.cream);
+  }
   for (let notch = 0; notch < 11; notch++) {
     const dz = -1.77 + notch * .355;
     box(group, "carved cornice dentil", front - side * .13, 4.01, dz,
@@ -238,12 +293,12 @@ for (const side of [-1, 1]) for (let unit = 0; unit < 4; unit++) {
   }
 }
 
-for (const side of [-1, 1]) for (let i = 0; i < 4; i++) {
+for (const side of [-1, 1]) for (let i = -3; i < 4; i++) {
   const x = side * 2.9, z = -5.8 + i * 3.9;
   loft(root, "solid leaning parkway tree trunk", [[0, .15, .13, x, z],
     [.72, .13, .11, x + side * .03, z],
     [1.65, .105, .09, x + side * .12, z - .06],
-    [2.45, .065, .06, x + side * .18, z - .12]], M.bark, 10, true);
+    [2.45, .065, .06, x + side * .18, z - .12]], M.bark, 10, i>=0);
   for (const branch of [-1, 1]) {
     const branchTip = [x + side * (.45 + branch * .68), 3.28, z + branch * .5];
     curve(root, "shaped tree branch", [[x + side * .12, 1.7, z],
@@ -251,7 +306,7 @@ for (const side of [-1, 1]) for (let i = 0; i < 4; i++) {
       branchTip], .055, M.bark);
     foliageLobe(root, "scalloped parkway foliage among the upper branches",
       x + side * (.45 + branch * .55), 3.29, z + branch * .43,
-      .75, .32, .54, branch < 0 ? C.leaf : C.paleLeaf, i * 3 + side + branch);
+      .75, .54, .54, branch < 0 ? C.leaf : C.paleLeaf, i * 3 + side + branch);
     for (let twig = 0; twig < 2; twig++) {
       const tx = branchTip[0] + side * (twig ? .28 : -.22);
       const ty = 3.22 + random() * .14;
@@ -268,7 +323,7 @@ for (const side of [-1, 1]) for (let i = 0; i < 4; i++) {
     }
   }
   foliageLobe(root, "overlapping central tree crown", x + side * .2,
-    3.32, z - .12, .74, .37, .62, C.leaf, i + side);
+    3.35, z - .12, .74, .62, .62, C.leaf, i + side);
 }
 
 // The toy body has a purpose-drawn footprint and a raised, gently beveled

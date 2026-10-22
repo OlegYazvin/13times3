@@ -413,6 +413,11 @@ function figure(name, x, z, height, options) {
     curve(person,"fold across walking shoe",
       [[side*.18,.083,.15],[side*.125,.095,.18],
         [side*.07,.083,.15]],.006,M.cream,9);
+    if(childFigure) for(const dz of [.035,.105]) curve(person,
+      "stitched fastening strap crossing the child's shaped shoe",
+      [[side*.125-.077,.13,dz],[side*.125,.151,dz+.018],
+        [side*.125+.077,.13,dz]],.009,
+      zephrine?M.pink:M.cream,10);
   }
   const torsoRings = childFigure ?
     [[leg, .18, .145], [leg + .07, .205, .16],
@@ -421,31 +426,54 @@ function figure(name, x, z, height, options) {
       [height - .52, .245, .15], [height - .39, .195, .13]];
   loft(person, "tailored clothing with a solid body", torsoRings, outfit, 13, true);
   if (options.dress) {
-    loft(person, "flared dancing skirt", [[leg - .18, .39, .3],
-      [leg, .33, .25], [leg + .19, .235, .18]], skirt, 15);
+    // The reference garments fall in separate pleats, with their legs and
+    // knees still legible. A three-ring oval made both children look like toy
+    // figures. Shape the actual cloth surface and sew its folds into it.
+    const skirtPoint=(t,a,extra=0)=>{
+      const fall=1-t;
+      const pleat=1+.07*Math.sin(a*12+.2)*fall+.025*Math.cos(a*3-.5)*fall;
+      const rx=(.335*fall+.215*t)*pleat+extra;
+      const rz=(.255*fall+.165*t)*pleat+extra;
+      const hem=(.013*Math.sin(a*12+.2)+.007*Math.cos(a*3-.5))*fall*fall;
+      return [Math.cos(a)*rx,leg-.145+.345*t+hem,Math.sin(a)*rz];
+    };
+    const vertices=[],uv=[],colors=[],indices=[],rows=12,sides=48;
+    for(let row=0;row<=rows;row++) for(let side=0;side<sides;side++) {
+      const t=row/rows,a=side*Math.PI*2/sides;
+      vertices.push(...skirtPoint(t,a));
+      uv.push(side/sides,t);
+      const fold=.91+.09*Math.cos(a*12+.2);
+      colors.push(fold,fold*.997,fold*.99);
+      if(row<rows) {
+        const n=row*sides+side,b=row*sides+(side+1)%sides;
+        indices.push(n,b,n+sides,b,b+sides,n+sides);
+      }
+    }
+    const clothGeometry=new THREE.BufferGeometry();
+    clothGeometry.setAttribute("position",new THREE.Float32BufferAttribute(vertices,3));
+    clothGeometry.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
+    clothGeometry.setAttribute("color",new THREE.Float32BufferAttribute(colors,3));
+    clothGeometry.setIndex(indices);clothGeometry.computeVertexNormals();
+    const foldedSkirt=skirt.clone();foldedSkirt.vertexColors=true;
+    const cloth=add(person,"draped three-dimensional dress with sewn folds",
+      clothGeometry,foldedSkirt);
+    cloth.userData.solidFootprint=true;
     const fold=mat(new THREE.Color(options.skirt || options.outfit)
-      .offsetHSL(0,-.02,.08));
-    for(let pleat=0;pleat<10;pleat++) {
-      const a=pleat*Math.PI*2/10;
-      curve(person,"stitched skirt pleat following cloth drape",
-        [[Math.cos(a)*.37,leg-.14,Math.sin(a)*.28],
-          [Math.cos(a)*.31,leg+.015,Math.sin(a)*.24],
-          [Math.cos(a)*.23,leg+.18,Math.sin(a)*.17]],
-        .007,fold,10);
+      .offsetHSL(0,-.045,-.11));
+    for(let pleat=0;pleat<12;pleat++) {
+      const a=(pleat+.55)*Math.PI*2/12;
+      curve(person,"fine crease nested into dress fabric",
+        [skirtPoint(.04,a,.004),skirtPoint(.45,a,.005),
+          skirtPoint(.96,a,.005)],.0038,fold,13);
     }
     if (options.stripes) {
       for(let stripe=0;stripe<12;stripe++) {
         const a=(stripe+.25)*Math.PI*2/12;
         const vertices=[],uv=[],indices=[];
-        for(const [row,y,rx,rz] of [
-          [0,leg-.165,.392,.302],
-          [1,leg-.055,.356,.273],
-          [2,leg+.07,.292,.225],
-          [3,leg+.175,.238,.183],
-        ]) {
+        for(const [row,t] of [0,.34,.67,1].entries()) {
           for(const side of [-1,1]) {
             const angle=a+side*.13;
-            vertices.push(Math.cos(angle)*rx,y,Math.sin(angle)*rz);
+            vertices.push(...skirtPoint(t,angle,.007));
             uv.push(side<0?0:1,row/3);
           }
           if(row<3) {
@@ -461,14 +489,31 @@ function figure(name, x, z, height, options) {
           stripeMesh,M.blue);
       }
       for(const [name,y,radius,material] of [
-        ["rose waistband stitched over Charlize's stripes",leg+.13,.029,M.pink],
-        ["rose hem following the scalloped skirt",leg-.165,.024,M.pink],
+        ["rose waistband stitched over Charlize's stripes",1,.009,M.pink],
+        ["rose hem following the scalloped skirt",0,.007,M.pink],
       ]) curve(person,name,Array.from({length:33},(_,i)=>{
         const a=i*Math.PI*2/32;
-        const rx=y<leg ? .394 : .247;
-        const rz=y<leg ? .304 : .19;
-        return [Math.cos(a)*rx,y,Math.sin(a)*rz];
+        return skirtPoint(y,a,.003);
       }),radius,material,33);
+      for(const [low,high,bandMat] of [
+        [.055,.115,M.white],[.145,.235,M.blue],
+      ]) {
+        const bandVertices=[],bandUV=[],bandIndices=[];
+        for(let row=0;row<2;row++) for(let side=0;side<48;side++) {
+          const a=side*Math.PI*2/48;
+          bandVertices.push(...skirtPoint(row?high:low,a,.01));
+          bandUV.push(side/48,row);
+          const n=side,b=(side+1)%48;
+          if(row===0) bandIndices.push(n,b,n+48,b,b+48,n+48);
+        }
+        const bandGeometry=new THREE.BufferGeometry();
+        bandGeometry.setAttribute("position",
+          new THREE.Float32BufferAttribute(bandVertices,3));
+        bandGeometry.setAttribute("uv",new THREE.Float32BufferAttribute(bandUV,2));
+        bandGeometry.setIndex(bandIndices);bandGeometry.computeVertexNormals();
+        add(person,"woven horizontal cloth band on Charlize's photographed dress",
+          bandGeometry,bandMat);
+      }
     }
   }
   for (const side of [-1, 1]) {
@@ -536,6 +581,29 @@ function figure(name, x, z, height, options) {
   } else loft(person, "sculpted back hair supporting the painted curls", [[face + .005, .1, .085,0,-.08],
     [face + .055, .152, .116, 0, -.085], [face + .105, .119, .094, 0, -.09],
     [face + .135, .015, .018, 0, -.09]], hair, 20);
+  if(zephrine) {
+    const bow=new THREE.Group();
+    bow.name="small sewn pale-blue bow held in Zephrine's curls";
+    bow.position.set(-.163,face+.035,.055);
+    bow.rotation.set(.12,-.5,.28);
+    bow.scale.setScalar(.72);
+    person.add(bow);
+    const ribbon=mat(0x9ec5d2);
+    const wing=new THREE.Shape();
+    wing.moveTo(0,0);
+    wing.bezierCurveTo(.025,.025,.08,.04,.105,.018);
+    wing.bezierCurveTo(.13,-.008,.1,-.047,.06,-.039);
+    wing.quadraticCurveTo(.017,-.021,0,0);
+    for(const side of [-1,1]) {
+      const loop=add(bow,"folded cloth wing of Zephrine's hair bow",
+        new THREE.ExtrudeGeometry(wing,{depth:.014,bevelEnabled:true,
+          bevelThickness:.004,bevelSize:.004,bevelSegments:2,
+          curveSegments:8}),ribbon);
+      loop.scale.x=side;
+    }
+    loft(bow,"tailored central knot of the hair bow",
+      [[-.024,.017,.014],[0,.024,.02],[.024,.017,.014]],ribbon,9);
+  }
   curve(person, "stitched neckline", [[-.13, height - .41, .12],
     [0, height - .48, .16], [.13, height - .41, .12]], .012, M.cream);
   if (options.dress && options.stripes) {
