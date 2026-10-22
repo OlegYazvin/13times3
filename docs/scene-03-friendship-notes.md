@@ -6,6 +6,8 @@ Oleg says Jane put sustained effort into making sure Zephrine could see Charlize
 
 This memory overlaps frame `01` only in its dance-class setting. Frame `01` is the signup moment; frame `03` is the ongoing friendship between Zephrine and Charlize and the two mothers' bond. It also differs from frame `10`, the first Maggie Daley Park visit with a different group of friends and their two children. Do not assume Charlize or Aibike are in frame `10`'s photos.
 
+2026-10-22 revision: `scripts/assets/room03/charlize-face.webp` is a small generated gouache portrait derived from the private reference photographs, not a crop or a copy of them. The painterly face is mapped to a curved sculpted head, with modeled curly hair behind it. Her three-dimensional sleeveless dress now uses the photographs' navy and white stripes and pink waistband and hem. The continuous inlaid walk, rooted flowering edges, cambered plank bridge, and carved dance pavilion give the Fellger/Hamlin/Visceral fusion recognizable spaces without claiming that they formed one literal location. The originals remain only under `.secrets/reference-photos/charlize-friendship/`.
+
 The published room uses the photo-backed head-tilt, clothing colors, skin tones and hair as stylized 3D figure cues. Aibike does not have a supplied likeness; her figure represents her role without claiming exact features. The park and dance areas symbolize repeated time together rather than asserting a specific event, first meeting, or apparatus used. The original and sanitized reference photos stay private.
 
 ## Public setting references

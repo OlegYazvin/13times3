@@ -212,6 +212,11 @@ def main() -> None:
     friend_names = [node.get("name", "") for node in friend_json["nodes"]]
     assert any("separate painted wood slat on the bench" in name for name in friend_names)
     assert not any("linked hands of two friends" in name for name in friend_names)
+    assert any("Charlize's painted likeness" in name for name in friend_names)
+    assert any("broad navy cloth stripe following Charlize's pleated skirt" in name for name in friend_names)
+    assert any("solid cambered plank-built bridge deck" in name for name in friend_names)
+    assert any("joined sculpted timber arch above the open dance floor" in name for name in friend_names)
+    assert any("living flower stem beside the path" in name for name in friend_names)
     car_room = frames[3]["room"]
     assert car_room["title"] == "Jane Got zephrine the ‘blue car’"
     assert car_room["caption"] == "Zephrine's blue car"

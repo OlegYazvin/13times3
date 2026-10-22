@@ -3,6 +3,7 @@ import olegFaceURL from "./assets/room02/oleg-face-v5-reference.webp";
 import janeFaceURL from "./assets/room02/jane-face.webp";
 import gFaceURL from "./assets/room02/g-face.webp";
 import zephrineFaceURL from "./assets/room02/zephrine-face.webp";
+import charlizeFaceURL from "./assets/room03/charlize-face.webp";
 import olegFaceDepth from "./assets/room02/oleg-face-depth.json" with { type: "json" };
 
 // The illustrated likeness is wrapped around a modeled cheek and jaw. The
@@ -158,8 +159,10 @@ function addPortrait(parent, faceY, profile, fallbackMaterial, person) {
     // little of that margin on Oleg's 3D mapping so his actual eyes, glasses,
     // nose and jaw fill the sculpt instead of becoming a small mask inside a
     // much larger dark hair silhouette.
-    uvs.push(person === "Oleg" ? .12 + u * .76 : u,
-      person === "Oleg" ? .08 + v * .84 : v);
+    uvs.push(person === "Oleg" ? .12 + u * .76 :
+      person === "Charlize" ? .18 + u * .64 : u,
+      person === "Oleg" ? .08 + v * .84 :
+      person === "Charlize" ? .035 + v * .73 : v);
   }
   for (let row = 0; row < rows; row++) for (let col = 0; col < columns; col++) {
     const a = row * (columns + 1) + col;
@@ -196,6 +199,10 @@ export function addZephrinePortrait(parent, faceY, profile, fallbackMaterial) {
   return addPortrait(parent, faceY, profile, fallbackMaterial, "Zephrine");
 }
 
+export function addCharlizePortrait(parent, faceY, profile, fallbackMaterial) {
+  return addPortrait(parent, faceY, profile, fallbackMaterial, "Charlize");
+}
+
 export async function finishOlegPortraits(root) {
   const meshes = [];
   root.traverse((object) => { if (portraitMeshes.has(object)) meshes.push(object); });
@@ -203,11 +210,14 @@ export async function finishOlegPortraits(root) {
     if (!portraitMaterialPromises.has(person)) {
       portraitMaterialPromises.set(person, new Promise((resolve, reject) => {
         const url = { Oleg: olegFaceURL, Jane: janeFaceURL,
-          G: gFaceURL, Zephrine: zephrineFaceURL }[person];
+          G: gFaceURL, Zephrine: zephrineFaceURL,
+          Charlize: charlizeFaceURL }[person];
         new THREE.TextureLoader().load(url, (texture) => {
           texture.colorSpace = THREE.SRGBColorSpace;
           texture.userData.mimeType = "image/webp";
-          resolve(new THREE.MeshStandardMaterial({ map: texture, roughness: .94,
+          resolve(new THREE.MeshStandardMaterial({ map: texture,
+            color: person === "Charlize" ? 0xc9b8aa : 0xffffff,
+            roughness: .94,
             transparent: true, alphaTest: .025, side: THREE.DoubleSide,
             depthWrite: true }));
         }, undefined, reject);

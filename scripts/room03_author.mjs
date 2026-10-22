@@ -6,7 +6,7 @@ import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
 import { addRoomLighting } from "../client/explore/room-lighting.mjs";
 import { addOpenSky } from "./open_sky.mjs";
-import { addJanePortrait, addZephrinePortrait,
+import { addJanePortrait, addZephrinePortrait, addCharlizePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
 import { addContactShadow } from "./stage_shadows.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
@@ -118,13 +118,76 @@ add(root, "the ground where park visits become a dance floor", ground,
   mat(0xffffff, { vertexColors: true }));
 addOpenSky(root, C.sky, C.ground);
 
-// Three generous paths braid through the space. The middle stays clear from
-// the threshold to the central pair, with side routes around the play pieces.
-for (let line = -2; line <= 2; line++) {
-  curve(root, "fine brass line through the visits", [[line * .2, .035, 6.85],
-    [line * .18 + Math.sin(line) * .13, .04, 3.6],
-    [line * .22, .04, .6], [line * .12, .04, -2.6],
-    [line * .32, .04, -5.7]], .012, line === 0 ? M.brass : M.cream, 45);
+// One continuous inlaid walk holds the repeated visits together. Its painted
+// pigment changes gently across the stone, without loose tile polygons.
+const pathCenter=z=>.12*Math.sin(z*.33)+.055*Math.sin(z*.91);
+const pathHalfWidth=z=>1.27+.1*Math.sin(z*.27+.4);
+{
+  const vertices=[],colors=[],uv=[],indices=[],rows=48,columns=12;
+  for(let row=0;row<=rows;row++) {
+    const z=7.1-row*13.7/rows;
+    for(let col=0;col<=columns;col++) {
+      const across=col/columns*2-1;
+      const x=pathCenter(z)+across*pathHalfWidth(z);
+      vertices.push(x,.035+.003*Math.sin(z*2+x*3),z);
+      uv.push(col/columns,row/rows);
+      const color=new THREE.Color(C.ground)
+        .lerp(new THREE.Color(C.cream),.67)
+        .lerp(new THREE.Color(C.blush),.06+.05*Math.sin(z*.55+x*.75))
+        .lerp(new THREE.Color(C.lilac),.05+.06*Math.sin(z*.94-x*.6));
+      color.offsetHSL(0,0,(random()-.5)*.016);
+      colors.push(color.r,color.g,color.b);
+      if(row<rows&&col<columns) {
+        const n=row*(columns+1)+col;
+        indices.push(n,n+columns+1,n+1,n+1,n+columns+1,n+columns+2);
+      }
+    }
+  }
+  const path=new THREE.BufferGeometry();
+  path.setAttribute("position",new THREE.Float32BufferAttribute(vertices,3));
+  path.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
+  path.setAttribute("color",new THREE.Float32BufferAttribute(colors,3));
+  path.setIndex(indices);path.computeVertexNormals();
+  add(root,"continuous hand-laid path through recurring friendship visits",
+    path,mat(0xffffff,{vertexColors:true}));
+}
+for(const side of [-1,1]) curve(root,"fine brass edge of the inlaid garden walk",
+  Array.from({length:25},(_,i)=>{
+    const z=7-i*13.5/24;
+    return [pathCenter(z)+side*pathHalfWidth(z),.045,z];
+  }),.012,M.brass,49);
+for(let seam=0;seam<10;seam++) {
+  const z=6.25-seam*1.26;
+  curve(root,"quiet curved joint between inlaid garden stones",
+    [[pathCenter(z)-pathHalfWidth(z)*.96,.041,z-.1],
+      [pathCenter(z),.042,z+.07*Math.sin(seam*1.2)],
+      [pathCenter(z)+pathHalfWidth(z)*.96,.041,z+.08]],
+    .004,M.ground,13);
+}
+// Cluster rooted stems along the walk. Broad low foliage volumes looked like
+// sacks at human eye height, so the leaves and flowers grow from visible stalks.
+for(const side of [-1,1]) for(let patch=0;patch<16;patch++) {
+  const z=6.5-patch*.78;
+  if(z>.55&&z<2.4) continue; // Jane and Aibike keep their clear silhouettes.
+  const x=side*(1.72+.24*Math.sin(patch*1.8));
+  for(let stalk=0;stalk<3;stalk++) {
+    const sx=x+side*(stalk-1)*.13,sz=z+(stalk-1)*.18;
+    const height=.33+.12*((patch+stalk)%3);
+    curve(root,"rooted flowering stalk in the friendship garden",
+      [[sx,.025,sz],[sx+side*.035,height*.55,sz-.025],
+        [sx-side*.026,height,sz-.06]],.011,M.moss,10);
+    for(const wing of [-1,1]) petal(root,
+      "leaf attached to the garden stalk",
+      sx+wing*.03,height*.31,sz-.025,.16,
+      (patch+stalk)%3?M.leaf:M.paleLeaf,wing*.58);
+    if((patch+stalk)%3===0) for(let pet=0;pet<5;pet++) {
+      const a=pet*Math.PI*2/5;
+      const bloom=petal(root,"small layered flower on its rooted stalk",
+        sx+Math.cos(a)*.045,height+Math.sin(a)*.035,
+        sz-.06,.095,patch%2?M.blush:M.cream,a);
+      bloom.rotation.z=a;
+    }
+  }
 }
 for (let i = 0; i < 15; i++) {
   const x = (random() - .5) * 10.9, z = (random() - .5) * 13.2;
@@ -212,14 +275,54 @@ for (let i = 0; i < 5; i++) {
 // paths. No exact playground apparatus is asserted by the reference photos.
 const bridge = new THREE.Group(); bridge.name = "storybook park bridge";
 bridge.position.set(3.55, 0, -3.9); root.add(bridge);
-box(bridge, "solid curved play bridge deck", 0, .48, 0, 3.6, .22, 1.12, M.brass, true);
+const bridgeTop=x=>.57+.2*(1-(x/1.8)**2);
+{
+  // Build the cambered deck as one joined timber shell. The former flat box
+  // contradicted the arch of its rails and read as a platform from the path.
+  const vertices=[],uv=[],indices=[];
+  function quad(a,b,c,d) {
+    const n=vertices.length/3;
+    for(const p of [a,b,c,d]) vertices.push(...p);
+    uv.push(0,0,1,0,0,1,1,1);
+    indices.push(n,n+1,n+2,n+1,n+3,n+2);
+  }
+  for(let step=0;step<24;step++) {
+    const x0=-1.8+step*.15,x1=x0+.15;
+    const y0=bridgeTop(x0),y1=bridgeTop(x1);
+    quad([x0,y0,-.57],[x1,y1,-.57],[x0,y0,.57],[x1,y1,.57]);
+    quad([x0,y0-.14,.57],[x1,y1-.14,.57],
+      [x0,y0-.14,-.57],[x1,y1-.14,-.57]);
+    for(const side of [-1,1]) quad(
+      [x0,y0,side*.57],[x1,y1,side*.57],
+      [x0,y0-.14,side*.57],[x1,y1-.14,side*.57]);
+  }
+  quad([-1.8,bridgeTop(-1.8),-.57],[-1.8,bridgeTop(-1.8),.57],
+    [-1.8,bridgeTop(-1.8)-.14,-.57],[-1.8,bridgeTop(-1.8)-.14,.57]);
+  quad([1.8,bridgeTop(1.8),.57],[1.8,bridgeTop(1.8),-.57],
+    [1.8,bridgeTop(1.8)-.14,.57],[1.8,bridgeTop(1.8)-.14,-.57]);
+  const timber=new THREE.BufferGeometry();
+  timber.setAttribute("position",new THREE.Float32BufferAttribute(vertices,3));
+  timber.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
+  timber.setIndex(indices);timber.computeVertexNormals();
+  add(bridge,"solid cambered plank-built bridge deck",timber,M.brass)
+    .userData.solidFootprint=true;
+}
+for(let plank=1;plank<12;plank++) {
+  const x=-1.8+plank*3.6/12,y=bridgeTop(x)+.006;
+  curve(bridge,"seam between shaped bridge planks",
+    [[x,y,-.54],[x,y+.005,0],[x,y,.54]],.008,M.bark,9);
+}
 for (const side of [-1, 1]) {
-  curve(bridge, "low flowing bridge rail", [[-1.8, .72, side * .55],
-    [-.9, 1.22, side * .55], [0, 1.34, side * .55],
-    [.9, 1.22, side * .55], [1.8, .72, side * .55]], .058, M.bark, 34);
+  const railX=[-1.8,-.9,0,.9,1.8];
+  curve(bridge, "low flowing bridge rail", railX.map(x=>
+    [x,bridgeTop(x)+.58,side*.55]), .055, M.bark, 34);
+  curve(bridge,"lower shaped bridge rail",railX.map(x=>
+    [x,bridgeTop(x)+.27,side*.55]),.026,M.cream,34);
+  curve(bridge,"carved fascia following the bridge's camber",
+    railX.map(x=>[x,bridgeTop(x)-.07,side*.58]),.025,M.bark,34);
   for (const x of [-1.5, -.75, 0, .75, 1.5]) {
-    beam(bridge, "bridge rail baluster", [x, .58, side * .55],
-      [x, 1.17 + .17 * (1 - Math.abs(x) / 1.8), side * .55],
+    beam(bridge, "bridge rail baluster", [x, bridgeTop(x), side * .55],
+      [x, bridgeTop(x)+.56, side * .55],
       .029, .025, M.bark);
   }
 }
@@ -240,26 +343,55 @@ for (const y of [1.07, 1.26, 1.45]) curve(root,
     [3.55, y + .12, .92], [4.5, y + .05, .9], [5.35, y - .22, .79]],
   .034, y === 1.26 ? M.brass : M.bark, 32);
 
-// A dance room rises from the same garden. Its open ribs, floor and barre
-// imply class without blocking the two girls or adding literal class signs.
+// A dance pavilion rises from the garden. Its solid carved arch and floor
+// read as a built threshold while preserving the tall open sky above.
 for (let i = -4; i <= 4; i++) {
   box(root, "warm dance floorboard", i * .55, .065, -6.35, .51, .07, 1.65,
     i % 2 ? M.cream : M.brass);
 }
 for (const side of [-1, 1]) {
-  beam(root, "solid dance-room column", [side * 2.5, 0, -5.55],
-    [side * 2.5, 3.22, -5.55], .11, .08, M.bark).userData.solidFootprint = true;
-  curve(root, "paper arch between garden and studio",
-    [[side * 2.5, 3.0, -5.55], [side * 2.0, 3.65, -5.62],
-      [0, 4.12, -5.72], [-side * 2.0, 3.65, -5.62],
-      [-side * 2.5, 3.0, -5.55]], .05, side < 0 ? M.brass : M.cream, 36);
+  loft(root,"solid carved dance pavilion post",[
+    [0,.2,.2,side*2.5,-5.55],[.16,.24,.21,side*2.5,-5.55],
+    [.32,.17,.16,side*2.5,-5.55],[2.85,.15,.14,side*2.5,-5.55],
+    [3.13,.2,.18,side*2.5,-5.55]],M.bark,20,true);
+  for(const offset of [-.065,0,.065]) curve(root,
+    "continuous flute cut into the dance pavilion post",
+    [[side*2.5+offset,.31,-5.382],[side*2.5+offset,1.55,-5.402],
+      [side*2.5+offset,2.85,-5.4]],.008,M.brass,16);
 }
-box(root, "dance barre", 0, 1.34, -6.99, 4.9, .045, .055, M.bark);
+{
+  const archY=x=>4.08-.98*(x/2.5)**2;
+  const shape=new THREE.Shape();
+  shape.moveTo(-2.56,archY(-2.5)+.13);
+  for(let step=0;step<=40;step++) {
+    const x=-2.56+step*5.12/40;
+    shape.lineTo(x,archY(Math.max(-2.5,Math.min(2.5,x)))+.13);
+  }
+  for(let step=40;step>=0;step--) {
+    const x=-2.56+step*5.12/40;
+    shape.lineTo(x,archY(Math.max(-2.5,Math.min(2.5,x)))-.13);
+  }
+  shape.closePath();
+  add(root,"joined sculpted timber arch above the open dance floor",
+    new THREE.ExtrudeGeometry(shape,{depth:.24,bevelEnabled:true,
+      bevelSize:.018,bevelThickness:.018,bevelSegments:2}),
+    M.bark,0,0,-5.69);
+  curve(root,"gold inlay following the inner dance arch",
+    Array.from({length:25},(_,i)=>{
+      const x=-2.5+i*5/24;
+      return [x,archY(x)-.105,-5.429];
+    }),.018,M.brass,48);
+}
+curve(root,"rounded wooden dance barre",
+  [[-2.45,1.34,-6.99],[0,1.34,-6.99],[2.45,1.34,-6.99]],
+  .044,M.bark,24);
 for (const x of [-2.24, 0, 2.24]) beam(root, "barre bracket", [x, 1.35, -6.99],
   [x, 1.25, -7.16], .025, .022, M.brass);
 function figure(name, x, z, height, options) {
   const jane = name.startsWith("Jane");
   const zephrine = name.startsWith("Zephrine");
+  const charlize = name.startsWith("Charlize");
+  const painted = jane || zephrine || charlize;
   const person = new THREE.Group(); person.name = `solid sculpted figure of ${name}`;
   person.position.set(x, 0, z); person.rotation.y = options.yaw || 0; root.add(person);
   addContactShadow(person, height);
@@ -301,12 +433,42 @@ function figure(name, x, z, height, options) {
           [Math.cos(a)*.23,leg+.18,Math.sin(a)*.17]],
         .007,fold,10);
     }
-    if (options.stripes) for (let index = 0; index < 7; index++) {
-      const angle = index * Math.PI * 2 / 7;
-      beam(person, "navy stripe on Charlize's dress",
-        [Math.cos(angle) * .32, leg - .1, Math.sin(angle) * .255],
-        [Math.cos(angle) * .24, leg + .13, Math.sin(angle) * .19],
-        .018, .014, M.blue, 6);
+    if (options.stripes) {
+      for(let stripe=0;stripe<12;stripe++) {
+        const a=(stripe+.25)*Math.PI*2/12;
+        const vertices=[],uv=[],indices=[];
+        for(const [row,y,rx,rz] of [
+          [0,leg-.165,.392,.302],
+          [1,leg-.055,.356,.273],
+          [2,leg+.07,.292,.225],
+          [3,leg+.175,.238,.183],
+        ]) {
+          for(const side of [-1,1]) {
+            const angle=a+side*.13;
+            vertices.push(Math.cos(angle)*rx,y,Math.sin(angle)*rz);
+            uv.push(side<0?0:1,row/3);
+          }
+          if(row<3) {
+            const n=row*2;
+            indices.push(n,n+2,n+1,n+1,n+2,n+3);
+          }
+        }
+        const stripeMesh=new THREE.BufferGeometry();
+        stripeMesh.setAttribute("position",new THREE.Float32BufferAttribute(vertices,3));
+        stripeMesh.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
+        stripeMesh.setIndex(indices);stripeMesh.computeVertexNormals();
+        add(person,"broad navy cloth stripe following Charlize's pleated skirt",
+          stripeMesh,M.blue);
+      }
+      for(const [name,y,radius,material] of [
+        ["rose waistband stitched over Charlize's stripes",leg+.13,.029,M.pink],
+        ["rose hem following the scalloped skirt",leg-.165,.024,M.pink],
+      ]) curve(person,name,Array.from({length:33},(_,i)=>{
+        const a=i*Math.PI*2/32;
+        const rx=y<leg ? .394 : .247;
+        const rz=y<leg ? .304 : .19;
+        return [Math.cos(a)*rx,y,Math.sin(a)*rz];
+      }),radius,material,33);
     }
   }
   for (const side of [-1, 1]) {
@@ -314,7 +476,8 @@ function figure(name, x, z, height, options) {
     const hand = options.hands?.[side] || [side * .3, height - .91, .12];
     const elbow = [side * .3, (height - .64 + hand[1]) / 2, hand[2] * .6];
     sculptSleevedArm(add, person, { shoulder, elbow, hand,
-      outfit, skin, trim: M.cream,
+      outfit:options.sleeveless?skin:outfit, skin,
+      trim:options.sleeveless?skin:M.cream,
       size: Math.min(1, height / 1.7) });
   }
   const face = height - .035;
@@ -327,37 +490,61 @@ function figure(name, x, z, height, options) {
   if (zephrine) addZephrinePortrait(person, face,
     [[-.4, .06, .06], [-.31, .14, .115], [-.15, .165, .14],
       [.04, .14, .12], [.12, .07, .07]], skin);
+  if (charlize) addCharlizePortrait(person, face,
+    [[-.4, .06, .06], [-.31, .14, .115], [-.15, .165, .14],
+      [.04, .14, .12], [.12, .07, .07]], skin);
   for (const side of [-1, 1]) {
-    if (!jane && !zephrine) add(person, "painted eye white", new THREE.SphereGeometry(.022, 7, 6), M.white,
+    if (!painted) add(person, "painted eye white", new THREE.SphereGeometry(.022, 7, 6), M.white,
       side * .067, face - .16, .143);
-    if (!jane && !zephrine) add(person, "painted iris", new THREE.SphereGeometry(.012, 7, 5), M.ink,
+    if (!painted) add(person, "painted iris", new THREE.SphereGeometry(.012, 7, 5), M.ink,
       side * .067, face - .16, .164);
-    if (!jane && !zephrine) curve(person, "fine eyebrow", [[side * .025, face - .105, .146],
+    if (!painted) curve(person, "fine eyebrow", [[side * .025, face - .105, .146],
       [side * .07, face - .093, .153], [side * .11, face - .107, .14]], .007, hair);
   }
-  if (!jane && !zephrine) loft(person, "sculpted nose", [[face - .255, .015, .017, 0, .145],
+  if (!painted) loft(person, "sculpted nose", [[face - .255, .015, .017, 0, .145],
     [face - .155, .025, .027, 0, .17], [face - .14, .008, .008, 0, .152]], skin, 8);
-  if (!jane && !zephrine) curve(person, "gentle smile", [[-.045, face - .3, .112],
+  if (!painted) curve(person, "gentle smile", [[-.045, face - .3, .112],
     [0, face - .317, .128], [.045, face - .3, .112]], .008, M.pink);
-  loft(person, "layered hair, not a spherical cap", [[face + .03, .1, .085],
-    [face + .11, .17, .13, 0, -.02], [face + .2, .13, .1, 0, -.04],
-    [face + .24, .025, .02, 0, -.04]], hair, 14);
-  if (options.bun) loft(person, "high tied hair", [[face + .15, .045, .04, 0, -.06],
-    [face + .27, .12, .11, 0, -.06], [face + .38, .075, .07, 0, -.06],
-    [face + .42, .01, .01, 0, -.06]], hair, 12);
-  if (options.curls) for (const side of [-1, 1]) for (let i = 0; i < 4; i++) {
-    const xx = side * (.12 + i * .02);
-    curve(person, "loose curl beside Zephrine's cheek",
-      [[xx, face + .1, -.015], [xx + side * .06, face - .03, .04],
-        [xx + side * .07, face - .19, .04], [xx + side * .03, face - .29, .07]],
-      .019 - i * .002, hair, 15);
-  }
+  if (options.bun) {
+    loft(person,charlize?"Charlize's fitted crown behind the painted curls":
+      "gathered hair flowing continuously into a high bun",
+      charlize?[
+      [face+.015,.095,.08,0,-.08],
+      [face+.065,.152,.12,0,-.09],
+      [face+.11,.132,.108,0,-.105],
+      [face+.15,.102,.084,0,-.12],
+      [face+.19,.075,.066,0,-.14],
+      [face+.22,.038,.037,0,-.14],
+      [face+.235,.009,.01,0,-.14],
+    ]:[
+      [face+.025,.095,.08,0,-.055],
+      [face+.09,.16,.13,0,-.065],
+      [face+.15,.14,.115,0,-.075],
+      [face+.2,.105,.09,0,-.085],
+      [face+.25,.09,.08,0,-.09],
+      [face+.29,.054,.052,0,-.09],
+      [face+.31,.009,.01,0,-.09],
+    ],hair,24);
+    if(charlize) for(let strand=0;strand<12;strand++) {
+      const a=strand*Math.PI*2/12;
+      curve(person,"interlaced curl rooted in Charlize's high bun",[
+        [Math.cos(a)*.066,face+.14,-.14+Math.sin(a)*.066],
+        [Math.cos(a+.42)*.072,face+.18,-.14+Math.sin(a+.42)*.07],
+        [Math.cos(a+.85)*.035,face+.22,-.14+Math.sin(a+.85)*.037],
+      ],.008,hair,12);
+    }
+  } else loft(person, "sculpted back hair supporting the painted curls", [[face + .005, .1, .085,0,-.08],
+    [face + .055, .152, .116, 0, -.085], [face + .105, .119, .094, 0, -.09],
+    [face + .135, .015, .018, 0, -.09]], hair, 20);
   curve(person, "stitched neckline", [[-.13, height - .41, .12],
     [0, height - .48, .16], [.13, height - .41, .12]], .012, M.cream);
   if (options.dress && options.stripes) {
-    for (let i = 0; i < 5; i++) box(person, "soft stripe across fitted top",
-      0, height - .56 - i * .065, .194, .39, .022, .012, i % 2 ? M.blue : M.white);
-    box(person, "pink ribbon waist", 0, leg + .1, .18, .55, .035, .02, M.pink);
+    for (let i = 0; i < 5; i++) {
+      const y=height-.48-i*.058;
+      curve(person,"navy woven band around Charlize's fitted dress top",
+        [[-.16,y,.12],[-.08,y-.004,.163],[0,y,.177],
+          [.08,y-.004,.163],[.16,y,.12]],.017,M.blue,16);
+    }
   }
   return person;
 }
@@ -373,7 +560,8 @@ zeph.rotation.z = -.045;
 zeph.position.z = 4.0;
 const charlize = figure("Charlize", .42, 4.0, 1.17, {
   skin: C.darkSkin, hair: C.darkHair, outfit: C.white, skirt: C.white,
-  shoe: C.ink, dress: true, stripes: true, bun: true, yaw: .12,
+  shoe: C.ink, dress: true, stripes: true, sleeveless:true,
+  bun: true, yaw: .12,
   hands: { "-1": [-.38, .63, .22], "1": [.3, .73, .1] },
 });
 charlize.rotation.z = .045;
