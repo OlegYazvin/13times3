@@ -139,10 +139,10 @@ const glass = new THREE.MeshPhysicalMaterial({color:0xa3d9df,transparent:true,
   opacity:.09,roughness:.08,metalness:0,depthWrite:false,side:THREE.DoubleSide});
 // The vistas are the distant water. Keep them a quieter value than the
 // sculptures in front of the glass so a bay reads as a habitat, not wallpaper.
-const reefWall = new THREE.MeshBasicMaterial({color:0xaccbd2,side:THREE.DoubleSide});
-const riverWall = new THREE.MeshBasicMaterial({color:0xb8d1c7,side:THREE.DoubleSide});
-const reefVariantWall = new THREE.MeshBasicMaterial({color:0xacc7d0,side:THREE.DoubleSide});
-const riverVariantWall = new THREE.MeshBasicMaterial({color:0xb4d1c8,side:THREE.DoubleSide});
+const reefWall = new THREE.MeshBasicMaterial({color:0x91b3bb,side:THREE.DoubleSide});
+const riverWall = new THREE.MeshBasicMaterial({color:0x9dbab0,side:THREE.DoubleSide});
+const reefVariantWall = new THREE.MeshBasicMaterial({color:0x93aeb7,side:THREE.DoubleSide});
+const riverVariantWall = new THREE.MeshBasicMaterial({color:0x9ebbb2,side:THREE.DoubleSide});
 for(const side of [-1,1]) {
   box(root,"continuous solid sculpted tank wall",side*9.12,3.23,1.6,
     .15,6.45,30.95,M.deep,true);
@@ -266,15 +266,20 @@ for(const z of [11.4,14.45,16.6]) {
       [3.9,.07,z-.13],[7.5,.065,z]],.024,M.gold,25);
 }
 function fishGeometry(rings) {
-  const vertices=[],uv=[],colors=[],indices=[],sides=14;
-  for(let row=0;row<rings.length;row++) for(let s=0;s<sides;s++) {
-    const [x,ry,rz]=rings[row],a=s*Math.PI*2/sides;
+  const vertices=[],uv=[],colors=[],indices=[],sides=22;
+  const profile=new THREE.CatmullRomCurve3(rings.map(
+    ([x,ry,rz])=>new THREE.Vector3(x,ry,rz)),false,"centripetal");
+  const rows=24;
+  for(let row=0;row<=rows;row++) for(let s=0;s<sides;s++) {
+    const point=profile.getPoint(row/rows);
+    const x=point.x,ry=Math.max(.008,point.y),rz=Math.max(.008,point.z);
+    const a=s*Math.PI*2/sides;
     vertices.push(x,Math.cos(a)*ry,Math.sin(a)*rz);
-    uv.push(row/(rings.length-1),s/sides);
+    uv.push(row/rows,s/sides);
     const upper=(Math.cos(a)+1)/2;
     colors.push(1-.23*upper,1-.12*upper,1-.07*upper);
   }
-  for(let row=0;row<rings.length-1;row++) for(let s=0;s<sides;s++) {
+  for(let row=0;row<rows;row++) for(let s=0;s<sides;s++) {
     const a=row*sides+s,b=row*sides+(s+1)%sides;
     indices.push(a,b,a+sides,b,b+sides,a+sides);
   }
@@ -293,6 +298,36 @@ const fishBodies=[
   fishGeometry([[-.56,.015,.015],[-.37,.083,.075],[.03,.115,.1],
     [.34,.09,.075],[.61,.022,.02]]),
 ];
+function finGeometry(shape) {
+  return new THREE.ExtrudeGeometry(shape,{depth:.038,bevelEnabled:true,
+    bevelThickness:.009,bevelSize:.009,bevelSegments:2,curveSegments:10});
+}
+const tailShape=new THREE.Shape();
+tailShape.moveTo(-.39,0);
+tailShape.bezierCurveTo(-.56,.05,-.72,.19,-.86,.33);
+tailShape.bezierCurveTo(-.78,.16,-.73,.05,-.69,0);
+tailShape.bezierCurveTo(-.73,-.05,-.78,-.16,-.86,-.33);
+tailShape.bezierCurveTo(-.72,-.19,-.56,-.05,-.39,0);
+const fishTailGeometry=finGeometry(tailShape);
+const fishDorsalGeometries=[.16,.255,.105].map((base)=>{
+  const shape=new THREE.Shape();
+  shape.moveTo(-.35,base*.7);
+  shape.bezierCurveTo(-.2,base*1.2,-.12,base*2.1,-.09,base*2.25);
+  shape.bezierCurveTo(.015,base*1.6,.18,base*1.2,.31,base*.72);
+  shape.quadraticCurveTo(-.03,base*.94,-.35,base*.7);
+  return finGeometry(shape);
+});
+const bellyShape=new THREE.Shape();
+bellyShape.moveTo(-.17,-.1);
+bellyShape.bezierCurveTo(-.23,-.2,-.33,-.3,-.39,-.32);
+bellyShape.bezierCurveTo(-.29,-.18,-.05,-.13,.09,-.1);
+bellyShape.closePath();
+const fishBellyGeometry=finGeometry(bellyShape);
+const sideFinShape=new THREE.Shape();
+sideFinShape.moveTo(.05,-.025);
+sideFinShape.bezierCurveTo(-.06,-.07,-.22,-.17,-.38,-.2);
+sideFinShape.bezierCurveTo(-.23,-.045,-.1,.015,.05,-.025);
+const fishSideFinGeometry=finGeometry(sideFinShape);
 const fishBodyMaterials=new Map();
 function fish(x,y,z,scale,mat,phase,yaw=0) {
   const group=new THREE.Group();group.name="drifting sculpted aquarium fish";
@@ -310,27 +345,30 @@ function fish(x,y,z,scale,mat,phase,yaw=0) {
     "deep-bodied reef fish with continuous cheek and belly",
     "slender darting fish with modeled tapered flanks"][species],
   fishBodies[species],fishBodyMaterials.get(mat));
-  const tailX=species===1?-.45:species===2?-.58:-.51;
-  for(const fork of [-1,1]) {
-    const tail=petal(group,"forked sculpted fish tail lobe",
-      tailX,fork*.11,-.02,.33,mat,fork*.18);
-    tail.rotation.z=fork*.72;
-  }
-  for(let ridge=0;ridge<2;ridge++) {
-    const fin=petal(group,"ribbed raised dorsal fin",-.15+ridge*.18,
-      .135,-.01,(species===1?.33:.26)-ridge*.055,M.pearl,.22);
-    fin.rotation.z=-.62;
-  }
-  const ventral=petal(group,"small swept belly fin",-.07,-.15,0,.22,mat,.1);
-  ventral.rotation.z=Math.PI*.7;
+  const tail=add(group,"single forked tail with a continuous fin membrane",
+    fishTailGeometry,mat,species===2?-.07:0,0,-.02);
+  tail.scale.y=species===1?1.12:species===2?.77:1;
+  add(group,"arched dorsal fin joined to the fish's back",
+    fishDorsalGeometries[species],M.pearl,0,0,-.018);
+  add(group,"swept lower fin joined to the belly",
+    fishBellyGeometry,mat,0,0,-.018);
+  for(const rayY of [-.22,-.09,.09,.22])
+    curve(group,"fine structural ray inside the forked tail",
+      [[-.46,0,.023],[-.63,rayY*.45,.024],[-.82,rayY,.023]],
+      .004,M.pearl,11);
   for(const side of [-1,1]) {
     add(group,"bright fish iris in carved eye socket",
       new THREE.SphereGeometry(.019,9,7),M.ink,.365,.052,side*.116);
     add(group,"small eye highlight",new THREE.SphereGeometry(.006,6,5),
       M.white,.371,.058,side*.131);
-    const p=petal(group,"swept volumetric side fin",-.08,-.045,
-      side*.14,.22,M.gold,side*.47);
-    p.rotation.x=side*.8;
+    const p=add(group,"carved pectoral fin emerging from the flank",
+      fishSideFinGeometry,M.gold,0,0,side*.13);
+    p.rotation.y=side*.22;
+    p.scale.y=species===1?1.12:.85;
+    for(let ray=0;ray<3;ray++) curve(group,
+      "fine pectoral fin ray from the shoulder",
+      [[.01,-.035,side*.145],[-.16,-.08-ray*.025,side*.164],
+        [-.32,-.16-ray*.01,side*.18]],.003,M.pearl,8);
     curve(group,"incised gill cover",[[.22,-.085,side*.102],
       [.235,.025,side*.145],[.21,.12,side*.1]],.008,M.ink,9);
     for(let stripe=0;stripe<3;stripe++) curve(group,
@@ -427,6 +465,16 @@ for(let i=0;i<6;i++) fish(-6.8+random()*13.6,
 for(let i=0;i<8;i++) fish(-7+random()*14,
   1.15+random()*4.35,18.45,.4+random()*.38,
   i%3?M.turquoise:M.gold,33+i*.64,Math.PI*(i%2));
+// The walk-behind route needs an inhabited focal plane at ordinary eye
+// height. Place a small, varied school in front of the painted deep water,
+// visible through the rear glass even when the visitor stands centrally.
+for(const [x,y,z,scale,material,phase,yaw] of [
+  [-3.0,1.55,18.82,.99,M.gold,301,.12],
+  [-1.35,2.13,19.18,.85,M.coral,302,-.2],
+  [.42,1.43,19.05,.97,M.deep,303,.16],
+  [2.35,2.28,19.36,.89,M.gold,304,-.12],
+  [3.85,1.31,18.94,.79,M.coral,305,.18],
+]) fish(x,y,z,scale,material,phase,yaw);
 jellyfish(8.04,3.35,4.05,.82,111);
 
 // A ray travels in the end habitat. Its swept wings and tail occupy volume
@@ -550,8 +598,8 @@ ray(4.3,2.9,-12.45,.62,-.26);
     const x=cx+Math.cos(a)*rx*rad,
       z=cz+Math.sin(a)*rz*rad;
     fish(x,5.18+(i%3)*.11,z,
-      .79+(i%4)*.09,
-      i%4===0?M.coral:i%3===0?M.turquoise:M.gold,
+      .86+(i%4)*.08,
+      i%4===0?M.coral:i%3===0?M.deep:M.gold,
       171+i*.57,a+Math.PI/2);
   }
 }
@@ -692,7 +740,7 @@ function sculptedSeahorse(x,y,z,scale,yaw=0) {
 }
 sculptedTurtle(8.08,3.53,6.75,.77,Math.PI*.48);
 sculptedTurtle(-8.12,3.04,-.55,.66,-Math.PI*.55);
-sculptedTurtle(-.65,3.64,18.1,1.13,.28);
+sculptedTurtle(-3.35,2.7,19.15,.72,-.32);
 sculptedTurtle(2.37,2.78,3.83,.49,-.32);
 for(const [x,y,z,s,yaw] of [
   [8.08,2.37,1.4,.91,Math.PI*.47],

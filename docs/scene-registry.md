@@ -90,6 +90,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 job-search and likeness revision: frame `02` remains Jane's repeated support of Oleg's job search in their home-and-street dreamscape. Oleg's oversized blank sheet is replaced by a sewn notebook on his actual desk, while Jane's advising, household, outreach, and caregiving poses receive more distinct gestures and props. The shared Oleg head in frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11` gains sculpted temple, ear, and nape hair layers and a new muted gouache portrait derived from his private photo. This is an art revision of the same published memories; no frame ID, title, or event changes.
 
+2026-10-21 aquarium fish revision: frame `11` keeps the Shedd visit and G and Zephrine's shared wonder. Its walk-behind rear habitat now has a composed eye-level school and a side-positioned turtle, with quieter painted water behind them. The same fish body used across the habitats has a smoother profile and joined, shaped fins. The freestanding hallway portal, full rear walkaround, room title, people, and frame ID remain the same.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.
