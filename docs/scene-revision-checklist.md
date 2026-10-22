@@ -14,7 +14,7 @@ passes in the migration task do not automatically satisfy this checklist.
 - [x] Pose-specific hands, clothing and supporting surfaces inspected; remaining art weaknesses are recorded in the report.
 - [x] Every room reviewed at doorway, sides, rear and fresh portrait viewport; unresolved issues remain listed, including the partial-reveal defect.
 - [x] Portal, sampled collision, emulated mobile controls, cleanup and fallback checks pass locally. Verified after integration.
-- [x] All generated room models plus paintings below 8 MB; largest is room 02, about 7.46 MB.
+- [x] All generated room models plus paintings below 8 MB; largest is room 02, about 7.47 MB.
 - [x] No private reference photos or metadata copied into output or evidence.
 - [ ] Human likeness, emotional and environmental art acceptance.
 - [x] Integrated locally after the migration task acknowledged its stop; original checkout build/site checks pass, and all 11 model hashes plus the client hash match the reviewed exports.
@@ -27,7 +27,7 @@ passes in the migration task do not automatically satisfy this checklist.
 | 04 | Rigid steering, weak grip contact, side-head slabs | Seated child fits toy; two parent grips; dimensional street | Publication iteration; art open |
 | 05 | Mannequin gesture in vacant hall | Resolve and family connection; directional opening into light | Publication iteration; art open |
 | 06 | Bar forearm, rotated standing child, lap/chair overlap | Purpose-built seated mother and curled clothed child | Publication iteration; art open |
-| 07 | Unconvincing shoulder support, giant fruit, stiff G | Child sits securely; hands support legs; small berries on bushes at least adult height (Oleg’s correction; current plant scale is still wrong) | Publication iteration; art open |
+| 07 | Unconvincing shoulder support, giant fruit, stiff G | Child sits securely; hands support legs; small berries on bushes at least adult height (Oleg’s correction; exported follow-up measures 2.015–2.345 m) | Publication iteration; art open |
 | 08 | Labels dominate model-display route | Seven distinct stops, continuous journey, companion interaction | Publication iteration; art open |
 | 09 | Reversed child torso rings, cage hair, rigid vest | Ordered body surface, fitted vest, held apple and grouped friends | Publication iteration; art open |
 | 10 | Static doll lineup, hovering hands | Children visibly engaged together; integrated adults and park | Publication iteration; art open |
@@ -76,4 +76,26 @@ generates the illustrated local walkthrough and hashes the exact current GLBs.
 Oleg authorized uploading this reviewed iteration and continuing the art work.
 The release includes all eleven reviewed exports and Zephrine’s fuller hair; it
 does not close the human likeness or environmental acceptance boxes. Adult-height
-blueberry planting is the next required geometry correction.
+blueberry planting was corrected and reviewed in the later local follow-up.
+
+## Local blueberry follow-up
+
+- [x] Decode the actual GLB and measure every plant; all 52 exceed 2 m.
+- [x] Inspect attached leaves, small berries and the shared picking bough in the room.
+- [x] Inspect both sides and rear; remove the exposed rectangular field edge.
+- [x] Recheck desktop and fresh portrait-phone entry, movement, sampled collision, return and cleanup.
+- [x] Reject the excessive-geometry trial; use simpler distant plants and shared geometry. Current room assets: 5.93 MB.
+- [ ] Physical-phone GPU performance and final character/environment art acceptance.
+
+This follow-up is included in the user-authorized release after `f28cbb7`.
+
+## Local portal follow-up
+
+- [x] All eleven paintings rendered through the physical frame projection.
+- [x] Isolated experiment confirms the room 02 horizon rectangle came from retained hallway depth.
+- [x] Room 02 sky remains unchanged when unrelated hall walls are tinted magenta.
+- [x] Complete fresh desktop/phone and walkaround verification of the final renderer across all eleven rooms; the last field contact correction is checked separately against its final export.
+- [ ] Resolve frame 01's taller-painting/smaller-aperture upper edge and finish artistic acceptance.
+
+The source-note privacy redaction is separately published in `d946d79`; the
+reviewed artwork and portal follow-ups are released by this commit. Further artistic acceptance remains open.

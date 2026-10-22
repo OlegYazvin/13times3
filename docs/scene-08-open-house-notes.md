@@ -34,3 +34,13 @@ photographs remain private and are not used as public textures. The memory,
 people and frame assignment remain unchanged. See
 [the acceptance checklist](scene-revision-checklist.md) for actual visual and
 functional verification; this note alone does not mark the room complete.
+
+Portal follow-up: the local painting now uses the shared physical-frame
+projection from the hall, with a shorter cutout interval. A separate depth
+pass prevents unrelated hallway walls from covering distant room scenery.
+See [the shared evidence report](scene-revision-report.md) for verification and
+remaining artistic weaknesses. This does not change the memory or frame ID.
+
+Publication status: the reviewed adult-height field and shared portal follow-ups
+are included in the user-authorized release after `f28cbb7`. Earlier local-pass
+wording above records the development sequence. Artistic acceptance remains open.

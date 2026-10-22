@@ -20,7 +20,7 @@ The [farm's own site](https://www.grisamorefarms.com/) describes apple picking, 
 
 Other supplied photos show parts of the broader visit, including time indoors, a house exterior, a waterfall, a play area, meals, and farm animals. They may help with atmosphere, but the user has not said which details belong in the scene or who appears in each image. The photographed orchard and farm-stand setting is supported; avoid inventing house ownership, conversations, exact itinerary, or unpictured activities.
 
-This differs from planned frame `07`: that is a blueberry-picking outing with an unspecified setting; frame `09` is the first Ithaca visit to friends and Zephrine's first time trying apple picking.
+This differs from frame `07`, the blueberry-picking outing with G; frame `09` is the first Ithaca visit to friends and Zephrine's first time trying apple picking.
 
 October 22 orchard detail pass: the ten egg-like procedural canopy volumes are replaced with shaped 3D foliage adapted from a CC0 Quaternius tree. The room keeps its own forked trunks and fruiting twigs; the imported foliage is crown only, so the apples and modeled branches remain the authored orchard rather than turning into a generic street tree. Apple stems now start at the actual branch ends, and the fruit is slightly smaller at walking scale. A phone view exposed Zephrine's two boxy teal vest panels crossing her lower face; shaped cloth panels now follow her torso below the neckline, leaving her expression and held apple visible. Loose foreground apples that looked like oversized balls are removed; fruit remains on the branches and in the basket. The room remains an independent, tall sky world behind frame `09`; this art revision adds no event or person.
 
@@ -47,3 +47,13 @@ references. The local shared model now has fuller sides, temple curls and nape
 volume. See [her character notes](character-zephrine-notes.md) and the shared
 checklist for the exported pose review; this does not mark the scene's wider
 artwork complete.
+
+Portal follow-up: the local painting now uses the shared physical-frame
+projection from the hall, with a shorter cutout interval. A separate depth
+pass prevents unrelated hallway walls from covering distant room scenery.
+See [the shared evidence report](scene-revision-report.md) for verification and
+remaining artistic weaknesses. This does not change the memory or frame ID.
+
+Publication status: the reviewed adult-height field and shared portal follow-ups
+are included in the user-authorized release after `f28cbb7`. Earlier local-pass
+wording above records the development sequence. Artistic acceptance remains open.

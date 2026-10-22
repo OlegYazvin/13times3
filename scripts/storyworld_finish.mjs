@@ -9,6 +9,12 @@ function atmosphereTerrain(root,id){
   const palettes={'02':[0x9caa92,0x778e7c],'03':[0xa8b59b,0x7b9a8a],'04':[0x9fab92,0x748777],
     '07':[0x9aaf8a,0x628878],'08':[0xafa89a,0x7e9291],'09':[0xadb18c,0x8d9c77],'10':[0xa1b899,0x71958b]};
   const palette=palettes[id];if(!palette)return;
+  if(id==='07'){
+    // The field author owns one continuous ground mesh through the horizon.
+    // Overlaying a second plane produced a visible rectangle at its old edge.
+    root.traverse(o=>{if(o.name==='distant ground beyond the walkable scene')o.visible=false;});
+    return;
+  }
   const g=new THREE.PlaneGeometry(144,144,96,96);g.rotateX(-Math.PI/2);
   const colors=[],p=g.attributes.position;
   for(let i=0;i<p.count;i++){

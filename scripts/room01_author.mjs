@@ -1,3 +1,4 @@
+import {portalPreviewCamera} from './portal_preview_camera.mjs';
 import {replaceStoryFigures} from './storybook_figures.mjs';
 import {finishStoryWorld} from './storyworld_finish.mjs';
 import * as THREE from "three";
@@ -742,9 +743,7 @@ export async function authorRoom() {
   const scene = new THREE.Scene(); scene.background = new THREE.Color(0xc6ad99);
   addRoomLighting(scene,'01');
   scene.add(root);
-  const view = gallery.frames[0].room.previewCamera;
-  const camera = new THREE.PerspectiveCamera(view.fov,FRAME_WIDTH/FRAME_HEIGHT,.05,30);
-  camera.position.fromArray(view.position); camera.lookAt(...view.target);
+  const camera = portalPreviewCamera(gallery.frames[0].room);
   const renderer = new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.setPixelRatio(1); renderer.setSize(735,Math.round(735*FRAME_HEIGHT/FRAME_WIDTH));

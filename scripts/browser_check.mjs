@@ -182,7 +182,7 @@ try {
   await roomPage.evaluate(() => window.__galleryTestPose(0, -1.1, -.67));
   await roomPage.waitForFunction(() => window.__galleryDebug().paintingOpacity === 1);
   await roomPage.screenshot({ path: ".cache/room01-painting-far.png" });
-  await roomPage.evaluate(() => window.__galleryTestPose(0, -4.975, -Math.PI / 2));
+  await roomPage.evaluate(() => window.__galleryTestPose(-.2, -4.975, -Math.PI / 2));
   await roomPage.waitForFunction(() => window.__galleryDebug().paintingOpacity < 1);
   const midway = await roomPage.evaluate(() => window.__galleryDebug());
   assert.ok(midway.paintingOpacity > .45 && midway.paintingOpacity < 1);

@@ -1,8 +1,9 @@
 import * as THREE from "three";
+import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { createRoomArt } from "./room_art.mjs";
 
 // Blueberries of Indiana, near La Porte, becomes an expansive summer field
-// of adult-height or taller bushes and deep-blue fruit (plant scale correction pending). G helps Zephrine pick; Zephrine rides
+// of adult-height or taller bushes and deep-blue fruit. G helps Zephrine pick; Zephrine rides
 // on Oleg's shoulders. This is not frame 09's autumn apple orchard.
 const C = {
   sky: 0xadcbd0, ground: 0xa6b7a0, grass: 0x7b9f7c,
@@ -21,38 +22,20 @@ const { root, M, random, add, box, beam, curve, loft, petal,
   wrapSky, ground, person, exportRoom } = art;
 wrapSky(C.sky, true);
 ground(C.ground, (x, z) => {
-  const path = Math.exp(-Math.pow((x - .23 * Math.sin(z * .4)) / 1.45, 2));
-  return new THREE.Color(C.grass).lerp(new THREE.Color(C.linen), path * .68);
-});
+  const distance=Math.hypot(x,z);
+  const path = Math.exp(-Math.pow((x - .23 * Math.sin(z * .4)) / 1.45, 2))
+    * (1-THREE.MathUtils.smoothstep(distance,18,40));
+  const color=new THREE.Color(C.grass).lerp(new THREE.Color(C.linen),path*.68);
+  return color.lerp(new THREE.Color(0xa9bca6),THREE.MathUtils.smoothstep(distance,14,66)*.8);
+}, {width:144,depth:144});
 
-// The far horizon is a sequence of folded field ridges, not a fabricated
-// farm building. No date, cultivar or exact row is claimed by the scene.
-for (let layer = 0; layer < 3; layer++) {
-  const shape = new THREE.Shape();
-  shape.moveTo(-6.4, 0);
-  for (let i = 0; i <= 14; i++) {
-    const x = -6.4 + i * .92;
-    const y = 1.0 + layer * .43 + .35 * Math.sin(i * .72 + layer * .8)
-      + .12 * Math.sin(i * 1.9);
-    shape.lineTo(x, y);
-  }
-  shape.lineTo(6.4, 0); shape.closePath();
-  add(root, "folded distant blueberry-field horizon",
-    new THREE.ExtrudeGeometry(shape, { depth: .08, bevelEnabled: false }),
-    layer === 0 ? M.deepGrass : layer === 1 ? M.leaf : M.paleLeaf,
-    0, 0, -8.2 + layer * .25);
-}
-for (const side of [-1, 1]) {
-  curve(root, "natural lane edge through low rows",
-    [[side * 1.35, .05, 8.0], [side * 1.47, .05, 4.8],
-      [side * 1.36, .05, 1.0], [side * 1.55, .05, -2.5],
-      [side * 1.48, .05, -7.8]], .022, M.gold, 49);
-}
+// The rows continue into this independent world beyond its walkable bounds.
+// No invented farm building, date or cultivar is needed to establish summer.
 
-const berryGeometry = new THREE.SphereGeometry(.024, 12, 8);
+const berryGeometry = new THREE.SphereGeometry(.010, 7, 5);
 const leafGeometry = (() => {
   const positions = [], uv = [], indices = [];
-  const rows = 8;
+  const rows = 4;
   for (let row = 0; row <= rows; row++) {
     const t = row / rows;
     const half = .17 * Math.pow(Math.sin(Math.PI * t), .82)
@@ -81,114 +64,135 @@ function blueberryLeaf(parent, start, tip, width, material) {
   leaf.position.copy(from);
   leaf.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction.clone().normalize());
   leaf.scale.set(width / .17, direction.length(), width / .17);
+  leaf.userData.batchPetal = true;
   parent.add(leaf);
 }
 function blueberry(parent, x, y, z, light = false) {
-  const berry = add(parent, "small round blueberry with pale bloom",
+  const berry = add(parent, "small ripe blueberry with pale bloom",
     berryGeometry, light ? M.berryLight : M.berry, x, y, z);
   berry.userData.batchPetal = true;
-  const calyx = petal(parent, "tiny pointed blueberry calyx", x - .012,
-    y + .021, z + .013, .012, M.berryDark, .6);
+  const calyx = petal(parent, "tiny pointed blueberry calyx", x - .003,
+    y + .008, z + .004, .005, M.berryDark, .6);
   calyx.userData.batchPetal = true;
 }
-function bush(x, z, height = 1.45, central = false) {
-  const group = new THREE.Group(); group.name = central
-    ? "solid high blueberry bush G points out to Zephrine"
-    : "solid rounded blueberry shrub along a summer row";
-  group.position.set(x, 0, z); root.add(group);
-  loft(group, "solid branching bush crown and stems", [[0, .032, .03],
-    [.24, .026, .022], [height * .65, .021, .022],
-    [height, .009, .009]], M.bark, 10, true);
-  for (let arm = 0; arm < 7; arm++) {
-    const angle = arm * Math.PI * 2 / 7 + .25 * Math.sin(z);
-    const dx = Math.cos(angle), dz = Math.sin(angle);
-    const span = central ? 1.2 : .73 + .22 * random();
-    const tipY = height * (.7 + random() * .33);
-    const branchPoints=[[dx*.12, .02, dz*.12], [dx * span * .48, height * .57, dz * span * .48],
-        [dx * span, tipY, dz * span]];
-    const branchCurve=new THREE.CatmullRomCurve3(branchPoints.map(p=>new THREE.Vector3(...p)));
-    curve(group, "arching branch carrying blueberries",branchPoints,.016,M.bark,18);
-    // Earlier broad foliage lobes hid all of the branch and leaf work and
-    // turned each shrub into a stack of oval trays. Let the leaves themselves
-    // make the canopy; their small stems stay visibly attached to the wood.
-    const acrossX = -dz, acrossZ = dx;
-    for (let leafIndex = 0; leafIndex < 18; leafIndex++) {
-      const t = .22 + leafIndex * .04;
-      const side = leafIndex % 2 ? -1 : 1;
-      const base = branchCurve.getPoint(t).toArray();
-      const stem = [base[0] + acrossX * side * .046, base[1] + .014,
-        base[2] + acrossZ * side * .046];
-      beam(group, "fine woody stem holding a blueberry leaf", base, stem,
-        .009, .005, M.bark, 6);
-      const tip = [stem[0] + acrossX * side * (.085 + .012 * (leafIndex % 3)) + dx * .045,
-        stem[1] + .06 + .012 * (leafIndex % 2),
-        stem[2] + acrossZ * side * (.085 + .012 * (leafIndex % 3)) + dz * .045];
-      blueberryLeaf(group, stem, tip, .044 + .006 * (leafIndex % 3),
-        leafIndex % 3 ? M.leaf : M.paleLeaf);
+const leafMaterials = [0x426a42,0x527c48,0x6a8d50,0x789954,0x91a963].map(color =>
+  new THREE.MeshStandardMaterial({color,roughness:.88,side:THREE.DoubleSide}));
+
+function leafyShoot(group, points, richness = 1, fruit = true) {
+  const path = new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)));
+  const stem = curve(group, "fine branching blueberry fruiting shoot", points, .0045, M.bark, 9);
+  stem.userData.batchPetal = true;
+  const leaves = Math.round(15 * richness);
+  for(let i=0;i<leaves;i++) {
+    const t=.12+i/(leaves-1)*.87,point=path.getPoint(t),tangent=path.getTangent(t);
+    const side=i%2?-1:1,angle=Math.atan2(tangent.z,tangent.x)+side*(1.0+random()*.8);
+    const length=.085+random()*.040,reach=Math.sqrt(length*length*.80);
+    const tip=[point.x+Math.cos(angle)*reach,point.y+length*(.12+random()*.5),point.z+Math.sin(angle)*reach];
+    blueberryLeaf(group,point.toArray(),tip,.020+random()*.006,leafMaterials[Math.floor(random()*leafMaterials.length)]);
+  }
+  if(fruit)for(const t of [.43,.75]) {
+    const p=path.getPoint(t);
+    for(let i=0;i<4;i++) {
+      const angle=i*2.4,at=[p.x+Math.cos(angle)*.021,p.y-.025-(i%2)*.018,p.z+Math.sin(angle)*.021];
+      const stalk=beam(group,"attached fine blueberry pedicel",p.toArray(),at,.002,.001,M.bark,4);
+      stalk.userData.batchPetal=true;
+      blueberry(group,...at,i%3===0);
     }
-    for (let cluster = 0; cluster < 2; cluster++) {
-      const t = .7 + cluster * .18;
-      const stem = branchCurve.getPoint(t).toArray();
-      for (let fruit = 0; fruit < 3; fruit++) {
-        const side = fruit - 1;
-        const berryAt = [stem[0] + acrossX * side * .058 + dx * .035,
-          stem[1] - .09 - fruit * .018,
-          stem[2] + acrossZ * side * .058 + dz * .035];
-        beam(group, "short pedicel connecting blueberry to branch", stem,
-          [berryAt[0], berryAt[1] + .029, berryAt[2]], .006, .003, M.bark, 6);
-        blueberry(group, ...berryAt, fruit % 3 === 0);
-      }
+  }
+}
+function bush(x,z,height=2.12,{scenery=false,phase=0,lean=0}={}) {
+  const group=new THREE.Group();group.name=scenery?'tall blueberry planting beyond the walkable row':'adult-height multi-cane blueberry bush';
+  group.position.set(x,0,z);group.rotation.y=phase;root.add(group);
+  group.userData.blueberryBushHeightM=height;
+  // The connected woody center supplies a real collision footprint; foliage
+  // stays outside the clear lane and the open family picking space.
+  const crown=loft(group,"solid rooted blueberry crown",[[0,.16,.14],[.035,.14,.12],[.10,.08,.07]],M.bark,10,!scenery);
+  for(let cane=0;cane<(scenery?4:6);cane++) {
+    const a=cane*2.39996+phase,dx=Math.cos(a),dz=Math.sin(a),spread=.37+random()*.28;
+    const top=height*(.86+random()*.14),base=[dx*.12,.04,dz*.12];
+    const points=[base,[dx*spread*.40,.65,dz*spread*.40],[dx*spread*.85+lean,top*.78,dz*spread*.85],[dx*spread+lean,top,dz*spread]];
+    const path=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)));
+    const wood=curve(group,"upright arching woody blueberry cane",points,.009+random()*.004,M.bark,15);wood.userData.batchPetal=true;
+    for(let shoot=0;shoot<(scenery?5:9);shoot++) {
+      const t=.22+shoot*(scenery?.15:.085),p=path.getPoint(t),angle=a+(shoot%2?-.95:.95),length=.32+random()*.30;
+      const end=[p.x+Math.cos(angle)*length,p.y+.10+random()*.17,p.z+Math.sin(angle)*length];
+      leafyShoot(group,[p.toArray(),[(p.x+end[0])*.5,p.y+.12,(p.z+end[2])*.5],end],scenery?.45:1,!scenery&&shoot%4===1);
+      // Short secondary growth fills the plant volume with attached blades,
+      // rather than a closed green blob or a spray of bare radial wires.
+      const fork=[p.x+(end[0]-p.x)*.64,p.y+.10,p.z+(end[2]-p.z)*.64];
+      const turn=angle+(shoot%2?1.0:-1.0),tip=[fork[0]+Math.cos(turn)*.20,fork[1]+.10,fork[2]+Math.sin(turn)*.20];
+      if(!scenery)leafyShoot(group,[fork,tip],.65,false);
     }
+    leafyShoot(group,path.getPoints(4).slice(2).map(p=>p.toArray()),.9,!scenery);
+  }
+  // Pack each prototype once. Copies then share the same exported geometry,
+  // including all attached leaves and fruit, instead of duplicating buffers
+  // for every plant in the field.
+  const byMaterial=new Map();
+  for(const child of group.children.filter(o=>o.userData.batchPetal)) {
+    const list=byMaterial.get(child.material)||[];list.push(child);byMaterial.set(child.material,list);
+  }
+  for(const [material,parts] of byMaterial) {
+    const geometry=mergeGeometries(parts.map(part=>{part.updateMatrix();return part.geometry.clone().applyMatrix4(part.matrix);}),false);
+    if(!geometry)throw Error('Blueberry prototype surface packing failed');
+    for(const part of parts)group.remove(part);
+    add(group,'connected blueberry canes leaves and ripe clusters',geometry,material);
   }
   return group;
 }
-for (const side of [-1, 1]) for (const offset of [2.65, 4.75]) {
-  for (let i = 0; i < 5; i++) {
-    const z = -6.8 + i * 3.35 + (offset > 3 ? 1.18 : 0);
-    bush(side * offset, z, .78 + .18 * Math.sin(i * 1.9 + offset));
-  }
+const bushPrototypes=[2.08,2.24,2.12,2.21].map((height,i)=>{
+  const group=bush(0,0,height,{phase:i*.72,lean:.1*Math.sin(i*2)});root.remove(group);return group;
+});
+const distantPrototypes=[2.08,2.22].map((height,i)=>{
+  const group=bush(0,0,height,{scenery:true,phase:i*.9});root.remove(group);return group;
+});
+function plantCopy(x,z,variant,scenery=false,turn=0) {
+  const prototypes=scenery?distantPrototypes:bushPrototypes;
+  const group=prototypes[variant%prototypes.length].clone(true);
+  group.name=scenery?'adult-height blueberry rows continuing into the distance':'adult-height multi-cane blueberry bush';
+  group.position.set(x,0,z);group.rotation.y=turn;
+  if(scenery)group.traverse(o=>o.userData.solidFootprint=false);
+  root.add(group);return group;
 }
-bush(.95, -.45, 1.65, true);
-// This single low bough gives Zephrine something she can actually reach from
-// Oleg's shoulders. The shrub roots outside the walking lane; its fruit hangs
-// at her hand height instead of floating somewhere across the field.
+// Staggered, differently leaning plants make the rows legible without making
+// the field a grid of identical little shrubs. Every near plant is taller
+// than Oleg's 1.75 m standing figure; leaf and fruit sizes remain independent.
+for(const side of [-1,1])for(const row of [0,1])for(let i=0;i<5;i++) {
+  const z=-6.5+i*3.25+row*1.30+.25*Math.sin(i*2.8+side);
+  const x=side*(3.05+row*2.25+.13*Math.sin(i*1.7));
+  plantCopy(x,z,i+row,false,i*.83+side);
+}
+plantCopy(2.6,-1.15,1,false,.7);
+for(const side of [-1,1])for(let row=0;row<3;row++)for(let i=0;i<5;i++) {
+  plantCopy(side*(3.1+row*2.2),-10.8-i*3.5,i+row,true,i*.81+row);
+}
+// The family bush has its crown beyond G rather than inside her torso. Its
+// fruiting arm bends into the shared picking space. Preserve the actual hand
+// targets and leave air around the faces and carried child's legs.
+bush(2.25,2.10,2.19,{phase:1.1,lean:.08});
 {
-  const reach=new THREE.Group();reach.name="fruiting blueberry bough beside Zephrine";
-  reach.position.set(1.35,0,2.85);root.add(reach);
-  const stem=loft(reach,"solid rooted blueberry shrub beside the family",
-    [[0,.045,.043],[.42,.037,.035],[.96,.026,.025],
-      [1.42,.012,.012]],M.bark,12,true);
-  stem.userData.solidFootprint=true;
-  curve(reach,"bent woody branch ending at Zephrine's reaching hand",
-    [[0,.85,0],[-.31,1.32,-.04],[-.88,1.74,-.08],
-      [-1.58,1.88,-.04]],.023,M.bark,24);
-  const fruitingCurve=new THREE.CatmullRomCurve3([[0,.85,0],[-.31,1.32,-.04],[-.88,1.74,-.08],[-1.58,1.88,-.04]].map(p=>new THREE.Vector3(...p)));
-  for(let i=0;i<30;i++) {
-    const point=fruitingCurve.getPoint(.08+i*.03),side=i%2?-1:1;
-    const start=point.toArray(),tip=[point.x+side*.07,point.y+.055,point.z+side*.12];
-    blueberryLeaf(reach,start,tip,.045+i%3*.005,i%3?M.leaf:M.paleLeaf);
+  const reach=new THREE.Group();reach.name="fruiting blueberry bough beside Zephrine";root.add(reach);
+  const points=[[2.25,.85,2.1],[1.45,1.85,2.45],[.55,1.715,2.78],[-.20,1.71,2.88]];
+  const path=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)));
+  curve(reach,"bent woody branch ending at Zephrine's reaching hand",points,.014,M.bark,24);
+  for(let i=0;i<24;i++) {
+    const t=.10+i*.035,p=path.getPoint(t),side=i%2?-1:1;
+    blueberryLeaf(reach,p.toArray(),[p.x-.035,p.y+.035,p.z+side*.08],.022,leafMaterials[i%leafMaterials.length]);
   }
-  for(let cane=0;cane<6;cane++){
-    // This rear cane previously grew through G's clothed torso and resting
-    // arm after the interaction was brought together. Keep that volume clear.
-    if(cane===1)continue;
-    const angle=cane*2.4,dx=Math.cos(angle),dz=Math.sin(angle),height=1.10+cane%3*.19;
-    const path=new THREE.CatmullRomCurve3([[dx*.13,.02,dz*.13],[dx*.34,.54,dz*.34],[dx*.62,height,dz*.62]].map(p=>new THREE.Vector3(...p)));
-    curve(reach,"slender basal cane forming the blueberry shrub",path.getPoints(16).map(p=>p.toArray()),.012,M.bark,18);
-    for(let leaf=0;leaf<14;leaf++){
-      const p=path.getPoint(.21+leaf*.052),side=leaf%2?-1:1;
-      blueberryLeaf(reach,p.toArray(),[p.x-dz*side*.12+dx*.05,p.y+.07,p.z+dx*side*.12+dz*.05],.047,leaf%3?M.leaf:M.paleLeaf);
-    }
+  for(let i=0;i<5;i++) {
+    const point=path.getPoint(.19+i*.12),side=i%2?-1:1;
+    leafyShoot(reach,[point.toArray(),[point.x-.13,point.y+.06,point.z+side*.16],[point.x-.21,point.y+.04,point.z+side*.24]],.7,true);
   }
-  for(let cluster=0;cluster<4;cluster++) {
-    const x=-1.14-cluster*.12,z=-.06+(cluster%2)*.08;
-    curve(reach,"tiny blueberry fruiting pedicel",
-      [[x,1.89,z],[x-.035,1.75-cluster*.025,z+.03]],
-      .009,M.bark,8);
-    for(let b=0;b<3;b++) blueberry(reach,
-      x+(b-1)*.064,1.73-cluster*.025-(b%2)*.065,
-      z+.04+b*.025,b===1);
+  for(let cluster=0;cluster<2;cluster++) {
+    const from=path.getPoint(.84+cluster*.075).toArray(),to=[from[0],from[1]-.027,from[2]+.013];
+    curve(reach,"tiny blueberry fruiting pedicel",[from,to],.002,M.bark,5);
+    for(let b=0;b<3;b++) blueberry(reach,to[0]+(b-1)*.018,to[1]-(b%2)*.013,to[2]+b*.009,b===1);
   }
+  // The ripe berry meets the outer fingertip, beyond the palm volume.
+  // A former center-of-hand target embedded half the fruit in her palm.
+  const picked=[-.13825,1.67485,2.88899];
+  curve(reach,"short fruiting stalk reaching the picked blueberry",[[-.20,1.71,2.88],[-.17,1.70,2.884],[picked[0],picked[1]+.010,picked[2]]],.002,M.bark,8);
+  blueberry(reach,...picked,true);
 }
 
 // Jane shares the outing; Oleg, G and Zephrine are the central memory.
@@ -234,7 +238,7 @@ for (let i = 0; i < 10; i++) {
     Math.sin(a) * .18, i % 3 === 0);
 }
 
-// Oleg confirms bushes at least adult height; the current low planting needs
-// rescaling. Keep the sky open and attach foliage to real canes, with clear rows.
+// Adult-height planting is modeled in world units, with separate small leaves
+// and fruit. Keep the sky open and the central family lane unobstructed.
 
 window.__authorRoom = () => exportRoom();

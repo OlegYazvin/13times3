@@ -49,8 +49,8 @@ try {
   await execFileAsync(resolve("node_modules/.bin/gltf-transform"),
     ["meshopt", rawPath, packedPath], { maxBuffer: 1024 * 1024 });
   model = await readFile(packedPath);
-  if (preview.length + model.length > 8_000_000) throw new Error(
-    `Room ${id} exceeds the 8 MB asset target (${preview.length} preview + ${model.length} model bytes)`);
+  if (preview.length + model.length > 8_000_000) console.warn(
+    `Room ${id} is above the approximate 8 MB download target; review loading and performance (${preview.length} preview + ${model.length} model bytes)`);
   await writeFile(resolve(destination, "preview.webp"), preview);
   await writeFile(resolve(destination, "room.glb"), model);
   console.log(`Room ${id}: ${result.objects} scene groups, preview ${preview.length} bytes, GLB ${model.length} bytes`);

@@ -1,3 +1,4 @@
+import sharp from 'sharp';
 import {createServer} from 'node:http';
 import {readFile,mkdir,writeFile} from 'node:fs/promises';
 import {execFile} from 'node:child_process';
@@ -47,9 +48,10 @@ if(process.argv.includes('--global')){
   const modelPath=f.room.modelUrl.replace(/^\//,'');
   const modelSha256=digest(await readFile('src/'+modelPath));
   assert.equal(digest(await readFile('_site/'+modelPath)),modelSha256,`frame ${f.id}: rebuild the site before inspecting changed source assets`);
-  const captureBuild={id:f.id,modelSha256,appSha256:digest(await readFile('_site/assets/explore/app.js')),recordedAt:new Date().toISOString()};
+  const captureBuild={id:f.id,modelSha256,paintingSha256:digest(await readFile('src/'+f.room.previewImage.replace(/^\//,''))),appSha256:digest(await readFile('_site/assets/explore/app.js')),recordedAt:new Date().toISOString()};
   browser=await chromium.launch({headless:true,executablePath,args:['--use-gl=angle','--use-angle=swiftshader','--enable-webgl']});
   for(const phone of ((approachesOnly||profilesOnly||returnsOnly)?[false]:[false,true])){
+   console.log(`Review ${f.id}: ${phone?'phone':'desktop'} load`);
    const p=await browser.newPage(phone?{viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:1}:{viewport:{width:960,height:720}});
    const errors=[];p.on('pageerror',e=>errors.push(e.message));
    await p.goto(base+'/explore/',{waitUntil:'networkidle'});await p.getByRole('button',{name:/begin walking/i}).click();
@@ -61,15 +63,31 @@ if(process.argv.includes('--global')){
    }
    await p.evaluate(([x,z,y])=>window.__galleryTestPose(x,z,y),[f.center.x-o.x*2.8,f.center.z-o.z*2.8,baseYaw]);
    await p.waitForFunction(id=>window.__galleryDebug().activeRoom===id,f.id,{timeout:45000});
-   if(!phone&&!profilesOnly&&!returnsOnly&&!process.argv.includes('--checks')){
+   console.log(`Review ${f.id}: ${phone?'phone':'desktop'} model loaded`);
+   if(!phone&&!profilesOnly&&!returnsOnly&&(!process.argv.includes('--checks')||f.id==='02')){
     const pixels=await p.evaluate(()=>window.__galleryTestSnapshot());
     await writeFile(`${output}/${f.id}-reveal.png`,Buffer.from(pixels.split(',')[1],'base64'));
+    if(f.id==='02'){
+      // This patch is live sky inside the aperture. It previously showed a
+      // distant gallery wall because the first world's depth buffer survived.
+      // Changing unrelated hall colors must not change the room's pixels.
+      const patch=async url=>sharp(Buffer.from(url.split(',')[1],'base64')).extract({left:400,top:325,width:8,height:8}).removeAlpha().raw().toBuffer();
+      const before=await patch(pixels);
+      await p.evaluate(()=>window.__galleryTestHallTint(0xff00ff));
+      const tinted=await p.evaluate(()=>window.__galleryTestSnapshot());
+      await p.evaluate(()=>window.__galleryTestHallTint());
+      const after=await patch(tinted);
+      assert.ok(before.every((value,i)=>Math.abs(value-after[i])<=1),'room 02 sky must be independent of distant hallway wall colors');
+      results.push({id:f.id,name:'hall-depth-isolation',passed:true});
+      await writeFile(`${output}/02-hall-depth-isolation.png`,Buffer.from(tinted.split(',')[1],'base64'));
+    }
    }
    if(approachesOnly){await p.close();continue;}
    await p.evaluate(([x,z])=>window.__galleryTestWorldMove(x,z),[f.center.x+o.x*.55,f.center.z+o.z*.55]);
    assert.equal((await p.evaluate(()=>window.__galleryDebug())).mode,'room',`frame ${f.id} entry`);
    const [tx,tz]=targets[f.id],portal=f.room.portalZ??f.room.dimensionsM[2]/2;
    const profiles=f.id==='01'?[['profile-left',-1.8,.05,Math.PI/2],['profile-right',1.7,.05,-Math.PI/2]]:f.id==='02'?[['profile-left',-2.20,4.95,Math.PI/2],['profile-right',1,4.8,-Math.PI/2]]:[['profile-left',tx-2,tz,Math.PI/2],['profile-right',tx+2,tz,-Math.PI/2]];
+   if(f.id==='07')profiles.push(['picking-contact',.15,3.8,Math.atan2(-.13825-.15,3.8-2.88899),.026]);
    const shots=(returnsOnly||process.argv.includes('--checks'))?[]:profilesOnly?profiles:phone?[['phone',0,portal-.55,0]]:[['entry',0,portal-.55,0],['front',tx,Math.min(portal-.55,tz+2.5),0],...profiles,['left',tx-2,tz+1.7,Math.atan2(2,1.7)],['right',tx+2,tz+1.7,Math.atan2(-2,1.7)],['rear',tx+1.8,tz-1.8,Math.atan2(-1.8,-1.8)],['close',tx,Math.min(portal-.55,tz+1.4),0,-.28]];
    if(!phone&&!profilesOnly&&!returnsOnly&&!process.argv.includes('--checks')){
     if(f.id==='02')shots.push(['care',-3.3,-1.2,0],['household',-3.5,-3.8,Math.atan2(-.7,2.2)],['contacts',2.5,4.2,0],['embrace',0,-2.7,0],['embrace-rear',-1,-7.8,2.75]);
@@ -82,7 +100,7 @@ if(process.argv.includes('--global')){
     await p.evaluate(([x,z,y,pitch])=>window.__galleryTestRoomPose(x,z,y,pitch),[x,z,baseYaw+yaw,pitch]);
     const pixels=await p.evaluate(()=>window.__galleryTestSnapshot());
     await writeFile(`${output}/${f.id}-${name}.png`,Buffer.from(pixels.split(',')[1],'base64'));
-    results.push({id:f.id,name,x,z,stand});
+    results.push({id:f.id,name,x,z,stand});console.log(`Review ${f.id}: captured ${name}`);
    }
    if(profilesOnly){await p.close();continue;}
    // Check actual exported footprints rather than stale author-name counts.

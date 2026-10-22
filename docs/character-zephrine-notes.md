@@ -37,5 +37,5 @@ lookup retain the fuller hair. No new visible hair/prop penetration was
 identified in those inspected views. Build/site checks and each room's desktop
 and phone functional run pass. Interrupted browser captures were repeated with
 Playwright's matching headless Chromium shell before being counted as passes.
-This is local, unpublished work; the wider character and environment art targets
+The hair correction is included in published iteration `f28cbb7`; the wider character and environment art targets
 remain open.

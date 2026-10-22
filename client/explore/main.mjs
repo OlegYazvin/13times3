@@ -112,6 +112,18 @@ try {
       rooms.move(rooms.roomToWorld({ x, z }));
     // A synchronous render/readback avoids judging a stale compositor buffer
     // after resizing or repositioning a software-rendered review camera.
+    const hallTestColors = new Map();
+    window.__galleryTestHallTint = (value = null) => {
+      for (const material of rooms.hallMaterials) if (material.color) {
+        if (value === null) {
+          const color = hallTestColors.get(material);
+          if (color) material.color.copy(color);
+        } else {
+          if (!hallTestColors.has(material)) hallTestColors.set(material, material.color.clone());
+          material.color.setHex(value);
+        }
+      }
+    };
     window.__galleryTestSnapshot = () => {
       resize();
       camera.position.set(player.x, player.y, player.z);

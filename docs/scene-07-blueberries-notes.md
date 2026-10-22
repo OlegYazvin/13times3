@@ -4,8 +4,8 @@
 
 Oleg confirms that the blueberry bushes in this memory are **at least the height
 of an adult**. They are not small shrubs. This overrides earlier low-bush
-assumptions in the notes, guide and author comments. The current low planting is
-under-scaled and remains to be corrected in the scene assets. Keep the berries
+assumptions in the notes, guide and author comments. The low planting in published iteration `f28cbb7` was under-scaled. The reviewed
+local follow-up below corrects the assets. Keep the berries
 small without shrinking the whole plant. Fit the fruiting canes and reachable
 clusters to Zephrine on Oleg's shoulders and G's helping gesture, while retaining
 walkable rows. No geometry change is recorded as completed by this correction.
@@ -39,3 +39,50 @@ references. The local shared model now has fuller sides, temple curls and nape
 volume. See [her character notes](character-zephrine-notes.md) and the shared
 checklist for the exported pose review; this does not mark the scene's wider
 artwork complete.
+
+## Adult-height field follow-up after publication
+
+The local follow-up replaces the low shrubs with 52 multi-cane plants. Actual
+bounds measured from the decoded exported GLB range from **2.015 to 2.345 m**;
+Oleg's standing figure is 1.75 m. Leaves and fruit are sized separately, so the
+height correction does not produce giant berries. Four detailed near-plant
+prototypes and two simpler distant prototypes share geometry. An initial
+10.4-million-triangle field was rejected after the browser review stalled.
+The current field uses about 1.58 million rendered triangles including its
+continuous ground and figures; this remains a physical-phone performance risk.
+The GLB plus painting is about **5.93 MB**.
+
+G and Zephrine meet the lower fruiting bough, whose crown is rooted beyond G's
+body. Short pedicels replace the long dangling strings. The family, shoulder
+support, private references and memory remain unchanged. Tall rows continue
+beyond the walking bounds. One continuous field surface replaces the old
+rectangular floor edge and the flat folded horizon panels; detached gold lane
+strands are removed.
+
+Doorway, normal-distance, close, both profile/three-quarter, rear, return and
+fresh portrait-phone views were inspected. Desktop and touch-emulated phone
+loading, walking, collision samples, portal return and cleanup checks pass for
+the actual export. The local evidence is in `.cache/blueberry-height/` and the
+shared illustrated report. Character stiffness, finger wrapping, sparse lower
+foliage and summer lighting still need art work; this is not full scene acceptance.
+This follow-up is local, separate from published commit `f28cbb7`.
+
+Portal follow-up: the local painting now uses the shared physical-frame
+projection from the hall, with a shorter cutout interval. A separate depth
+pass prevents unrelated hallway walls from covering distant room scenery.
+See [the shared evidence report](scene-revision-report.md) for verification and
+remaining artistic weaknesses. This does not change the memory or frame ID.
+
+The final contact pass moved the singled-out ripe berry out of the palm volume
+and onto the outer fingertip, with its own short attached stalk. The earlier
+center-of-hand placement put part of the fruit inside the palm and was rejected.
+This small contact correction required another actual export and room review.
+
+Remaining observed character defect: the close picking-contact view still shows
+pinched, collapsed cloth at Oleg's bent elbows. This is part of the figure mesh
+and material silhouette, not the portal or a stale capture. The current field
+pass does not resolve those sleeves or establish final character acceptance.
+
+Publication status: the reviewed adult-height field and shared portal follow-ups
+are included in the user-authorized release after `f28cbb7`. Earlier local-pass
+wording above records the development sequence. Artistic acceptance remains open.

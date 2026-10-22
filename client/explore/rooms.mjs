@@ -6,8 +6,10 @@ import { addRoomLighting } from "./room-lighting.mjs";
 
 const LOAD_DISTANCE = 12;
 const UNLOAD_DISTANCE = 14;
-const REVEAL_START = 4;
-const REVEAL_END = 1.2;
+// The still is projected for a 3 m hall view. Complete its cutout before
+// the live parallax diverges enough to split faces or story objects.
+const REVEAL_START = 3.2;
+const REVEAL_END = 2.6;
 
 export function roomIsReady(frame) {
   return Boolean(frame.room?.previewImage && frame.room?.modelUrl);
@@ -136,6 +138,10 @@ export class RoomManager {
     renderer.render(inRoom ? this.roomScene : this.gallery.scene, camera);
     renderer.clear(false, false, true);
     renderer.render(this.portalScene, camera);
+    // The stencil already records which pixels see the opening, including
+    // occlusion by the frame and foreground objects. The other world needs
+    // its own depth buffer: a distant gallery wall must not cover its sky.
+    renderer.clearDepth();
     renderer.render(inRoom ? this.gallery.scene : this.roomScene, camera);
   }
 

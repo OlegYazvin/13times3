@@ -47,3 +47,13 @@ references. The local shared model now has fuller sides, temple curls and nape
 volume. See [her character notes](character-zephrine-notes.md) and the shared
 checklist for the exported pose review; this does not mark the scene's wider
 artwork complete.
+
+Portal follow-up: the local painting now uses the shared physical-frame
+projection from the hall, with a shorter cutout interval. A separate depth
+pass prevents unrelated hallway walls from covering distant room scenery.
+See [the shared evidence report](scene-revision-report.md) for verification and
+remaining artistic weaknesses. This does not change the memory or frame ID.
+
+Publication status: the reviewed adult-height field and shared portal follow-ups
+are included in the user-authorized release after `f28cbb7`. Earlier local-pass
+wording above records the development sequence. Artistic acceptance remains open.
