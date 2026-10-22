@@ -154,6 +154,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-22 aquarium overhead-sculpture revision: frame `11` adds a small, recolored CC0 sculpted manta to the walk-under water lens. It gives the aquarium one recognizable, shaped animal among the slower painted fish without adding a claim about an observed species. The room stays an independent portal world with the same G-and-Zephrine moment, freestanding exit, people, title, and frame ID.
 
+2026-10-22 outdoor cloud revision: the seven existing open-sky worlds (`02`, `03`, `04`, `07`, `08`, `09`, `10`) gain larger, softer watercolor cloud forms on their individual sky domes. A ground-horizon tint trial did not resolve the visible authored floor edge in frame `02` and was rejected. The reachable space, independent portal rendering, people, scenes, titles, and frame IDs are unchanged.
+
 2026-10-22 Ithaca orchard-crown revision: frame `09` keeps the first visit to Matt and Tanya with their two children and Zephrine's first apple picking. Its ten rounded procedural tree crowns are replaced with adapted 3D foliage joined to the existing forked fruit trees. Smaller apples hang from stems that begin at branch ends. Zephrine's teal vest is shaped around her torso so it no longer obscures her face, and the oversized loose ground apples are removed. This remains the same independent open-sky world and stable frame ID, not a new fruit-picking memory.
 
 ## Overlap cues for frame 01

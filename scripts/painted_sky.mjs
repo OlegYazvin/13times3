@@ -18,9 +18,9 @@ export function paintedSkyTexture(seed = 1) {
   // Keep the polar seam quiet; buildings and trees remain the foreground.
   // The dome's walkable view samples the lower half of this atlas: the
   // untouched top wraps the unseen polar cap above the player's field of view.
-  for(let cloud=0;cloud<28;cloud++) {
+  for(let cloud=0;cloud<26;cloud++) {
     const cx=random()*768,cy=205+random()*117;
-    const w=8+random()*12,h=3+random()*5;
+    const w=14+random()*25,h=4+random()*8;
     const warm=random()>.72;
     for(let lobe=0;lobe<5;lobe++) {
       const f=(lobe-2)/2;
@@ -30,7 +30,7 @@ export function paintedSkyTexture(seed = 1) {
       const ry=h*(.9+random()*.55);
       ctx.save();ctx.translate(x,y);ctx.scale(rx,ry);
       const pigment=ctx.createRadialGradient(0,-.23,.05,0,0,1);
-      const alpha=.32+random()*.17;
+      const alpha=.43+random()*.18;
       pigment.addColorStop(0,warm?`rgba(255,243,226,${alpha})`:
         `rgba(250,253,250,${alpha})`);
       pigment.addColorStop(.46,warm?`rgba(224,218,204,${alpha*.65})`:
