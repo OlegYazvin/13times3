@@ -261,6 +261,11 @@ def main() -> None:
     assert any("arched industrial daylight window" in node.get("name", "") for node in office_json["nodes"])
     assert any("solid shaped timber moving trolley deck" in node.get("name", "") for node in office_json["nodes"])
     assert any("rubber caster attached beneath the cart" in node.get("name", "") for node in office_json["nodes"])
+    for detail in ("widening hand-laid terrazzo path through the office",
+                   "solid chamfered communal worktop",
+                   "continuous curved acoustic canopy over the work pod",
+                   "slender glazed office pod door"):
+        assert any(detail in node.get("name", "") for node in office_json["nodes"]), detail
     assert office_room["colliders"][0]["z"] == 5.05, "Room 05 figure collision must follow Jane's new pose"
     assert any("solid chamfered masonry pier" in node.get("name", "") and
                node.get("extras", {}).get("solidFootprint")

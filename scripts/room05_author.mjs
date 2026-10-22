@@ -108,21 +108,70 @@ for (let row = 0; row < 4; row++) {
     row < 2 ? M.ink : M.brass, 38);
 }
 
-// A torn strip of the old office floor straightens and brightens where Jane
-// stands. The narrow dark side channels remain explorable, not dead ends.
-for (const lane of [-2, 0, 2]) {
-  curve(root, "stone seam resolving into an open path",
-    [[lane * .75, .035, 8.55], [lane * .64 + .12, .04, 4.2],
-      [lane * .85, .04, .5], [lane * 1.0, .04, -3.9],
-      [lane * 1.2, .04, -8.1]],
-    lane === 0 ? .017 : .011, lane === 0 ? M.brass : M.mortar, 48);
-}
-for (let i = 0; i < 8; i++) {
-  const z = -7.85 + i * 2.15;
-  curve(root, "continuous transverse joint in the stone walkway",
-    [[-3.15, .037, z], [-1.55, .039, z + .14],
-      [0, .038, z], [1.55, .039, z - .12], [3.15, .037, z]],
-    .006, M.mortar, 24);
+// A continuous terrazzo inlay widens from the compressed entry to the warm
+// far windows. It is a physical floor surface, with hand-laid irregular edges,
+// not a set of straight luminous seams or a digital-looking tile grid.
+{
+  const positions=[],colors=[],uvs=[],indices=[],rows=52,across=12;
+  const near=new THREE.Color(0x78666c),far=new THREE.Color(0xe0c39e);
+  const edgePaths=[[],[]];
+  for(let row=0;row<=rows;row++) {
+    const t=row/rows,z=8.62-t*16.86;
+    const center=.16*Math.sin(t*Math.PI*2.25)-.08*Math.sin(t*6.4);
+    const width=.78+2.44*Math.pow(t,1.28);
+    for(let column=0;column<=across;column++) {
+      const u=column/across*2-1;
+      const seam=.055*Math.sin(t*23+u*4.7)+.031*Math.sin(t*41-u*8.2);
+      const x=center+u*(width+seam*Math.pow(Math.abs(u),3));
+      positions.push(x,.046+.002*Math.sin(t*19+u*3),z);
+      uvs.push(column/across,t*4);
+      const grain=.035*Math.sin(t*31+u*17)+.018*Math.sin(t*73-u*11);
+      const pigment=near.clone().lerp(far,Math.pow(t,.79))
+        .multiplyScalar(1-.075*Math.pow(Math.abs(u),5)+grain);
+      colors.push(pigment.r,pigment.g,pigment.b);
+      if(row<rows&&column<across) {
+        const a=row*(across+1)+column,b=a+across+1;
+        indices.push(a,b,a+1,a+1,b,b+1);
+      }
+      if(column===0) edgePaths[0].push([x,.052,z]);
+      if(column===across) edgePaths[1].push([x,.052,z]);
+    }
+  }
+  const inlay=new THREE.BufferGeometry();
+  inlay.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
+  inlay.setAttribute("color",new THREE.Float32BufferAttribute(colors,3));
+  inlay.setAttribute("uv",new THREE.Float32BufferAttribute(uvs,2));
+  inlay.setIndex(indices);inlay.computeVertexNormals();
+  const canvas=document.createElement("canvas");
+  canvas.width=canvas.height=256;
+  const ctx=canvas.getContext("2d");
+  ctx.fillStyle="#ffffff";ctx.fillRect(0,0,256,256);
+  let grainSeed=505052;
+  const grain=()=>((grainSeed=(grainSeed*1664525+1013904223)>>>0)/4294967296);
+  for(let i=0;i<640;i++) {
+    const x=grain()*256,y=grain()*256,r=.3+grain()*1.6;
+    ctx.fillStyle=i%5===0?"rgba(106,79,73,.18)":
+      i%3===0?"rgba(159,121,106,.15)":"rgba(97,91,91,.11)";
+    ctx.beginPath();ctx.ellipse(x,y,r,r*(.42+grain()*.58),
+      grain()*6.28,0,6.28);ctx.fill();
+  }
+  for(let i=0;i<18;i++) {
+    const x=grain()*256,y=grain()*256,r=7+grain()*21;
+    const wash=ctx.createRadialGradient(x,y,0,x,y,r);
+    wash.addColorStop(0,i%2?"rgba(153,116,107,.065)":
+      "rgba(101,97,112,.06)");
+    wash.addColorStop(1,"rgba(255,255,255,0)");
+    ctx.fillStyle=wash;ctx.fillRect(x-r,y-r,r*2,r*2);
+  }
+  const terrazzo=new THREE.CanvasTexture(canvas);
+  terrazzo.colorSpace=THREE.SRGBColorSpace;
+  terrazzo.wrapS=terrazzo.wrapT=THREE.RepeatWrapping;
+  add(root,"widening hand-laid terrazzo path through the office",
+    inlay,new THREE.MeshStandardMaterial({vertexColors:true,
+      map:terrazzo,roughness:.97,side:THREE.DoubleSide}));
+  for(const path of edgePaths)
+    curve(root,"quiet uneven stone edge seated in terrazzo",
+      path,.014,M.mortar,52);
 }
 
 // Three hinged partition leaves retain the pressure of a former workspace,
@@ -197,15 +246,103 @@ for(const [x,z,y,w,h,d] of [[-.25,.02,.64,.53,.58,.5],
     [x,y+h/2+.043,z-d*.4],[x,y+h/2+.043,z],
     [x,y+h/2+.043,z+d*.4]],.008,M.brass,10);
 }
-box(root, "solid empty shared work table", 4.7, .72, -3.65,
-  1.75, 1.44, .85, M.ink, true);
-box(root, "pale work surface", 4.7, 1.46, -3.65,
-  1.85, .1, .96, M.paper);
-for (const x of [-5.0, 5.0]) {
-  box(root, "solid quiet phone-booth alcove", x, 1.58, -6.4,
-    1.2, 3.16, 1.28, M.ink, true);
-  box(root, "translucent booth door", x * .99, 1.64, -5.72,
-    .82, 2.9, .05, M.glass);
+// The former solid cuboid looked like a placeholder. This table has an actual
+// undercroft, joined legs, a rounded top and a shallow drawer. Its top remains
+// a solid collision footprint so visitors cannot pass through the furniture.
+const workTable=new THREE.Group();
+workTable.name="vacated shared work table with shaped joinery and filed papers";
+workTable.position.set(4.7,0,-3.65);root.add(workTable);
+const tabletopShape=new THREE.Shape();
+tabletopShape.moveTo(-.78,-.49);tabletopShape.lineTo(.78,-.49);
+tabletopShape.quadraticCurveTo(.95,-.49,.95,-.32);
+tabletopShape.lineTo(.95,.32);
+tabletopShape.quadraticCurveTo(.95,.49,.78,.49);
+tabletopShape.lineTo(-.78,.49);
+tabletopShape.quadraticCurveTo(-.95,.49,-.95,.32);
+tabletopShape.lineTo(-.95,-.32);
+tabletopShape.quadraticCurveTo(-.95,-.49,-.78,-.49);
+const tabletopGeometry=new THREE.ExtrudeGeometry(tabletopShape,{
+  depth:.105,bevelEnabled:true,bevelSize:.023,
+  bevelThickness:.018,bevelSegments:2,curveSegments:9});
+tabletopGeometry.rotateX(-Math.PI/2);
+const tabletop=add(workTable,"solid chamfered communal worktop",
+  tabletopGeometry,M.paper,0,1.39,0);
+tabletop.userData.solidFootprint=true;
+for(const side of [-1,1]) for(const end of [-1,1])
+  loft(workTable,"tapered timber table leg joined beneath the worktop",
+    [[.04,.073,.07,side*.73,end*.3],
+      [.23,.07,.068,side*.73,end*.3],
+      [1.29,.055,.06,side*.73,end*.3],
+      [1.42,.069,.067,side*.73,end*.3]],M.ink,10);
+for(const end of [-1,1]) box(workTable,
+  "continuous shaped table apron between the leg pairs",
+  0,1.25,end*.37,1.52,.16,.07,M.ink);
+box(workTable,"recessed drawer face beneath the near table edge",
+  0,1.24,.414,.59,.13,.027,M.brick);
+curve(workTable,"shaped brass drawer pull",
+  [[-.08,1.25,.437],[0,1.22,.463],[.08,1.25,.437]],.009,M.brass,10);
+for(const [x,z,w] of [[-.38,-.12,.38],[.22,.13,.32]]) {
+  box(workTable,"bound stack of blank moving documents",
+    x,1.524,z,w,.05,.28,M.paper);
+  curve(workTable,"stitched folder spine around blank records",
+    [[x-w*.5,1.558,z-.13],[x-w*.5,1.558,z],
+      [x-w*.5,1.558,z+.13]],.008,M.brick,9);
+}
+
+// Acoustic work pods are hollow, inward-facing pieces of furniture rather
+// than black cuboids. Their curved roofs, felt interiors and partly open glass
+// leaves make their scale understandable from the central walk.
+for(const side of [-1,1]) {
+  const pod=new THREE.Group();
+  pod.name="quiet office work pod with felt lining and an open glazed leaf";
+  pod.position.set(side*5,0,-6.4);
+  pod.rotation.y=-side*Math.PI/2;
+  root.add(pod);
+  const base=box(pod,"solid chamfered threshold beneath work pod",
+    0,.075,0,1.38,.15,1.35,M.brick,true);
+  base.userData.solidFootprint=true;
+  box(pod,"deep acoustic back wall of the work pod",
+    0,1.32,-.56,1.23,2.48,.085,M.ink);
+  box(pod,"warm inset felt lining inside the work pod",
+    0,1.35,-.507,1.04,2.32,.02,M.rose);
+  for(const edge of [-1,1]) {
+    box(pod,"formed side wall of the work pod",
+      edge*.64,1.3,0,.09,2.46,1.28,M.ink);
+    box(pod,"felt inset on the work pod side wall",
+      edge*.584,1.31,-.1,.018,2.2,.96,M.brickLight);
+    beam(pod,"front joinery stile around the pod opening",
+      [edge*.66,.15,.65],[edge*.66,2.52,.65],.045,.045,M.mortar,10);
+  }
+  const canopyShape=new THREE.Shape();
+  canopyShape.moveTo(-.7,2.34);
+  canopyShape.bezierCurveTo(-.58,2.68,-.27,2.79,0,2.8);
+  canopyShape.bezierCurveTo(.27,2.79,.58,2.68,.7,2.34);
+  canopyShape.lineTo(.56,2.34);
+  canopyShape.bezierCurveTo(.38,2.58,.18,2.65,0,2.65);
+  canopyShape.bezierCurveTo(-.18,2.65,-.38,2.58,-.56,2.34);
+  canopyShape.closePath();
+  add(pod,"continuous curved acoustic canopy over the work pod",
+    new THREE.ExtrudeGeometry(canopyShape,{
+      depth:1.35,bevelEnabled:true,bevelSize:.014,
+      bevelThickness:.012,bevelSegments:2,curveSegments:12}),
+    M.ink,0,0,-.68);
+  box(pod,"small built-in writing shelf inside the pod",
+    0,1.03,-.34,.9,.07,.34,M.paper);
+  box(pod,"soft task light housed under the pod canopy",
+    0,2.57,-.25,.34,.035,.14,M.amber);
+  const door=new THREE.Group();
+  door.name="partly open glass leaf on brass hinges";
+  door.position.set(-.6,0,.665);door.rotation.y=-.24;
+  pod.add(door);
+  box(door,"slender glazed office pod door",.27,1.32,0,
+    .55,2.28,.035,M.glass);
+  for(const edge of [0,.55]) beam(door,"tall door frame stile",
+    [edge,.18,.027],[edge,2.48,.027],.018,.018,M.mortar,9);
+  beam(door,"door head rail",[0,2.48,.028],[.55,2.48,.028],
+    .018,.018,M.mortar,7);
+  curve(door,"brass pull fixed to the glazed door",
+    [[.47,1.15,.055],[.51,1.23,.07],[.47,1.31,.055]],
+    .013,M.brass,10);
 }
 
 // Jane is the visual answer to the room's pressure. Oleg and Zephrine remain
