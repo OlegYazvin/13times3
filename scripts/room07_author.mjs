@@ -231,5 +231,4 @@ for (let i = 0; i < 10; i++) {
 // Blueberry bushes are low. Let the summer sky remain truly open above the
 // field rather than suspending branch-and-leaf strips across the walking path.
 
-window.__authorRoom = () => exportRoom({ key: 0xffdfb2,
-  fill: 0xa1d4df, ambient: 1.68, keyPower: 2.0 });
+window.__authorRoom = () => exportRoom();

@@ -9,6 +9,7 @@ import { addOpenSky } from "./open_sky.mjs";
 import { addContactShadow } from "./stage_shadows.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
 import { paintedFabric } from "./painted_fabric.mjs";
+import { addRoomLighting } from "../client/explore/room-lighting.mjs";
 import { loadRiggedOlegBase, makeRiggedOleg } from "./rigged_oleg.mjs";
 import { loadRiggedJaneBase, makeRiggedG, makeRiggedJane } from "./rigged_jane.mjs";
 
@@ -345,8 +346,7 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
     }
     return group;
   }
-  async function exportRoom({ key = 0xffd9ae, fill = 0xa8d4dc,
-    ambient = 1.6, keyPower = 2.1, batchStatic = false } = {}) {
+  async function exportRoom({ batchStatic = false } = {}) {
     if (janePeople.length || gPeople.length) {
       const template = await loadRiggedJaneBase();
       for (const { group, stature, options } of janePeople) {
@@ -458,11 +458,7 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
       }
     }
     const scene = new THREE.Scene(); scene.background = new THREE.Color(colors.sky);
-    scene.add(new THREE.AmbientLight(0xffffff, ambient));
-    const keyLight = new THREE.DirectionalLight(key, keyPower);
-    keyLight.position.set(-3, 6, 4); scene.add(keyLight);
-    const fillLight = new THREE.DirectionalLight(fill, .95);
-    fillLight.position.set(4, 4, -3); scene.add(fillLight);
+    addRoomLighting(scene);
     scene.add(root);
     const view = gallery.frames[index].room.previewCamera;
     const camera = new THREE.PerspectiveCamera(view.fov, FRAME_WIDTH / FRAME_HEIGHT, .05, 120);

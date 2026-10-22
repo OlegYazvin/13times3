@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
+import { addRoomLighting } from "../client/explore/room-lighting.mjs";
 import { addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
@@ -729,9 +730,7 @@ export async function authorRoom() {
 
   await finishOlegPortraits(root);
   const scene = new THREE.Scene(); scene.background = new THREE.Color(0xc6ad99);
-  scene.add(new THREE.AmbientLight(0xffffff,1.65));
-  const key = new THREE.DirectionalLight(0xffdfab,2.1); key.position.set(1.6,3.2,1.8); scene.add(key);
-  const fill = new THREE.DirectionalLight(0xb7c7ff,.7); fill.position.set(-2,2,-1); scene.add(fill);
+  addRoomLighting(scene);
   scene.add(root);
   const view = gallery.frames[0].room.previewCamera;
   const camera = new THREE.PerspectiveCamera(view.fov,FRAME_WIDTH/FRAME_HEIGHT,.05,30);

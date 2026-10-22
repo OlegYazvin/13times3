@@ -315,5 +315,4 @@ for(const side of [-1,1]) curve(root,"shared play ribbon sweeping among three ch
     [side*.97,.07,.17],[side*1.5,.07,-1.9]],.05,
   side<0?M.gold:M.paleBlue,32);
 
-window.__authorRoom=()=>exportRoom({key:0xffd7a6,fill:0x9fc9d7,
-  ambient:1.72,keyPower:2.1});
+window.__authorRoom=()=>exportRoom();

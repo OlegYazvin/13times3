@@ -73,8 +73,12 @@ export function makeRiggedOleg(template, { pose = "desk", height = 1.73,
   // sits over the neck; the reference photo itself never enters the GLB.
   const head = new THREE.Group();
   head.name = "Oleg's reference-based painted likeness on a sculpted head";
-  head.scale.set(.65, .48, .65 * .94);
-  head.position.y = 1.51 * (1 - .48) + .055;
+  // The former head ended well below the rig's natural crown and its face
+  // became anonymous at hallway distance. Keep the jaw seated at the trimmed
+  // neck while restoring a human-sized cranium and readable features.
+  const headHeight = .585;
+  head.scale.set(.72, headHeight, .68);
+  head.position.y = 1.47 - 1.315 * headHeight;
   figure.add(head);
   const headRings = [
     [-.445, .052, .057, -.016], [-.375, .122, .12, -.02],

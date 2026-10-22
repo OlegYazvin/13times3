@@ -215,5 +215,4 @@ add(root, "one continuous plaster vault over the opened office", ceiling,
   new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .96,
     side: THREE.DoubleSide }));
 
-window.__authorRoom = () => exportRoom({ key: 0xffd1a4, fill: 0xa5c8d0,
-  ambient: 1.62, keyPower: 2.15 });
+window.__authorRoom = () => exportRoom();

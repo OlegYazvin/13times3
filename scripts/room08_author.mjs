@@ -443,5 +443,4 @@ for(let i=0;i<12;i++) {
   }
 }
 
-window.__authorRoom = () => exportRoom({ key:0xffd2ad,
-  fill:0xa8c9d4, ambient:1.7, keyPower:2.2 });
+window.__authorRoom = () => exportRoom();

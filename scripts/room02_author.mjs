@@ -4,6 +4,7 @@ import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
+import { addRoomLighting } from "../client/explore/room-lighting.mjs";
 import janeFaceURL from "./assets/room02/jane-face.webp";
 import zephrineFaceURL from "./assets/room02/zephrine-face.webp";
 import { addOpenSky } from "./open_sky.mjs";
@@ -776,11 +777,7 @@ async function authorRoom() {
     add(root, "layered leaves above the outdoor street", geometry, mat);
   }
   const scene = new THREE.Scene(); scene.background = new THREE.Color(C.sky);
-  scene.add(new THREE.AmbientLight(0xffffff, 1.6));
-  const key = new THREE.DirectionalLight(0xffd9a8, 2.1);
-  key.position.set(-3, 6, 4); scene.add(key);
-  const fill = new THREE.DirectionalLight(0xa8d4dc, 1.0);
-  fill.position.set(4, 3, -2); scene.add(fill);
+  addRoomLighting(scene);
   scene.add(root);
   const view = gallery.frames[1].room.previewCamera;
   const camera = new THREE.PerspectiveCamera(view.fov, FRAME_WIDTH / FRAME_HEIGHT, .05, 120);

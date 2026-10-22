@@ -238,5 +238,4 @@ child.position.y = .61;
 child.rotation.z = .87;
 child.scale.setScalar(.9);
 
-window.__authorRoom = () => exportRoom({ key: 0xffd6bc,
-  fill: 0xa5bac9, ambient: 1.7, keyPower: 1.85 });
+window.__authorRoom = () => exportRoom();

@@ -1190,6 +1190,5 @@ window.__authorRoom=async()=>{
   canopy.userData.mimeType="image/webp";
   canopyMaterial.map=canopy;
   canopyMaterial.needsUpdate=true;
-  return exportRoom({key:0xe8f6ef,fill:0x6ab4c7,
-    ambient:1.85,keyPower:2.2,batchStatic:true});
+  return exportRoom({batchStatic:true});
 };

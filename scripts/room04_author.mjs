@@ -4,6 +4,7 @@ import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
 import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
+import { addRoomLighting } from "../client/explore/room-lighting.mjs";
 import { addOpenSky } from "./open_sky.mjs";
 import { addOlegPortrait, addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
@@ -494,11 +495,7 @@ async function authorRoom() {
     add(root, "batched sculpted street-tree leaves", geometry, mat);
   }
   const scene = new THREE.Scene(); scene.background = new THREE.Color(C.sky);
-  scene.add(new THREE.AmbientLight(0xffffff, 1.6));
-  const sun = new THREE.DirectionalLight(0xffd6aa, 2.15);
-  sun.position.set(-3, 6, 4); scene.add(sun);
-  const fill = new THREE.DirectionalLight(0xa0cdd8, 1.0);
-  fill.position.set(4, 4, -3); scene.add(fill);
+  addRoomLighting(scene);
   scene.add(root);
   const view = gallery.frames[3].room.previewCamera;
   const camera = new THREE.PerspectiveCamera(view.fov, FRAME_WIDTH / FRAME_HEIGHT, .05, 120);

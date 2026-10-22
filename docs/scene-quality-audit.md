@@ -36,7 +36,10 @@ portrait now replaces it, with the second sculpted glasses front removed and
 the hair crown shortened. An offline landmark pass shaped its curved mesh at
 the nose, cheeks, and brow; the stronger first version was rejected after a
 close room view. The three-quarter face and whole-body finish still
-need close review. Frame `11`'s aquarium and
+need close review. A further October 22 pass raises and enlarges the shared
+Oleg head about its jaw and uses the live lighting
+for all eleven doorway paintings. Compare that revision at walking distance
+in every Oleg room; it does not settle the character art audit. Frame `11`'s aquarium and
 the outdoor worlds have different world scale; never shrink their volume to
 fit neighboring frames in hallway coordinates. Neighboring worlds may
 intersect geometrically because the renderer isolates them behind each portal.

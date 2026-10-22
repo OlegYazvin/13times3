@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 import { nearestFrame, PLAYER_RADIUS, isWalkable, portalOpening } from "./layout.mjs";
+import { addRoomLighting } from "./room-lighting.mjs";
 
 const LOAD_DISTANCE = 12;
 const UNLOAD_DISTANCE = 14;
@@ -189,13 +190,7 @@ export class RoomManager {
         0, frame.center.z + outward.z * portalDepth(frame));
       group.rotation.y = Math.atan2(-outward.x, -outward.z);
       group.add(gltf.scene);
-      group.add(new THREE.AmbientLight(0xffffff, .45));
-      const key = new THREE.DirectionalLight(0xffdfab, 2.1);
-      key.position.set(1.6, 3.2, 1.8);
-      group.add(key, key.target);
-      const fill = new THREE.DirectionalLight(0xb7c7ff, .7);
-      fill.position.set(-2, 2, -1);
-      group.add(fill, fill.target);
+      addRoomLighting(group);
       const modelColliders = collidersFromScene(gltf.scene);
       const driftingFish = [];
       if (frame.id === "11") gltf.scene.traverse(object => {
