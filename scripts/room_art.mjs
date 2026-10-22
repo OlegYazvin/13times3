@@ -317,21 +317,30 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
       head.position.y = (stature - .445) * (1 - vertical);
       group.add(head);
     }
-    curve(group, "stitched neckline", [[-.14, stature - .42, .13],
-      [0, stature - .48, .17], [.14, stature - .42, .13]],
-      .012, trim);
-    curve(group, "soft chest fold shaped by the garment",
-      [[-.16, stature - .61, .166],
-        [-.02, stature - .67, .183],
-      [.17, stature - .63, .16]], .009, trim, 12);
-    curve(group, "tailored waist seam and fabric drape",
-      [[-.22, leg + .2, .155], [0, leg + .15, .2],
-        [.22, leg + .22, .155]], .008,
-      trim, 13);
-    for (const side of [-1, 1]) curve(group, "tailored garment side seam",
-      [[side * .23, leg + .04, .11], [side * .27, leg + .3, .15],
-        [side * .22, stature - .48, .11]], .006,
-      trim, 11);
+    if (childFigure) {
+      // The child dress already has a formed waist and stitched fluted hem.
+      // Adult-length loose chest and side lines become floating loops at this
+      // scale, especially when the child is on Oleg's shoulders.
+      curve(group,"short sewn collar on child clothing",
+        [[-.1,stature-.405,.125],[0,stature-.435,.145],
+          [.1,stature-.405,.125]],.0065,trim,12);
+    } else {
+      curve(group, "stitched neckline", [[-.14, stature - .42, .13],
+        [0, stature - .48, .17], [.14, stature - .42, .13]],
+        .012, trim);
+      curve(group, "soft chest fold shaped by the garment",
+        [[-.16, stature - .61, .166],
+          [-.02, stature - .67, .183],
+        [.17, stature - .63, .16]], .009, trim, 12);
+      curve(group, "tailored waist seam and fabric drape",
+        [[-.22, leg + .2, .155], [0, leg + .15, .2],
+          [.22, leg + .22, .155]], .008,
+        trim, 13);
+      for (const side of [-1, 1]) curve(group, "tailored garment side seam",
+        [[side * .23, leg + .04, .11], [side * .27, leg + .3, .15],
+          [side * .22, stature - .48, .11]], .006,
+        trim, 11);
+    }
     return group;
   }
   async function exportRoom({ key = 0xffd9ae, fill = 0xa8d4dc,

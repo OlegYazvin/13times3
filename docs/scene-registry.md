@@ -72,6 +72,10 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 Oleg portrait refinement: the eight rooms featuring Oleg (`02`, `04`, `05`, `07`, `08`, `09`, `10`, `11`) now share a revised gouache portrait guided by his private photo. Its face mapping gives more of the modeled head to his glasses, eyes, nose, and jaw; the side-hair underpainting has warmer variation and leaves more cheek visible. This improves the repeated likeness without publishing the source photographs or changing any scene's memory. Close three-quarter appearance and hair finish remain open art-review work.
 
+2026-10-21 blueberry action revision: frame `07` now brings a rooted fruiting bough within Zephrine's reaching distance while G stands beside it. Oleg's arms bend back toward Zephrine's legs as she sits on his shoulders. Loose fallen polygon leaves were removed from the field. The existing family outing and frame ID do not change.
+
+2026-10-21 shared child-garment cleanup: frames `05`, `06`, `07`, `10`, and `11` keep their sculpted child garments and poses but replace adult-sized chest and side-seam loops with a small sewn child collar. No child, memory, or frame assignment changes; facial and pose detail remains open art-review work.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

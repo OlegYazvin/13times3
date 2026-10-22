@@ -272,6 +272,7 @@ def main() -> None:
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in berry_json["nodes"]) >= 20, "Room 07 needs solid berry bushes and people"
     assert any("G helping Zephrine" in node.get("name", "") for node in berry_json["nodes"])
     assert any("Zephrine picking her own" in node.get("name", "") for node in berry_json["nodes"])
+    assert any("fruiting blueberry bough beside Zephrine" in node.get("name", "") for node in berry_json["nodes"])
     route_room = frames[7]["room"]
     assert route_room["title"] == "Chicago Open house"
     assert route_room["caption"] == "Jane's chosen city route"

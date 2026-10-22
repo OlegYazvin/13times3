@@ -104,12 +104,45 @@ for (const side of [-1, 1]) for (const offset of [2.65, 4.75]) {
   }
 }
 bush(.95, -.45, 2.18, true);
+// This single low bough gives Zephrine something she can actually reach from
+// Oleg's shoulders. The shrub roots outside the walking lane; its fruit hangs
+// at her hand height instead of floating somewhere across the field.
+{
+  const reach=new THREE.Group();reach.name="fruiting blueberry bough beside Zephrine";
+  reach.position.set(1.75,0,2.62);root.add(reach);
+  const stem=loft(reach,"solid rooted blueberry shrub beside the family",
+    [[0,.14,.13],[.42,.13,.12],[.96,.09,.085],
+      [1.42,.045,.045]],M.bark,12,true);
+  stem.userData.solidFootprint=true;
+  curve(reach,"bent woody branch ending at Zephrine's reaching hand",
+    [[0,.85,0],[-.31,1.32,-.04],[-.88,1.74,-.08],
+      [-1.58,1.88,-.04]],.043,M.bark,24);
+  for(let i=0;i<13;i++) {
+    const t=.19+i/15;
+    const x=-.32-t*1.34,z=-.05+.07*Math.sin(i*1.8);
+    const y=1.27+.59*Math.sin(t*Math.PI*.65);
+    const side=i%2?-1:1;
+    const leaf=petal(reach,"veined leaf on Zephrine's reachable bough",
+      x+side*.075,y+.035,z+side*.065,
+      .17+random()*.08,i%3?M.leaf:M.paleLeaf,side*.48);
+    leaf.rotation.z=side*.35;
+  }
+  for(let cluster=0;cluster<4;cluster++) {
+    const x=-1.14-cluster*.12,z=-.06+(cluster%2)*.08;
+    curve(reach,"tiny blueberry fruiting pedicel",
+      [[x,1.89,z],[x-.035,1.75-cluster*.025,z+.03]],
+      .009,M.bark,8);
+    for(let b=0;b<3;b++) blueberry(reach,
+      x+(b-1)*.064,1.73-cluster*.025-(b%2)*.065,
+      z+.04+b*.025,b===1);
+  }
+}
 
 // Jane shares the outing; Oleg, G and Zephrine are the central memory.
 const oleg = person("Oleg with Zephrine on his shoulders", -.58, 3.12, 1.75, {
   skin: M.skin, hair: M.hair, outfit: M.fabric, pants: M.ink,
   glasses: true, beard: true, longHair: true,
-  hands: { "-1": [-.29, 1.44, .25], "1": [.3, 1.44, .26] }, yaw: -.14,
+  hands: { "-1": [-.2, 1.43, -.19], "1": [.2, 1.43, -.19] }, yaw: -.14,
 });
 const zeph = person("Zephrine picking her own blueberries up high",
   -.58, 2.86, 1.04, {
@@ -146,13 +179,6 @@ for (let i = 0; i < 10; i++) {
   const a = i * Math.PI * 2 / 10;
   blueberry(pail, Math.cos(a) * .19, .53 + .035 * (i % 3),
     Math.sin(a) * .18, i % 3 === 0);
-}
-for (let i = 0; i < 42; i++) {
-  const x = (random() - .5) * 11.8, z = (random() - .5) * 15.4;
-  if (Math.abs(x) < 1.2 && z > -1.8) continue;
-  petal(root, "fallen pale summer leaf", x, .045, z,
-    .11 + random() * .1, i % 4 ? M.paleLeaf : M.gold,
-    random() * Math.PI * 2);
 }
 
 // Blueberry bushes are low. Let the summer sky remain truly open above the
