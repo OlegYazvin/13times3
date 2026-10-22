@@ -68,6 +68,85 @@ function box(name, x, y, z, w, h, d, material, parent = root) {
   const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
   mesh.name = name; mesh.position.set(x, y, z); parent.add(mesh); return mesh;
 }
+function shapedHorizontal(name, shape, bottom, height, material, bevel = .015) {
+  // Draw in x/-z so an extruded shape becomes a horizontal, walkable object.
+  const geometry = new THREE.ExtrudeGeometry(shape, {
+    depth: height, bevelEnabled: bevel > 0, bevelThickness: bevel,
+    bevelSize: bevel, bevelSegments: 2, curveSegments: 12, steps: 1,
+  });
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.name = name;
+  mesh.rotation.x = -Math.PI / 2;
+  mesh.position.y = bottom;
+  root.add(mesh);
+  return mesh;
+}
+function carvedDesk() {
+  const edge = new THREE.Shape();
+  edge.moveTo(-2.09, -.32);
+  edge.lineTo(-.69, -.32);
+  edge.quadraticCurveTo(-.57, -.33, -.58, -.45);
+  edge.lineTo(-.58, -.94);
+  edge.quadraticCurveTo(-.60, -1.035, -.74, -1.045);
+  edge.quadraticCurveTo(-1.35, -1.12, -2.02, -1.045);
+  edge.quadraticCurveTo(-2.17, -1.02, -2.17, -.92);
+  edge.lineTo(-2.17, -.43);
+  edge.quadraticCurveTo(-2.17, -.33, -2.09, -.32);
+  const top = shapedHorizontal("shaped walnut signup desk top", edge, .85, .06, mat(0x9d684f), .018);
+  top.userData.solidFootprint = true;
+  const apron = new THREE.Shape();
+  apron.moveTo(-2.075, .835); apron.lineTo(-.67, .835);
+  apron.lineTo(-.67, .69);
+  for (let i = 0; i < 6; i++) {
+    const x = -.67 - (i + 1) * 1.405 / 6;
+    apron.quadraticCurveTo(x + .11, .62 + (i % 2) * .065, x, .69);
+  }
+  apron.closePath();
+  const fascia = new THREE.Mesh(new THREE.ExtrudeGeometry(apron, {
+    depth: .045, bevelEnabled: true, bevelThickness: .008,
+    bevelSize: .008, bevelSegments: 2, curveSegments: 10,
+  }), mat(0x805344));
+  fascia.name = "six scallop desk apron"; fascia.position.z = .91; root.add(fascia);
+  for (const x of [-2.025, -.72]) for (const z of [.38, .92]) {
+    const leg = new THREE.Mesh(new THREE.LatheGeometry([
+      new THREE.Vector2(.055, 0), new THREE.Vector2(.068, .04),
+      new THREE.Vector2(.046, .10), new THREE.Vector2(.036, .31),
+      new THREE.Vector2(.058, .39), new THREE.Vector2(.042, .44),
+      new THREE.Vector2(.047, .73), new THREE.Vector2(.07, .84),
+    ], 16), timber);
+    leg.name = "turned walnut desk leg"; leg.position.set(x, .02, z); root.add(leg);
+    const collar = new THREE.Mesh(new THREE.TorusGeometry(.052, .009, 5, 12), gold);
+    collar.name = "brass desk leg collar"; collar.rotation.x = Math.PI / 2;
+    collar.position.set(x, .42, z); root.add(collar);
+  }
+  stoneRib("inlaid curved front edge of the desk", Array.from({length: 15}, (_, i) => {
+    const x = -2.055 + i * 1.355 / 14;
+    return [x, .88, 1.045 + .06 * Math.sin(Math.PI * i / 14)];
+  }), .009, gold);
+}
+function carvedStage() {
+  const outline = new THREE.Shape();
+  outline.moveTo(-.35, 2.29); outline.lineTo(2.13, 2.29);
+  outline.quadraticCurveTo(2.24, 2.27, 2.23, 2.15);
+  outline.lineTo(2.23, .83);
+  outline.quadraticCurveTo(1.71, .59, .9, .66);
+  outline.quadraticCurveTo(.09, .59, -.45, .83);
+  outline.lineTo(-.45, 2.15);
+  outline.quadraticCurveTo(-.46, 2.28, -.35, 2.29);
+  shapedHorizontal("carved scalloped stage plinth", outline, .035, .32, mat(C.stage), .025).userData.solidFootprint = true;
+  const deck = outline.clone();
+  const top = shapedHorizontal("inlaid dance stage deck", deck, .385, .012, mat(0x9b8b80), .003);
+  top.userData.solidFootprint = false;
+  stoneRib("continuous brass stage lip", Array.from({length: 17}, (_, i) => {
+    const x = -.43 + i * 2.65 / 16;
+    return [x, .405, -.72 - .09 * Math.sin(Math.PI * i / 16)];
+  }), .025, gold);
+  for (let i = 0; i < 8; i++) {
+    const x = -.29 + i * 2.34 / 7;
+    const z = -.783 - .09 * Math.sin(Math.PI * i / 7);
+    shellFan("carved shell medallion in stage front", x, .20, z, .13, i % 2 ? parchment : gold);
+  }
+}
 function sphere(name, x, y, z, r, material, parent = root) {
   const mesh = new THREE.Mesh(new THREE.SphereGeometry(r, 12, 8), material);
   mesh.name = name; mesh.position.set(x, y, z); parent.add(mesh); return mesh;
@@ -564,9 +643,7 @@ export async function authorRoom() {
   spiralFossil("small spiral fossil near the floor",-2.25,.56,-2.42,.19,seaFoam);
 
   // Small raised stage and theater drapery, right and back.
-  box("stage base",.9,.19,-1.58,2.65,.38,1.5,mat(C.stage)).userData.solidFootprint = true;
-  box("stage gold lip",.9,.4,-.79,2.72,.055,.09,gold);
-  box("stage patterned floor",.9,.395,-1.58,2.54,.02,1.38,mat(0x9b8b80));
+  carvedStage();
   for(const [height,depth,material,phase] of [[.76,-2.47,tide,0],[1.08,-2.42,seaFoam,1.5],[1.36,-2.39,mat(0x9b759b),2.8]]) {
     waveLine("layered underwater storybook wave",height,depth,material,phase);
   }
@@ -620,11 +697,7 @@ export async function authorRoom() {
   // The foreground signup desk and Jane's paused pen.
   sculptJane();
   oval("Jane's soft floor shadow",-1.57,.064,.28,.32,.006,.17,mat(0x604052,{transparent:true,opacity:.22,depthWrite:false}),root);
-  box("signup desk top",-1.37,.88,.66,1.54,.07,.72,mat(0x9d684f)).userData.solidFootprint = true;
-  box("desk carved front apron",-1.37,.77,.96,1.54,.16,.065,mat(0x805344));
-  box("desk carved side apron",-2.05,.77,.66,.055,.16,.6,mat(0x805344));
-  for(const x of [-2.04,-.7]) for(const z of [.36,.94]) box("desk carved leg",x,.43,z,.09,.86,.09,timber);
-  for(const x of [-2.04,-.7]) sphere("turned desk leg bead",x,.26,.94,.07,gold);
+  carvedDesk();
   box("desk paper",-1.3,.94,.62,.56,.012,.38,paper);
   for(let i=0;i<4;i++) box("paper rule",-1.36,.951,.48+i*.07,.39,.002,.009,mat(0xbba08e));
   box("script booklet cover",-.78,.965,.52,.2,.035,.32,mat(0x8a6e8d));

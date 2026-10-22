@@ -92,6 +92,10 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 aquarium fish revision: frame `11` keeps the Shedd visit and G and Zephrine's shared wonder. Its walk-behind rear habitat now has a composed eye-level school and a side-positioned turtle, with quieter painted water behind them. The same fish body used across the habitats has a smoother profile and joined, shaped fins. The freestanding hallway portal, full rear walkaround, room title, people, and frame ID remain the same.
 
+2026-10-21 first-stage furniture revision: frame `01` keeps Jane signing Zephrine up while Zephrine stands on the stage in the undersea storybook cave. The desk now has a curved carved top, scalloped apron, turned legs, and a front inlay; the stage has a shaped platform, continuous edge, and shell relief instead of plain rectangular blocks. The desk and stage retain collision footprints. This revises the existing memory without assigning a new frame.
+
+2026-10-21 shared Oleg hair revision: frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11` keep the same memories and Oleg's reference-guided illustrated face. The modeled hair now has a calmer, continuous side and back silhouette with a small nape curl; oversized parallel locks that obscured the face have been removed. The portrait, titles, and stable IDs remain the same.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.
