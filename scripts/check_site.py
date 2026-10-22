@@ -316,6 +316,10 @@ def main() -> None:
     orchard_json_length = int.from_bytes(orchard_glb[12:16], "little")
     orchard_json = json.loads(orchard_glb[20:20 + orchard_json_length])
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in orchard_json["nodes"]) >= 16, "Room 09 needs solid figures, trees, and props"
+    orchard_names = [node.get("name", "") for node in orchard_json["nodes"]]
+    assert any("visible fruiting twig holding its leaves" in name for name in orchard_names)
+    assert any("continuous horizontal wicker course" in name for name in orchard_names)
+    assert any("apple pedicel tied back to the branch" in name for name in orchard_names)
     play_room = frames[9]["room"]
     assert play_room["title"] == "We visited maggie daley park for the first time with Zephrine!"
     assert play_room["caption"] == "A day of shared play"

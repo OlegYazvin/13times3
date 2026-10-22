@@ -82,6 +82,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 symbolic office revision: frame `05` keeps Jane's same office move, management pressure, and family. The room now uses one shaped plaster vault, an arched daylight wall, chamfered masonry piers, real hinged partitions and joined floor joints instead of floating paper fragments, a gold wire fan, thin tree-like supports, and repeated shutter bars. Jane, Oleg and Zephrine are closer to the portal, and Jane's hand gesture is less like a straight T-pose. This changes the art and composition within the existing published scene; no frame, memory, or title is reassigned.
 
+2026-10-21 first-apple orchard revision: frame `09` keeps Zephrine's first apple picking with Matt, Tanya, their two children, Jane and Oleg. Leaves now grow on modeled twigs, apples hang by branch-connected pedicels, crowns have more depth, and the foreground basket has horizontal and upright wicker courses plus a carved rim and handle. Fewer apples lie loose on the ground, and the apples on branches and in Zephrine's hand are closer to human scale. This is the same memory and frame ID, with no new scene reserved.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

@@ -202,18 +202,33 @@ function orchardTree(x, z, scale, index) {
       [end[0] * .5, 1.93, end[2] * .5], end], .055, M.bark, 7);
     foliageLobe(tree, "fruiting apple-tree canopy with a scalloped silhouette",
       end[0] * .86, end[1] + .08, end[2] * .86,
-      .56, .28, .49, branch % 3 ? P.leaf : P.ochre, index * 7 + branch);
-    for (let j = 0; j < 15; j++) {
-      const lx = end[0] + (rand() - .5) * .85;
-      const lz = end[2] + (rand() - .5) * .65;
-      const ly = end[1] + (rand() - .5) * .65;
-      leaf(tree, "folded fall orchard leaf", lx, ly, lz,
-        .19 + rand() * .12, .075 + rand() * .035,
-        rand() * 6.28, j % 5 ? (j % 3 ? M.leaf : M.ochre) : M.red);
+      .56, .39, .53, branch % 3 ? P.leaf : P.ochre, index * 7 + branch);
+    for (let twig = 0; twig < 3; twig++) {
+      const spread = (twig - 1) * .35;
+      const tip = [end[0] + spread, end[1] + .03 + rand() * .08,
+        end[2] + (rand() - .5) * .52];
+      tube(tree, "visible fruiting twig holding its leaves",
+        [end, [end[0] + spread * .48, end[1] + .1, end[2]], tip],
+        .012, M.bark, 5);
+      for (let j = 0; j < 4; j++) {
+        const t = .22 + j * .2;
+        leaf(tree, "folded fall leaf attached to a fruiting twig",
+          THREE.MathUtils.lerp(end[0], tip[0], t) + (j % 2 ? .055 : -.055),
+          THREE.MathUtils.lerp(end[1], tip[1], t),
+          THREE.MathUtils.lerp(end[2], tip[2], t),
+          .17 + rand() * .09, .07 + rand() * .025,
+          rand() * 6.28, j % 3 ? M.leaf : M.ochre);
+      }
     }
     if (branch % 2 === 0) for (let aIndex = 0; aIndex < 2; aIndex++) {
-      apple(tree, end[0] + (rand() - .5) * .4, end[1] - .38 - rand() * .2,
-        end[2] + (rand() - .5) * .35, .72 + rand() * .22,
+      const fruitX = end[0] + (rand() - .5) * .4;
+      const fruitY = end[1] - .38 - rand() * .2;
+      const fruitZ = end[2] + (rand() - .5) * .35;
+      const fruitScale = .51 + rand() * .16;
+      tube(tree, "apple pedicel tied back to the branch",
+        [[fruitX, end[1] - .08, fruitZ],
+          [fruitX, fruitY + fruitScale * .38, fruitZ]], .008, M.bark, 5);
+      apple(tree, fruitX, fruitY, fruitZ, fruitScale,
         index % 3 ? M.red : M.crimson);
     }
   }
@@ -458,9 +473,9 @@ for (const s of [-1, 1]) {
   }
 }
 box(zephrine, "teal vest zipper", 0, .69, .21, .012, .42, .012, M.cream);
-apple(zephrine, .11, .55, .3, 1.0, M.crimson);
+apple(zephrine, .11, .55, .3, .67, M.crimson);
 const bite = put(zephrine, "pale bitten spot on Zephrine's first apple",
-  new THREE.DodecahedronGeometry(.062, 1), M.cream, .08, .82, .37);
+  new THREE.DodecahedronGeometry(.043, 1), M.cream, .08, .748, .35);
 bite.scale.set(1.1, .48, .28);
 person("Jane", -1.58, 1.15, 1.67, M.blue, hairDark,
   { bun: true, pants: M.ink, handTargets: { "1": [.52, .96, .34] } });
@@ -487,11 +502,37 @@ for (let i = 0; i < 8; i++) {
   bridge(basket, "diagonal wicker strand", [Math.cos(a) * .28, .09, Math.sin(a) * .22],
     [Math.cos(a + .13) * .38, .38, Math.sin(a + .13) * .29], .012, .01, M.ochre);
 }
+tube(basket, "woven overhanging wicker rim",
+  Array.from({ length: 17 }, (_, i) => {
+    const a = i * Math.PI * 2 / 16;
+    return [Math.cos(a) * .37, .4, Math.sin(a) * .295];
+  }), .025, M.ochre, 7);
+for (let i = 0; i < 4; i++) {
+  const y = .13 + i * .077;
+  tube(basket, "continuous horizontal wicker course",
+    Array.from({ length: 17 }, (_, j) => {
+      const a = j * Math.PI * 2 / 16;
+      const widen = .3 + i * .022;
+      return [Math.cos(a) * widen, y, Math.sin(a) * (widen * .78)];
+    }), .012, i % 2 ? M.barkLight : M.ochre, 5);
+}
+for (let i = 0; i < 20; i++) {
+  const a = i * Math.PI * 2 / 20;
+  tube(basket, "interlaced upright wicker strand",
+    [[Math.cos(a) * .29, .08, Math.sin(a) * .225],
+      [Math.cos(a + .04) * .32, .25, Math.sin(a + .04) * .25],
+      [Math.cos(a) * .365, .39, Math.sin(a) * .29]],
+    .009, i % 2 ? M.barkLight : M.ochre, 5);
+}
 tube(basket, "arching basket handle", [[-.31, .35, 0], [-.2, .77, 0],
   [.2, .77, 0], [.31, .35, 0]], .035, M.barkLight);
+for (const side of [-1, 1]) tube(basket, "paired carved handle edge",
+  [[-.31, .35, side * .034], [-.2, .77, side * .034],
+    [.2, .77, side * .034], [.31, .35, side * .034]],
+  .01, M.ochre, 5);
 for (let i = 0; i < 6; i++) apple(basket, (rand() - .5) * .45,
   .39 + rand() * .09, (rand() - .5) * .34, .58, i % 3 ? M.red : M.ochre);
-for (let i = 0; i < 14; i++) {
+for (let i = 0; i < 7; i++) {
   const x = -4.25 + rand() * 8.5, z = -4.7 + rand() * 9.7;
   if (Math.abs(x) < 1.15 && z > -2 && z < 3) continue;
   apple(root, x, .045, z, .45 + rand() * .2, i % 4 ? M.red : M.ochre);
