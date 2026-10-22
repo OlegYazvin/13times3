@@ -28,8 +28,11 @@ Across rooms, validate Oleg's recurring reference-based likeness in all eight
 appearances, not only in an isolated face texture. A revised gouache portrait,
 larger facial mapping, warmer underpainting, closer face fit, and a newly painted
 reference-guided Oleg head texture are in place. The October 21 trim removed
-heavy hair strands crossing the face and kept a smaller nape curl, but the
-three-quarter face and whole-body finish still need close review. Frame `11`'s aquarium and
+heavy hair strands crossing the face and kept a smaller nape curl. A later close
+pass shortened the smooth dark crown and removed duplicate 3D beard and
+sideburn outlines; a generated replacement portrait was rejected in the room
+because it did not improve the likeness. The three-quarter face and whole-body
+finish still need close review. Frame `11`'s aquarium and
 the outdoor worlds have different world scale; never shrink their volume to
 fit neighboring frames in hallway coordinates. Neighboring worlds may
 intersect geometrically because the renderer isolates them behind each portal.

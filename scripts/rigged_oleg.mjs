@@ -80,8 +80,8 @@ export function makeRiggedOleg(template, { pose = "desk", height = 1.73,
     [-.445, .052, .057, -.016], [-.375, .122, .12, -.02],
     [-.27, .158, .145, -.026], [-.14, .175, .158, -.03],
     [.025, .165, .146, -.036], [.145, .145, .125, -.043],
-    [.21, .11, .099, -.048], [.255, .065, .058, -.05],
-    [.27, .008, .012, -.05],
+    [.18, .11, .099, -.048], [.205, .065, .058, -.05],
+    [.215, .008, .012, -.05],
   ];
   const points = [], colors = [], indices = [], sides = 48;
   const rows = (headRings.length - 1) * 4;
@@ -103,7 +103,7 @@ export function makeRiggedOleg(template, { pose = "desk", height = 1.73,
       points.push(Math.cos(angle)*(rx+sideWave),1.76+y,
         forward*(rz+sideWave*.55)+offset);
       const hairline = forward < -.2 ? -.37 :
-        forward < .35 ? -.13 : .04;
+        forward < .35 ? -.03 : .04;
       const amount = THREE.MathUtils.smoothstep(y, hairline - .04, hairline + .04);
       const shade = flesh.clone().lerp(hairBrown, amount);
       const strand=.5+.5*Math.sin(angle*14+y*31+.7*Math.sin(angle*5-y*9));

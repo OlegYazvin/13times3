@@ -98,8 +98,8 @@ function sculptHairBehindFace(parent, faceY) {
 }
 
 function shapeOlegPortrait(parent, faceY, { hairShell = true } = {}) {
-  // The painted lenses retain their fine detail; sculpted temples, hair and
-  // beard give the portrait depth in profile without covering the eyes.
+  // The painted face carries its beard and hairline. Sculpted glasses temples
+  // and a small nape curl give depth without outlining the face like a mask.
   if (hairShell) sculptHairBehindFace(parent, faceY);
   for (const side of [-1, 1]) {
     // These are actual raised frames following the brow and cheek contour.
@@ -119,12 +119,6 @@ function shapeOlegPortrait(parent, faceY, { hairShell = true } = {}) {
       [side * .177, faceY - .17, .075],
       [side * .187, faceY - .17, -.035],
     ], .006, framePaint);
-    raisedLine(parent, "Oleg's cheek-length sideburn", [
-      [side * .163, faceY + .045, .052],
-      [side * .185, faceY - .09, .012],
-      [side * .177, faceY - .245, .018],
-      [side * .139, faceY - .305, .072],
-    ], .02, hairPaint);
     // The painted hairline carries the recognizable sweep. The former four
     // raised locks on each side became heavy parallel bars when the figure was
     // viewed at room scale. Keep one modest nape curl behind the face instead.
@@ -134,12 +128,6 @@ function shapeOlegPortrait(parent, faceY, { hairShell = true } = {}) {
       [side * .17, faceY - .31, -.08],
       [side * .14, faceY - .37, -.035],
     ], [.005, .016, .016, .001], hairGlint);
-    raisedLine(parent, "short beard wrapping Oleg's jaw in profile", [
-      [side * .137, faceY - .29, .095],
-      [side * .12, faceY - .365, .11],
-      [side * .067, faceY - .414, .102],
-      [0, faceY - .427, .09],
-    ], .014, hairPaint);
   }
   raisedLine(parent, "bridge joining Oleg's glasses", [
     [-.018, faceY - .137, .191],
