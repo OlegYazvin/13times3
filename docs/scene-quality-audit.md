@@ -22,7 +22,7 @@ subjects, not arbitrary ornament. Preview approval alone is insufficient.
 | `08` | Continue shaping Palmisano's quarry, the Zen gate, and the deeper volume of every stop. The October 21 pass added drawn masonry courses, moved Pullman into the doorway view, sculpted the Arts Bank pediment and entry, and gave five stops path-facing facades with angled labels. | Each route stop reads as a different designed place from the path as well as the painting, not a differently labeled cuboid. |
 | `09` | Continue shaping the orchard crowns, farm stand and family poses. The 2026-10-21 pass attached leaf clusters and apples to fruiting twigs, raised the canopy volume, scaled fruit closer to the figures, and gave the harvest basket an actual woven rim and crossing courses. | The orchard reads as a first apple-picking visit with friends rather than people in front of a barn. |
 | `10` | Continue the planted Play Garden, modeled play ship and lighthouse, and figure detail; inspect the newly revised park at close phone distance. | Shared play stays the focus while its park structures remain recognizable from multiple viewpoints. |
-| `11` | Continue refining Zephrine and G, the freestanding arch rear, habitat lighting, and species detail. The rear glass now has a composed school at eye height, a turtle off to one side, quieter distant paintings, and smoother fish bodies with joined fins and batched painted flank bands. The fish are still simplified at close range. | Fish clearly occupy water behind glass from both the portal loop and the near sill, and visitors can walk behind the hall portal without any clipped or blank area. |
+| `11` | Continue refining Zephrine and G, the freestanding arch rear, habitat lighting, and species detail. The rear glass has a composed school at eye height and a turtle off to one side. Five repainted CC0 sculpted fish now show gills, lips, fins and scales at the rear and overhead; many smaller fish remain simplified. | Fish clearly occupy water behind glass from both the portal loop and the near sill, and visitors can walk behind the hall portal without any clipped or blank area. |
 
 Across rooms, validate Oleg's recurring reference-based likeness in all eight
 appearances, not only in an isolated face texture. A revised gouache portrait,
@@ -31,8 +31,10 @@ reference-guided Oleg head texture are in place. The October 21 trim removed
 heavy hair strands crossing the face and kept a smaller nape curl. A later close
 pass shortened the smooth dark crown and removed duplicate 3D beard and
 sideburn outlines; a generated replacement portrait was rejected in the room
-because it did not improve the likeness. The three-quarter face and whole-body
-finish still need close review. Frame `11`'s aquarium and
+because it did not improve the likeness. An October 22 reference-guided
+portrait now replaces it, with the second sculpted glasses front removed and
+the hair crown shortened. The three-quarter face and whole-body finish still
+need close review. Frame `11`'s aquarium and
 the outdoor worlds have different world scale; never shrink their volume to
 fit neighboring frames in hallway coordinates. Neighboring worlds may
 intersect geometrically because the renderer isolates them behind each portal.

@@ -1,10 +1,12 @@
 import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { createRoomArt } from "./room_art.mjs";
 import reefBackdropURL from "./assets/room11/reef-backdrop.webp";
 import riverBackdropURL from "./assets/room11/river-backdrop.webp";
 import reefVariantURL from "./assets/room11/reef-variant.webp";
 import riverVariantURL from "./assets/room11/river-variant.webp";
 import canopyWatercolorURL from "./assets/room11/canopy-watercolor.webp";
+import paintedBarramundiURL from "./assets/room11/barramundi-painted.glb";
 
 // A dream of Shedd's aquatic dome, not a literal or dated exhibit replica.
 // G and Zephrine share the still moment; only the little fish gently breathe.
@@ -477,9 +479,6 @@ for(let i=0;i<8;i++) fish(-7+random()*14,
 // visible through the rear glass even when the visitor stands centrally.
 for(const [x,y,z,scale,material,phase,yaw] of [
   [-3.0,1.55,18.82,.99,M.gold,301,.12],
-  [-1.35,2.13,19.18,.85,M.coral,302,-.2],
-  [.42,1.43,19.05,.97,M.deep,303,.16],
-  [2.35,2.28,19.36,.89,M.gold,304,-.12],
   [3.85,1.31,18.94,.79,M.coral,305,.18],
 ]) fish(x,y,z,scale,material,phase,yaw);
 jellyfish(8.04,3.35,4.05,.82,111);
@@ -600,12 +599,12 @@ ray(4.3,2.9,-12.45,.62,-.26);
         [px*1.03,5.82,pz+.09],
         [px*.93,6.7,pz-.08]],.035,M.pearl,18);
   }
-  for(let i=0;i<13;i++) {
-    const a=i*2.399,rad=.22+.62*Math.sqrt((i+.5)/13);
+  for(let i=0;i<9;i++) {
+    const a=i*2.399,rad=.22+.62*Math.sqrt((i+.5)/9);
     const x=cx+Math.cos(a)*rx*rad,
       z=cz+Math.sin(a)*rz*rad;
     fish(x,5.18+(i%3)*.11,z,
-      .86+(i%4)*.08,
+      .47+(i%3)*.07,
       i%4===0?M.coral:i%3===0?M.deep:M.gold,
       171+i*.57,a+Math.PI/2);
   }
@@ -1088,10 +1087,31 @@ for(const side of [-1,1]) curve(root,"open floor loop around return doorway",
 
 window.__authorRoom=async()=>{
   const loader=new THREE.TextureLoader();
-  const [reef,river,reefVariant,riverVariant,canopy]=await Promise.all([
+  const [reef,river,reefVariant,riverVariant,canopy,barramundi]=await Promise.all([
     loader.loadAsync(reefBackdropURL),loader.loadAsync(riverBackdropURL),
     loader.loadAsync(reefVariantURL),loader.loadAsync(riverVariantURL),
-    loader.loadAsync(canopyWatercolorURL)]);
+    loader.loadAsync(canopyWatercolorURL),
+    new GLTFLoader().loadAsync(paintedBarramundiURL)]);
+  // One CC0 sculpt carries real gills, lips, tapering fins and scales. Its
+  // repaint matches the rest of the gouache aquarium; copies share the mesh
+  // and texture and move only in a restrained breathing loop.
+  for(const [x,y,z,scale,yaw,roll,phase] of [
+    [-1.55,2.18,18.88,1.65,Math.PI/2,0,306],
+    [2.25,2.35,18.75,1.53,-Math.PI/2,0,307],
+    [-2.25,5.33,3.25,1.58,.26,.86,308],
+    [1.9,5.41,4.62,1.52,-.4,-.94,309],
+    [.15,5.38,2.28,1.45,.3,1.08,310],
+  ]) {
+    const swimmer=new THREE.Group();
+    swimmer.name="painted sculpted barramundi behind aquarium glass";
+    swimmer.position.set(x,y,z);swimmer.rotation.set(0,yaw,roll,"YXZ");
+    swimmer.scale.setScalar(scale);
+    swimmer.userData.driftPhase=phase;
+    swimmer.userData.driftAmplitude=.018;
+    swimmer.userData.preserveMaterials=true;
+    swimmer.add(barramundi.scene.clone(true));
+    root.add(swimmer);
+  }
   for(const [material,texture] of [[reefWall,reef],[riverWall,river],
     [reefVariantWall,reefVariant],[riverVariantWall,riverVariant]]) {
     texture.colorSpace=THREE.SRGBColorSpace;

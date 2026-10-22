@@ -20,6 +20,10 @@ The gallery has 41 stable frame IDs. The 39 original achievement pages are a sep
 
 Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unassigned blank portals.
 
+2026-10-22 shared-likeness and aquarium detail revision: Oleg's eight existing appearances (`02`, `04`, `05`, `07`, `08`, `09`, `10`, `11`) receive a newly painted, reference-guided face, a closer-fitting hair crown, and simpler 3D spectacles that no longer duplicate the painted frames. Frame `11` gains five detailed, repainted CC0 fish within its rear and overhead habitats. These revise the existing memories only; all frame IDs, room titles, and portal positions stay assigned as before. Close art review of the full figures and other rooms remains open.
+
+2026-10-22 outdoor atmosphere revision: frames `02`, `03`, `04`, `07`, `08`, `09`, and `10` retain their independent 72 m sky domes and distant terrain, with a somewhat stronger localized watercolor cloud wash in their upper skies. No room is reduced to fit the hallway or a neighboring portal world; the story, frame IDs, and collision footprints remain unchanged.
+
 2026-10-21 visual revision: frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11` contain Oleg. His recurring sculpted figure now uses a shared illustrated likeness based on the private references. Outdoor or outdoor-blended frames `02`, `03`, `04`, `07`, `08`, `09`, and `10` have taller sky worlds. All published rooms remain on their original frame IDs; the hallway now treats each as a separate portal world, so adjacent worlds can overlap behind the frames without showing through each other.
 
 2026-10-21 aquarium revision: frame `11` moves the actual portal into the aquarium volume and adds distinct saltwater and freshwater habitats with 3D fish behind glass. The private reference photos remain outside the published site. Jane's shared illustrated likeness has also been revised for the rooms that use the shared sculpted figure. The other published frame IDs and memories stay reserved as above.

@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import olegFaceURL from "./assets/room02/oleg-face-v4-muted.webp";
+import olegFaceURL from "./assets/room02/oleg-face-v5-reference.webp";
 import janeFaceURL from "./assets/room02/jane-face.webp";
 import gFaceURL from "./assets/room02/g-face.webp";
 import zephrineFaceURL from "./assets/room02/zephrine-face.webp";
@@ -102,18 +102,10 @@ function shapeOlegPortrait(parent, faceY, { hairShell = true } = {}) {
   // and a small nape curl give depth without outlining the face like a mask.
   if (hairShell) sculptHairBehindFace(parent, faceY);
   for (const side of [-1, 1]) {
-    // These are actual raised frames following the brow and cheek contour.
-    // The lenses in the painted texture supply fine detail, while this rim
-    // keeps the glasses recognizable from a three-quarter view.
-    raisedLine(parent, "Oleg's shaped rectangular spectacle rim", [
-      [side * .014, faceY - .122, .187],
-      [side * .043, faceY - .108, .19],
-      [side * .13, faceY - .115, .168],
-      [side * .139, faceY - .189, .152],
-      [side * .105, faceY - .228, .168],
-      [side * .034, faceY - .224, .19],
-      [side * .014, faceY - .122, .187],
-    ], .0065, framePaint);
+    // The illustrated lenses already contain the front frame. A second
+    // sculpted outline sat several centimeters ahead of them and made the
+    // likeness look like a mask, especially in the job room close-up. Only
+    // the side temple needs relief for a three-quarter view.
     raisedLine(parent, "Oleg's glasses temple behind the ear", [
       [side * .13, faceY - .16, .15],
       [side * .177, faceY - .17, .075],
@@ -129,11 +121,6 @@ function shapeOlegPortrait(parent, faceY, { hairShell = true } = {}) {
       [side * .14, faceY - .37, -.035],
     ], [.005, .016, .016, .001], hairGlint);
   }
-  raisedLine(parent, "bridge joining Oleg's glasses", [
-    [-.018, faceY - .137, .191],
-    [0, faceY - .145, .195],
-    [.018, faceY - .137, .191],
-  ], .0065, framePaint);
   // The illustrated face already carries the fine swept hairline. More
   // raised locks across it looked like angular armor at walking distance.
 }
