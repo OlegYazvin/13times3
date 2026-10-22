@@ -180,13 +180,20 @@ function paintedFaceShell(parent, name, height) {
 
 // The timber floor loosens into pavement and an outdoor lane, with the path
 // kept clear through the middle for exploration and return to the gallery.
-const floor = new THREE.PlaneGeometry(12.4, 17.2, 32, 45);
+// The modeled street may stop at the collision rail, but its painted ground
+// keeps going beyond the reachable area. That removes the square floor edge
+// visible when looking past Jane and Oleg toward the open sky.
+const floor = new THREE.PlaneGeometry(44, 50, 88, 100);
 floor.rotateX(-Math.PI / 2);
 const floorColors = [];
 for (let i = 0; i < floor.attributes.position.count; i++) {
   const x = floor.attributes.position.getX(i), z = floor.attributes.position.getZ(i);
   floor.attributes.position.setY(i, .017 * Math.sin(x * 2.4 + z * 1.5));
-  const amount = THREE.MathUtils.smoothstep(x + .25 * Math.sin(z * .5), -.6, 2.2);
+  const interior = 1 - THREE.MathUtils.smoothstep(
+    Math.hypot(x * .82, z * .72), 6.2, 11.5);
+  const amount = THREE.MathUtils.lerp(1,
+    THREE.MathUtils.smoothstep(x + .25 * Math.sin(z * .5), -.6, 2.2),
+    interior);
   const pigment = new THREE.Color(C.desk).lerp(new THREE.Color(C.street), amount);
   pigment.offsetHSL(0, 0, (random() - .5) * .045);
   floorColors.push(pigment.r, pigment.g, pigment.b);
@@ -234,14 +241,106 @@ for(let z=-7.35;z<7.8;z+=.73)curve(root,
 // The desk and street belong to one outdoor world with no visible roof seam.
 addOpenSky(root, C.sky, C.street);
 
-// Solid rear and side landscape cues define the walkable perimeter without
-// placing an opaque wall across the portrait view.
-for (const x of [-5.95, 5.95]) {
-  for (let z = -7; z <= 7; z += 2.2) {
-    const height = 1.15 + .35 * Math.sin(z * .7 + x);
-    box(root, "low folded garden boundary", x, height / 2, z, .23, height, 1.9,
-      x < 0 ? M.plaster : M.darkLeaf);
+// A low plaster foundation anchors the remembered room. The street's other
+// edge stays open to the sky; a formed garden rail marks the walking boundary
+// without leaving a row of dark rectangular blocks against the horizon.
+for (let z = -7; z <= 7; z += 2.2) {
+  const height = 1.15 + .35 * Math.sin(z * .7 - 5.95);
+  box(root, "low plaster foundation below the home windows", -5.95,
+    height / 2, z, .23, height, 1.9, M.plaster);
+}
+for (let i = 0; i <= 8; i++) {
+  const z = -7.55 + i * 1.89;
+  loft(root, "tapered garden-rail upright seated in the pavement",
+    [[.035,.061,.061,5.86,z],[.13,.052,.052,5.86,z],
+      [.8,.034,.034,5.86,z],[1.03,.05,.05,5.86,z],
+      [1.075,.011,.011,5.86,z]], M.ink, 10);
+  if (i < 8) {
+    const next = z + 1.89;
+    for (const y of [.27,.93]) curve(root,
+      "joined wrought garden rail following the street",
+      [[5.86,y,z],[5.86,y + (y < .5 ? .005 : .025),z+.945],
+        [5.86,y,next]], y < .5 ? .015 : .02, M.ink, 14);
+    curve(root,"quiet arched garden grille between two posts",
+      [[5.86,.3,z+.1],[5.86,.73,z+.47],
+        [5.86,.79,z+.945],[5.86,.73,z+1.42],
+        [5.86,.3,next-.1]],.011,M.brass,18);
   }
+}
+// The rail overlooks a continuing neighborhood, not the edge of a finite
+// game board. All of this sits outside the reachable bounds and remains in
+// frame 02's isolated portal world.
+const outerRoad = add(root,"quiet street continuing beyond the garden rail",
+  new THREE.PlaneGeometry(3.1, 42), material(0x989390), 8.12, .035, 0);
+outerRoad.rotation.x = -Math.PI / 2;
+for (const x of [6.55,9.71]) curve(root,
+  "weathered curb that separates pavement from the neighborhood road",
+  [[x,.045,-20],[x+.035,.047,0],[x,.045,20]],.026,M.plaster,48);
+const housePalette=[0xb7836c,0xd6b697,0x9aaca7,0xc2a78e,0xc6b59f];
+const houseHeights=[3.05,3.74,2.83,3.42,3.13];
+for (let i=0;i<5;i++) {
+  const z=-9.1+i*4.55;
+  const front=12.05+.42*Math.sin(i*2.3);
+  const h=houseHeights[i];
+  const brick=material(housePalette[i]);
+  const house=new THREE.Group();
+  house.name="distant Chicago neighborhood house with its own roof and entrance";
+  house.position.set(front,0,z);root.add(house);
+  box(house,"masonry home with recessed street-facing front",
+    1.5,h/2,0,3,h,3.55,brick);
+  if (i%3===1) {
+    box(house,"stepped parapet rising above a flat neighborhood roof",
+      1.5,h+.18,0,3.13,.36,3.62,brick);
+    for(const y of [h+.05,h+.38]) box(house,
+      "projecting molded cap across the old parapet",
+      -.06,y,0,.16,.07,3.78,M.paper);
+  } else {
+    // A pitched roof is one joined pair of sloping surfaces, with an actual
+    // ridge and eaves rather than a decorative triangle pasted on a box.
+    const roofPositions=[0,h,-1.94, 3.1,h,-1.94,
+      0,h+.59,0, 3.1,h+.59,0,
+      0,h,1.94, 3.1,h,1.94];
+    const roofGeometry=new THREE.BufferGeometry();
+    roofGeometry.setAttribute("position",new THREE.Float32BufferAttribute(roofPositions,3));
+    roofGeometry.setIndex([0,1,2,1,3,2,2,3,4,3,5,4]);
+    roofGeometry.computeVertexNormals();
+    add(house,"two continuous pitched roof planes over the home",
+      roofGeometry,M.desk);
+    for(const side of [-1,1]) curve(house,"roof eave and shadow line",
+      [[-.08,h,side*1.94],[1.5,h+.025,side*1.94],
+        [3.16,h,side*1.94]],.027,M.brass,18);
+  }
+  box(house,"stone lintel band joining the upper windows",
+    -.033,h-.31,0,.09,.08,3.5,M.paper);
+  for(const story of [0,1]) for(const bay of [-1,1]) {
+    const y=.95+story*1.13, wz=bay*.87;
+    box(house,"deep window reveal in the colored brick",
+      -.025,y,wz,.065,.7,.57,M.desk);
+    box(house,"blue glass held inside the carved window",
+      -.067,y,wz,.012,.59,.45,M.paleBlue);
+    box(house,"window crossbar and mullion",
+      -.083,y,wz,.012,.023,.48,M.paper);
+    box(house,"masonry window sill with projecting shadow",
+      -.091,y-.37,wz,.16,.045,.67,M.paper);
+    for(const sign of [-1,1]) box(house,
+      "narrow window casing joined to the sill",
+      -.09,y,wz+sign*.25,.1,.75,.035,M.paper);
+  }
+  const doorZ=i%2?-.06:.14;
+  box(house,"recessed dark front door below the window band",
+    -.066,.53,doorZ,.036,1.03,.48,M.ink);
+  box(house,"warm pane in the upper door",
+    -.094,.76,doorZ,.016,.33,.29,M.amber);
+  add(house,"small door handle set in the front leaf",
+    new THREE.SphereGeometry(.025,8,6),M.brass,-.117,.48,
+    doorZ+.15);
+  for(let step=0;step<2;step++) box(house,
+    "two shallow stone steps leading from street to home",
+    -.18-step*.22,.06+step*.07,doorZ,.46-step*.08,
+    .12+step*.14,.67,M.plaster);
+  curve(house,"fine chimney cap above the roof",
+    [[2.21,h+.3,-.73],[2.21,h+.9,-.73],
+      [2.37,h+.9,-.73]],.047,M.orange,8);
 }
 for (const z of [-5.9, -.9, 4.1]) {
   box(root, "shallow plaster pier between home windows", -5.97, 2.35, z,
