@@ -64,20 +64,19 @@ const floor=ground(C.ground,(x,z)=>{
   floor.material.needsUpdate=true;
 }
 
-// An octagonal radial mosaic makes the whole room read as one vast rotunda.
-for(const radius of [2.2,4.3,6.55,8.3]) {
+// A restrained pair of broad stone inlays locates the rotunda without
+// drawing a digital target across the walking floor. The watercolor mineral
+// wash and inhabited glass carry the rest of the room's rhythm.
+for(const radius of [2.45,7.15]) {
   const points=[];
   for(let i=0;i<=64;i++) {
     const a=i*Math.PI*2/64;
-    points.push([Math.cos(a)*radius,.055,Math.sin(a)*radius*.78]);
+    const wave=1+.008*Math.sin(a*6+.2)+.006*Math.sin(a*11);
+    points.push([Math.cos(a)*radius*wave,.055,
+      Math.sin(a)*radius*.78*wave]);
   }
-  curve(root,"concentric shell-inlaid terrazzo line",points,.021,
-    radius===4.3?M.turquoise:M.gold,64);
-}
-for(let i=0;i<16;i++) {
-  const a=i*Math.PI*2/16;
-  beam(root,"fine radiating floor seam",[Math.cos(a)*2.3,.057,Math.sin(a)*1.8],
-    [Math.cos(a)*8.1,.057,Math.sin(a)*6.4],.012,.012,M.pearl,5);
+  curve(root,"hand-laid tidal border in aquamarine terrazzo",points,
+    radius<3?.021:.013,radius<3?M.gold:M.marble,64);
 }
 // A continuous paneled canopy gives the rotunda an actual luminous roof,
 // rather than leaving ribs hanging over a flat dark ceiling.
@@ -188,16 +187,15 @@ for(let i=0;i<8;i++) {
     [[x,5.1,z],[x*.7,6.35,z*.7],[x*.36,7.27,z*.36],
       [0,7.65,0]],.067,M.gold,28);
 }
-for(let ring=0;ring<3;ring++) {
-  const r=7.2-ring*2.35,y=5.65+ring*.75,points=[];
-  for(let i=0;i<=48;i++) {
-    const a=i*Math.PI*2/48;
+{
+  const r=7.2,y=5.65,points=[];
+  for(let i=0;i<=64;i++) {
+    const a=i*Math.PI*2/64;
     points.push([Math.cos(a)*r,y,Math.sin(a)*r*.96]);
   }
-  curve(root,"concentric dome brass tracery",points,.035,M.gold,49);
+  curve(root,"continuous shell-carved rim joining the dome ribs",
+    points,.05,M.marble,65);
 }
-add(root,"pearl center of aquatic dome",new THREE.OctahedronGeometry(.37,1),
-  M.white,0,7.67,0);
 
 // The visitor stands between actual inhabited saltwater and freshwater
 // habitats, with a third reef across the end. Fish and plants live behind the
@@ -1055,6 +1053,23 @@ for(const side of [-1,1]) {
   loft(root,"solid shell-carved base of the tide-pool lantern",
     [[.04,1.35,1.25,x,z],[.14,1.48,1.38,x,z],
       [.39,1.39,1.31,x,z],[.49,1.31,1.22,x,z]],M.marble,28,true);
+  const shellPlaque=new THREE.Shape();
+  shellPlaque.moveTo(-.15,-.075);
+  shellPlaque.bezierCurveTo(-.18,-.01,-.15,.075,-.095,.085);
+  shellPlaque.quadraticCurveTo(-.052,.13,0,.09);
+  shellPlaque.quadraticCurveTo(.052,.13,.095,.085);
+  shellPlaque.bezierCurveTo(.15,.075,.18,-.01,.15,-.075);
+  shellPlaque.quadraticCurveTo(0,-.11,-.15,-.075);
+  const shellPlaqueGeometry=new THREE.ExtrudeGeometry(shellPlaque,{
+    depth:.026,bevelEnabled:true,bevelSize:.011,
+    bevelThickness:.009,bevelSegments:2,curveSegments:10});
+  for(let fan=0;fan<12;fan++) {
+    const a=fan*Math.PI*2/12;
+    const relief=add(root,"carved scallop relief seated in the lantern plinth",
+      shellPlaqueGeometry,fan%3?M.pearl:M.white,
+      x+Math.cos(a)*1.43,.275,z+Math.sin(a)*1.34);
+    relief.rotation.y=Math.PI/2-a;
+  }
   const lanternGlass=new THREE.MeshPhysicalMaterial({color:0x7dc3cb,
     transparent:true,opacity:.29,roughness:.09,metalness:0,
     depthWrite:false,side:THREE.DoubleSide});
