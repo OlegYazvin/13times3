@@ -58,6 +58,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 Jane figure revision: frames `02`, `05`, `07`, `08`, `10`, and `11` now use a shared, posed clothed Jane body with painted full sleeves, her reference-based face and high bun. The five symbolic Jane appearances in frame `02` keep their distinct gestures. The seated nursing moment in frame `06` stays custom. This revises likeness and anatomy within those existing memories; none of their titles, IDs, or portal positions change. Oleg's close likeness and some supporting child figures still need further art review.
 
+2026-10-21 Oleg illustration refinement: frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11` share a new gouache face illustration checked against Oleg's private portrait for the glasses, eyes, side-parted medium hair, and close beard. The existing 3D head size stays in place because an enlarged mapping distorted his features in the room. This is the same person and same eight memories, with no frame assignment or portal change.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.
