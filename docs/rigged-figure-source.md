@@ -31,3 +31,21 @@ texture.
 The fit of the face and hair still needs a close human art review from the
 doorway and at three-quarter angles. Matching a recognizable face to a shared
 storybook body does not automatically make every garment or pose finished.
+
+## Jane's standing figure
+
+Standing Jane appearances in frames `02`, `05`, `07`, `08`, `10`, and `11`
+use a modified copy of Innerscene's
+[Relaxed walk — Maya 3D Person](https://www.innerscene.com/tools/library/3d-parts/relaxed-walk-maya-3d-person-animated-2c6669a2),
+also MakeHuman-derived and CC0. `node scripts/prepare_rigged_jane.mjs`
+reproduces the compact source from the original download. The source face,
+hair, animation, and phone are discarded; `scripts/rigged_jane.mjs` paints
+full sleeves on the skinned arms, gives the body each room's cloth palette,
+poses its arms, and adds Jane's original illustrated face and high bun on a
+sculpted head. A single adapted source is reused for the five simultaneous
+versions of her in frame `02`. The original 20 MB file stays in ignored
+`.cache/` and the private likeness photo stays in `.secrets/`.
+
+The intimate seated nursing figure in frame `06` remains an authored sculpture
+for that moment. The source model's original sleeveless top was unsuitable
+for Jane's other scenes without the modeled and painted sleeve adaptation.

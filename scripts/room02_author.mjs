@@ -12,6 +12,7 @@ import { addContactShadow } from "./stage_shadows.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
 import { paintedFabric } from "./painted_fabric.mjs";
 import { loadRiggedOlegBase, makeRiggedOleg } from "./rigged_oleg.mjs";
+import { loadRiggedJaneBase, makeRiggedJane } from "./rigged_jane.mjs";
 
 // A single impossible space: Oleg's desk opens into a street and four
 // simultaneous acts of Jane's support. All figures and props have volume.
@@ -413,6 +414,7 @@ for (const [x, z] of [[3.2, -5.3], [2.7, -.9], [3.7, 3.4]]) {
   box(root, "warm lamp glass", x - .85, 3.385, z, .32, .045, .22, glow);
 }
 
+const janeFigures = [];
 function person(name, x, z, height, outfit, options = {}) {
   const cloth = paintedFabric(outfit);
   const group = new THREE.Group();
@@ -421,6 +423,7 @@ function person(name, x, z, height, outfit, options = {}) {
   addContactShadow(group, height);
   const child = Boolean(options.child);
   const jane = Boolean(options.jane);
+  if (jane) janeFigures.push({ group, hands: options.hands, height });
   const oleg = Boolean(options.oleg);
   const skin = jane ? M.janeSkin : oleg ? M.olegSkin : M.skin;
   const hair = options.hair || M.hair;
@@ -645,7 +648,14 @@ beam(root, "pan handle", [-4.68, 1.46, -5.02], [-4.22, 1.46, -4.94],
 
 async function authorRoom() {
   await facesReady;
-  const rig = await loadRiggedOlegBase();
+  const [rig, janeRig] = await Promise.all([
+    loadRiggedOlegBase(), loadRiggedJaneBase(),
+  ]);
+  for (const { group, hands, height } of janeFigures) {
+    group.clear();
+    addContactShadow(group, height);
+    group.add(makeRiggedJane(janeRig, { height, hands }));
+  }
   for (const [personGroup, pose] of [[oleg, "desk"], [embracedOleg, "embrace"]]) {
     const paper = pose === "desk" ? personGroup.children.filter(child =>
       child.name.includes("page") || child.name.includes("mark")) : [];

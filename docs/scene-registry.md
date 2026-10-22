@@ -56,6 +56,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 Oleg head and garment finish: those same eight appearances gain a full sculpted head under the painted face, a lower and rounder hair crown, shared woven garment pigment, and a small wordless shirt sketch where his top is light. This replaces the visible hard side-hair shell in the rigged figure without changing scenes, people, or portal positions. The close likeness still invites Oleg's review.
 
+2026-10-21 Jane figure revision: frames `02`, `05`, `07`, `08`, `10`, and `11` now use a shared, posed clothed Jane body with painted full sleeves, her reference-based face and high bun. The five symbolic Jane appearances in frame `02` keep their distinct gestures. The seated nursing moment in frame `06` stays custom. This revises likeness and anatomy within those existing memories; none of their titles, IDs, or portal positions change. Oleg's close likeness and some supporting child figures still need further art review.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.
