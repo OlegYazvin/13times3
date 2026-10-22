@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { foliageLobe } from "./sculpted_foliage.mjs";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
@@ -12,6 +11,8 @@ import { addContactShadow } from "./stage_shadows.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
 import { paintedFabric } from "./painted_fabric.mjs";
 import { loadRiggedOlegBase, makeRiggedOleg } from "./rigged_oleg.mjs";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import treeUrl from "./assets/room04/quaternius-tree.glb";
 
 // A Roscoe Village walk imagined as a long paper street. The blue toy car is
 // an original sculpted object informed by Oleg's Step2 product reference;
@@ -293,39 +294,6 @@ for (const side of [-1, 1]) for (let unit = -3; unit < 4; unit++) {
   }
 }
 
-for (const side of [-1, 1]) for (let i = -3; i < 4; i++) {
-  const x = side * 2.9, z = -5.8 + i * 3.9;
-  loft(root, "solid leaning parkway tree trunk", [[0, .15, .13, x, z],
-    [.72, .13, .11, x + side * .03, z],
-    [1.65, .105, .09, x + side * .12, z - .06],
-    [2.45, .065, .06, x + side * .18, z - .12]], M.bark, 10, i>=0);
-  for (const branch of [-1, 1]) {
-    const branchTip = [x + side * (.45 + branch * .68), 3.28, z + branch * .5];
-    curve(root, "shaped tree branch", [[x + side * .12, 1.7, z],
-      [x + side * (.3 + branch * .38), 2.48, z + branch * .25],
-      branchTip], .055, M.bark);
-    foliageLobe(root, "scalloped parkway foliage among the upper branches",
-      x + side * (.45 + branch * .55), 3.29, z + branch * .43,
-      .75, .54, .54, branch < 0 ? C.leaf : C.paleLeaf, i * 3 + side + branch);
-    for (let twig = 0; twig < 2; twig++) {
-      const tx = branchTip[0] + side * (twig ? .28 : -.22);
-      const ty = 3.22 + random() * .14;
-      const tz = branchTip[2] + (twig ? .24 : -.22);
-      curve(root, "small twig connected to a parkway branch",
-        [branchTip, [(branchTip[0] + tx) / 2, ty, (branchTip[2] + tz) / 2],
-          [tx, ty + .06, tz]], .009, M.bark, 10);
-      for (let j = 0; j < 3; j++) leaf(root,
-        THREE.MathUtils.lerp(branchTip[0], tx, .35 + j * .25),
-        ty + .02 * j,
-        THREE.MathUtils.lerp(branchTip[2], tz, .35 + j * .25),
-        .19 + random() * .08, j % 2 ? M.leaf : M.paleLeaf,
-        random() * 6.28);
-    }
-  }
-  foliageLobe(root, "overlapping central tree crown", x + side * .2,
-    3.35, z - .12, .74, .62, .62, C.leaf, i + side);
-}
-
 // The toy body has a purpose-drawn footprint and a raised, gently beveled
 // shell. It is open at the seat, has four wheels, steering wheel and a push
 // handle, and remains one solid obstacle for a visitor.
@@ -577,6 +545,30 @@ for (let i = 0; i < 35; i++) {
 
 async function authorRoom() {
   const rig = await loadRiggedOlegBase();
+  const treeModel = (await new GLTFLoader().loadAsync(treeUrl)).scene;
+  for (const side of [-1, 1]) for (let i = -3; i < 4; i++) {
+    const x = side * 2.9, z = -5.8 + i * 3.9;
+    const tree = treeModel.clone(true);
+    tree.name = "detailed parkway tree on the Roscoe Village block";
+    const scale = .48 + ((i + 4) % 3) * .022;
+    tree.scale.set(scale * (side < 0 ? 1 : .94), scale, scale);
+    tree.rotation.y = (i * 1.79 + side * 2.2);
+    tree.position.set(x, .13, z);
+    tree.traverse(part => {
+      if (!part.isMesh) return;
+      part.material = part.material.clone();
+      part.material.normalMap = null;
+      part.material.roughness = .98;
+      if (part.material.name.includes("Leaves")) {
+        part.material.color.set(side < 0 ? 0xb5c5ad : 0xc2ceb8);
+        part.material.side = THREE.DoubleSide;
+      }
+    });
+    root.add(tree);
+    const trunk = add(root, "solid tree trunk collision core",
+      new THREE.CylinderGeometry(.13, .17, 2.1, 10), M.bark, x, 1.08, z);
+    trunk.userData.solidFootprint = true;
+  }
   oleg.clear();
   addContactShadow(oleg, 1.73);
   oleg.add(makeRiggedOleg(rig, {

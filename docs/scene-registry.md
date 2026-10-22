@@ -144,6 +144,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-22 shared Oleg and connected-ceiling revision: Oleg's illustrated likeness in frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11` is refined from both private photos with a broader lower face and matching curved head relief. In frame `02`, loose polygon pavement pieces and bright repetitive floor bars become a quieter painted ground where the real desk meets the dream street. In frame `11`, a painted vault shoulder joins the rotunda dome to the area behind the freestanding hallway portal, closing a visible sky gap; loose turquoise floor guide lines are removed. These remain the same published memories and stable frame IDs.
 
+2026-10-22 blue-car street-tree revision: frame `04` keeps Jane and Oleg pushing Zephrine in her blue car along the same dreamlike Roscoe Village block. The fourteen foreground trees now use a palette-adapted CC0 3D tree instead of smooth procedural canopy ovals, with narrow collision at the trunks. This changes only environmental art in the existing memory; frame ID, title, people, portal position, open sky, and room boundary remain unchanged.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

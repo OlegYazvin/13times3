@@ -234,7 +234,8 @@ def main() -> None:
     assert any("domed pale headlamp" in name for name in car_names)
     assert any("deep molded cup holder" in name for name in car_names)
     assert any("fastened seat belt" in name for name in car_names)
-    assert any("small twig connected to a parkway branch" in name for name in car_names)
+    assert sum("detailed parkway tree on the Roscoe Village block" in name for name in car_names) == 14
+    assert sum("solid tree trunk collision core" in name for name in car_names) == 14
     assert any("projecting three-sided bay center glass" in name for name in car_names)
     assert any("wall-mounted porch lantern" in name for name in car_names)
     assert any("recessed cast-iron street utility cover" in name for name in car_names)
