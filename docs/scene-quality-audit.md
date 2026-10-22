@@ -10,6 +10,12 @@ readable subject, but several major objects still simplify into basic shapes.
 The next passes should spend geometry and texture budget on story-critical
 subjects, not arbitrary ornament. Preview approval alone is insufficient.
 
+The October 22 shared outdoor-sky pass adds a more legible watercolor gradient
+and small local cloud forms to frames `02`, `03`, `04`, `07`, `08`, `09`, and
+`10`. This improves the open atmosphere; it does not resolve the simplified
+figures, trees, and buildings noted below. A connected raised-leaf trial was
+rejected because the crowns looked spiky at painting distance.
+
 | Frame | Next art pass | Close-view acceptance |
 | --- | --- | --- |
 | `01` | Continue shaping the cave shell and both figures, and reduce loose squiggles and generic sea ornaments. The October 21 pass carved the desk top and apron, turned its legs, and gave the stage a contoured platform, rim and shell relief. | Jane's expression, Zephrine's face and the signup action remain legible from angled positions. |

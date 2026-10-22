@@ -5,7 +5,7 @@ import { paintedSkyTexture } from "./painted_sky.mjs";
 // beyond the walkable bounds without ever occupying another gallery room.
 export function addOpenSky(root, skyColor, groundColor) {
   const sky = new THREE.Color(skyColor);
-  const zenith = sky.clone().offsetHSL(-.025, -.07, .13);
+  const zenith = sky.clone().offsetHSL(-.025, .015, -.025);
   const horizon = sky.clone().offsetHSL(.012, -.025, .075);
   // Keep the visible horizon far beyond the authored walkable area. Portal
   // worlds do not share a render scene, so this sky may extend through the

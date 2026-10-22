@@ -20,6 +20,8 @@ The gallery has 41 stable frame IDs. The 39 original achievement pages are a sep
 
 Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unassigned blank portals.
 
+2026-10-22 outdoor watercolor pass: the seven existing outdoor or outdoor-blended worlds (`02`, `03`, `04`, `07`, `08`, `09`, `10`) keep their separate tall sky domes and walkable boundaries. Their dome mapping now shows a clearer blue-to-warm pigment wash with small local cloud forms at the visible viewing angles. A trial of spiky raised canopy blades was rejected after preview review; the trees retain their prior connected crowns and attached leaves. No memory, person, frame ID, or portal position changes.
+
 2026-10-22 aquarium rotunda finish: frame `11` retains G and Zephrine's Shedd visit and its walk-behind hallway portal. Most concentric wire-like dome and floor decoration is removed in favor of a joined marble crown, two hand-laid tidal borders, and carved shell relief on the tide-pool plinth. The characters, event, and frame assignment do not change.
 
 2026-10-22 nursing-sanctuary revision: frame `06` remains Jane and Zephrine's fully clothed, tender transition. The chair has a shaped wingback and side upholstery, Jane's arms cradle closer, and the woven rug has fewer contours. A tested horizontal child sculpt was rejected after phone review; the published child remains a clothed volumetric figure. The memory, title, people, and frame ID do not change.
