@@ -28,9 +28,12 @@ export function paintedSkyTexture(seed = 1) {
       const y=cy-(1-Math.abs(f))*h*.4+(random()-.5)*h*.45;
       const rx=w*(.65+random()*.3);
       const ry=h*(.9+random()*.55);
-      ctx.save();ctx.translate(x,y);ctx.scale(rx,ry);
-      const pigment=ctx.createRadialGradient(0,-.23,.05,0,0,1);
       const alpha=.43+random()*.18;
+      // A spherical atlas joins its left and right edges. Paint a cloud that
+      // crosses either edge on both sides so the join cannot cut it in half.
+      for(const wrap of [-768,0,768]) {
+      ctx.save();ctx.translate(x+wrap,y);ctx.scale(rx,ry);
+      const pigment=ctx.createRadialGradient(0,-.23,.05,0,0,1);
       pigment.addColorStop(0,warm?`rgba(255,243,226,${alpha})`:
         `rgba(250,253,250,${alpha})`);
       pigment.addColorStop(.46,warm?`rgba(224,218,204,${alpha*.65})`:
@@ -40,6 +43,7 @@ export function paintedSkyTexture(seed = 1) {
       ctx.fillStyle=pigment;
       ctx.beginPath();ctx.arc(0,0,1,0,Math.PI*2);ctx.fill();
       ctx.restore();
+      }
     }
   }
   // Fine granulation softens the digital gradient without scattering visible
@@ -51,5 +55,6 @@ export function paintedSkyTexture(seed = 1) {
   }
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;
+  texture.wrapS = THREE.RepeatWrapping;
   return texture;
 }

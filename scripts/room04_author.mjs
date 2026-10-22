@@ -1,3 +1,5 @@
+import {replaceStoryFigures} from './storybook_figures.mjs';
+import {finishStoryWorld} from './storyworld_finish.mjs';
 import * as THREE from "three";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
@@ -105,15 +107,6 @@ function loft(parent, name, rings, mat, sides = 12, solid = false) {
   const mesh = add(parent, name, geometry, mat);
   if (solid) mesh.userData.solidFootprint = true;
   return mesh;
-}
-function leaf(parent, x, y, z, scale, mat, yaw = 0) {
-  const shape = new THREE.Shape();
-  shape.moveTo(0, 0); shape.bezierCurveTo(-.42, .25, -.55, .7, 0, 1);
-  shape.bezierCurveTo(.55, .7, .42, .25, 0, 0);
-  const mesh = add(parent, "folded leaf on the block", new THREE.ExtrudeGeometry(shape,
-    { depth: .025, bevelEnabled: false, curveSegments: 5 }), mat, x, y, z);
-  mesh.scale.setScalar(scale); mesh.rotation.set(.38, yaw, .22);
-  mesh.userData.batchLeaf = true;
 }
 
 const floor = new THREE.PlaneGeometry(10.8, 16.4, 30, 42);
@@ -307,13 +300,23 @@ bodyShape.bezierCurveTo(.21, .91, .45, .8, .48, .35);
 bodyShape.lineTo(.5, -.21);
 bodyShape.bezierCurveTo(.53, -.49, .51, -.77, .35, -.83);
 bodyShape.closePath();
+// The occupied cabin must be an actual recess. Previously this extrusion was
+// solid underneath the child, with a seat simply placed on top of the shell.
+const cabin=new THREE.Path();
+cabin.moveTo(-.25,-.35);cabin.lineTo(.25,-.35);
+cabin.quadraticCurveTo(.35,-.35,.35,-.25);
+cabin.lineTo(.35,.56);cabin.quadraticCurveTo(.35,.67,.24,.67);
+cabin.lineTo(-.24,.67);cabin.quadraticCurveTo(-.35,.67,-.35,.56);
+cabin.lineTo(-.35,-.25);cabin.quadraticCurveTo(-.35,-.35,-.25,-.35);
+cabin.closePath();bodyShape.holes.push(cabin);
 const bodyGeometry = new THREE.ExtrudeGeometry(bodyShape,
-  { depth: .37, bevelEnabled: true, bevelSize: .055, bevelThickness: .045,
+  { depth: .37, bevelEnabled: true, bevelSize: .026, bevelThickness: .03,
     bevelSegments: 3, curveSegments: 18 });
 bodyGeometry.rotateX(-Math.PI / 2);
 const body = add(car, "solid curved blue Whisper Ride inspired body", bodyGeometry,
   M.blue, 0, .22, 0);
 body.userData.solidFootprint = true;
+box(car,"recessed molded footwell floor inside the open cabin",0,.21,-.15,.64,.03,1.02,M.blueShade);
 const noseShape = new THREE.Shape();
 noseShape.moveTo(-.38, .23);
 noseShape.bezierCurveTo(-.48, .28, -.51, .42, -.43, .57);
@@ -384,6 +387,7 @@ for (const side of [-1, 1]) {
 }
 beam(car, "shared parent push grip", [-.37, 1.48, -1.05],
   [.37, 1.48, -1.05], .055, .055, M.dark);
+car.scale.set(.6,.78,.68);
 
 function adult(name, x, z, outfit, options = {}) {
   const cloth = paintedFabric(outfit);
@@ -533,12 +537,8 @@ for(const [x,z] of [[-.65,-2.2],[.75,-6.25]]) {
       .006,.006,M.mortar,5);
   }
 }
-for (let i = 0; i < 35; i++) {
-  const side = i % 2 ? -1 : 1;
-  leaf(root, side * (2.05 + random() * 1.1), .05,
-    -7.6 + random() * 15.1, .12 + random() * .1,
-    i % 4 ? M.leaf : M.coral, random() * 6.28);
-}
+// Ground scatter previously stood upright above the pavement like loose
+// polygon flags. The attached tree canopy already supplies the foliage.
 // The parkway trees provide shade from the sides. Keep the street's center
 // open to the sky instead of hanging disconnected twig garlands overhead.
 
@@ -565,6 +565,7 @@ async function authorRoom() {
     shirtEmbroidery: false,
   }));
   await finishOlegPortraits(root);
+  replaceStoryFigures(root,'04');
   root.updateMatrixWorld(true);
   const groups = new Map();
   root.traverse(object => {
@@ -579,8 +580,9 @@ async function authorRoom() {
     for (const object of objects) object.parent.remove(object);
     add(root, "batched sculpted street-tree leaves", geometry, mat);
   }
+  finishStoryWorld(root,'04');
   const scene = new THREE.Scene(); scene.background = new THREE.Color(C.sky);
-  addRoomLighting(scene);
+  addRoomLighting(scene,'04');
   scene.add(root);
   const view = gallery.frames[3].room.previewCamera;
   const camera = new THREE.PerspectiveCamera(view.fov, FRAME_WIDTH / FRAME_HEIGHT, .05, 120);

@@ -190,7 +190,7 @@ export class RoomManager {
         0, frame.center.z + outward.z * portalDepth(frame));
       group.rotation.y = Math.atan2(-outward.x, -outward.z);
       group.add(gltf.scene);
-      addRoomLighting(group);
+      addRoomLighting(group,frame.id);
       const modelColliders = collidersFromScene(gltf.scene);
       const driftingFish = [];
       if (frame.id === "11") gltf.scene.traverse(object => {

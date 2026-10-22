@@ -114,38 +114,11 @@ def main() -> None:
         )
     for frame_id in ("02", "04", "05", "07", "08", "09", "10", "11"):
         room_model = OUTPUT / frames[int(frame_id) - 1]["room"]["modelUrl"].lstrip("/")
-        room_bytes = room_model.read_bytes()
-        json_size = int.from_bytes(room_bytes[12:16], "little")
-        room_json = json.loads(room_bytes[20:20 + json_size])
-        assert any("Oleg's clothed three-dimensional figure" in node.get("name", "")
-                   for node in room_json["nodes"]), f"Room {frame_id} lost Oleg's rigged likeness"
-        assert any("one painted sculpted head with continuous cheeks hair and beard" in node.get("name", "")
-                   for node in room_json["nodes"]), (
-            f"Room {frame_id} lost Oleg's continuous painted sculpted head"
-        )
-        assert any("skin" in node for node in room_json["nodes"]), (
-            f"Room {frame_id} needs the posed 3D figure rig"
-        )
-        assert not any("Phone" in node.get("name", "") for node in room_json["nodes"]), (
-            f"Room {frame_id} leaked the source model's unrelated accessory"
-        )
-    for frame_id in ("02", "05", "07", "08", "10", "11"):
-        room_model = OUTPUT / frames[int(frame_id) - 1]["room"]["modelUrl"].lstrip("/")
-        room_bytes = room_model.read_bytes()
-        json_size = int.from_bytes(room_bytes[12:16], "little")
-        room_nodes = json.loads(room_bytes[20:20 + json_size])["nodes"]
-        assert any("Jane's posed, clothed three-dimensional figure" in node.get("name", "")
-                   for node in room_nodes), f"Room {frame_id} lost Jane's posed figure"
-        assert any("Jane's sculpted head with her painted likeness" in node.get("name", "")
-                   for node in room_nodes), f"Room {frame_id} lost Jane's painted likeness"
-    for frame_id in ("05", "07", "10", "11"):
-        room_model = OUTPUT / frames[int(frame_id) - 1]["room"]["modelUrl"].lstrip("/")
-        room_bytes = room_model.read_bytes()
-        json_size = int.from_bytes(room_bytes[12:16], "little")
-        room_names = [node.get("name", "") for node in
-                      json.loads(room_bytes[20:20 + json_size])["nodes"]]
-        assert any("fitted child skirt with formed cloth pleats" in name
-                   for name in room_names), f"Room {frame_id} lost the sculpted child skirt"
+        data = room_model.read_bytes()
+        room_json = json.loads(data[20:20 + int.from_bytes(data[12:16], "little")])
+        assert any(n.get("extras", {}).get("storyFigure", False) and n.get("extras", {}).get("identity") == "Oleg" for n in room_json["nodes"]), f"Room {frame_id} lost Oleg"
+        assert any(n.get("extras", {}).get("storyFigure", False) and n.get("extras", {}).get("identity") == "Jane" for n in room_json["nodes"]), f"Room {frame_id} lost Jane"
+        assert not any("Phone" in n.get("name", "") for n in room_json["nodes"]), f"Room {frame_id} contains an unrelated source accessory"
     aquarium_model = OUTPUT / frames[10]["room"]["modelUrl"].lstrip("/")
     aquarium_bytes = aquarium_model.read_bytes()
     aquarium_size = int.from_bytes(aquarium_bytes[12:16], "little")
@@ -163,8 +136,9 @@ def main() -> None:
     assert first_room["dimensionsM"] == [5.4, 3.6, 5.4]
     assert first_room["previewImage"] == "/assets/explore/room01/preview.webp"
     assert first_room["modelUrl"] == "/assets/explore/room01/room.glb"
-    assert len(first_room["colliders"]) == 4
-    assert sum(collider.get("shape") == "circle" for collider in first_room["colliders"]) == 2
+    assert len(first_room["colliders"]) >= 4
+    assert all(all(key in collider for key in ("minX", "maxX", "minZ", "maxZ"))
+               for collider in first_room["colliders"])
     assert all(not frame["room"]["previewImage"] and not frame["room"]["modelUrl"]
                for index, frame in enumerate(frames) if index not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
     preview = OUTPUT / first_room["previewImage"].lstrip("/")
@@ -175,7 +149,7 @@ def main() -> None:
     glb_json_length = int.from_bytes(glb[12:16], "little")
     glb_json = json.loads(glb[20:20 + glb_json_length])
     solid_nodes = [node for node in glb_json["nodes"] if node.get("extras", {}).get("solidFootprint")]
-    assert len(solid_nodes) == 4, "Room 01 must carry four model-authored solid footprints"
+    assert len(solid_nodes) >= 4, "Room 01 must carry furniture and figure collision footprints"
     assert not any("dance card" in node.get("name", "").lower() or "acting card" in node.get("name", "").lower()
                    for node in glb_json["nodes"]), "Stage labels should not cover the scene"
     assert preview.stat().st_size + model.stat().st_size < 8_000_000
@@ -195,9 +169,9 @@ def main() -> None:
     assert not any("company" in node.get("name", "").lower() for node in job_json["nodes"]), "Do not name a company in room 02"
     job_names = [node.get("name", "") for node in job_json["nodes"]]
     assert job_names.count("branching tree along Jane's symbolic street") == 6, "Room 02 needs six modeled street trees"
-    assert job_names.count("solid tree trunk collision core") == 6, "Room 02 tree trunks must collide"
+    assert sum(node.get("name") == "solid tree trunk collision core" and bool(node.get("extras", {}).get("solidFootprint")) for node in job_json["nodes"]) == 6, "Room 02 tree trunks must collide"
     assert job_names.count("two fitted orange drawer cabinets below the curved desk") == 2, "Room 02 desk needs the fitted drawer cabinets"
-    assert job_names.count("Oleg's reference-based painted likeness on a sculpted head") == 2, "Room 02 needs both sculpted Oleg likenesses"
+    assert sum(node.get("extras", {}).get("storyFigure", False) and node.get("extras", {}).get("identity") == "Oleg" for node in job_json["nodes"]) == 2, "Room 02 needs both dimensional Oleg figures"
     friendship_room = frames[2]["room"]
     assert friendship_room["title"] == "Jane made sure Zephrine has a best friend (Charlize)"
     assert friendship_room["caption"] == "A friendship Jane made room for"
@@ -217,13 +191,12 @@ def main() -> None:
     friend_names = [node.get("name", "") for node in friend_json["nodes"]]
     assert any("separate painted wood slat on the bench" in name for name in friend_names)
     assert not any("linked hands of two friends" in name for name in friend_names)
-    assert any("Charlize's painted likeness" in name for name in friend_names)
-    assert any("broad navy cloth stripe following Charlize's pleated skirt" in name for name in friend_names)
+    assert any(node.get("extras", {}).get("identity") == "Charlize" for node in friend_json["nodes"])
     assert any("solid cambered plank-built bridge deck" in name for name in friend_names)
     assert any("joined sculpted timber arch above the open dance floor" in name for name in friend_names)
     assert any("living flower stem beside the path" in name for name in friend_names)
     assert sum("detailed shade tree in the friendship garden" in name for name in friend_names) == 5
-    assert sum("solid tree trunk collision core" in name for name in friend_names) == 5
+    assert sum(node.get("name") == "solid tree trunk collision core" and bool(node.get("extras", {}).get("solidFootprint")) for node in friend_json["nodes"]) == 5
     car_room = frames[3]["room"]
     assert car_room["title"] == "Jane Got zephrine the ‘blue car’"
     assert car_room["caption"] == "Zephrine's blue car"
@@ -274,7 +247,8 @@ def main() -> None:
                    "continuous curved acoustic canopy over the work pod",
                    "slender glazed office pod door"):
         assert any(detail in node.get("name", "") for node in office_json["nodes"]), detail
-    assert office_room["colliders"][0]["z"] == 5.05, "Room 05 figure collision must follow Jane's new pose"
+    assert any(c["minX"] <= 0 <= c["maxX"] and c["minZ"] <= 5.05 <= c["maxZ"]
+               for c in office_room["colliders"]), "Room 05 collision must cover Jane's revised torso"
     assert any("solid chamfered masonry pier" in node.get("name", "") and
                node.get("extras", {}).get("solidFootprint")
                for node in office_json["nodes"])
@@ -298,7 +272,7 @@ def main() -> None:
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in weaning_json["nodes"]) >= 12, "Room 06 needs a solid chair, people, and fabric architecture"
     assert any("fully clothed sculpted Jane" in node.get("name", "") for node in weaning_json["nodes"])
     assert any("Zephrine nestled at Jane's clothed chest" in node.get("name", "") for node in weaning_json["nodes"])
-    assert any("tailored solid clothing with waist and shoulder contours" in node.get("name", "")
+    assert any("continuous tailored torso — ordered waist to shoulder" in node.get("name", "")
                for node in weaning_json["nodes"]), "Room 06 needs a fully clothed child"
     assert any("solid sculpted wingback upholstery with a shaped crest" in node.get("name", "")
                for node in weaning_json["nodes"])
@@ -308,8 +282,8 @@ def main() -> None:
                for node in weaning_json["nodes"]) == 3
     assert any("continuous gathered linen vault panel" in node.get("name", "") for node in weaning_json["nodes"])
     assert any("tall arched stained daylight pane" in node.get("name", "") for node in weaning_json["nodes"])
-    assert any("continuous bent trouser leg with a formed knee" in node.get("name", "") for node in weaning_json["nodes"])
-    assert any("Jane's gathered hair rising into one high bun" in node.get("name", "") for node in weaning_json["nodes"])
+    assert sum(bool(node.get("extras", {}).get("storyFigure")) for node in weaning_json["nodes"]) == 2
+    assert any(node.get("extras", {}).get("identity") == "Jane" for node in weaning_json["nodes"])
     assert any("small turned side table beside the nursing chair" in node.get("name", "") for node in weaning_json["nodes"])
     assert not any("continuous modest sweater front" in node.get("name", "") or
                    "solid empty ottoman" in node.get("name", "") for node in weaning_json["nodes"])
@@ -328,11 +302,7 @@ def main() -> None:
     berry_json = json.loads(berry_glb[20:20 + berry_json_length])
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in berry_json["nodes"]) >= 20, "Room 07 needs solid berry bushes and people"
     assert any("G helping Zephrine" in node.get("name", "") for node in berry_json["nodes"])
-    for detail in ("G's posed, clothed three-dimensional figure",
-                   "G's sculpted head with painted likeness and short bob",
-                   "G's continuous shoulder-length bob",
-                   "G's finely stitched blouse neckline"):
-        assert any(detail in node.get("name", "") for node in berry_json["nodes"]), f"Room 07 missing {detail}"
+    assert any(node.get("extras", {}).get("identity") == "G" and node.get("extras", {}).get("storyFigure") for node in berry_json["nodes"]), "Room 07 needs G in the common sculpt style"
     assert any("Zephrine picking her own" in node.get("name", "") for node in berry_json["nodes"])
     assert any("fruiting blueberry bough beside Zephrine" in node.get("name", "") for node in berry_json["nodes"])
     route_room = frames[7]["room"]
@@ -370,7 +340,7 @@ def main() -> None:
     orchard_names = [node.get("name", "") for node in orchard_json["nodes"]]
     assert orchard_names.count("branch-connected modeled fruit-tree foliage") == 10, "Room 09 needs ten modeled orchard crowns"
     assert "fruiting apple-tree canopy with a scalloped silhouette" not in orchard_names, "Room 09 must not retain the rounded placeholder canopies"
-    assert orchard_names.count("shaped quilted teal vest panel following Zephrine's torso") == 2, "Zephrine's vest must leave her face clear"
+    assert "fitted quilted vest following torso" in orchard_names, "Zephrine needs a fitted dimensional vest"
     assert "quilted teal vest panel" not in orchard_names, "Room 09 must not retain face-obscuring vest boxes"
     assert any("visible fruiting twig holding its leaves" in name for name in orchard_names)
     assert any("continuous horizontal wicker course" in name for name in orchard_names)
@@ -410,11 +380,7 @@ def main() -> None:
     aquarium_json_length = int.from_bytes(aquarium_glb[12:16], "little")
     aquarium_json = json.loads(aquarium_glb[20:20 + aquarium_json_length])
     aquarium_names = " ".join(node.get("name", "") for node in aquarium_json["nodes"])
-    for detail in ("G's posed, clothed three-dimensional figure",
-                   "G's sculpted head with painted likeness and short bob",
-                   "G's continuous shoulder-length bob",
-                   "G's finely stitched blouse neckline"):
-        assert detail in aquarium_names, f"Room 11 missing {detail}"
+    assert any(node.get("extras", {}).get("identity") == "G" and node.get("extras", {}).get("storyFigure") for node in aquarium_json["nodes"]), "Room 11 needs G in the common sculpt style"
     for detail in ("G sharing wonder", "Zephrine pointing", "freestanding return-door",
                    "drifting sculpted aquarium fish", "painted saltwater reef habitat",
                    "painted freshwater river habitat", "continuous thick aquarium viewing glass",
@@ -438,15 +404,16 @@ def main() -> None:
     }), "Room 11 fish must retain three distinct sculpted body shapes"
     assert sum("driftPhase" in node.get("extras", {}) for node in aquarium_json["nodes"]) >= 24, "Room 11 fish need gentle motion metadata"
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in aquarium_json["nodes"]) >= 20, "Aquarium columns, tanks, figures, and doorway posts must collide"
-    for frame_id in (2, 4, 5, 7, 8, 9, 10, 11):
+    expected_counts = [2, 10, 4, 3, 3, 2, 4, 2, 7, 7, 4]
+    for frame_id, minimum in enumerate(expected_counts, 1):
         model = (OUTPUT / f"assets/explore/room{frame_id:02d}/room.glb").read_bytes()
         json_length = int.from_bytes(model[12:16], "little")
         scene_data = json.loads(model[20:20 + json_length])
-        assert any("one painted sculpted head with continuous cheeks hair and beard"
-                   in node.get("name", "").lower()
-                   for node in scene_data["nodes"]), (
-            f"Room {frame_id:02d} must include Oleg's shared continuous illustrated likeness"
-        )
+        figures = [node for node in scene_data["nodes"] if node.get("extras", {}).get("storyFigure")]
+        assert len(figures) >= minimum, f"Room {frame_id:02d} lost a story participant"
+        assert any(node.get("extras", {}).get("identity") == "Jane" for node in figures), f"Room {frame_id:02d} lost Jane"
+        assert not any("painted likeness" in node.get("name", "").lower() or "illustrated face" in node.get("name", "").lower() for node in scene_data["nodes"]), f"Room {frame_id:02d} retained rejected portrait-panel geometry"
+        assert all("POSITION" in primitive.get("attributes", {}) and "NORMAL" in primitive.get("attributes", {}) for m in scene_data.get("meshes", []) for primitive in m.get("primitives", [])), f"Room {frame_id:02d} has incomplete surfaces"
     assert not (OUTPUT / "room_assets").exists(), "Reference artwork should not be published separately"
     explore = parse(source_path("/explore"))
     assert explore.select_one("#welcome-title") is not None

@@ -1,3 +1,5 @@
+import {replaceStoryFigures} from './storybook_figures.mjs';
+import {finishStoryWorld} from './storyworld_finish.mjs';
 import * as THREE from "three";
 import { loadAdaptedTree, plantAdaptedTree } from "./adapted_tree.mjs";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
@@ -101,7 +103,7 @@ function petal(parent, name, x, y, z, scale, material, tilt = 0) {
 
 // The ground and four-sided sky make an outdoor world even after Jane crosses
 // the canvas. The forward side stays open for a real view back into the hall.
-const ground = new THREE.PlaneGeometry(11.8, 14.4, 28, 34);
+const ground = new THREE.PlaneGeometry(48, 52, 100, 110);
 ground.rotateX(-Math.PI / 2);
 const groundColors = [];
 for (let i = 0; i < ground.attributes.position.count; i++) {
@@ -646,6 +648,7 @@ async function authorRoom() {
     collidable:false,
   });
   await finishOlegPortraits(root);
+  replaceStoryFigures(root,'03');
   root.updateMatrixWorld(true);
   const groups = new Map();
   root.traverse(object => {
@@ -660,8 +663,9 @@ async function authorRoom() {
     for (const object of objects) object.parent.remove(object);
     add(root, "grouped dimensional leaves and petals", geometry, material);
   }
+  finishStoryWorld(root,'03');
   const scene = new THREE.Scene(); scene.background = new THREE.Color(C.sky);
-  addRoomLighting(scene);
+  addRoomLighting(scene,'03');
   scene.add(root);
   const view = gallery.frames[2].room.previewCamera;
   const camera = new THREE.PerspectiveCamera(view.fov, FRAME_WIDTH / FRAME_HEIGHT, .05, 120);

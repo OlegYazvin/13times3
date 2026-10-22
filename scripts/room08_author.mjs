@@ -7,7 +7,7 @@ const C = {
   sky: 0xd9d4ca, ground: 0x9b9997, street: 0xd3c2af,
   ink: 0x303949, brick: 0x9b5f59, warmBrick: 0xc37f67,
   limestone: 0xe6d8bd, arch: 0xbba9a3, bronze: 0xaa8455,
-  glass: 0x6b949a, paleGlass: 0xb2c5c3, night: 0x404f69,
+  glass: 0x526f78, paleGlass: 0xb2c5c3, night: 0x404f69,
   gold: 0xe9c78d, mint: 0x8caaa0, rose: 0xd3958b,
   skin: 0xd7a489, hair: 0x493b3b, cream: 0xf2e5d4,
   fabric: 0x78939d, paper: 0xf5ebd9,
@@ -20,7 +20,7 @@ function masonryTexture(courses, columns, stone = false) {
   const canvas = document.createElement("canvas");
   canvas.width = canvas.height = 512;
   const ctx = canvas.getContext("2d");
-  ctx.fillStyle = stone ? "#b7b4ae" : "#99918b";
+  ctx.fillStyle = stone ? "#d0cbc3" : "#c3bcb3";
   ctx.fillRect(0, 0, 512, 512);
   const stepY = 512 / courses;
   for (let row = 0; row < courses; row++) {
@@ -35,7 +35,7 @@ function masonryTexture(courses, columns, stone = false) {
       ctx.fillRect(x, y, stepX - 5, stepY - 5);
       // Each laid course has a little pigment within the stone surface, not
       // just an outline drawn on top of an otherwise plain cuboid.
-      ctx.strokeStyle = `rgba(100,91,85,${stone ? .08 : .11})`;
+      ctx.strokeStyle = `rgba(100,91,85,${stone ? .05 : .06})`;
       ctx.lineWidth = 1.5;
       for (let mark = 0; mark < 4; mark++) {
         const yy = y + 5 + (hash * (mark + 3) % Math.max(7, stepY - 11));
@@ -115,16 +115,16 @@ function plaque(text, x, z, side) {
   const texture = new THREE.CanvasTexture(canvas); texture.colorSpace = THREE.SRGBColorSpace;
   const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
   const near = text === "Pullman";
-  const px = near ? -1.65 : side * 2.15;
+  const px = near ? -2.35 : side * 2.95;
   const pz = near ? z + 1.15 : z + .48;
   const face = add(root, `route label ${text}`,
-    new THREE.PlaneGeometry(2.15, .39), material,
-    px, 1.13, pz);
+    new THREE.PlaneGeometry(1.42, .26), material,
+    px, .78, pz);
   // Face both a visitor advancing along the route and one looking into the
   // stop. A near-forward plane vanished edge-on beside its new side facade.
   face.rotation.y = side < 0 ? .65 : -.65;
-  box(root, "slim label stand", px, .57, pz - .01,
-    .05, .94, .05, M.bronze);
+  box(root, "slim label stand", px, .36, pz - .01,
+    .04, .65, .04, M.bronze);
 }
 function monument(name, z, side, material = M.brick, inset = 0, width = 3.7) {
   const x = side * (4.25 - inset);
@@ -184,6 +184,10 @@ function pathFacingFacade(name, x, z, side, bodyWidth, treatment) {
       face("colored meeting-window set into masonry",u,1.72,.25,1.06,
         u<0?M.glass:M.gold);
       arch("high former-congregation window crown",u,2.32,.18,M.limestone);
+      for(const edge of [-1,1])face("recessed community window stone jamb",u+edge*.144,1.72,.038,1.14,M.limestone,.105);
+      face("deep community window sill",u,1.17,.35,.065,M.limestone,.15);
+      face("bronze meeting-window mullion",u,1.72,.015,1.03,M.bronze,.07);
+      face("bronze meeting-window transom",u,1.73,.25,.016,M.bronze,.07);
     }
   } else if (treatment === "school") {
     for(const u of [-.48,0,.48]) {

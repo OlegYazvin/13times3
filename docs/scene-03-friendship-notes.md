@@ -17,3 +17,24 @@ October 22 garden-tree revision: the five old shade trees with flattened oval cr
 ## Public setting references
 
 The [Chicago Park District's Hamlin Park page](https://www.chicagoparkdistrict.com/parks-facilities/hamlin-hannibal-park) describes its larger park and playground at 3035 N Hoyne Avenue. Its [Fellger Park page](https://www.chicagoparkdistrict.com/parks-facilities/fellger-charles-park) describes a much smaller shaded playlot at Belmont and Damen, with a soft-surface playground. [Visceral Dance's youth program](https://www.visceraldance.com/youthprogram) is at 3121 N Rockwell Avenue. Use those differences to make three linked memories legible without asserting which exact equipment the girls used or what date a class occurred.
+
+## Geometry-first local revision, October 22
+
+The active local revision replaces the old portrait-panel people with the
+shared geometry-first sculpt and scene-specific contact poses. Reference
+photographs remain private and are not used as public textures. The memory,
+people and frame assignment remain unchanged. See
+[the acceptance checklist](scene-revision-checklist.md) for actual visual and
+functional verification; this note alone does not mark the room complete.
+
+The current local girls walk with alternating strides and turn toward each
+other. Their paired body turns preserve the hand contact in three dimensions;
+the striped skirt is a fitted textured surface rather than separate bands.
+The current close and phone views show the interaction, while the park/dance
+environment still needs stronger identity and composition.
+
+Zephrine hair follow-up: retain the abundant curls shown in her private
+references. The local shared model now has fuller sides, temple curls and nape
+volume. See [her character notes](character-zephrine-notes.md) and the shared
+checklist for the exported pose review; this does not mark the scene's wider
+artwork complete.

@@ -25,3 +25,12 @@ Use the documented route order from the trip project when authoring; do not infe
 The local itinerary's `fromFour.quick` option orders the seven assumed stops `#9 → #8 → #7 → #6 → #5 → #4 → #10`, starting at Pullman and ending at the Zen temple. The room uses that sequence in a single impossible city promenade. Its sculptures are visual echoes, not precise copies or a claim about activities at each stop. The [National Park Service](https://www.nps.gov/pull/park-brochure.htm) documents Pullman's clock tower and planned brick town; the [Chicago Park District](https://www.chicagoparkdistrict.com/parks-facilities/palmisano-henry-park) describes Palmisano's former quarry and pond. The [Chicago Architecture Center](https://www.architecture.org/online-resources/buildings-of-chicago/new-regal-theater) describes the Avalon Regal's Moorish Revival minaret; the [Open House Chicago site](https://www.openhousechicago.org/sites/recN4eZfYqfSbel2u) identifies Narrow Bridge as a former congregation space; [Rebuild Foundation](https://www.rebuild-foundation.org/) identifies the Stony Island Arts Bank as one of its sites.
 
 The route has layered street facades on both sides and keeps its seven named stops in Jane's route order. Its tall sky and separate portal render space keep the gallery wall out of the promenade, even where the room would geometrically overlap another passage. Check the route from its midpoint facing both sides as well as from the painting.
+
+## Geometry-first local revision, October 22
+
+The active local revision replaces the old portrait-panel people with the
+shared geometry-first sculpt and scene-specific contact poses. Reference
+photographs remain private and are not used as public textures. The memory,
+people and frame assignment remain unchanged. See
+[the acceptance checklist](scene-revision-checklist.md) for actual visual and
+functional verification; this note alone does not mark the room complete.

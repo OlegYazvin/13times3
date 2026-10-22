@@ -15,3 +15,26 @@ The published room uses an original sculpted blue car with a curved body, open s
 October 22 street finish: the road and sidewalk pigment assignment was backwards in the original floor mesh, making Zephrine appear to drive on beige sidewalk. The center lane is now asphalt gray and the tree-lined sidewalks are warm stone. A small procedural mortar-and-brick map, varied physical parapets and deeper attached tree crowns give the repeated composite two-flats a less flat silhouette. Nonwalkable pavement and additional buildings and trees extend into the sky beyond the authored collision boundary, replacing the abrupt empty edge when the visitor turns away from the car. These are invented neighborhood rhythms, not exact properties at Melrose and Leavitt. The car, parents, frame ID, and collision route stay as before.
 
 October 22 parkway-tree revision: the previous smooth oval canopies looked like repeated primitive loaves, especially from inside the room. The fourteen foreground street trees now use the [Quaternius CC0 tree model](https://poly.pizza/m/qZtx0AHhcy), scaled, rotated, and recolored to fit the room. Each tree is a complete 3D trunk and branching canopy with layered foliage, not a single whole-tree billboard. Its source normal map is discarded to reduce the mobile model size; a narrow trunk collision core preserves the sidewalk obstacle without making leaves block the path. The rest of the street, people, toy car, and story remain as before. This is still a stylized composite of Roscoe Village, not a literal model of Melrose and Leavitt.
+
+## Geometry-first local revision, October 22
+
+The active local revision replaces the old portrait-panel people with the
+shared geometry-first sculpt and scene-specific contact poses. Reference
+photographs remain private and are not used as public textures. The memory,
+people and frame assignment remain unchanged. See
+[the acceptance checklist](scene-revision-checklist.md) for actual visual and
+functional verification; this note alone does not mark the room complete.
+
+The local car now has a real cabin cut through its molded shell and a recessed
+footwell. The earlier solid extrusion intersected the occupied seat. The car
+is resized to `.6 × .78 × .68` of that study; the child fits its seat and floor,
+and both steering and parent grips are posed to the revised geometry. Side,
+rear, close and phone views show the occupied cabin. Upright ground-leaf
+scatter that looked like floating polygon flags is removed. The street and
+vehicle trim remain simplified; do not treat these contact fixes as complete
+environment acceptance.
+
+Hair follow-up: the earlier instruction to fit Zephrine's curls tightly behind
+the face understated her real amount of hair. Oleg's later correction and
+[shared reference notes](character-zephrine-notes.md) take precedence: preserve
+her full curly silhouette when checking the car pose.

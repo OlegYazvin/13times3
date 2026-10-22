@@ -1,3 +1,5 @@
+import {replaceStoryFigures} from './storybook_figures.mjs';
+import {finishStoryWorld} from './storyworld_finish.mjs';
 import * as THREE from "three";
 import { loadAdaptedTree, attachAdaptedCanopy } from "./adapted_tree.mjs";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
@@ -111,7 +113,7 @@ function apple(parent, x, y, z, scale = 1, tint = M.red) {
   group.position.set(x, y, z); group.scale.setScalar(scale); parent.add(group);
   sculptLoft(group, "five-lobed ripe apple", [
     [0, .01, .01], [.04, .105, .092], [.11, .16, .145], [.19, .17, .16],
-    [.265, .14, .135], [.32, .075, .065], [.31, .018, .019],
+    [.265, .14, .135], [.32, .075, .065], [.335, .018, .019],
   ], tint, 15);
   bridge(group, "curved apple stem", [0, .309, 0], [.015, .398, .008], .011, .008, M.bark);
   leaf(group, "small folded apple leaf", .018, .385, 0, .13, .045, .7, M.leaf);
@@ -120,7 +122,7 @@ function apple(parent, x, y, z, scale = 1, tint = M.red) {
 
 // The floor is a continuous, walkable path. Rows and fences make its real
 // rectangular collision boundary legible without turning the orchard into a box.
-const floor = new THREE.PlaneGeometry(11.6, 14.2, 34, 42);
+const floor = new THREE.PlaneGeometry(48, 52, 100, 110);
 floor.rotateX(-Math.PI / 2);
 const colors = [];
 const position = floor.attributes.position;
@@ -426,8 +428,8 @@ function person(name, x, z, height, outfit, hair, options = {}) {
     box(group, "shoe sole", s * .15, .012, .06, .225, .024, .29, M.ink);
   }
   const torso = sculptLoft(group, "tailored garment silhouette, solid for collision", [
-    [legHeight, .29, .18], [legHeight + .15, .32, .21],
-    [height - .57, .27, .18], [height - .43, .21, .15],
+    [legHeight, .29, .18], [legHeight + (options.child ? .05 : .15), options.child ? .20 : .32, options.child ? .14 : .21],
+    [options.child ? legHeight + .12 : height - .57, options.child ? .21 : .27, options.child ? .15 : .18], [height - .43, .21, .15],
   ], cloth, 15);
   torso.userData.solidFootprint = true;
   for (const s of [-1, 1]) {
@@ -567,6 +569,7 @@ async function authorRoom() {
   await finishOlegPortraits(root);
   // All leaves use the same few pigments. Merge their transformed geometry so
   // the mobile GPU sees a handful of draw calls instead of hundreds.
+  replaceStoryFigures(root,'09');
   root.updateMatrixWorld(true);
   const leavesByMaterial = new Map();
   root.traverse((object) => {
@@ -581,8 +584,9 @@ async function authorRoom() {
     for (const object of objects) object.parent.remove(object);
     put(root, "layered three-dimensional orchard leaves", geometry, material);
   }
+  finishStoryWorld(root,'09');
   const scene = new THREE.Scene(); scene.background = new THREE.Color(P.sky);
-  addRoomLighting(scene);
+  addRoomLighting(scene,'09');
   scene.add(root);
   const view = gallery.frames[8].room.previewCamera;
   const camera = new THREE.PerspectiveCamera(view.fov, FRAME_WIDTH / FRAME_HEIGHT, .05, 120);

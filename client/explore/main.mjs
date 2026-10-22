@@ -97,10 +97,11 @@ try {
       controls.yaw = yaw;
       rooms.setMode("hall");
     };
-    window.__galleryTestRoomPose = (x, z, yaw) => {
+    window.__galleryTestRoomPose = (x, z, yaw, pitch = 0) => {
       if (!rooms.active) return;
       Object.assign(player, rooms.roomToWorld({ x, z }));
       controls.yaw = yaw;
+      controls.pitch = pitch;
       rooms.setMode("room");
     };
     window.__galleryTestRoomCanStand = (x, z) =>
@@ -109,6 +110,18 @@ try {
       rooms.move({ x, z });
     window.__galleryTestRoomMove = (x, z) =>
       rooms.move(rooms.roomToWorld({ x, z }));
+    // A synchronous render/readback avoids judging a stale compositor buffer
+    // after resizing or repositioning a software-rendered review camera.
+    window.__galleryTestSnapshot = () => {
+      resize();
+      camera.position.set(player.x, player.y, player.z);
+      camera.rotation.order = "YXZ";
+      camera.rotation.y = -controls.yaw;
+      camera.rotation.x = controls.pitch;
+      rooms.update();
+      rooms.render(renderer, camera);
+      return renderer.domElement.toDataURL("image/png");
+    };
   }
 
   function resize() {

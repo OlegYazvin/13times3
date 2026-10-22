@@ -24,4 +24,26 @@ Next October 22 identity and ground pass: the built-in imagegen tool produced a 
 
 Further October 22 scene pass: six repeated procedural street-tree crowns were replaced with the adapted CC0 three-dimensional shade tree used in the other outdoor memories. Only the narrow trunks collide. The desk's five blocky orange supports became two fitted, rounded drawer cabinets with inset faces, formed pulls, and feet, closer to Oleg's private desk reference. The advising Jane stands close behind Oleg with a restrained hand near his shoulder; the previous long pointing arm looked detached. Oleg's distracting shirt doodle is suppressed in this room. An additional imagegen likeness candidate based on both private Oleg photos looked almost identical to `v8` and was rejected rather than replacing eight shared figures without visible improvement. The `v8` likeness is still awaiting Oleg's own art review. No company name or invented job details are shown.
 
+## Geometry-first local revision, October 22
+
+The active local revision replaces the old portrait-panel people with the
+shared geometry-first sculpt and scene-specific contact poses. Reference
+photographs remain private and are not used as public textures. The memory,
+people and frame assignment remain unchanged. See
+[the acceptance checklist](scene-revision-checklist.md) for actual visual and
+functional verification; this note alone does not mark the room complete.
+
 Latest October 22 portrait pass: the built-in imagegen tool made a new gouache study from both private Oleg photos, using this prompt: “Single straight-on head portrait for a sculpted 3D storybook figure. Preserve Oleg's actual medium dark brown hair with natural side sweep, softly rectangular black glasses, grey-green eyes, real nose proportions, understated closed-mouth smile, modest short beard and mustache, adult jaw, and visible ears. Fine gouache with subdued dimensional shading; face fills the square from crown to chin. Avoid generic substitution, exaggerated hair or beard, enlarged eyes, caricature, photorealism, text, and accessories.” A second imagegen pass removed only the study's solid background while preserving the face, glasses, hair, expression, and brushwork. A 512-pixel WebP derivative is `scripts/assets/room02/oleg-face-v9-reference.webp`, embedded into a regenerated wraparound atlas; the private source photos remain excluded. The shared head sculpture is moderately broader and taller, with its jaw still seated at the rig's neck. Frame `02` was inspected from the normal path and close up, and frame `07` was inspected with Zephrine on his shoulders. The likeness is closer in those views but remains a stylized interpretation for Oleg's review.
+
+A close side review exposed that the earlier replacement still faced away from
+the desk. Oleg now turns toward the real work surface with his hands above an
+open notebook, moved together onto that area of the desk. Jane stands beside him
+and rests a hand at his shoulder while looking into the interaction. The other
+intentional Janes and their roles remain; their schematic staging is still an
+open art target.
+
+Zephrine hair follow-up: retain the abundant curls shown in her private
+references. The local shared model now has fuller sides, temple curls and nape
+volume. See [her character notes](character-zephrine-notes.md) and the shared
+checklist for the exported pose review; this does not mark the scene's wider
+artwork complete.

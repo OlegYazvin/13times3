@@ -27,3 +27,32 @@ This is distinct from frame `08`'s Open House Chicago architectural outing. The 
 October 22 play-structure revision: the two unattached tubes by the children have become one shallow, contoured blue play surface with sewn edges beneath their feet. The lighthouse has a descending channel slide with raised side rims and a landing lip instead of a tipped blue block. Its collision footprint remains active. The painted ground now reaches beyond the reachable bounds so a side view stays inside an outdoor world; the central sand wash is less abrupt from the side. The sky has no low ceiling. These modeled park elements are setting cues, not a claim that the group used a specific structure.
 
 October 22 shade-tree revision: four simplistic branch-and-oval trees have been replaced with the same [Quaternius CC0 tree model](https://poly.pizza/m/qZtx0AHhcy) used in the blue-car street. These copies are scaled, recolored, and set behind the shared play route, with collision only at their trunks. The high open sky, symbolic park objects, remembered people, and frame assignment stay the same.
+
+## Geometry-first local revision, October 22
+
+The active local revision replaces the old portrait-panel people with the
+shared geometry-first sculpt and scene-specific contact poses. Reference
+photographs remain private and are not used as public textures. The memory,
+people and frame assignment remain unchanged. See
+[the acceptance checklist](scene-revision-checklist.md) for actual visual and
+functional verification; this note alone does not mark the room complete.
+
+The current local composition brings the children three meters toward the
+doorway. Two older friends steady Zephrine while she balances on low shaped
+play pads, with a raised leg and a gathered skirt hem fitted to that pose.
+The friends keep their original relative heights and dress. The adults form
+a staggered watching group with their reference clothing and glasses cues.
+The blue play surface moves with the game, and repeated path seams through it
+are suppressed. The pads are an authored interpretation of shared play, not
+a factual claim about the exact fixture in the private photographs.
+
+The front, rear, profiles and fresh phone view show the game and the adjusted
+hem. The broader environment still falls short: distant ground has regular
+color bands, planting remains repetitive, and the skyline is generic. The
+large play structures still serve mostly as scenery. Keep art acceptance open.
+
+Zephrine hair follow-up: retain the abundant curls shown in her private
+references. The local shared model now has fuller sides, temple curls and nape
+volume. See [her character notes](character-zephrine-notes.md) and the shared
+checklist for the exported pose review; this does not mark the scene's wider
+artwork complete.

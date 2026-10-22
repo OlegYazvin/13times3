@@ -21,3 +21,27 @@ Other supplied photos show parts of the broader visit, including time indoors, a
 This differs from planned frame `07`: that is a blueberry-picking outing with an unspecified setting; frame `09` is the first Ithaca visit to friends and Zephrine's first time trying apple picking.
 
 October 22 orchard detail pass: the ten egg-like procedural canopy volumes are replaced with shaped 3D foliage adapted from a CC0 Quaternius tree. The room keeps its own forked trunks and fruiting twigs; the imported foliage is crown only, so the apples and modeled branches remain the authored orchard rather than turning into a generic street tree. Apple stems now start at the actual branch ends, and the fruit is slightly smaller at walking scale. A phone view exposed Zephrine's two boxy teal vest panels crossing her lower face; shaped cloth panels now follow her torso below the neckline, leaving her expression and held apple visible. Loose foreground apples that looked like oversized balls are removed; fruit remains on the branches and in the basket. The room remains an independent, tall sky world behind frame `09`; this art revision adds no event or person.
+
+## Geometry-first local revision, October 22
+
+The active local revision replaces the old portrait-panel people with the
+shared geometry-first sculpt and scene-specific contact poses. Reference
+photographs remain private and are not used as public textures. The memory,
+people and frame assignment remain unchanged. See
+[the acceptance checklist](scene-revision-checklist.md) for actual visual and
+functional verification; this note alone does not mark the room complete.
+
+The final local contact pass fits cupped palms, curled fingers and thumbs around
+the lower surface of the small apple. The apple-print fabric is a material on the
+shirt; Jane turns toward Zephrine and places a hand at her shoulder, while Oleg
+looks into the same interaction. Character replacement now precedes global leaf
+batching: otherwise a leaf from the discarded figure survived at the scene root
+and appeared through the new sleeve. The apple's bitten form, the sculpted hands
+and the repeated orchard still need artistic refinement. This is not publication
+or final likeness acceptance.
+
+Zephrine hair follow-up: retain the abundant curls shown in her private
+references. The local shared model now has fuller sides, temple curls and nape
+volume. See [her character notes](character-zephrine-notes.md) and the shared
+checklist for the exported pose review; this does not mark the scene's wider
+artwork complete.

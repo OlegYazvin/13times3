@@ -115,13 +115,13 @@ test("room 01 stage, desk, people, and boundary block movement", () => {
   const position = (x, z) => manager.roomToWorld({ x, z });
   assert.equal(manager.canStand(position(.1, -1)), false, "stage");
   assert.equal(manager.canStand(position(-1.2, .5)), false, "desk");
-  assert.equal(manager.canStand(position(-1.57, .16)), false, "Jane");
+  assert.equal(manager.canStand(position(-.47, .05)), false, "Jane");
   assert.equal(manager.canStand(position(1.1, -1.53)), false, "Zephrine");
   assert.equal(manager.canStand(position(2.5, 0)), false, "side wall");
   assert.equal(manager.canStand(position(0, -2.5)), false, "back wall");
-  manager.player.x = position(0, 1.4).x;
-  manager.player.z = position(0, 1.4).z;
-  manager.move(position(0, -2.4));
+  manager.player.x = position(1.1, 1.8).x;
+  manager.player.z = position(1.1, 1.8).z;
+  manager.move(position(1.1, -2.4));
   assert.ok(manager.worldToRoom(manager.player).z > -.8,
     "a long movement cannot tunnel through the stage");
 });

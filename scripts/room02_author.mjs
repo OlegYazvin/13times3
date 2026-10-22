@@ -1,3 +1,5 @@
+import {replaceStoryFigures} from './storybook_figures.mjs';
+import {finishStoryWorld} from './storyworld_finish.mjs';
 import * as THREE from "three";
 import { loadAdaptedTree, plantAdaptedTree } from "./adapted_tree.mjs";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
@@ -748,7 +750,7 @@ person("Oleg at the job-search desk", -1.35, 4.82, 1.73, M.cream,
 // over his chest.
 const notes = new THREE.Group();
 notes.name = "worn open job-search notebook with many blank attempts";
-notes.position.set(-2.8, 1.045, 3.18);
+notes.position.set(-1.7, .948, 3.95);
 notes.rotation.y = -.18;
 root.add(notes);
 box(notes, "dark cloth notebook cover with rounded bevel", 0, 0, 0,
@@ -879,8 +881,10 @@ async function authorRoom() {
   root.traverse((object) => {
     if (object.userData.paintedFace) object.material = paintedFaces[object.userData.paintedFace];
   });
+  replaceStoryFigures(root,'02');
+  finishStoryWorld(root,'02');
   const scene = new THREE.Scene(); scene.background = new THREE.Color(C.sky);
-  addRoomLighting(scene);
+  addRoomLighting(scene,'02');
   scene.add(root);
   const view = gallery.frames[1].room.previewCamera;
   const camera = new THREE.PerspectiveCamera(view.fov, FRAME_WIDTH / FRAME_HEIGHT, .05, 120);

@@ -53,6 +53,22 @@ October 22 rear-habitat revision: the flat, dark rear tank floor is now one undu
 
 Next October 22 ceiling continuity pass: a side walk inside the rotunda exposed a dark sky wedge between the round dome and the long rear vault. A curved, painted shoulder now joins those two ceiling meshes behind the freestanding portal. The rear vault uses matching texture coordinates at that joint. The isolated turquoise floor guide curves around the return opening were removed because they read as loose rods; the routes around both portal posts remain physically open. The same Oleg likeness revision used in the other seven Oleg rooms is rebuilt into this room. These changes add no claim about which Shedd exhibits the family visited.
 
+## Geometry-first local revision, October 22
+
+The active local revision replaces the old portrait-panel people with the
+shared geometry-first sculpt and scene-specific contact poses. Reference
+photographs remain private and are not used as public textures. The memory,
+people and frame assignment remain unchanged. See
+[the acceptance checklist](scene-revision-checklist.md) for actual visual and
+functional verification; this note alone does not mark the room complete.
+
+In the local revision the curved habitat is centered at `x=3, z=7`, beside G
+and Zephrine’s actual shared attention. Its close fish move with that habitat;
+the additional wall schools and manta from the migration task remain. The
+freestanding portal is unchanged, with both side routes, rear access and
+back-to-front traversal checked while staying in the aquarium. Canopy joins,
+material consistency and empty floor composition remain open art issues.
+
 The overhead water lens now holds one small, recolored [CC0 manta model by Quaternius](https://quaternius.com/packs/animatedfish.html). Its formed wings and tail read as an animal from below, without a sphere or egg stand-in. An earlier procedural ray with a smooth oval body was rejected after the room view. The model remains static in this frozen family moment; the existing small 3D fish continue their restrained drift. The source GLB is bundled into the room and adds about 100 KB of authored source, keeping the downloaded room below 8 MB.
 
 October 22 rear-fish finish: four small groups of genuinely sculpted clown, tang, and reef fish now occupy separate positions and depths behind the rear glass. They adapt [Babylon.js Assets’ `fish.glb`](https://github.com/BabylonJS/Assets/blob/master/meshes/fish.glb), whose repository states [CC BY 4.0](https://github.com/BabylonJS/Assets/blob/master/LICENSE) unless a folder overrides it; no separate override was found for this file. The source’s 41-second animation and unused skinning were stripped, textures resized to 512 pixels and converted to WebP, and the remaining meshes posed as still groups with only the gallery’s tiny breathing drift. The raw 47.6 MB source became a 1.2 MB authoring asset; the complete room download remains under 8 MB. A first trial stacked all species together into a visually confusing cluster and was rejected after a walkable rear-glass screenshot. The separate groups were checked at the rear sill and from the portal loop. These species are imaginative aquarium inhabitants, not a factual record of what the family saw.
@@ -60,3 +76,9 @@ October 22 rear-fish finish: four small groups of genuinely sculpted clown, tang
 October 22 side-habitat follow-up: six more groups of those formed 3D fish now occupy both long aquariums at separate heights and depths, sharing the already bundled species geometry and materials. The oversized procedural foreground fish were removed from those panes; their simple bodies had become the most prominent shapes at walking distance. The smaller procedural fish remain farther back to give the water a sense of scale. Each group stays behind glass and drifts subtly. The freestanding portal, both walk-behind routes, and the rear tank collision are unchanged.
 
 The overhead manta's pigment is lifted from nearly black to a muted blue-green with a pale underside, letting its sculpted wing and tail read through the water lens from the room floor. It remains an imaginative inhabitant, not a claim about the family's exact exhibit.
+
+Zephrine hair follow-up: retain the abundant curls shown in her private
+references. The local shared model now has fuller sides, temple curls and nape
+volume. See [her character notes](character-zephrine-notes.md) and the shared
+checklist for the exported pose review; this does not mark the scene's wider
+artwork complete.

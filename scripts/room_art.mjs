@@ -1,3 +1,5 @@
+import {replaceStoryFigures} from './storybook_figures.mjs';
+import {finishStoryWorld} from './storyworld_finish.mjs';
 import * as THREE from "three";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
@@ -479,8 +481,11 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
         }
       }
     }
+    const roomId=String(index+1).padStart(2,'0');
+    replaceStoryFigures(root,roomId);
+    finishStoryWorld(root,roomId);
     const scene = new THREE.Scene(); scene.background = new THREE.Color(colors.sky);
-    addRoomLighting(scene);
+    addRoomLighting(scene,roomId);
     scene.add(root);
     const view = gallery.frames[index].room.previewCamera;
     const camera = new THREE.PerspectiveCamera(view.fov, FRAME_WIDTH / FRAME_HEIGHT, .05, 120);

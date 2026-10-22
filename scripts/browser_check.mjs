@@ -8,7 +8,7 @@ const leftWall = -HALL_WIDTH / 2;
 const rightWall = HALL_WIDTH / 2;
 await mkdir(".cache", { recursive: true });
 const browserOptions = {
-  headless: true,
+  headless: true, executablePath: process.env.GALLERY_BROWSER_EXECUTABLE || undefined,
   args: ["--use-gl=angle", "--use-angle=swiftshader", "--enable-webgl"],
 };
 let browser = await chromium.launch(browserOptions);
@@ -402,7 +402,7 @@ try {
   await officePage.keyboard.down("w");
   await officePage.waitForTimeout(430);
   await officePage.keyboard.up("w");
-  assert.ok((await officePage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 4.05,
+  assert.ok((await officePage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 5.55,
     "Jane's figure should be solid at the heart of the office room");
   await officePage.evaluate(() => window.__galleryTestRoomPose(0, 7.9, Math.PI / 2));
   const officeBeforeExit = await officePage.evaluate(() => window.__galleryDebug());

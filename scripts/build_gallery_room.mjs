@@ -5,9 +5,11 @@ import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
+import { galleryBrowserExecutable } from "./gallery_browser.mjs";
 
 const id = process.argv[2];
 if (!/^\d{2}$/.test(id || "")) throw new Error("Usage: node scripts/build_gallery_room.mjs 09");
+const executablePath = await galleryBrowserExecutable();
 const cache = resolve(`.cache/room${id}`);
 const destination = resolve(`src/assets/explore/room${id}`);
 const execFileAsync = promisify(execFile);
@@ -31,7 +33,7 @@ const server = createServer(async (request, response) => {
   response.end(await readFile(resolve(cache, "author.js")));
 });
 await new Promise((done) => server.listen(0, "127.0.0.1", done));
-const browser = await chromium.launch({ headless: true, args: ["--use-gl=angle", "--use-angle=swiftshader", "--enable-webgl"] });
+const browser = await chromium.launch({ headless: true, executablePath, args: ["--use-gl=angle", "--use-angle=swiftshader", "--enable-webgl"] });
 try {
   const page = await browser.newPage({ viewport: { width: 735, height: 936 } });
   page.on("pageerror", (error) => console.error("Author page:", error));

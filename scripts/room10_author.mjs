@@ -86,6 +86,7 @@ for (const side of [-1,1]) curve(root,"curving garden promenade edge",
 // not an untextured beige plane. They stay low enough to remain non-solid.
 for(let row=0;row<20;row++) {
   const z=8.05-row*.79;
+  if(z>1.0&&z<5.6)continue;
   const width=1.42+.17*Math.sin(z*.42);
   curve(root,"hand-laid winding garden path seam",
     [[-width,.057,z-.035],[-width*.53,.057,z+.045],
@@ -334,7 +335,7 @@ friendB.userData.solidFootprint=true;
 const playPositions=[],playColors=[],playIndices=[],playRows=36,playAcross=14;
 const playSide=(z,side)=>side*(1.47+.09*Math.sin(z*.8));
 for(let row=0;row<=playRows;row++) for(let col=0;col<=playAcross;col++) {
-  const t=row/playRows,z=2.53-t*4.48,lateral=col/playAcross*2-1;
+  const t=row/playRows,z=5.53-t*4.48,lateral=col/playAcross*2-1;
   const center=.16*Math.sin(z*.65);
   const x=center+playSide(z,lateral);
   const wave=.014*Math.sin(z*2.3+lateral*4)*(1-lateral*lateral);
@@ -361,7 +362,7 @@ add(root,"continuous gently rolling blue play surface under the three children",
 for(const side of [-1,1]) curve(root,
   "low sewn edge fixed to the shared play surface",
   Array.from({length:37},(_,i)=>{
-    const z=2.53-i*4.48/36;
+    const z=5.53-i*4.48/36;
     return [.16*Math.sin(z*.65)+playSide(z,side),.028,z];
   }),.012,side<0?M.gold:M.paleBlue,50);
 

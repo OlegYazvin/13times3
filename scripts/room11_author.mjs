@@ -1042,7 +1042,7 @@ for(const side of [-1,1]) {
 // study from several angles. The curved glazing holds its own fish, stone,
 // kelp and branch coral; its base is a real collision obstacle.
 {
-  const x=2.35,z=3.8;
+  const x=3.0,z=7.0;
   loft(root,"solid shell-carved base of the tide-pool lantern",
     [[.04,1.35,1.25,x,z],[.14,1.48,1.38,x,z],
       [.39,1.39,1.31,x,z],[.49,1.31,1.22,x,z]],M.marble,28,true);
@@ -1402,8 +1402,8 @@ window.__authorRoom=async()=>{
     [.15,5.38,2.28,1.45,.3,1.08,310],
     // Two close, richly modeled fish give the round habitat readable life
     // where G and Zephrine actually stand, not only in the distant glass.
-    [2.12,2.46,4.22,1.04,Math.PI/2,0,311],
-    [2.78,3.43,3.48,.92,-Math.PI/2,.11,312],
+    [2.77,2.46,7.42,1.04,Math.PI/2,0,311],
+    [3.43,3.43,6.68,.92,-Math.PI/2,.11,312],
     // One fully sculpted swimmer at eye height in each flanking habitat.
     [-7.95,2.4,5.5,1.22,0,0,313],
     [7.95,2.65,4.0,1.18,Math.PI,0,314],

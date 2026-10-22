@@ -1,3 +1,5 @@
+import {replaceStoryFigures} from './storybook_figures.mjs';
+import {finishStoryWorld} from './storyworld_finish.mjs';
 import * as THREE from "three";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import gallery from "../src/_data/gallery.json";
@@ -697,7 +699,8 @@ export async function authorRoom() {
 
   // The foreground signup desk and Jane's paused pen.
   sculptJane();
-  oval("Jane's soft floor shadow",-1.57,.064,.28,.32,.006,.17,mat(0x604052,{transparent:true,opacity:.22,depthWrite:false}),root);
+  oval("Jane's soft floor shadow",-.47,.064,.28,.32,.006,.17,mat(0x604052,{transparent:true,opacity:.22,depthWrite:false}),root);
+  const signupPropsStart=root.children.length;
   carvedDesk();
   box("desk paper",-1.3,.94,.62,.56,.012,.38,paper);
   for(let i=0;i<4;i++) box("paper rule",-1.36,.951,.48+i*.07,.39,.002,.009,mat(0xbba08e));
@@ -708,6 +711,11 @@ export async function authorRoom() {
   sign("little mermaid storybook","MERMAID","a favorite story",-2.42,2.15,-.65,.54,.42,Math.PI/2);
   oval("red wax seal on signup",-1.52,.954,.77,.035,.006,.035,rose,root);
   sign("signup card","ZEPHRINE","dance + acting",-1.35,.77,.997,.5,.18);
+
+  // Keep the whole signup action inside a portrait doorway view. The wall
+  // storybook remains mounted in the cave; the desk and its held props move
+  // together with Jane rather than breaking pen/paper contact.
+  for(const o of root.children.slice(signupPropsStart))if(o.name!=="little mermaid storybook")o.position.x+=1.10;
 
   // A trail of little steps connects the signed page to the stage.
   for (let i=0;i<4;i++) {
@@ -729,8 +737,10 @@ export async function authorRoom() {
   }
 
   await finishOlegPortraits(root);
+  replaceStoryFigures(root,'01');
+  finishStoryWorld(root,'01');
   const scene = new THREE.Scene(); scene.background = new THREE.Color(0xc6ad99);
-  addRoomLighting(scene);
+  addRoomLighting(scene,'01');
   scene.add(root);
   const view = gallery.frames[0].room.previewCamera;
   const camera = new THREE.PerspectiveCamera(view.fov,FRAME_WIDTH/FRAME_HEIGHT,.05,30);
