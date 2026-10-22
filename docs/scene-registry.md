@@ -96,6 +96,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 shared Oleg hair revision: frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11` keep the same memories and Oleg's reference-guided illustrated face. The modeled hair now has a calmer, continuous side and back silhouette with a small nape curl; oversized parallel locks that obscured the face have been removed. The portrait, titles, and stable IDs remain the same.
 
+2026-10-21 blueberry planting revision: frame `07` remains the Indiana outing with Oleg carrying Zephrine while G helps her pick. Its shrubs now have shaped leaf blades growing from small stems, multiple irregular leaf masses around each branch, and blueberry clusters hanging from modeled pedicels. The open sky, reachable bough, people, title, and frame ID are unchanged.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

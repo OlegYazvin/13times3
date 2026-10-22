@@ -51,6 +51,37 @@ for (const side of [-1, 1]) {
 }
 
 const berryGeometry = new THREE.SphereGeometry(.055, 7, 5);
+const leafGeometry = (() => {
+  const positions = [], uv = [], indices = [];
+  const rows = 8;
+  for (let row = 0; row <= rows; row++) {
+    const t = row / rows;
+    const half = .17 * Math.pow(Math.sin(Math.PI * t), .82);
+    for (const side of [-1, 0, 1]) {
+      positions.push(side * half, t, .055 * Math.sin(Math.PI * t) * (1 - Math.abs(side) * .65));
+      uv.push((side + 1) / 2, t);
+    }
+  }
+  for (let row = 0; row < rows; row++) for (let side = 0; side < 2; side++) {
+    const a = row * 3 + side, b = a + 3;
+    indices.push(a, b, a + 1, a + 1, b, b + 1);
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+  geometry.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
+  geometry.setIndex(indices); geometry.computeVertexNormals();
+  return geometry;
+})();
+function blueberryLeaf(parent, start, tip, width, material) {
+  const from = new THREE.Vector3(...start), to = new THREE.Vector3(...tip);
+  const direction = to.clone().sub(from);
+  const leaf = new THREE.Mesh(leafGeometry, material);
+  leaf.name = "shaped blueberry leaf growing from a twig";
+  leaf.position.copy(from);
+  leaf.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction.clone().normalize());
+  leaf.scale.set(width / .17, direction.length(), width / .17);
+  parent.add(leaf);
+}
 function blueberry(parent, x, y, z, light = false) {
   const berry = add(parent, "small round blueberry with pale bloom",
     berryGeometry, light ? M.berryLight : M.berry, x, y, z);
@@ -75,24 +106,40 @@ function bush(x, z, height = 1.45, central = false) {
     curve(group, "arching branch carrying blueberries",
       [[0, .38, 0], [dx * span * .48, height * .77, dz * span * .48],
         [dx * span, tipY, dz * span]], .036, M.bark, 18);
-    foliageLobe(group, "thick blueberry leaves surrounding the fruiting branch",
-      dx * span * .65, tipY - .04, dz * span * .65,
-      .36, .18, .31, arm % 2 ? C.leaf : C.paleLeaf, z * 2 + arm);
-    for (let leafIndex = 0; leafIndex < 9; leafIndex++) {
-      const t = .34 + random() * .66;
-      const xx = dx * span * t + (random() - .5) * .28;
-      const zz = dz * span * t + (random() - .5) * .29;
-      petal(group, "overlapping cut-paper blueberry leaf", xx,
-        height * (.71 + .2 * Math.sin(t * 2.5)) + (random() - .5) * .28,
-        zz, .19 + random() * .14,
-        leafIndex % 4 ? M.leaf : M.paleLeaf, angle + random() * .6);
+    for (const [t, scale] of [[.48, .82], [.72, 1], [.91, .7]]) {
+      const branchY = .38 + (tipY - .38) * t + .12 * Math.sin(Math.PI * t);
+      foliageLobe(group, "small leaf mass grown around the berry stem",
+        dx * span * t, branchY, dz * span * t,
+        .29 * scale, .13 * scale, .24 * scale,
+        arm % 2 ? C.leaf : C.paleLeaf, z * 2 + arm + t * 3);
     }
-    for (let fruit = 0; fruit < 4; fruit++) {
-      const t = .6 + random() * .35;
-      blueberry(group, dx * span * t + (random() - .5) * .15,
-        height * (.7 + .18 * Math.sin(t * 2.4)) - .04 - fruit * .025,
-        dz * span * t + (random() - .5) * .17,
-        fruit % 3 === 0);
+    const acrossX = -dz, acrossZ = dx;
+    for (let leafIndex = 0; leafIndex < 7; leafIndex++) {
+      const t = .31 + leafIndex * .095;
+      const side = leafIndex % 2 ? -1 : 1;
+      const base = [dx * span * t, .38 + (tipY - .38) * t + .12 * Math.sin(Math.PI * t), dz * span * t];
+      const stem = [base[0] + acrossX * side * .09, base[1] + .025,
+        base[2] + acrossZ * side * .09];
+      beam(group, "fine woody stem holding a blueberry leaf", base, stem,
+        .009, .005, M.bark, 6);
+      const tip = [stem[0] + acrossX * side * (.18 + .025 * (leafIndex % 3)) + dx * .08,
+        stem[1] + .085 + .025 * (leafIndex % 2),
+        stem[2] + acrossZ * side * (.18 + .025 * (leafIndex % 3)) + dz * .08];
+      blueberryLeaf(group, stem, tip, .087 + .012 * (leafIndex % 3),
+        leafIndex % 3 ? M.leaf : M.paleLeaf);
+    }
+    for (let cluster = 0; cluster < 2; cluster++) {
+      const t = .7 + cluster * .18;
+      const stem = [dx * span * t, .38 + (tipY - .38) * t + .12 * Math.sin(Math.PI * t), dz * span * t];
+      for (let fruit = 0; fruit < 3; fruit++) {
+        const side = fruit - 1;
+        const berryAt = [stem[0] + acrossX * side * .085 + dx * .045,
+          stem[1] - .12 - fruit * .025,
+          stem[2] + acrossZ * side * .085 + dz * .045];
+        beam(group, "short pedicel connecting blueberry to branch", stem,
+          [berryAt[0], berryAt[1] + .045, berryAt[2]], .008, .004, M.bark, 6);
+        blueberry(group, ...berryAt, fruit % 3 === 0);
+      }
     }
   }
   return group;
