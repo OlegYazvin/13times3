@@ -80,6 +80,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 Oleg face-fit revision: all eight rooms containing Oleg (`02`, `04`, `05`, `07`, `08`, `09`, `10`, `11`) now place his existing illustrated face closer to the sculpted brow and cheek surface and use a warmer skin underpainting, reducing the separated-mask effect. The reference photographs stay private. This is a shared likeness revision of those published rooms; their scenes, titles, and frame IDs remain the same. Hair silhouette and whole-body resemblance still need close art review.
 
+2026-10-21 symbolic office revision: frame `05` keeps Jane's same office move, management pressure, and family. The room now uses one shaped plaster vault, an arched daylight wall, chamfered masonry piers, real hinged partitions and joined floor joints instead of floating paper fragments, a gold wire fan, thin tree-like supports, and repeated shutter bars. Jane, Oleg and Zephrine are closer to the portal, and Jane's hand gesture is less like a straight T-pose. This changes the art and composition within the existing published scene; no frame, memory, or title is reassigned.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

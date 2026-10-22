@@ -240,6 +240,14 @@ def main() -> None:
     office_json = json.loads(office_glb[20:20 + office_json_length])
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in office_json["nodes"]) >= 20, "Room 05 needs solid figures and architecture"
     assert any("Jane" in node.get("name", "") for node in office_json["nodes"])
+    assert any("continuous plaster vault" in node.get("name", "") for node in office_json["nodes"])
+    assert any("arched industrial daylight window" in node.get("name", "") for node in office_json["nodes"])
+    assert any("solid chamfered masonry pier" in node.get("name", "") and
+               node.get("extras", {}).get("solidFootprint")
+               for node in office_json["nodes"])
+    assert not any("folded gold light spreading" in node.get("name", "") or
+                   "paper leaf caught in" in node.get("name", "")
+                   for node in office_json["nodes"])
     assert not any("management" in node.get("name", "").lower() or "expansive" in node.get("name", "").lower()
                    for node in office_json["nodes"]), "Office room should not depict or label identifiable management"
     weaning_room = frames[5]["room"]

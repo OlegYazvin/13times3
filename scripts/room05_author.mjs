@@ -48,12 +48,26 @@ for (const side of [-1, 1]) {
 box(root, "far wall of warm paper and brick", 0, 3.18, -8.75,
   12.3, 6.3, .18, M.brickLight);
 for (let i = -5; i <= 5; i++) {
-  const x = i * 1.09;
-  const tall = 2.0 + 1.2 * Math.cos(i * .35);
-  box(root, "tall abstract window of possibility", x, 2.7,
-    -8.61, .9, tall, .06, i % 2 ? M.paleGlass : M.paper);
-  box(root, "warm narrow stone mullion", x + .49, 2.75,
-    -8.54, .065, tall + .16, .09, M.brass);
+  if (i < -3 || i > 3) continue;
+  const x = i * 1.55;
+  const tall = 3.08 + .32 * Math.cos(i * .45);
+  const pane = new THREE.Shape();
+  pane.moveTo(-.59, 0); pane.lineTo(.59, 0);
+  pane.lineTo(.59, tall - .46);
+  pane.quadraticCurveTo(.55, tall, 0, tall);
+  pane.quadraticCurveTo(-.55, tall, -.59, tall - .46);
+  pane.closePath();
+  add(root, "arched industrial daylight window",
+    new THREE.ExtrudeGeometry(pane,
+      { depth: .035, bevelEnabled: false, curveSegments: 8 }),
+    i < 0 ? M.paleGlass : M.paper, x, 1.18, -8.62);
+  curve(root, "masonry arch around daylight window",
+    [[x - .62, 1.18, -8.54], [x - .62, 1.18 + tall - .45, -8.54],
+      [x, 1.18 + tall, -8.54], [x + .62, 1.18 + tall - .45, -8.54],
+      [x + .62, 1.18, -8.54]], .043, M.mortar, 24);
+  beam(root, "slender transom within window",
+    [x - .58, 2.88, -8.53], [x + .58, 2.88, -8.53],
+    .021, .021, M.brass, 6);
 }
 
 // Heavy inward-leaning ribs at the near end release into a wide open arch.
@@ -62,17 +76,29 @@ for (let row = 0; row < 4; row++) {
   const z = 5.9 - row * 3.5;
   const spread = 3.55 + row * .52;
   for (const side of [-1, 1]) {
-    loft(root, "solid irregular brick column opening outward", [[0, .3, .25,
-      side * spread, z], [1.2, .25, .24, side * (spread - .15 + row * .07), z],
-      [3.4, .21, .2, side * (spread - .45 + row * .15), z - .09],
-      [5.38, .15, .15, side * (spread - .18 + row * .2), z - .18]],
-    row < 2 ? M.brick : M.brickLight, 10, true);
-    for (let band = 1; band < 5; band++) {
-      const y = band * 1.02;
-      box(root, "mortar course on the old brick rib",
-        side * (spread - .24 + row * .1), y, z - .05,
-        .49, .045, .51, M.mortar);
+    const centerAt = y => side * (spread - .12 * y / 5.35);
+    loft(root, "solid chamfered masonry pier opening outward",
+      [[0, .34, .35, centerAt(0), z],
+        [.28, .34, .35, centerAt(.28), z],
+        [1.2, .31, .33, centerAt(1.2), z],
+        [3.4, .29, .31, centerAt(3.4), z],
+        [5.28, .31, .33, centerAt(5.28), z]],
+    row < 2 ? M.brick : M.brickLight, 8, true);
+    box(root, "carved broad stone plinth at each pier", centerAt(.12),
+      .14, z, .79, .28, .8, M.mortar, true);
+    box(root, "projecting stone capital supporting the arch",
+      centerAt(5.25), 5.24, z, .79, .2, .8, M.mortar);
+    for (let band = 1; band < 7; band++) {
+      const y = band * .75;
+      box(root, "mortar bed following the masonry pier",
+        centerAt(y), y, z, .635, .018, .635, M.mortar);
     }
+    for (const offset of [-.16, .16]) curve(root,
+      "long chamfer line cut into the pier face",
+      [[centerAt(.27) + offset, .28, z + .34],
+        [centerAt(2.65) + offset, 2.65, z + .31],
+        [centerAt(5.16) + offset, 5.16, z + .33]],
+      .012, M.brickLight, 18);
   }
   curve(root, "handmade arch loosening above Jane",
     [[-spread + .2, 5.23, z], [-spread * .58, 5.7 + row * .12, z - .1],
@@ -91,30 +117,35 @@ for (let lane = -2; lane <= 2; lane++) {
       [lane * 1.2, .04, -8.1]],
     .019, lane === 0 ? M.brass : M.mortar, 48);
 }
-for (let i = 0; i < 18; i++) {
-  const z = -7.6 + i * .9;
-  const page = box(root, "unwritten pale paper tile underfoot",
-    -2.25 + .15 * Math.sin(i * .8), .045, z,
-    .13 + random() * .08, .011, .17, i % 3 ? M.paper : M.brass);
-  page.rotation.y = .25 * Math.sin(i);
+for (let i = 0; i < 11; i++) {
+  const z = -7.85 + i * 1.5;
+  curve(root, "continuous transverse joint in the stone walkway",
+    [[-3.15, .037, z], [-1.55, .039, z + .06],
+      [0, .038, z], [1.55, .039, z - .06], [3.15, .037, z]],
+    .008, M.mortar, 24);
 }
 
-// Abstract dark shutters stand behind the family at one side. Their strips
-// bend toward a bright, open fan behind Jane and carry no words or faces.
-for (let i = 0; i < 9; i++) {
-  const x = 2.8 + i * .25, z = 4.2 - i * .85;
-  const shutter = box(root, "empty rigid office shutter without a person",
-    x, 2.65, z, .1, 3.55 + i * .09, .54, i % 3 ? M.ink : M.brick, true);
-  shutter.rotation.z = -.09 - i * .025;
-}
-for (let i = 0; i < 13; i++) {
-  const a = -1.32 + i * .22;
-  const near = [0, 1.95, -.2];
-  const far = [Math.sin(a) * 4.9, 4.66 + .5 * Math.cos(a), -2.7];
-  const ribbon = curve(root, "folded gold light spreading from Jane's resolve",
-    [near, [Math.sin(a) * 1.7, 3.25, -1.2], far],
-    .025, i % 3 ? M.brass : M.amber, 24);
-  ribbon.userData.decorative = true;
+// Three hinged partition leaves retain the pressure of a former workspace,
+// but are recognizable as doors rather than a comb of unexplained bars.
+for (let i = 0; i < 3; i++) {
+  const x = 4.35 + i * .48, z = 3.55 - i * 1.16;
+  const partition = new THREE.Group();
+  partition.name = "folding office partition leaf with inset glass";
+  partition.position.set(x, 0, z);
+  partition.rotation.y = (i % 2 ? -.28 : .27);
+  root.add(partition);
+  box(partition, "solid timber-framed folding partition", 0, 1.77, 0,
+    .88, 3.54, .15, M.ink, true);
+  box(partition, "recessed frosted upper partition glass", 0, 2.35, .083,
+    .65, 1.86, .025, M.glass);
+  box(partition, "recessed lower timber partition panel", 0, .68, .084,
+    .66, 1.04, .02, M.brick);
+  for (const side of [-1, 1]) beam(partition, "visible brass hinge pin",
+    [side * .44, .5, 0], [side * .44, 3.18, 0],
+    .015, .015, M.brass, 6);
+  add(partition, "small brass partition pull",
+    new THREE.TorusGeometry(.065, .013, 6, 12), M.brass,
+    .27, 1.21, .106);
 }
 
 // A few moving boxes, a vacant shared table and phone booth are enough to
@@ -141,38 +172,48 @@ for (const x of [-5.0, 5.0]) {
 
 // Jane is the visual answer to the room's pressure. Oleg and Zephrine remain
 // nearby as a family, while Jane's open palms and stance own the moment.
-const jane = person("Jane standing up for her family", 0, 1.65, 1.75, {
+const jane = person("Jane standing up for her family", 0, 3.45, 1.75, {
   skin: M.skin, hair: M.hair, outfit: M.fabric, pants: M.navy,
-  bun: true, hands: { "-1": [-.72, 1.5, .26], "1": [.72, 1.55, .26] },
+  bun: true, hands: { "-1": [-.43, 1.03, .34], "1": [.28, 1.51, .48] },
   yaw: 0,
 });
-curve(root, "open arc held above Jane's shoulders", [[-.74, 1.63, 1.96],
-  [0, 2.05, 1.98], [.74, 1.66, 1.96]], .02, M.amber);
-person("Oleg beside Jane during the move", -2.05, -.74, 1.73, {
+person("Oleg beside Jane during the move", -2.05, 1.06, 1.73, {
   skin: M.skin, hair: M.hair, outfit: M.navy, pants: M.ink,
   glasses: true, beard: true, longHair: true,
   hands: { "1": [.28, .9, .42] }, yaw: .22,
 });
-person("Zephrine kept close to her parents", -1.27, -.43, 1.05, {
+person("Zephrine kept close to her parents", -1.27, 1.37, 1.05, {
   skin: M.skin, hair: M.zephHair, outfit: M.pink, skirt: M.rose,
   pants: M.olive, dress: true, curls: true,
   hands: { "-1": [-.32, .62, .25] }, yaw: -.12,
 });
 
-// The ceiling breaks into folded paper windows and soaring leaves on the
-// open side. They give the feeling of release without a literal victory sign.
-for (let i = 0; i < 34; i++) {
-  const x = (random() - .5) * 10.8, z = -7.5 + random() * 10.2;
-  const y = 4.54 + random() * 1.23;
-  petal(root, "paper leaf caught in the new air", x, y, z,
-    .23 + random() * .23, i % 4 ? M.paper : M.amber, random() * 6.28);
+// A continuous plaster vault replaces floating paper and roof rectangles.
+// The broad unbroken sweep carries the move from dark to warm daylight.
+const ceilingPositions = [], ceilingColors = [], ceilingUvs = [], ceilingIndices = [];
+const shade = new THREE.Color(C.brickLight), light = new THREE.Color(C.paper);
+for (let zi = 0; zi <= 24; zi++) for (let xi = 0; xi <= 20; xi++) {
+  const x = -6.2 + xi * 12.4 / 20, z = -8.85 + zi * 17.7 / 24;
+  const y = 6.0 + .19 * (1 - (x / 6.2) ** 2)
+    + .025 * Math.sin(z * 1.6 + x * .3);
+  ceilingPositions.push(x, y, z);
+  const pigment = shade.clone().lerp(light,
+    .13 + .55 * THREE.MathUtils.smoothstep(-z, -6.0, 7.0));
+  ceilingColors.push(pigment.r, pigment.g, pigment.b);
+  ceilingUvs.push(xi / 20, zi / 24);
 }
-for (let i = 0; i < 9; i++) {
-  const x = -4.4 + i * 1.08;
-  const z = -6.6 + .36 * Math.cos(i * .6);
-  box(root, "tall warm folded skylight", x, 6.31, z,
-    .77, .04, 1.54, i % 2 ? M.paper : M.amber);
+for (let zi = 0; zi < 24; zi++) for (let xi = 0; xi < 20; xi++) {
+  const a = zi * 21 + xi, b = a + 1, c = a + 21, d = c + 1;
+  ceilingIndices.push(a, b, c, b, d, c);
 }
+const ceiling = new THREE.BufferGeometry();
+ceiling.setAttribute("position", new THREE.Float32BufferAttribute(ceilingPositions, 3));
+ceiling.setAttribute("color", new THREE.Float32BufferAttribute(ceilingColors, 3));
+ceiling.setAttribute("uv", new THREE.Float32BufferAttribute(ceilingUvs, 2));
+ceiling.setIndex(ceilingIndices); ceiling.computeVertexNormals();
+add(root, "one continuous plaster vault over the opened office", ceiling,
+  new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .96,
+    side: THREE.DoubleSide }));
 
 window.__authorRoom = () => exportRoom({ key: 0xffd1a4, fill: 0xa5c8d0,
   ambient: 1.62, keyPower: 2.15 });

@@ -389,11 +389,11 @@ try {
   assert.equal(officeEntered.cameraFov, officeBefore.cameraFov);
   assert.ok(officeEntered.modelColliderCount >= 20, "office architecture and figures must collide");
   await officePage.screenshot({ path: ".cache/room05-entered-continuous.png" });
-  await officePage.evaluate(() => window.__galleryTestRoomPose(0, 2.45, 0));
+  await officePage.evaluate(() => window.__galleryTestRoomPose(0, 4.45, 0));
   await officePage.keyboard.down("w");
   await officePage.waitForTimeout(430);
   await officePage.keyboard.up("w");
-  assert.ok((await officePage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 2.05,
+  assert.ok((await officePage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 4.05,
     "Jane's figure should be solid at the heart of the office room");
   await officePage.evaluate(() => window.__galleryTestRoomPose(0, 7.9, Math.PI / 2));
   const officeBeforeExit = await officePage.evaluate(() => window.__galleryDebug());
