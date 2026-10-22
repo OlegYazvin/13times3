@@ -134,6 +134,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 Oleg head integration revision: the same shared Oleg sculpt in frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11` has a shorter crown and a higher side hairline, matching the existing painted face more closely. The duplicated 3D beard and sideburn outlines were removed because they made his reference-guided face read like a bordered mask. A newly generated alternative portrait was rejected after a close room comparison; the published painted likeness stays in place. No story, title, or frame ID changes.
 
+2026-10-22 continuous Oleg head and aquarium paintings: the existing eight Oleg memories now share a single UV-painted sculpted head with continuous face, beard, hair, and modeled relief instead of a separate face surface in front of a plain cranium. The established `v5` illustrated portrait remains the likeness source; a new `v6` image was rejected after an in-room comparison. Frame `11` retains the same Shedd memory and walk-behind portal, while its four distant habitat paintings now have a cohesive gouache treatment behind the existing 3D fish, plants, rocks, and glass. All eleven memories, titles, people, frame IDs, portal locations, and blank frames `12`–`41` remain as registered above.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

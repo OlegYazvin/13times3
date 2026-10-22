@@ -1,10 +1,10 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { createRoomArt } from "./room_art.mjs";
-import reefBackdropURL from "./assets/room11/reef-backdrop.webp";
-import riverBackdropURL from "./assets/room11/river-backdrop.webp";
-import reefVariantURL from "./assets/room11/reef-variant.webp";
-import riverVariantURL from "./assets/room11/river-variant.webp";
+import reefBackdropURL from "./assets/room11/reef-backdrop-painted-v2.webp";
+import riverBackdropURL from "./assets/room11/river-backdrop-painted-v2.webp";
+import reefVariantURL from "./assets/room11/reef-variant-painted-v2.webp";
+import riverVariantURL from "./assets/room11/river-variant-painted-v2.webp";
 import canopyWatercolorURL from "./assets/room11/canopy-watercolor.webp";
 import paintedBarramundiURL from "./assets/room11/barramundi-painted.glb";
 

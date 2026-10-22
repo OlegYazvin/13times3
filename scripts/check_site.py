@@ -119,9 +119,9 @@ def main() -> None:
         room_json = json.loads(room_bytes[20:20 + json_size])
         assert any("Oleg's clothed three-dimensional figure" in node.get("name", "")
                    for node in room_json["nodes"]), f"Room {frame_id} lost Oleg's rigged likeness"
-        assert any("full sculpted cheeks, jaw and cranium" in node.get("name", "")
+        assert any("one painted sculpted head with continuous cheeks hair and beard" in node.get("name", "")
                    for node in room_json["nodes"]), (
-            f"Room {frame_id} lost Oleg's sculpted head under the painted face"
+            f"Room {frame_id} lost Oleg's continuous painted sculpted head"
         )
         assert any("skin" in node for node in room_json["nodes"]), (
             f"Room {frame_id} needs the posed 3D figure rig"
@@ -426,10 +426,10 @@ def main() -> None:
         model = (OUTPUT / f"assets/explore/room{frame_id:02d}/room.glb").read_bytes()
         json_length = int.from_bytes(model[12:16], "little")
         scene_data = json.loads(model[20:20 + json_length])
-        assert any("oleg painted likeness" in node.get("name", "").lower() or
-                   "oleg's painted likeness" in node.get("name", "").lower()
+        assert any("one painted sculpted head with continuous cheeks hair and beard"
+                   in node.get("name", "").lower()
                    for node in scene_data["nodes"]), (
-            f"Room {frame_id:02d} must include Oleg's shared illustrated likeness"
+            f"Room {frame_id:02d} must include Oleg's shared continuous illustrated likeness"
         )
     assert not (OUTPUT / "room_assets").exists(), "Reference artwork should not be published separately"
     explore = parse(source_path("/explore"))

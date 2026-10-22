@@ -1,17 +1,24 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { clone } from "three/addons/utils/SkeletonUtils.js";
-import { addOlegPortrait } from "./oleg_portrait.mjs";
 import { paintedFabric } from "./painted_fabric.mjs";
 import samURL from "./assets/figures/rigged-casual-sam.glb";
+import headAtlasURL from "./assets/room02/oleg-head-atlas.webp";
+import olegFaceDepth from "./assets/room02/oleg-face-depth.json" with { type: "json" };
 
 // A CC0 MakeHuman-derived clothed rig is the anatomical understructure. The
 // original generic head is removed. Its clothing and bones are adapted to
 // Oleg's reference-based illustrated portrait and each story's actual pose.
 let templatePromise;
+let headAtlas;
 export function loadRiggedOlegBase() {
-  if (!templatePromise) templatePromise = new GLTFLoader().loadAsync(samURL)
-    .then(({ scene }) => {
+  if (!templatePromise) templatePromise = Promise.all([
+    new GLTFLoader().loadAsync(samURL),
+    new THREE.TextureLoader().loadAsync(headAtlasURL),
+  ]).then(([{ scene }, texture]) => {
+      headAtlas = texture;
+      headAtlas.colorSpace = THREE.SRGBColorSpace;
+      headAtlas.userData.mimeType = "image/webp";
       const original = scene.getObjectByName("Sam_|_anatomical_body");
       if (!original?.isSkinnedMesh) throw new Error("Oleg rig has no body mesh");
       const geometry = original.geometry.clone();
@@ -88,11 +95,8 @@ export function makeRiggedOleg(template, { pose = "desk", height = 1.73,
     [.155, .112, .099, -.048], [.174, .067, .061, -.05],
     [.181, .008, .012, -.05],
   ];
-  const points = [], colors = [], indices = [], sides = 48;
+  const points = [], uvs = [], indices = [], sides = 48;
   const rows = (headRings.length - 1) * 4;
-  const flesh = new THREE.Color(0xdfae94),
-    hairBrown = new THREE.Color(0x554035),
-    hairWarm = new THREE.Color(0x80604b);
   for (let row = 0; row <= rows; row++) {
     const section = Math.min(headRings.length - 2, Math.floor(row / 4));
     const t = (row - section * 4) / 4;
@@ -105,15 +109,15 @@ export function makeRiggedOleg(template, { pose = "desk", height = 1.73,
       const sideWave=(.006*Math.sin(angle*7+y*18)+
         .0035*Math.sin(angle*13-y*23))*
         THREE.MathUtils.smoothstep(y,-.25,-.04);
+      const frontU = s / (sides / 2);
+      const frontV = THREE.MathUtils.clamp((y + .445) / .595, 0, 1);
+      const reliefRow = Math.round(frontV * 24);
+      const reliefCol = Math.round(frontU * 24);
+      const relief = s <= sides / 2 ?
+        .55 * olegFaceDepth.relief[reliefRow * 25 + reliefCol] : 0;
       points.push(Math.cos(angle)*(rx+sideWave),1.76+y,
-        forward*(rz+sideWave*.55)+offset);
-      const hairline = forward < -.2 ? -.37 :
-        forward < .35 ? -.03 : .04;
-      const amount = THREE.MathUtils.smoothstep(y, hairline - .04, hairline + .04);
-      const shade = flesh.clone().lerp(hairBrown, amount);
-      const strand=.5+.5*Math.sin(angle*14+y*31+.7*Math.sin(angle*5-y*9));
-      shade.lerp(hairWarm,amount*(.07+.17*strand));
-      colors.push(shade.r, shade.g, shade.b);
+        forward*(rz+sideWave*.55)+offset+relief);
+      uvs.push(s / sides, frontV);
     }
   }
   for (let row = 0; row < rows; row++)
@@ -123,20 +127,26 @@ export function makeRiggedOleg(template, { pose = "desk", height = 1.73,
     }
   const headGeometry = new THREE.BufferGeometry();
   headGeometry.setAttribute("position", new THREE.Float32BufferAttribute(points, 3));
-  headGeometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
+  headGeometry.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
   headGeometry.setIndex(indices);
   headGeometry.computeVertexNormals();
   const underpainting = new THREE.Mesh(headGeometry,
-    new THREE.MeshStandardMaterial({ color: 0xffffff, vertexColors: true,
+    new THREE.MeshStandardMaterial({ color: 0xffffff, map: headAtlas,
       roughness: .95, side: THREE.DoubleSide }));
-  underpainting.name = "full sculpted cheeks, jaw and cranium beneath Oleg's painting";
+  underpainting.name = "one painted sculpted head with continuous cheeks hair and beard";
   head.add(underpainting);
-  addOlegPortrait(head, 1.76, [
-    [-.445, .055, .055], [-.385, .136, .116],
-    [-.29, .178, .147], [-.18, .196, .162],
-    [-.045, .18, .151], [.07, .145, .128], [.15, .027, .03],
-  ], new THREE.MeshStandardMaterial({ color: 0xdfae94, roughness: .94 }),
-  { hairShell: false });
+  const glassesInk = new THREE.MeshStandardMaterial({ color: 0x27292e,
+    roughness: .8 });
+  for (const side of [-1, 1]) {
+    const temple = new THREE.Mesh(new THREE.TubeGeometry(
+      new THREE.CatmullRomCurve3([
+        new THREE.Vector3(side * .13, 1.62, .15),
+        new THREE.Vector3(side * .18, 1.61, .075),
+        new THREE.Vector3(side * .185, 1.6, -.035),
+      ]), 10, .006, 6), glassesInk);
+    temple.name = "painted glasses temple fitted to Oleg's continuous head";
+    head.add(temple);
+  }
   if (shirtEmbroidery &&
     new THREE.Color(shirtColor).getHSL({ h: 0, s: 0, l: 0 }).l > .48) {
     // A small wordless version of the sun-and-cloud drawing on Oleg's light
