@@ -401,6 +401,7 @@ def main() -> None:
                    "painted freshwater river habitat", "continuous thick aquarium viewing glass",
                    "curved walk-under glass beneath a living water lens",
                    "continuous blue glass edge enclosing overhead fish habitat",
+                   "continuous carved stone crown of the walk-behind hallway portal",
                    "fluted carved limestone column with joined capital",
                    "carved shell fan supporting the marble crown",
                    "high shell-shaped tank arch",

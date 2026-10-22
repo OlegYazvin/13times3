@@ -16,6 +16,14 @@ and small local cloud forms to frames `02`, `03`, `04`, `07`, `08`, `09`, and
 figures, trees, and buildings noted below. A connected raised-leaf trial was
 rejected because the crowns looked spiky at painting distance.
 
+The October 22 shared child-figure pass scales the legs and formed shoes for
+Zephrine and the other children in frames `05`, `06`, `07`, `10`, and `11`, and
+adds quiet fold shading to fitted 3D skirts. A smaller head and scalloped hair
+cap were rejected in doorway review because they weakened Zephrine's likeness.
+Frame `11` also gains a solid carved crown joining the freestanding return
+portal posts. These are localized improvements; the wider figure and room art
+audit below remains open.
+
 | Frame | Next art pass | Close-view acceptance |
 | --- | --- | --- |
 | `01` | Continue shaping the cave shell and both figures, and reduce loose squiggles and generic sea ornaments. The October 21 pass carved the desk top and apron, turned its legs, and gave the stage a contoured platform, rim and shell relief. | Jane's expression, Zephrine's face and the signup action remain legible from angled positions. |

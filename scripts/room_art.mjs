@@ -138,7 +138,7 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
       material(0xffffff, { vertexColors: true }));
   }
   function sculptedChildSkirt(parent, hem, waist, cloth, trim) {
-    const sides=28, rows=9, points=[],uv=[],indices=[];
+    const sides=28, rows=9, points=[],uv=[],colors=[],indices=[];
     const foldCount=9;
     for(let row=0;row<=rows;row++) {
       const t=row/rows;
@@ -152,6 +152,9 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
         points.push(Math.cos(a)*radius,y+flutedHem,
           Math.sin(a)*radius*.83);
         uv.push(side/sides,t);
+        const foldLight=.5+.5*Math.sin(a*foldCount+.3*t+.9);
+        const clothShade=.84+.16*(t*.55+foldLight*(1-t*.55));
+        colors.push(clothShade,clothShade,clothShade);
         if(row<rows) {
           const n=row*sides+side,b=row*sides+(side+1)%sides;
           indices.push(n,b,n+sides,b,b+sides,n+sides);
@@ -161,9 +164,11 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
     const geometry=new THREE.BufferGeometry();
     geometry.setAttribute("position",new THREE.Float32BufferAttribute(points,3));
     geometry.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
+    geometry.setAttribute("color",new THREE.Float32BufferAttribute(colors,3));
     geometry.setIndex(indices);geometry.computeVertexNormals();
+    const woven=cloth.clone();woven.vertexColors=true;
     add(parent,"fitted child skirt with formed cloth pleats and a fluted hem",
-      geometry,cloth);
+      geometry,woven);
     const edge=[];
     for(let i=0;i<=sides;i++) {
       const a=i*Math.PI*2/sides;
@@ -197,24 +202,33 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
     if (jane && !options.dress) janePeople.push({ group, stature, options });
     if (g) gPeople.push({ group, stature, options });
     for (const side of [-1, 1]) {
-      loft(group, "tailored leg with ankle, knee and thigh contour",
-        [[.07, .095, .105, side * .12], [.19, .11, .11, side * .12],
-          [leg * .48, .118, .115, side * .125],
-          [leg * .67, .109, .115, side * .12],
-          [leg, .143, .135, side * .12],
-          [leg + .08, .14, .12, side * .12]], pants, 12);
-      loft(group, "formed walking shoe with distinct heel, instep and toe",
-        [[.012, .088, .095, side * .12, .055],
-          [.038, .104, .145, side * .12, .055],
-          [.08, .115, .155, side * .12, .045],
-          [.135, .09, .105, side * .12, -.005],
-          [.16, .06, .073, side * .12, -.03]], options.shoes || "ink", 14);
-      curve(group, "trouser crease", [[side * .12, .23, .1],
-        [side * .13, leg * .56, .113], [side * .11, leg, .105]],
-      .006, options.pants || "ink", 12);
-      curve(group, "hem folded over walking shoe",
-        [[side * .04, .18, .125], [side * .12, .17, .14],
-          [side * .21, .18, .115]], .007, trim, 8);
+      const cx=side*(childFigure?.1:.12);
+      const legRings=childFigure ?
+        [[.05,.068,.075,cx],[.13,.076,.081,cx],
+          [leg*.48,.085,.09,cx],[leg*.7,.083,.092,cx],
+          [leg,.111,.108,cx],[leg+.06,.105,.097,cx]] :
+        [[.07,.095,.105,cx],[.19,.11,.11,cx],
+          [leg*.48,.118,.115,side*.125],[leg*.67,.109,.115,cx],
+          [leg,.143,.135,cx],[leg+.08,.14,.12,cx]];
+      loft(group,"tailored leg with ankle, knee and thigh contour",
+        legRings,pants,12);
+      const shoeRings=childFigure ?
+        [[.008,.058,.067,cx,.044],[.025,.074,.098,cx,.047],
+          [.053,.082,.111,cx,.039],[.09,.067,.078,cx,-.003],
+          [.112,.043,.052,cx,-.018]] :
+        [[.012,.088,.095,cx,.055],[.038,.104,.145,cx,.055],
+          [.08,.115,.155,cx,.045],[.135,.09,.105,cx,-.005],
+          [.16,.06,.073,cx,-.03]];
+      loft(group,"formed walking shoe with distinct heel, instep and toe",
+        shoeRings,options.shoes || "ink",14);
+      if (!childFigure) {
+        curve(group,"trouser crease",[[side*.12,.23,.1],
+          [side*.13,leg*.56,.113],[side*.11,leg,.105]],
+        .006,options.pants || "ink",12);
+        curve(group,"hem folded over walking shoe",
+          [[side*.04,.18,.125],[side*.12,.17,.14],
+            [side*.21,.18,.115]],.007,trim,8);
+      }
     }
     const garmentRings = childFigure ?
       [[leg, .18, .135], [leg + .045, .2, .15],

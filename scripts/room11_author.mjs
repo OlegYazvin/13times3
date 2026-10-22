@@ -1248,7 +1248,29 @@ for(const side of [-1,1]) {
   curve(root,"doorway side shell engraving",
     [[side*1.95,.42,doorZ+.24],[side*1.91,1.7,doorZ+.24],
       [side*1.97,3.58,doorZ+.24]],.018,M.gold);
+  loft(root,"joined carved limestone collar beneath the return portal crown",
+    [[3.91,.205,.205,side*1.95,doorZ],
+      [4.02,.31,.28,side*1.95,doorZ],
+      [4.2,.28,.255,side*1.95,doorZ]],M.marble,20);
 }
+// A real stone band joins the two posts. Its open underside stays well above
+// the walking aperture, while the carved front and rear make this read as an
+// architectural object that can be rounded rather than a line in the air.
+const returnCrown=new THREE.Shape();
+returnCrown.moveTo(-2.23,3.98);
+returnCrown.bezierCurveTo(-1.92,4.56,-1.05,4.86,0,4.9);
+returnCrown.bezierCurveTo(1.05,4.86,1.92,4.56,2.23,3.98);
+returnCrown.lineTo(1.95,4.1);
+returnCrown.bezierCurveTo(1.55,4.36,.77,4.49,0,4.5);
+returnCrown.bezierCurveTo(-.77,4.49,-1.55,4.36,-1.95,4.1);
+returnCrown.closePath();
+const crownStone=M.marble.clone();
+crownStone.emissive=new THREE.Color(0x807b70);
+crownStone.emissiveIntensity=.14;
+add(root,"continuous carved stone crown of the walk-behind hallway portal",
+  new THREE.ExtrudeGeometry(returnCrown,{depth:.24,bevelEnabled:true,
+    bevelSize:.025,bevelThickness:.022,bevelSegments:2,curveSegments:18}),
+  crownStone,0,0,doorZ-.12);
 curve(root,"freestanding arched return doorway",
   [[-1.95,4.11,doorZ],[-1.15,4.36,doorZ],
     [0,4.47,doorZ],[1.15,4.36,doorZ],[1.95,4.11,doorZ]],
