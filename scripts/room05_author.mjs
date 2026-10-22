@@ -101,28 +101,28 @@ for (let row = 0; row < 4; row++) {
       .012, M.brickLight, 18);
   }
   curve(root, "handmade arch loosening above Jane",
-    [[-spread + .2, 5.23, z], [-spread * .58, 5.7 + row * .12, z - .1],
-      [0, 6.14 + row * .07, z - .2],
-      [spread * .58, 5.7 + row * .12, z - .1],
+    [[-spread + .2, 5.23, z], [-spread * .58, 5.55 + row * .07, z - .1],
+      [0, 5.78 + row * .08, z - .2],
+      [spread * .58, 5.55 + row * .07, z - .1],
       [spread - .2, 5.23, z]], .06,
     row < 2 ? M.ink : M.brass, 38);
 }
 
 // A torn strip of the old office floor straightens and brightens where Jane
 // stands. The narrow dark side channels remain explorable, not dead ends.
-for (let lane = -2; lane <= 2; lane++) {
+for (const lane of [-2, 0, 2]) {
   curve(root, "stone seam resolving into an open path",
     [[lane * .75, .035, 8.55], [lane * .64 + .12, .04, 4.2],
       [lane * .85, .04, .5], [lane * 1.0, .04, -3.9],
       [lane * 1.2, .04, -8.1]],
-    .019, lane === 0 ? M.brass : M.mortar, 48);
+    lane === 0 ? .017 : .011, lane === 0 ? M.brass : M.mortar, 48);
 }
-for (let i = 0; i < 11; i++) {
-  const z = -7.85 + i * 1.5;
+for (let i = 0; i < 8; i++) {
+  const z = -7.85 + i * 2.15;
   curve(root, "continuous transverse joint in the stone walkway",
-    [[-3.15, .037, z], [-1.55, .039, z + .06],
-      [0, .038, z], [1.55, .039, z - .06], [3.15, .037, z]],
-    .008, M.mortar, 24);
+    [[-3.15, .037, z], [-1.55, .039, z + .14],
+      [0, .038, z], [1.55, .039, z - .12], [3.15, .037, z]],
+    .006, M.mortar, 24);
 }
 
 // Three hinged partition leaves retain the pressure of a former workspace,
@@ -159,6 +159,44 @@ for (const [x, z, w, h] of [[-4.8, 5.8, .92, .65], [-4.35, 4.74, .68, .72],
   curve(root, "tape seam across the box lid", [[x, h + .033, z - .33],
     [x, h + .034, z], [x, h + .033, z + .33]], .012, M.brass);
 }
+// A small, usable moving trolley and packed files give the relocation a
+// physical scale. Its handle and wheels are connected, unlike loose boxes
+// scattered for decoration.
+const trolley = new THREE.Group(); trolley.name = "office moving trolley and packed files";
+trolley.position.set(-4.15, 0, 2.15); root.add(trolley);
+const cartShape = new THREE.Shape();
+cartShape.moveTo(-.58,-.43); cartShape.lineTo(.58,-.43);
+cartShape.quadraticCurveTo(.7,-.43,.7,-.3); cartShape.lineTo(.7,.33);
+cartShape.quadraticCurveTo(.7,.45,.57,.45); cartShape.lineTo(-.57,.45);
+cartShape.quadraticCurveTo(-.7,.45,-.7,.33); cartShape.lineTo(-.7,-.3);
+cartShape.quadraticCurveTo(-.7,-.43,-.58,-.43);
+const cartDeck = new THREE.ExtrudeGeometry(cartShape,{depth:.11,
+  bevelEnabled:true,bevelSize:.025,bevelThickness:.02,bevelSegments:2});
+cartDeck.rotateX(-Math.PI/2);
+const deck=add(trolley,"solid shaped timber moving trolley deck",cartDeck,
+  M.brick,0,.22,0);
+deck.userData.solidFootprint=true;
+for(const side of [-1,1]) for(const z of [-.3,.31]) {
+  const caster=add(trolley,"rubber caster attached beneath the cart",
+    new THREE.CylinderGeometry(.12,.12,.085,12),M.ink,side*.48,.13,z);
+  caster.rotation.z=Math.PI/2;
+  add(trolley,"brass caster hub",new THREE.CylinderGeometry(.042,.042,.09,10),
+    M.brass,side*.49,.13,z).rotation.z=Math.PI/2;
+}
+for(const side of [-1,1]) beam(trolley,"continuous bent trolley push rail",
+  [side*.55,.29,-.34],[side*.55,1.08,-.55],.023,.02,M.ink,9);
+beam(trolley,"joined upper trolley grip",[-.55,1.08,-.55],
+  [.55,1.08,-.55],.026,.026,M.ink,9);
+for(const [x,z,y,w,h,d] of [[-.25,.02,.64,.53,.58,.5],
+  [.27,.09,.56,.37,.42,.4],[-.18,-.14,1.13,.34,.32,.3]]) {
+  box(trolley,"solid taped carton packed on the moving trolley",
+    x,y,z,w,h,d,M.paper,true);
+  box(trolley,"folded carton flaps and lid",x,y+h/2+.018,z,
+    w+.015,.035,d+.015,M.mortar);
+  curve(trolley,"tape fixed across a carton lid",[
+    [x,y+h/2+.043,z-d*.4],[x,y+h/2+.043,z],
+    [x,y+h/2+.043,z+d*.4]],.008,M.brass,10);
+}
 box(root, "solid empty shared work table", 4.7, .72, -3.65,
   1.75, 1.44, .85, M.ink, true);
 box(root, "pale work surface", 4.7, 1.46, -3.65,
@@ -172,17 +210,17 @@ for (const x of [-5.0, 5.0]) {
 
 // Jane is the visual answer to the room's pressure. Oleg and Zephrine remain
 // nearby as a family, while Jane's open palms and stance own the moment.
-const jane = person("Jane standing up for her family", 0, 3.45, 1.75, {
+const jane = person("Jane standing up for her family", 0, 5.05, 1.75, {
   skin: M.skin, hair: M.hair, outfit: M.fabric, pants: M.navy,
   bun: true, hands: { "-1": [-.43, 1.03, .34], "1": [.28, 1.51, .48] },
   yaw: 0,
 });
-person("Oleg beside Jane during the move", -2.05, 1.06, 1.73, {
+person("Oleg beside Jane during the move", -2.05, 2.66, 1.73, {
   skin: M.skin, hair: M.hair, outfit: M.navy, pants: M.ink,
   glasses: true, beard: true, longHair: true,
   hands: { "1": [.28, .9, .42] }, yaw: .22,
 });
-person("Zephrine kept close to her parents", -1.27, 1.37, 1.05, {
+person("Zephrine kept close to her parents", -1.27, 2.97, 1.05, {
   skin: M.skin, hair: M.zephHair, outfit: M.pink, skirt: M.rose,
   pants: M.olive, dress: true, curls: true,
   hands: { "-1": [-.32, .62, .25] }, yaw: -.12,
@@ -194,11 +232,14 @@ const ceilingPositions = [], ceilingColors = [], ceilingUvs = [], ceilingIndices
 const shade = new THREE.Color(C.brickLight), light = new THREE.Color(C.paper);
 for (let zi = 0; zi <= 24; zi++) for (let xi = 0; xi <= 20; xi++) {
   const x = -6.2 + xi * 12.4 / 20, z = -8.85 + zi * 17.7 / 24;
-  const y = 6.0 + .19 * (1 - (x / 6.2) ** 2)
+  const y = 5.98 + .47 * (1 - (x / 6.2) ** 2)
     + .025 * Math.sin(z * 1.6 + x * .3);
   ceilingPositions.push(x, y, z);
+  const plasterGrain = .025 * Math.sin(x * 1.8 + z * 2.6)
+    + .014 * Math.sin(x * 4.2 - z * 1.3);
   const pigment = shade.clone().lerp(light,
-    .13 + .55 * THREE.MathUtils.smoothstep(-z, -6.0, 7.0));
+    .17 + .49 * THREE.MathUtils.smoothstep(-z, -6.0, 7.0)
+      + plasterGrain);
   ceilingColors.push(pigment.r, pigment.g, pigment.b);
   ceilingUvs.push(xi / 20, zi / 24);
 }

@@ -205,9 +205,9 @@
         "title": "Jane moved offices",
         "caption": "Jane held her ground",
         "colliders": [
-          { "shape": "circle", "x": 0, "z": 1.7, "radius": 0.4 },
-          { "shape": "circle", "x": -2.0, "z": -0.8, "radius": 0.35 },
-          { "shape": "circle", "x": -1.3, "z": -0.5, "radius": 0.25 }
+          { "shape": "circle", "x": 0, "z": 5.05, "radius": 0.4 },
+          { "shape": "circle", "x": -2.05, "z": 2.66, "radius": 0.35 },
+          { "shape": "circle", "x": -1.27, "z": 2.97, "radius": 0.25 }
         ]
       }
     },

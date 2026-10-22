@@ -6,4 +6,6 @@ The [operator's North Center page](https://expansive.com/locations/illinois/chic
 
 Distinct from frame `02`, which celebrates Jane's sustained help during Oleg's job search. Frame `05` is about Jane's own resolve when the family faced resistance during a move.
 
-The published room uses unmarked office boxes, tall windows and brick, empty work surfaces, rigid shutters, and a widening golden architectural fan behind Jane. Jane is centered with open hands; Oleg and Zephrine remain nearby. The scene does not show or quote management, identify a staff member, or present the dispute as an independently established fact.
+The published room uses unmarked office boxes, tall windows and brick, empty work surfaces, hinged partitions, and a plaster vault supported by opening arches. Jane is centered with open hands; Oleg and Zephrine remain nearby. The scene does not show or quote management, identify a staff member, or present the dispute as an independently established fact.
+
+2026-10-22 detail pass: Jane and the family moved closer to the painting camera, with their collision footprints aligned to their actual poses. A rounded, caster-supported moving trolley carries taped cartons at the edge of the route. The bright floor lattice was thinned to fewer, gentler seams; the arch crowns now stay fully beneath a softly curved, pigment-varied vault rather than disappearing into it. This remains a symbolic scene and does not add a factual claim about the office move.
