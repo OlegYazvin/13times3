@@ -514,11 +514,9 @@ try {
   assert.equal(routeEntered.cameraFov, routeBefore.cameraFov);
   assert.ok(routeEntered.modelColliderCount >= 16, "Chicago's architectural stops should collide");
   await routePage.screenshot({ path: ".cache/room08-entered-continuous.png" });
-  await routePage.evaluate(() => window.__galleryTestRoomPose(-4.25, 11.8, -Math.PI / 2));
-  await routePage.keyboard.down("w");
-  await routePage.waitForTimeout(500);
-  await routePage.keyboard.up("w");
-  assert.ok((await routePage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 11.25,
+  await routePage.evaluate(() => window.__galleryTestRoomPose(-3.35, 9.5, 0));
+  await routePage.evaluate(() => window.__galleryTestRoomMove(-3.35, 7.5));
+  assert.ok((await routePage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 8.9,
     "Pullman sculpture should block movement");
   await routePage.evaluate(() => window.__galleryTestRoomPose(0, 12.5, -Math.PI / 2));
   const routeBeforeExit = await routePage.evaluate(() => window.__galleryDebug());

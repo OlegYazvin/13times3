@@ -16,6 +16,50 @@ const art = createRoomArt({ index: 7, title: "Jane's chosen city route",
   width: 13.2, height: 16.0, depth: 27.8, colors: C, seed: 80808 });
 const { root, M, random, add, box, beam, curve, loft, petal,
   wrapSky, ground, person, exportRoom } = art;
+function masonryTexture(courses, columns, stone = false) {
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = 512;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = stone ? "#b7b4ae" : "#99918b";
+  ctx.fillRect(0, 0, 512, 512);
+  const stepY = 512 / courses;
+  for (let row = 0; row < courses; row++) {
+    const stagger = row % 2 ? .5 : 0;
+    for (let col = -1; col <= columns; col++) {
+      const stepX = 512 / columns;
+      const x = (col + stagger) * stepX + 2.5;
+      const y = row * stepY + 2.5;
+      const hash = (row * 79 + col * 137 + row * col * 17) >>> 0;
+      const tone = (stone ? 225 : 218) + hash % 26;
+      ctx.fillStyle = `rgb(${tone},${tone - 2},${tone - 4})`;
+      ctx.fillRect(x, y, stepX - 5, stepY - 5);
+      // Each laid course has a little pigment within the stone surface, not
+      // just an outline drawn on top of an otherwise plain cuboid.
+      ctx.strokeStyle = `rgba(100,91,85,${stone ? .08 : .11})`;
+      ctx.lineWidth = 1.5;
+      for (let mark = 0; mark < 4; mark++) {
+        const yy = y + 5 + (hash * (mark + 3) % Math.max(7, stepY - 11));
+        ctx.beginPath();
+        ctx.moveTo(x + 5 + mark * 4, yy);
+        ctx.lineTo(x + stepX * (.4 + mark * .11), yy + (mark % 2 ? 1 : -1));
+        ctx.stroke();
+      }
+    }
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+const brickBond = masonryTexture(14, 9);
+const stoneCourses = masonryTexture(10, 5, true);
+for (const material of [M.brick, M.warmBrick]) {
+  material.map = brickBond;
+  material.needsUpdate = true;
+}
+for (const material of [M.limestone, M.arch]) {
+  material.map = stoneCourses;
+  material.needsUpdate = true;
+}
 wrapSky(C.sky, true);
 ground(C.street, (x, z) => new THREE.Color(C.ground).lerp(
   new THREE.Color(C.street), Math.exp(-Math.pow((x - .25 * Math.sin(z * .44)) / 1.7, 2)) * .84));
@@ -72,36 +116,100 @@ function plaque(text, x, z, side) {
   const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
   const near = text === "Pullman";
   const px = near ? -1.65 : side * 2.15;
-  const pz = near ? z - 1.3 : z + .48;
+  const pz = near ? z + 1.15 : z + .48;
   const face = add(root, `route label ${text}`,
     new THREE.PlaneGeometry(2.15, .39), material,
     px, 1.13, pz);
-  face.rotation.y = side < 0 ? .16 : -.16;
+  // Face both a visitor advancing along the route and one looking into the
+  // stop. A near-forward plane vanished edge-on beside its new side facade.
+  face.rotation.y = side < 0 ? .65 : -.65;
   box(root, "slim label stand", px, .57, pz - .01,
     .05, .94, .05, M.bronze);
 }
-function monument(name, z, side, material = M.brick) {
-  const x = side * 4.25;
+function monument(name, z, side, material = M.brick, inset = 0, width = 3.7) {
+  const x = side * (4.25 - inset);
   const base = box(root, `solid ${name} sculpted foundation`, x, .18, z,
-    3.7, .36, 3.2, material, true);
+    width, .36, 3.2, material, true);
   base.userData.solidFootprint = true;
   return x;
 }
+function pathFacingFacade(name, x, z, side, bodyWidth, treatment) {
+  // A stop must explain itself from the promenade. The original miniature
+  // fronts face the entry camera; without a second carved side the walker
+  // sees only blank masonry after reaching the building.
+  const facade = new THREE.Group();
+  facade.name = `${name} path-facing dimensional facade`;
+  facade.position.set(x - side * (bodyWidth / 2 + .018), 0, z);
+  facade.rotation.y = side < 0 ? Math.PI / 2 : -Math.PI / 2;
+  root.add(facade);
+  const face = (name, u, y, w, h, material, depth = .04) =>
+    box(facade, name, u, y, .055, w, h, depth, material);
+  const arch = (name, u, top, radius, material = M.limestone) =>
+    curve(facade, name, [[u - radius, top - .18, .09],
+      [u - radius * .72, top + .08, .09], [u, top + .19, .09],
+      [u + radius * .72, top + .08, .09],
+      [u + radius, top - .18, .09]], .027, material, 16);
+  if (treatment === "pullman") {
+    for (const u of [-.46, .46]) {
+      face("deep industrial window on Pullman street side",u,1.45,.29,1.2,M.night);
+      arch("formed brick window head",u,2.11,.18,M.limestone);
+      face("projecting cut-stone sill",u,.83,.4,.055,M.limestone,.11);
+    }
+    for (const u of [-.7,0,.7]) face("raised brick pilaster",u,1.36,.075,2.3,M.warmBrick,.13);
+    face("stone belt course under Pullman's tower",0,2.55,1.57,.1,M.limestone,.13);
+  } else if (treatment === "avalon") {
+    face("shadowed Avalon side arcade",0,1.53,.81,1.58,M.night);
+    for(const u of [-.47,0,.47]) {
+      arch("Moorish Revival horseshoe on the path side",u,2.22,.22,M.limestone);
+      beam(facade,"slim arcade column",[u-.21,.52,.1],[u-.21,2.01,.1],.032,.032,M.gold);
+    }
+    face("receding gilt theater frieze",0,2.7,1.55,.11,M.gold,.13);
+  } else if (treatment === "bank") {
+    face("deep bank-side entry",0,1.34,.45,1.6,M.night);
+    for(const u of [-.52,.52]) {
+      beam(facade,"fluted arts-bank street column",[u,.38,.11],[u,2.61,.11],.085,.08,M.cream,12);
+      face("carved capital facing the promenade",u,2.67,.25,.12,M.arch,.16);
+    }
+    face("projecting bank entablature facing the route",0,2.8,1.46,.14,M.arch,.18);
+    const roof=new THREE.Shape();
+    roof.moveTo(-.74,0);roof.lineTo(0,.38);roof.lineTo(.74,0);roof.closePath();
+    add(facade,"formed bank pediment readable from the path",
+      new THREE.ExtrudeGeometry(roof,{depth:.1,bevelEnabled:true,
+        bevelThickness:.015,bevelSize:.012,bevelSegments:2}),M.limestone,
+      0,2.91,.015);
+  } else if (treatment === "bridge") {
+    face("deep former congregation doorway",0,1.13,.46,1.38,M.night);
+    arch("carved community doorway arch",0,1.86,.28,M.limestone);
+    for(const u of [-.49,.49]) {
+      face("colored meeting-window set into masonry",u,1.72,.25,1.06,
+        u<0?M.glass:M.gold);
+      arch("high former-congregation window crown",u,2.32,.18,M.limestone);
+    }
+  } else if (treatment === "school") {
+    for(const u of [-.48,0,.48]) {
+      face("tall schoolhouse window on route side",u,1.65,.27,1.06,M.night);
+      arch("molded school window lintel",u,2.3,.18,M.limestone);
+      face("stone sill below schoolhouse window",u,1.07,.32,.045,M.cream,.1);
+    }
+    face("projecting school cornice facing promenade",0,2.99,1.56,.14,M.limestone,.15);
+  }
+}
 // 1. Pullman's red-brick clock tower, neighborhood and labor story.
 {
-  const z = 9.5, x = monument("Pullman clock tower", z, -1, M.brick);
+  const z = 7.05, x = monument("Pullman clock tower", z, -1, M.brick, .9, 2.9);
   box(root, "solid Pullman administration facade", x, 1.42, z,
-    3.3, 2.25, 1.45, M.brick, true);
+    3.0, 2.25, 1.45, M.brick, true);
   box(root, "clock tower shaft", x, 3.34, z, .96, 2.25, 1.02, M.warmBrick, true);
   box(root, "stepped clock tower parapet", x, 4.65, z, 1.25, .28, 1.3, M.limestone);
   add(root, "round clock face", new THREE.CylinderGeometry(.29, .29, .03, 16),
     M.cream, x, 3.8, z + .54).rotation.x = Math.PI / 2;
   beam(root, "clock hand", [x, 3.8, z+.57], [x+.14, 3.94, z+.57], .012, .012, M.ink);
-  for (const dx of [-1.16, 1.16]) {
+  for (const dx of [-1.02, 1.02]) {
     box(root, "Pullman tall window", x+dx, 1.65, z+.76, .37, .92, .04, M.night);
     curve(root, "arched Pullman window crown", [[x+dx-.23, 2.14, z+.8],
       [x+dx, 2.4, z+.8], [x+dx+.23, 2.14, z+.8]], .03, M.limestone);
   }
+  pathFacingFacade("Pullman",x,z,-1,3.0,"pullman");
   plaque("Pullman", x, z, -1);
 }
 // 2. Avalon Regal: a minaret and an atmospheric star ceiling.
@@ -153,6 +261,7 @@ function monument(name, z, side, material = M.brick) {
     add(root, "small theater sky star", new THREE.OctahedronGeometry(.035, 0),
       M.gold, sx, 2.87, sz);
   }
+  pathFacingFacade("Avalon Regal",x,z,1,3.2,"avalon");
   plaque("Avalon Regal", x, z, 1);
 }
 // 3. The revived Stony Island Arts Bank, a civic archive of art.
@@ -164,10 +273,42 @@ function monument(name, z, side, material = M.brick) {
     beam(root, "arts bank broad stone column", [x+dx, .35, z+.88],
       [x+dx, 2.85, z+.88], .115, .115, M.cream);
     box(root, "column capital", x+dx, 2.86, z+.9, .33, .16, .29, M.arch);
+    for(const yy of [.48,.59,2.64,2.74]) {
+      const band=add(root,"fine ring carved into arts bank column",
+        new THREE.TorusGeometry(.124,.012,5,12),M.limestone,
+        x+dx,yy,z+.88);
+      band.rotation.x=Math.PI/2;
+    }
   }
-  box(root, "arts bank pediment", x, 3.0, z, 3.75, .24, 1.86, M.arch);
-  for (let i = 0; i < 7; i++) box(root, "archive folio spine", x-1.2+i*.36,
-    1.17, z+.99, .23, .48+random()*.33, .1, i%2?M.ink:M.brick);
+  box(root,"projecting arts bank entablature",x,2.98,z+.19,
+    3.82,.2,1.95,M.arch);
+  const pediment=new THREE.Shape();
+  pediment.moveTo(-1.85,0);
+  pediment.lineTo(0,.57);
+  pediment.lineTo(1.85,0);
+  pediment.closePath();
+  add(root,"shaped triangular stone arts bank pediment",
+    new THREE.ExtrudeGeometry(pediment,{depth:.16,bevelEnabled:true,
+      bevelThickness:.035,bevelSize:.025,bevelSegments:2}),
+    M.limestone,x,3.08,z+.9);
+  curve(root,"carved pediment cornice",[[x-1.84,3.08,z+1.1],
+    [x,3.65,z+1.1],[x+1.84,3.08,z+1.1]],.035,M.cream,22);
+  add(root,"small circular arts-bank pediment relief",
+    new THREE.TorusGeometry(.13,.023,7,20),M.bronze,x,3.28,z+1.105);
+  box(root,"deep central arts bank entrance",x,1.23,z+.825,
+    .67,1.65,.04,M.ink);
+  for(const side of [-1,1]) {
+    box(root,"tall inset arts bank window",x+side*.78,1.43,z+.824,
+      .32,1.16,.04,M.night);
+    for(const yy of [1.0,1.4,1.8])
+      beam(root,"bronze arts bank window grille",
+        [x+side*.78-.16,yy,z+.85],[x+side*.78+.16,yy,z+.85],
+        .012,.012,M.bronze,6);
+  }
+  for(let step=0;step<3;step++)
+    box(root,"broad worn bank entry step",x,.13+step*.08,
+      z+1.05+step*.25,1.1-step*.08,.12, .29,M.arch,true);
+  pathFacingFacade("Stony Island Arts Bank",x,z,-1,3.35,"bank");
   plaque("Stony Island Arts Bank", x, z, -1);
 }
 // 4. Narrow Bridge is a century-old community gathering space.
@@ -183,6 +324,7 @@ function monument(name, z, side, material = M.brick) {
     curve(root, "tall meeting-window tracery", [[x+dx-.22, 2.55, z+.88],
       [x+dx, 2.81, z+.88], [x+dx+.22, 2.55, z+.88]], .035, M.limestone);
   }
+  pathFacingFacade("Narrow Bridge",x,z,1,3.25,"bridge");
   plaque("Narrow Bridge", x, z, 1);
 }
 // 5. Palmisano, a quarry transformed into water and meadow.
@@ -211,6 +353,7 @@ function monument(name, z, side, material = M.brick) {
     curve(root, "light arched school window", [[x+dx-.25,2.45,z+.85],
       [x+dx,2.76,z+.85],[x+dx+.25,2.45,z+.85]],.04,M.limestone);
   }
+  pathFacingFacade("Saint Ignatius",x,z,1,3.35,"school");
   plaque("Saint Ignatius", x, z, 1);
 }
 // 7. A quiet temple gate concludes the otherwise bustling city ribbon.

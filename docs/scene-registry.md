@@ -98,6 +98,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 blueberry planting revision: frame `07` remains the Indiana outing with Oleg carrying Zephrine while G helps her pick. Its shrubs now have shaped leaf blades growing from small stems, multiple irregular leaf masses around each branch, and blueberry clusters hanging from modeled pedicels. The open sky, reachable bough, people, title, and frame ID are unchanged.
 
+2026-10-21 route architecture revision: frame `08` keeps Jane's seven chosen stops and their Pullman-first order. Pullman's clock-tower miniature moves farther into the opening view while its foundation remains outside the walking lane. Brick and ashlar courses give the major volumes a drawn masonry surface; the Arts Bank gains a formed pediment, street columns, and real entrance steps. Pullman, Avalon Regal, the Arts Bank, Narrow Bridge, and Saint Ignatius now also have dimensional facades facing the path, and their angled labels can be read while walking as well as from the painting. This revises the same route, not a new trip or frame.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.
