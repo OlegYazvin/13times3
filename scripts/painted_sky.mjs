@@ -1,46 +1,33 @@
 import * as THREE from "three";
 
-// A quiet pigment wash on the high sky walls. The cloud marks are scenery,
-// while trees, architecture, people, and props remain modeled in front of it.
+// A restrained pigment wash for the inside of a tall sky dome. Local cloud
+// blooms avoid the horizontal UV bands that resemble a painted ceiling.
 export function paintedSkyTexture(seed = 1) {
   const canvas = document.createElement("canvas");
-  canvas.width = 512; canvas.height = 256;
+  canvas.width = 768; canvas.height = 384;
   const ctx = canvas.getContext("2d");
-  ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-  // Work in one unwrapped sky panel. Light washes high above the horizon
-  // avoid a blank portrait-phone sky without turning the dome into a roof.
-  ctx.scale(2/3, 2/3);
+  ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, 768, 384);
   let state = seed >>> 0;
   const random = () => ((state = (state * 1664525 + 1013904223) >>> 0) / 4294967296);
-  for (let layer = 0; layer < 46; layer++) {
-    const x = -120 + random() * 1008;
-    // Keep a quiet strip right at the pole, where the dome's UVs meet.
-    const y = 48 + random() * 278;
-    const width = 115 + random() * 260;
-    const height = 9 + random() * 26;
-    const gradient = ctx.createLinearGradient(0, y - height, 0, y + height);
-    gradient.addColorStop(0, "rgba(168,184,192,0)");
-    gradient.addColorStop(.32, `rgba(137,164,176,${.065 + random() * .085})`);
-    gradient.addColorStop(.68, `rgba(222,204,191,${.075 + random() * .09})`);
-    gradient.addColorStop(1, "rgba(255,255,255,0)");
-    ctx.fillStyle = gradient;
-    ctx.beginPath();
-    ctx.moveTo(x - width / 2, y);
-    ctx.bezierCurveTo(x - width * .29, y - height * .76,
-      x + width * .25, y - height * (.42 + random() * .5), x + width / 2, y);
-    ctx.bezierCurveTo(x + width * .24, y + height * .76,
-      x - width * .22, y + height * .63, x - width / 2, y);
-    ctx.fill();
-  }
-  // Small warm openings between the cool cloud strokes make the atmosphere
-  // feel like layered paint instead of a repeated banded procedural shader.
-  for(let i=0;i<18;i++) {
-    const x=random()*768,y=67+random()*246,r=20+random()*51;
-    const wash=ctx.createRadialGradient(x,y,0,x,y,r);
-    wash.addColorStop(0,`rgba(245,226,204,${.055+random()*.07})`);
-    wash.addColorStop(1,"rgba(245,226,204,0)");
-    ctx.fillStyle=wash;
-    ctx.fillRect(x-r,y-r,r*2,r*2);
+  // Each cloud is a few translucent watercolor blooms, never a panorama-
+  // length stroke. Leave the polar UV seam quiet at the very top.
+  for(let cloud=0;cloud<28;cloud++) {
+    const cx=random()*768,cy=48+random()*264;
+    const w=18+random()*49,h=8+random()*16;
+    for(let lobe=0;lobe<3;lobe++) {
+      const x=cx+(lobe-1)*w*.43+(random()-.5)*7;
+      const y=cy+(random()-.5)*h*.32;
+      ctx.save();ctx.translate(x,y);ctx.scale(w*(.6+random()*.33),h);
+      const pigment=ctx.createRadialGradient(0,0,.05,0,0,1);
+      const alpha=.075+random()*.07;
+      pigment.addColorStop(0,lobe===1?`rgba(142,165,175,${alpha})`:
+        `rgba(209,194,184,${alpha*.85})`);
+      pigment.addColorStop(.55,`rgba(189,201,202,${alpha*.45})`);
+      pigment.addColorStop(1,"rgba(255,255,255,0)");
+      ctx.fillStyle=pigment;
+      ctx.beginPath();ctx.arc(0,0,1,0,Math.PI*2);ctx.fill();
+      ctx.restore();
+    }
   }
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace;

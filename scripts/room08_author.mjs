@@ -110,9 +110,44 @@ function monument(name, z, side, material = M.brick) {
   box(root, "solid layered theater facade", x, 1.48, z,
     3.2, 2.55, 1.6, M.rose, true);
   archedDoor(root, x, z+.87, 1.07, 1.38, 2.3, M.night);
-  loft(root, "ornate minaret silhouette", [[.38, .34, .34, x+1.25, z-.25],
-    [3.1, .26, .26, x+1.25, z-.25], [4.6, .19, .19, x+1.25, z-.25],
-    [5.12, .03, .03, x+1.25, z-.25]], M.limestone, 12, true);
+  for(const dx of [-1.02,0,1.02]) {
+    curve(root,"deep horseshoe arcade on Avalon Regal facade",
+      [[x+dx-.33,.65,z+.84],[x+dx-.34,1.5,z+.84],
+        [x+dx-.25,2.1,z+.84],[x+dx,2.29,z+.84],
+        [x+dx+.25,2.1,z+.84],[x+dx+.34,1.5,z+.84],
+        [x+dx+.33,.65,z+.84]],.052,M.limestone,28);
+    if(dx!==0) {
+      box(root,"recessed Avalon side arcade window",
+        x+dx,1.39,z+.847,.36,.92,.035,M.night);
+      for(let bar=0;bar<3;bar++) beam(root,"fine theater-window tracery",
+        [x+dx-.15+bar*.15,.94,z+.875],
+        [x+dx-.15+bar*.15,1.84,z+.875],.013,.011,M.gold);
+    }
+  }
+  for(const yy of [2.52,2.69]) curve(root,"stepped gilded theater cornice",
+    [[x-1.64,yy,z+.89],[x,yy+.025,z+.89],
+      [x+1.64,yy,z+.89]],.025,yy>2.6?M.gold:M.limestone,18);
+  const mx=x+1.25,mz=z-.25;
+  loft(root, "ornate minaret silhouette", [[.38,.34,.34,mx,mz],
+    [3.1,.26,.26,mx,mz],[4.25,.2,.2,mx,mz],
+    [4.47,.29,.29,mx,mz],[4.64,.2,.2,mx,mz]],M.limestone,12,true);
+  for(const yy of [2.97,4.24,4.49]) {
+    const ring=[];
+    for(let i=0;i<=20;i++) {
+      const a=i*Math.PI/10;
+      ring.push([mx+Math.sin(a)*.29,yy,mz+Math.cos(a)*.29]);
+    }
+    curve(root,"carved horizontal minaret gallery",ring,.024,M.gold,24);
+  }
+  for(let i=0;i<8;i++) {
+    const a=i*Math.PI/4;
+    add(root,"arched opening in minaret lookout",
+      new THREE.PlaneGeometry(.13,.22),M.night,
+      mx+Math.sin(a)*.203,4.48,mz+Math.cos(a)*.203)
+      .rotation.y=a;
+  }
+  add(root,"formed Avalon minaret crown",
+    new THREE.ConeGeometry(.3,.45,12),M.gold,mx,4.86,mz);
   for (let i = 0; i < 11; i++) {
     const sx = x - 1.35 + random() * 2.7, sz = z - .5 + random() * 1.2;
     add(root, "small theater sky star", new THREE.OctahedronGeometry(.035, 0),
@@ -199,30 +234,71 @@ person("Jane walking the chosen route", 1.1, -3.2, 1.68,
 person("Oleg walking the chosen route", 1.65, -4.5, 1.78,
   { skin:M.skin, hair:M.hair, outfit:M.fabric, pants:M.ink,
     longHair:true, glasses:true, beard:true, yaw:.15 });
-// The itinerary is tied together by a suspended urban sketchbook. Its arches
-// and hanging panes change rhythm as Jane proceeds without boxing in the sky.
-for (const z of [7.6, .2, -7.2]) {
-  curve(root, "wide floating hand-drawn city arch",
-    [[-6.1,4.75,z],[-3.2,5.55,z-.12],[0,5.78,z-.18],
-      [3.2,5.55,z-.12],[6.1,4.75,z]], .035, M.bronze, 34);
-  for (const x of [-4.2,-2.1,0,2.1,4.2]) {
-    curve(root,"fine suspended map thread",
-      [[x,5.35,z],[x+.05,4.95,z+.12]],.011,M.gold,7);
-    const shard=add(root,"hanging translucent city-map pane",
-      new THREE.PlaneGeometry(.31,.46),
-      new THREE.MeshBasicMaterial({color:C.paleGlass,side:THREE.DoubleSide,
-        transparent:true,opacity:.66}),x+.05,4.75,z+.12);
-    shard.rotation.y=.14*Math.sin(x+z);
+// The connective rhythm is rooted in the promenade. The earlier hanging map
+// panes and disconnected polygon fragments turned the open sky into stage
+// rigging, so ornamental lamps and paving mark the route instead.
+for(const [n,z] of [7.68,3.96,.22,-3.54,-7.28,-10.62].entries()) {
+  const side=n%2===0?-1:1,x=side*3.03;
+  const post=loft(root,"solid fluted route lantern post",
+    [[.08,.13,.13,x,z],[.24,.09,.09,x,z],
+      [2.85,.055,.055,x,z],[3.04,.09,.09,x,z]],M.ink,10,true);
+  post.userData.solidFootprint=true;
+  for(let f=0;f<4;f++) {
+    const a=f*Math.PI/2;
+    curve(root,"carved lamppost flute",[[x+Math.cos(a)*.072,.27,z+Math.sin(a)*.072],
+      [x+Math.cos(a)*.054,2.8,z+Math.sin(a)*.054]],.01,M.bronze,9);
+  }
+  box(root,"square metal foot of route lantern",x,3.07,z,
+    .37,.06,.37,M.bronze);
+  const pane=add(root,"warm frosted glass enclosed by lantern frame",
+    new THREE.BoxGeometry(.26,.3,.26),
+    new THREE.MeshBasicMaterial({color:0xf4d9af,transparent:true,
+      opacity:.67,side:THREE.DoubleSide}),x,3.25,z);
+  pane.userData.solidFootprint=false;
+  for(const dx of [-.14,.14]) for(const dz of [-.14,.14])
+    beam(root,"four slender route-lantern corner rails",
+      [x+dx,3.09,z+dz],[x+dx,3.42,z+dz],.015,.013,M.ink);
+  box(root,"formed lantern cap cornice",x,3.44,z,.39,.055,.39,M.bronze);
+  add(root,"pitched lantern hood",new THREE.ConeGeometry(.29,.18,4),
+    M.ink,x,3.54,z).rotation.y=Math.PI/4;
+  add(root,"contained amber light within route lantern",
+    new THREE.SphereGeometry(.095,10,8),
+    new THREE.MeshBasicMaterial({color:0xf6ddb0}),x,3.28,z);
+}
+// Distinct roof silhouettes finish the far view without closing the sky.
+const cityWindowShape=new THREE.Shape();
+cityWindowShape.moveTo(-.055,-.08);cityWindowShape.lineTo(.055,-.08);
+cityWindowShape.lineTo(.055,.055);
+cityWindowShape.quadraticCurveTo(0,.12,-.055,.055);
+cityWindowShape.closePath();
+const cityWindow=new THREE.ExtrudeGeometry(cityWindowShape,
+  {depth:.012,bevelEnabled:false,curveSegments:5});
+for(let i=0;i<12;i++) {
+  const x=-6.05+i*1.08,h=1.8+(i*7%5)*.43,w=.9;
+  const outline=new THREE.Shape();
+  outline.moveTo(-w/2,0);outline.lineTo(w/2,0);
+  if(i%3===0) {
+    outline.lineTo(w/2,h-.25);outline.lineTo(w*.27,h-.25);
+    outline.lineTo(w*.27,h);outline.lineTo(-w*.27,h);
+    outline.lineTo(-w*.27,h-.25);outline.lineTo(-w/2,h-.25);
+  } else if(i%3===1) {
+    outline.lineTo(w/2,h-.16);outline.lineTo(0,h);
+    outline.lineTo(-w/2,h-.16);
+  } else {
+    outline.lineTo(w/2,h-.18);
+    outline.quadraticCurveTo(0,h+.08,-w/2,h-.18);
+  }
+  outline.closePath();
+  const silhouette=add(root,"shaped distant city building beyond Jane's route",
+    new THREE.ExtrudeGeometry(outline,{depth:.16,bevelEnabled:false,
+      curveSegments:6}),i%3?M.arch:M.night,x,0,-13.74);
+  silhouette.userData.solidFootprint=true;
+  for(const yy of [.45,.94,1.43]) for(const offset of [-.2,.2]) {
+    if(yy>h-.22) continue;
+    add(root,"arched window on distant street building",cityWindow,M.paleGlass,
+      x+offset,yy,-13.561);
   }
 }
-for (let i=0;i<12;i++) {
-  const x=-6.05+i*1.08, h=1.8+(i*7%5)*.43;
-  box(root,"far folded city-skyline silhouette",x,h/2,-13.7,
-    .91,h,.12,i%3?M.arch:M.night);
-}
-for (let i=0;i<17;i++) petal(root,"floating city-map fragment",
-  (random()-.5)*12.2, 4.7+random()*.9, -12+random()*24,
-  .22+random()*.16, i%3?M.paper:M.gold, random()*6.28);
 
 window.__authorRoom = () => exportRoom({ key:0xffd2ad,
   fill:0xa8c9d4, ambient:1.7, keyPower:2.2 });

@@ -68,6 +68,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 outdoor sky finish: the seven outdoor or outdoor-blended published worlds (`02`, `03`, `04`, `07`, `08`, `09`, `10`) retain their tall separate sky domes but gain soft cloud and warm pigment variation higher above the horizon. The rebuilt previews were compared to confirm that the painted sky reads as open air rather than a low ceiling. No scene memory or frame assignment changes.
 
+2026-10-21 city-route finish: frame `08` removes suspended map-pane ornaments and disconnected floating fragments from Jane's seven-stop promenade. Shaped distant rooflines and grounded, glazed route lanterns carry the visual rhythm while leaving the tall sky open. The Avalon Regal sculpture gains a horseshoe arcade, window tracery, cornices, and a more articulated minaret. The seven chosen stops, their order, people, and frame ID do not change.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

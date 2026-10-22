@@ -287,6 +287,9 @@ def main() -> None:
     route_names = " ".join(node.get("name", "") for node in route_json["nodes"])
     for stop in ("Pullman", "Avalon Regal", "Stony Island Arts Bank", "Narrow Bridge", "Palmisano", "Saint Ignatius", "Zen Buddhist Temple"):
         assert stop in route_names, f"Missing Chicago route stop: {stop}"
+    assert "solid fluted route lantern post" in route_names and "shaped distant city building" in route_names
+    assert "deep horseshoe arcade on Avalon Regal facade" in route_names
+    assert "hanging translucent city-map pane" not in route_names and "floating city-map fragment" not in route_names
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in route_json["nodes"]) >= 16, "The seven architectural stops and walkers should collide"
     orchard_room = frames[8]["room"]
     assert orchard_room["title"] == "We FINALLY visited our friends in Ithaca for the first time where Zephrine got to try apple picking for the first time."
