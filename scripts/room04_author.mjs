@@ -10,6 +10,7 @@ import { addOlegPortrait, addJanePortrait, addZephrinePortrait,
 import { addContactShadow } from "./stage_shadows.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
 import { paintedFabric } from "./painted_fabric.mjs";
+import { loadRiggedOlegBase, makeRiggedOleg } from "./rigged_oleg.mjs";
 
 // A Roscoe Village walk imagined as a long paper street. The blue toy car is
 // an original sculpted object informed by Oleg's Step2 product reference;
@@ -375,13 +376,13 @@ function adult(name, x, z, outfit, options = {}) {
   return group;
 }
 
-adult("Oleg pushing with Jane", -1.08, 1.8, M.cream, {
+const oleg = adult("Oleg pushing with Jane", -.7, 2.48, M.cream, {
   skin: M.olegSkin, height: 1.73, oleg: true, glasses: true, beard: true, longHair: true,
-  hands: { "1": [.79, 1.48, 1.14], "-1": [-.38, 1.03, .27] }, yaw: .12,
+  hands: { "1": [.4, 1.48, .47], "-1": [-.38, 1.03, .27] }, yaw: .12,
 });
-adult("Jane pushing with Oleg", 1.08, 1.8, M.plum, {
+adult("Jane pushing with Oleg", .7, 2.48, M.plum, {
   skin: M.janeSkin, bun: true, pants: M.dark,
-  hands: { "-1": [-.79, 1.48, 1.14], "1": [.38, 1.03, .27] }, yaw: -.12,
+  hands: { "-1": [-.4, 1.48, .47], "1": [.38, 1.03, .27] }, yaw: -.12,
 });
 
 const zeph = new THREE.Group(); zeph.name = "Zephrine enthusiastically steering her blue car";
@@ -431,6 +432,14 @@ for (let i = 0; i < 35; i++) {
 // open to the sky instead of hanging disconnected twig garlands overhead.
 
 async function authorRoom() {
+  const rig = await loadRiggedOlegBase();
+  oleg.clear();
+  addContactShadow(oleg, 1.73);
+  oleg.add(makeRiggedOleg(rig, {
+    pose: "push", height: 1.73,
+    hands: { "1": [.4, 1.48, .47], "-1": [-.38, 1.03, .27] },
+    shirtColor: M.cream.color.getHex(), pantsColor: M.dark.color.getHex(),
+  }));
   await finishOlegPortraits(root);
   root.updateMatrixWorld(true);
   const groups = new Map();

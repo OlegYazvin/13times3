@@ -52,6 +52,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-21 Oleg head-proportion revision: the reference-based illustrated face and its matching sculpted hair, beard, and glasses are now less vertically compressed in frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11`. His pose, each memory, and every frame ID remain the same. Further whole-figure finish and likeness review are still needed; the published people remain intentionally stylized.
 
+2026-10-21 Oleg body and pose revision: the same eight existing Oleg appearances now use a compact CC0-derived rigged, clothed adult body with three-dimensional hands and scene-specific arm poses, topped by his reference-based illustrated head. In frame `04`, both parents stand closer to the blue car's push grip so the gesture is physically plausible; in frame `07`, his hands rise to support Zephrine on his shoulders. No memory or frame ID changes. The source, adaptation and outstanding close likeness review are documented in [rigged figure notes](rigged-figure-source.md).
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

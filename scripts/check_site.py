@@ -112,6 +112,19 @@ def main() -> None:
         assert any("continuous watercolor sky dome" in node.get("name", "") for node in room_nodes), (
             f"Outdoor room {frame_id} is missing its continuous sky dome"
         )
+    for frame_id in ("02", "04", "05", "07", "08", "09", "10", "11"):
+        room_model = OUTPUT / frames[int(frame_id) - 1]["room"]["modelUrl"].lstrip("/")
+        room_bytes = room_model.read_bytes()
+        json_size = int.from_bytes(room_bytes[12:16], "little")
+        room_json = json.loads(room_bytes[20:20 + json_size])
+        assert any("Oleg's clothed three-dimensional figure" in node.get("name", "")
+                   for node in room_json["nodes"]), f"Room {frame_id} lost Oleg's rigged likeness"
+        assert any("skin" in node for node in room_json["nodes"]), (
+            f"Room {frame_id} needs the posed 3D figure rig"
+        )
+        assert not any("Phone" in node.get("name", "") for node in room_json["nodes"]), (
+            f"Room {frame_id} leaked the source model's unrelated accessory"
+        )
     aquarium_model = OUTPUT / frames[10]["room"]["modelUrl"].lstrip("/")
     aquarium_bytes = aquarium_model.read_bytes()
     aquarium_size = int.from_bytes(aquarium_bytes[12:16], "little")

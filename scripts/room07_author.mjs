@@ -109,7 +109,7 @@ bush(.95, -.45, 2.18, true);
 const oleg = person("Oleg with Zephrine on his shoulders", -.58, 3.12, 1.75, {
   skin: M.skin, hair: M.hair, outfit: M.fabric, pants: M.ink,
   glasses: true, beard: true, longHair: true,
-  hands: { "-1": [-.35, 1.04, .24], "1": [.37, 1.12, .31] }, yaw: -.14,
+  hands: { "-1": [-.29, 1.44, .25], "1": [.3, 1.44, .26] }, yaw: -.14,
 });
 const zeph = person("Zephrine picking her own blueberries up high",
   -.58, 2.86, 1.04, {

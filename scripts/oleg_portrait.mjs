@@ -64,21 +64,27 @@ function sculptHairBehindFace(parent, faceY) {
     [-.12, .17, .14, -.037],
     [.07, .17, .143, -.035],
     [.19, .14, .12, -.04],
-    [.27, .045, .05, -.045],
+    [.27, .065, .07, -.045],
+    [.325, .012, .018, -.045],
   ];
-  const sides = 24, positions = [], uvs = [], indices = [];
-  for (let row = 0; row < profile.length; row++) {
-    const [y, width, depth, offsetZ] = profile[row];
+  const sides = 40, rows = (profile.length - 1) * 4;
+  const positions = [], uvs = [], indices = [];
+  for (let row = 0; row <= rows; row++) {
+    const segment = Math.min(profile.length - 2, Math.floor(row / 4));
+    const t = (row - segment * 4) / 4;
+    const a = profile[segment], b = profile[segment + 1];
+    const [y,width,depth,offsetZ] = a.map((value,i) =>
+      THREE.MathUtils.lerp(value,b[i],t));
     for (let side = 0; side <= sides; side++) {
       // Leave the center front open. The painted face already supplies the
       // hairline there; this modeled shell gives the side and back volume.
-      const angle = .72 + side / sides * (Math.PI * 2 - 1.44);
+      const angle = 1.29 + side / sides * (Math.PI * 2 - 2.58);
       positions.push(Math.sin(angle) * width, faceY + y,
         Math.cos(angle) * depth + offsetZ);
-      uvs.push(side / sides, row / (profile.length - 1));
+      uvs.push(side / sides, row / rows);
     }
   }
-  for (let row = 0; row < profile.length - 1; row++) for (let side = 0; side < sides; side++) {
+  for (let row = 0; row < rows; row++) for (let side = 0; side < sides; side++) {
     const a = row * (sides + 1) + side;
     indices.push(a, a + 1, a + sides + 1, a + 1, a + sides + 2, a + sides + 1);
   }

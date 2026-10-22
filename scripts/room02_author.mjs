@@ -11,6 +11,7 @@ import { addOlegPortrait, finishOlegPortraits } from "./oleg_portrait.mjs";
 import { addContactShadow } from "./stage_shadows.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
 import { paintedFabric } from "./painted_fabric.mjs";
+import { loadRiggedOlegBase, makeRiggedOleg } from "./rigged_oleg.mjs";
 
 // A single impossible space: Oleg's desk opens into a street and four
 // simultaneous acts of Jane's support. All figures and props have volume.
@@ -625,7 +626,7 @@ for (const [x, z, height, color] of [[3.55, 1.3, 1.75, M.orange],
 person("Jane holding Oleg when the search was hard", -.45, -5.88,
   1.68, M.janeInk, { jane: true, hands: { "-1": [-.55, 1.05, .5],
     "1": [.45, 1.02, .49] }, yaw: .38 });
-person("Oleg leaning into Jane's embrace", .12, -5.48, 1.73, M.cream,
+const embracedOleg = person("Oleg leaning into Jane's embrace", .12, -5.48, 1.73, M.cream,
   { oleg: true, glasses: true,
     hands: { "-1": [-.41, 1.02, .45], "1": [.38, .89, .38] }, yaw: -.4 });
 
@@ -644,6 +645,19 @@ beam(root, "pan handle", [-4.68, 1.46, -5.02], [-4.22, 1.46, -4.94],
 
 async function authorRoom() {
   await facesReady;
+  const rig = await loadRiggedOlegBase();
+  for (const [personGroup, pose] of [[oleg, "desk"], [embracedOleg, "embrace"]]) {
+    const paper = pose === "desk" ? personGroup.children.filter(child =>
+      child.name.includes("page") || child.name.includes("mark")) : [];
+    personGroup.clear();
+    addContactShadow(personGroup, 1.73);
+    personGroup.add(makeRiggedOleg(rig, { pose }));
+    for (const child of paper) personGroup.add(child);
+    if (pose === "desk") {
+      pageInHand.position.y = .99;
+      pageInHand.position.z = .44;
+    }
+  }
   await finishOlegPortraits(root);
   root.traverse((object) => {
     if (object.userData.paintedFace) object.material = paintedFaces[object.userData.paintedFace];

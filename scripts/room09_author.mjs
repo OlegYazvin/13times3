@@ -10,6 +10,7 @@ import { addOlegPortrait, addJanePortrait, addZephrinePortrait,
 import { addContactShadow } from "./stage_shadows.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
 import { paintedFabric } from "./painted_fabric.mjs";
+import { loadRiggedOlegBase, makeRiggedOleg } from "./rigged_oleg.mjs";
 
 // A single authored world: the painting and exported GLB share this root.
 // The photographs stay private. Nothing here embeds a photographic image.
@@ -463,7 +464,7 @@ const bite = put(zephrine, "pale bitten spot on Zephrine's first apple",
 bite.scale.set(1.1, .48, .28);
 person("Jane", -1.58, 1.15, 1.67, M.blue, hairDark,
   { bun: true, pants: M.ink, handTargets: { "1": [.52, .96, .34] } });
-person("Oleg", 1.65, 1.12, 1.75, M.ink, hairBrown,
+const oleg = person("Oleg", 1.65, 1.12, 1.75, M.ink, hairBrown,
   { glasses: true, beard: true, longHair: true, pants: M.ink,
     handTargets: { "-1": [-.48, .91, .32] }, jacket: true });
 person("Matt", -3.05, -.65, 1.73, M.red, hairWarm,
@@ -497,6 +498,14 @@ for (let i = 0; i < 14; i++) {
 }
 
 async function authorRoom() {
+  const rig = await loadRiggedOlegBase();
+  oleg.clear();
+  addContactShadow(oleg, 1.75);
+  oleg.add(makeRiggedOleg(rig, {
+    pose: "orchard", height: 1.75,
+    hands: { "-1": [-.48, .91, .32] },
+    shirtColor: M.ink.color.getHex(), pantsColor: M.ink.color.getHex(),
+  }));
   await finishOlegPortraits(root);
   // All leaves use the same few pigments. Merge their transformed geometry so
   // the mobile GPU sees a handful of draw calls instead of hundreds.
