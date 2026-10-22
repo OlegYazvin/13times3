@@ -78,7 +78,7 @@ function sculptHairBehindFace(parent, faceY) {
     for (let side = 0; side <= sides; side++) {
       // Leave the center front open. The painted face already supplies the
       // hairline there; this modeled shell gives the side and back volume.
-      const angle = 1.29 + side / sides * (Math.PI * 2 - 2.58);
+      const angle = 1.68 + side / sides * (Math.PI * 2 - 3.36);
       positions.push(Math.sin(angle) * width, faceY + y,
         Math.cos(angle) * depth + offsetZ);
       uvs.push(side / sides, row / rows);
@@ -97,10 +97,10 @@ function sculptHairBehindFace(parent, faceY) {
   parent.add(mesh);
 }
 
-function shapeOlegPortrait(parent, faceY) {
+function shapeOlegPortrait(parent, faceY, { hairShell = true } = {}) {
   // The painted lenses retain their fine detail; sculpted temples, hair and
   // beard give the portrait depth in profile without covering the eyes.
-  sculptHairBehindFace(parent, faceY);
+  if (hairShell) sculptHairBehindFace(parent, faceY);
   for (const side of [-1, 1]) {
     // These are actual raised frames following the brow and cheek contour.
     // The lenses in the painted texture supply fine detail, while this rim
@@ -187,9 +187,10 @@ function addPortrait(parent, faceY, profile, fallbackMaterial, person) {
   return mesh;
 }
 
-export function addOlegPortrait(parent, faceY, profile, fallbackMaterial) {
+export function addOlegPortrait(parent, faceY, profile, fallbackMaterial,
+  options = {}) {
   const mesh = addPortrait(parent, faceY, profile, fallbackMaterial, "Oleg");
-  shapeOlegPortrait(parent, faceY);
+  shapeOlegPortrait(parent, faceY, options);
   return mesh;
 }
 

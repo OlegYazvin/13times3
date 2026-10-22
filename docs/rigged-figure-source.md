@@ -21,6 +21,13 @@ The model's CC0 license permits reuse without attribution, but the public
 credits page links to its creator. The private reference photos and their
 metadata are never embedded in the published room assets.
 
+The later head pass replaces a hard side-hair shell with a fully sculpted
+cheek, jaw and cranium under the painted portrait. The rear and crown receive
+subtle hair pigment while the lower face keeps skin color. A small wordless
+sun-and-cloud shirt detail echoes one private Oleg reference without copying
+its text or branding. The body garments share the gallery's woven-pigment
+texture.
+
 The fit of the face and hair still needs a close human art review from the
 doorway and at three-quarter angles. Matching a recognizable face to a shared
 storybook body does not automatically make every garment or pose finished.

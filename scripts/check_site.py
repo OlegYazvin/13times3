@@ -119,6 +119,10 @@ def main() -> None:
         room_json = json.loads(room_bytes[20:20 + json_size])
         assert any("Oleg's clothed three-dimensional figure" in node.get("name", "")
                    for node in room_json["nodes"]), f"Room {frame_id} lost Oleg's rigged likeness"
+        assert any("full sculpted cheeks, jaw and cranium" in node.get("name", "")
+                   for node in room_json["nodes"]), (
+            f"Room {frame_id} lost Oleg's sculpted head under the painted face"
+        )
         assert any("skin" in node for node in room_json["nodes"]), (
             f"Room {frame_id} needs the posed 3D figure rig"
         )
