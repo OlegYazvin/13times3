@@ -17,8 +17,17 @@ async function restartBrowser() {
   browser = await chromium.launch(browserOptions);
 }
 
-async function checkViewport(name, options) {
+// Software WebGL screenshots can take longer than Playwright's 30-second
+// default even when the room is interactive and responsive. Keep explicit
+// movement waits short while allowing the visual capture to finish.
+async function newTestContext(options) {
   const context = await browser.newContext(options);
+  context.setDefaultTimeout(90_000);
+  return context;
+}
+
+async function checkViewport(name, options) {
+  const context = await newTestContext(options);
   const page = await context.newPage();
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
@@ -145,7 +154,7 @@ try {
   await checkViewport("desktop", { viewport: { width: 1280, height: 800 } });
   await checkViewport("mobile", { viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true });
 
-  const context = await browser.newContext();
+  const context = await newTestContext();
   await context.addInitScript(() => {
     const original = HTMLCanvasElement.prototype.getContext;
     HTMLCanvasElement.prototype.getContext = function (kind, ...args) {
@@ -163,7 +172,7 @@ try {
   await restartBrowser();
 
   // The painting opens onto the same world; crossing never replaces the camera pose.
-  const roomContext = await browser.newContext({ viewport: { width: 920, height: 700 } });
+  const roomContext = await newTestContext({ viewport: { width: 920, height: 700 } });
   const roomPage = await roomContext.newPage();
   const roomErrors = [];
   roomPage.on("pageerror", (error) => roomErrors.push(error.message));
@@ -236,7 +245,7 @@ try {
   await roomContext.close();
   console.log("Room 01: painterly reveal, continuous entry and exit, obstacles, blank frame, and cleanup");
 
-  const jobContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
+  const jobContext = await newTestContext({ viewport: { width: 960, height: 720 } });
   const jobPage = await jobContext.newPage();
   const jobErrors = [];
   jobPage.on("pageerror", error => jobErrors.push(error.message));
@@ -288,7 +297,7 @@ try {
   console.log("Room 02: painting, live doorway, desk and figure collision, exit, and cleanup");
   await restartBrowser();
 
-  const friendshipContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
+  const friendshipContext = await newTestContext({ viewport: { width: 960, height: 720 } });
   const friendshipPage = await friendshipContext.newPage();
   const friendshipErrors = [];
   friendshipPage.on("pageerror", error => friendshipErrors.push(error.message));
@@ -328,7 +337,7 @@ try {
   await friendshipContext.close();
   console.log("Room 03: friendship painting, doorway, figure collision, return, and cleanup");
 
-  const carContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
+  const carContext = await newTestContext({ viewport: { width: 960, height: 720 } });
   const carPage = await carContext.newPage();
   const carErrors = [];
   carPage.on("pageerror", error => carErrors.push(error.message));
@@ -369,7 +378,7 @@ try {
   console.log("Room 04: blue-car painting, doorway, car collision, return, and cleanup");
   await restartBrowser();
 
-  const officeContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
+  const officeContext = await newTestContext({ viewport: { width: 960, height: 720 } });
   const officePage = await officeContext.newPage();
   const officeErrors = [];
   officePage.on("pageerror", error => officeErrors.push(error.message));
@@ -411,7 +420,7 @@ try {
   await officeContext.close();
   console.log("Room 05: symbolic office painting, doorway, Jane collision, exit, and cleanup");
 
-  const weaningContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
+  const weaningContext = await newTestContext({ viewport: { width: 960, height: 720 } });
   const weaningPage = await weaningContext.newPage();
   const weaningErrors = [];
   weaningPage.on("pageerror", error => weaningErrors.push(error.message));
@@ -454,7 +463,7 @@ try {
   console.log("Room 06: tender painting, doorway, chair collision, return, and cleanup");
   await restartBrowser();
 
-  const berryContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
+  const berryContext = await newTestContext({ viewport: { width: 960, height: 720 } });
   const berryPage = await berryContext.newPage();
   const berryErrors = [];
   berryPage.on("pageerror", error => berryErrors.push(error.message));
@@ -494,7 +503,7 @@ try {
   await berryContext.close();
   console.log("Room 07: berry painting, continuous doorway, figure collision, and cleanup");
 
-  const routeContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
+  const routeContext = await newTestContext({ viewport: { width: 960, height: 720 } });
   const routePage = await routeContext.newPage();
   const routeErrors = [];
   routePage.on("pageerror", error => routeErrors.push(error.message));
@@ -537,7 +546,7 @@ try {
   }
 
   if (process.env.GALLERY_TEST_SHEDD_ONLY !== "1") {
-  const orchardContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
+  const orchardContext = await newTestContext({ viewport: { width: 960, height: 720 } });
   const orchardPage = await orchardContext.newPage();
   const orchardErrors = [];
   orchardPage.on("pageerror", error => orchardErrors.push(error.message));
@@ -583,7 +592,7 @@ try {
   await orchardContext.close();
   console.log("Room 09: far painting, live reveal, continuous doorway, figure collision, and cleanup");
 
-  const playContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
+  const playContext = await newTestContext({ viewport: { width: 960, height: 720 } });
   const playPage = await playContext.newPage();
   const playErrors = [];
   playPage.on("pageerror", error => playErrors.push(error.message));
@@ -636,7 +645,7 @@ try {
   await restartBrowser();
   }
 
-  const aquariumContext = await browser.newContext({ viewport: { width: 960, height: 720 } });
+  const aquariumContext = await newTestContext({ viewport: { width: 960, height: 720 } });
   const aquariumPage = await aquariumContext.newPage();
   const aquariumErrors = [];
   aquariumPage.on("pageerror", error => aquariumErrors.push(error.message));
@@ -715,7 +724,7 @@ try {
   await restartBrowser();
 
   if (process.env.GALLERY_TEST_PHONE_FINAL_ONLY !== "1") {
-  const phoneContext = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true });
+  const phoneContext = await newTestContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3, isMobile: true, hasTouch: true });
   const phonePage = await phoneContext.newPage();
   // Capture at CSS size: WebGL still renders with the phone's pixel ratio,
   // while SwiftShader need not read back a 1170×2532 image for every pose.
@@ -825,7 +834,7 @@ try {
 
   for (const [id, x, z, yaw] of [["10", 11, -24.35, Math.PI],
     ["11", 14.9083333333, -28.8, 0]]) {
-    const context = await browser.newContext({ viewport: { width: 390, height: 844 },
+    const context = await newTestContext({ viewport: { width: 390, height: 844 },
       deviceScaleFactor: 3, isMobile: true, hasTouch: true });
     const page = await context.newPage();
     const captureFinalPhone = page.screenshot.bind(page);
@@ -854,7 +863,7 @@ try {
     console.log(`Phone emulation: room ${id} entered at a stable FOV`);
   }
 
-  const failedContext = await browser.newContext({ viewport: { width: 920, height: 700 } });
+  const failedContext = await newTestContext({ viewport: { width: 920, height: 700 } });
   const failedPage = await failedContext.newPage();
   await failedPage.route("**/assets/explore/room01/room.glb*", (route) => route.abort());
   await failedPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });

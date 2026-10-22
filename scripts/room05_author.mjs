@@ -18,6 +18,38 @@ const art = createRoomArt({ index: 4,
   width: 12.6, height: 6.5, depth: 17.8, colors: C, seed: 505505 });
 const { root, M, random, add, box, beam, curve, loft, petal,
   wrapSky, ground, person, exportRoom } = art;
+// Tall side panes hold a diffuse wash of the world beyond the workspace.
+// It is deliberately unlocatable: the remembered conflict is Jane's, while
+// the glass supplies depth, daylight, and a warmer direction of escape.
+const windowCanvas=document.createElement("canvas");
+windowCanvas.width=256;windowCanvas.height=512;
+const windowContext=windowCanvas.getContext("2d");
+const daylight=windowContext.createLinearGradient(0,0,0,512);
+daylight.addColorStop(0,"#556878");
+daylight.addColorStop(.43,"#8ca8a8");
+daylight.addColorStop(.76,"#c7c9b0");
+daylight.addColorStop(1,"#e3c7a0");
+windowContext.fillStyle=daylight;windowContext.fillRect(0,0,256,512);
+for(let i=0;i<23;i++) {
+  const x=random()*256,y=random()*480;
+  const glow=windowContext.createRadialGradient(x,y,0,x,y,27+random()*72);
+  glow.addColorStop(0,i%3?"rgba(241,225,194,.12)":"rgba(96,139,150,.16)");
+  glow.addColorStop(1,"rgba(255,255,255,0)");
+  windowContext.fillStyle=glow;
+  windowContext.fillRect(0,0,256,512);
+}
+for(const [x,width] of [[33,4],[82,8],[143,5],[208,7]]) {
+  windowContext.fillStyle="rgba(55,82,91,.15)";
+  windowContext.fillRect(x,0,width,512);
+}
+const windowWash=new THREE.CanvasTexture(windowCanvas);
+windowWash.colorSpace=THREE.SRGBColorSpace;
+const coolGlass=new THREE.MeshStandardMaterial({color:0xc8d4cb,map:windowWash,
+  emissive:0x4e6a6b,emissiveIntensity:.22,roughness:.47,
+  side:THREE.DoubleSide});
+const warmGlass=new THREE.MeshStandardMaterial({color:0xf0d4ae,
+  emissive:0xd3a56e,emissiveIntensity:.35,roughness:.66,
+  side:THREE.DoubleSide});
 wrapSky();
 ground(C.floorDark, (x, z) => {
   const open = THREE.MathUtils.smoothstep(-z + .18 * Math.sin(x), -2, 7);
@@ -32,7 +64,7 @@ for (const side of [-1, 1]) {
     box(root, "solid brick pier between high windows", side * 6.12, 3.22,
       z, .35, 6.43, .4, i % 2 ? M.brick : M.brickLight, true);
     box(root, "tall silver-blue shared-workspace window", side * 6.13,
-      3.1, z + 1.48, .045, 3.83, 2.44, M.glass);
+      3.1, z + 1.48, .045, 3.83, 2.44, coolGlass);
     box(root, "deep lower brick spandrel", side * 6.09, .59,
       z + 1.48, .25, 1.18, 2.48, M.brick);
     for (const y of [1.2, 4.99]) box(root, "continuous stone sill and lintel",
@@ -60,7 +92,7 @@ for (let i = -5; i <= 5; i++) {
   add(root, "arched industrial daylight window",
     new THREE.ExtrudeGeometry(pane,
       { depth: .035, bevelEnabled: false, curveSegments: 8 }),
-    i < 0 ? M.paleGlass : M.paper, x, 1.18, -8.62);
+    i < 0 ? coolGlass : warmGlass, x, 1.18, -8.62);
   curve(root, "masonry arch around daylight window",
     [[x - .62, 1.18, -8.54], [x - .62, 1.18 + tall - .45, -8.54],
       [x, 1.18 + tall, -8.54], [x + .62, 1.18 + tall - .45, -8.54],
@@ -69,6 +101,105 @@ for (let i = -5; i <= 5; i++) {
     [x - .58, 2.88, -8.53], [x + .58, 2.88, -8.53],
     .021, .021, M.brass, 6);
 }
+
+// A few actual suspended lamps give the large office an inhabited scale.
+// Their turned metal shells, inner glass, and attached supports replace the
+// feeling of unexplained thin lines hanging from the plaster vault.
+const lampGlow=new THREE.MeshStandardMaterial({color:0xf5dcc0,
+  emissive:0xe3aa73,emissiveIntensity:.68,roughness:.62,
+  side:THREE.DoubleSide});
+const shadeProfile=[
+  [.11,.53],[.18,.48],[.24,.43],[.32,.35],
+  [.4,.23],[.46,.12],[.47,.04],[.45,0],
+].map(([r,y])=>new THREE.Vector2(r,y));
+const shadeGeometry=new THREE.LatheGeometry(shadeProfile,28);
+for(const [index,x,z] of [
+  [0,-2.9,4.15],[1,2.85,.65],[2,-2.6,-2.85],[3,2.9,-6.3],
+]) {
+  const light=new THREE.Group();
+  light.name="suspended fluted office pendant with an inset glass diffuser";
+  light.position.set(x,0,z);root.add(light);
+  beam(light,"fixed pendant cable from the plaster vault",
+    [0,4.55,0],[0,6.25,0],.014,.012,M.ink,10);
+  add(light,"small turned ceiling rose joining the lamp cable",
+    new THREE.CylinderGeometry(.095,.075,.07,18),M.brass,0,6.27,0);
+  add(light,"continuous spun-metal lamp shade",shadeGeometry,M.ink,
+    0,4.08,0);
+  add(light,"warm recessed diffuser under the metal shade",
+    new THREE.CircleGeometry(.432,30),lampGlow,0,4.085,0)
+    .rotation.x=-Math.PI/2;
+  add(light,"rolled brass lower rim of the pendant",
+    new THREE.TorusGeometry(.452,.021,8,32),M.brass,0,4.11,0)
+    .rotation.x=Math.PI/2;
+  for(let flute=0;flute<12;flute++) {
+    const angle=flute*Math.PI*2/12+index*.07;
+    curve(light,"fine radial flute pressed into the metal shade",[
+      [Math.cos(angle)*.2,4.52,Math.sin(angle)*.2],
+      [Math.cos(angle)*.33,4.42,Math.sin(angle)*.33],
+      [Math.cos(angle)*.45,4.17,Math.sin(angle)*.45],
+    ],.0045,M.brass,12);
+  }
+}
+
+// A single, hand-shaped oculus suggests a world beyond the office pressure.
+// The glass is seated inside plaster and has real curved muntins; it reads
+// overhead on a portrait phone without claiming this was a literal skylight.
+const skylightCanvas=document.createElement("canvas");
+skylightCanvas.width=skylightCanvas.height=256;
+const skylightPaint=skylightCanvas.getContext("2d");
+const skyWash=skylightPaint.createLinearGradient(0,0,256,256);
+skyWash.addColorStop(0,"#98b2b6");
+skyWash.addColorStop(.42,"#b9c9bc");
+skyWash.addColorStop(.77,"#e3d5b2");
+skyWash.addColorStop(1,"#f4d7aa");
+skylightPaint.fillStyle=skyWash;
+skylightPaint.fillRect(0,0,256,256);
+for(let i=0;i<16;i++) {
+  const x=random()*256,y=random()*256;
+  const bloom=skylightPaint.createRadialGradient(x,y,0,x,y,17+random()*39);
+  bloom.addColorStop(0,"rgba(255,246,217,.24)");
+  bloom.addColorStop(1,"rgba(255,246,217,0)");
+  skylightPaint.fillStyle=bloom;
+  skylightPaint.fillRect(0,0,256,256);
+}
+const skyGlassTexture=new THREE.CanvasTexture(skylightCanvas);
+skyGlassTexture.colorSpace=THREE.SRGBColorSpace;
+const skyGlass=new THREE.MeshBasicMaterial({map:skyGlassTexture,
+  color:0xffffff,side:THREE.DoubleSide});
+function oculusShape(radiusX,radiusY) {
+  const shape=new THREE.Shape();
+  shape.moveTo(-radiusX,0);
+  shape.bezierCurveTo(-radiusX,-radiusY*.6,-radiusX*.54,-radiusY,0,-radiusY);
+  shape.bezierCurveTo(radiusX*.66,-radiusY,radiusX*.96,-radiusY*.42,radiusX,0);
+  shape.bezierCurveTo(radiusX*.93,radiusY*.6,radiusX*.48,radiusY,0,radiusY);
+  shape.bezierCurveTo(-radiusX*.53,radiusY,-radiusX*.92,radiusY*.55,-radiusX,0);
+  return shape;
+}
+const oculus=new THREE.Group();
+oculus.name="joined plaster oculus holding painted daylight over Jane";
+oculus.position.set(0,6.22,-1.15);
+oculus.rotation.x=-Math.PI/2;root.add(oculus);
+add(oculus,"broad shaped plaster recess beneath the office vault",
+  new THREE.ShapeGeometry(oculusShape(2.18,2.28),32),M.mortar);
+const glassGeometry=new THREE.ShapeGeometry(oculusShape(1.91,2.02),32);
+const uv=glassGeometry.attributes.uv;
+for(let i=0;i<uv.count;i++)
+  uv.setXY(i,(uv.getX(i)+1.91)/3.82,(uv.getY(i)+2.02)/4.04);
+add(oculus,"painted cool-to-warm glazing seated inside carved plaster",
+  glassGeometry,skyGlass,0,0,-.026);
+const boundary=oculusShape(1.92,2.03).getPoints(42)
+  .map(point=>[point.x,point.y,-.06]);
+boundary.push(boundary[0]);
+curve(oculus,"continuous raised inner glazing bead",boundary,.033,M.brass,66);
+curve(oculus,"long central rib joined to both ends of the glazing",[
+  [0,-1.98,-.065],[.035,-.96,-.077],
+  [0,0,-.083],[-.035,.96,-.077],[0,1.98,-.065]],
+  .022,M.brass,36);
+for(const y of [-.72,.76]) curve(oculus,
+  "shallow bowed transom seated in the oculus frame",[
+    [-1.58,y,-.065],[-.77,y+.08,-.075],
+    [0,y+.12,-.082],[.78,y+.08,-.075],
+    [1.58,y,-.065]],.015,M.brass,32);
 
 // Heavy inward-leaning ribs at the near end release into a wide open arch.
 // They are architectural resistance, not portraits of real people.
@@ -345,6 +476,83 @@ for(const side of [-1,1]) {
     .013,M.brass,10);
 }
 
+// Living plants soften the hard office perimeter. Each leaf has a midrib,
+// camber and changing outline, so these read as grown forms rather than a
+// pile of green spheres. Pots are solid at floor level; leaves can overhang.
+const leafGreen=new THREE.MeshStandardMaterial({color:0x87957d,
+  roughness:.92,side:THREE.DoubleSide});
+const leafDark=new THREE.MeshStandardMaterial({color:0x5d756c,
+  roughness:.95,side:THREE.DoubleSide});
+function addLeaf(parent,start,end,width,material) {
+  const a=new THREE.Vector3(...start),b=new THREE.Vector3(...end);
+  const axis=b.clone().sub(a);
+  const across=new THREE.Vector3(-axis.z,0,axis.x).normalize();
+  const positions=[],uvs=[],indices=[];
+  for(let row=0;row<=8;row++) {
+    const t=row/8;
+    const mid=a.clone().addScaledVector(axis,t);
+    mid.y+=.035*Math.sin(Math.PI*t);
+    const half=width*Math.pow(Math.sin(Math.PI*t),.72);
+    for(let col=-1;col<=1;col++) {
+      const point=mid.clone().addScaledVector(across,col*half);
+      point.y-=Math.abs(col)*half*.17;
+      positions.push(point.x,point.y,point.z);
+      uvs.push((col+1)/2,t);
+    }
+  }
+  for(let row=0;row<8;row++) for(let col=0;col<2;col++) {
+    const i=row*3+col;
+    indices.push(i,i+3,i+1,i+1,i+3,i+4);
+  }
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
+  geo.setAttribute("uv",new THREE.Float32BufferAttribute(uvs,2));
+  geo.setIndex(indices);geo.computeVertexNormals();
+  add(parent,"arched living leaf with a cupped surface",geo,material);
+  curve(parent,"vein joining the leaf to its stem",[
+    start,[a.x+axis.x*.35,a.y+axis.y*.35+.03,a.z+axis.z*.35],
+    [a.x+axis.x*.72,a.y+axis.y*.72+.03,a.z+axis.z*.72],end],
+  .0045,M.olive,12);
+}
+for(const [index,x,z] of [
+  [0,-4.45,-1.35],[1,3.0,2.7],[2,-4.8,-5.5],
+  [3,4.5,-5.12],[4,-4.35,6.7],
+]) {
+  const plant=new THREE.Group();
+  plant.name="potted living office foliage with sculpted leaves";
+  plant.position.set(x,0,z);root.add(plant);
+  const potProfile=[[0,.23],[.04,.24],[.06,.25],[.12,.225],
+    [.4,.19],[.47,.23],[.49,.23],[.5,.185]]
+    .map(([y,r])=>new THREE.Vector2(r,y));
+  const pot=add(plant,"solid tapered ceramic planter with turned lip",
+    new THREE.LatheGeometry(potProfile,24),
+    index%2?M.brickLight:M.mortar);
+  pot.userData.solidFootprint=true;
+  add(plant,"dark recessed soil inside the planter",
+    new THREE.CircleGeometry(.185,24),M.ink,0,.486,0)
+    .rotation.x=-Math.PI/2;
+  for(let branch=0;branch<7;branch++) {
+    const angle=(branch*2.39996+index*.53);
+    const reach=.37+(branch%3)*.115;
+    const height=.96+(branch%4)*.19;
+    const bend=[Math.cos(angle)*reach*.68,height*.73,
+      Math.sin(angle)*reach*.68];
+    const tip=[Math.cos(angle)*reach,height,
+      Math.sin(angle)*reach];
+    curve(plant,"continuous tapering foliage stem",[
+      [0,.47,0],[bend[0]*.54,.62,bend[2]*.54],bend,tip],
+      .009,leafDark,15);
+    addLeaf(plant,bend,tip,.115+(branch%2)*.028,
+      branch%3===0?leafDark:leafGreen);
+    if(branch%2===0) {
+      const a=angle+.66;
+      addLeaf(plant,[bend[0]*.66,height*.6,bend[2]*.66],
+        [Math.cos(a)*reach*.77,height-.06,
+          Math.sin(a)*reach*.77],.075,leafGreen);
+    }
+  }
+}
+
 // Jane is the visual answer to the room's pressure. Oleg and Zephrine remain
 // nearby as a family, while Jane's open palms and stance own the moment.
 const jane = person("Jane standing up for her family", 0, 5.05, 1.75, {
@@ -353,7 +561,7 @@ const jane = person("Jane standing up for her family", 0, 5.05, 1.75, {
   yaw: 0,
 });
 person("Oleg beside Jane during the move", -2.05, 2.66, 1.73, {
-  skin: M.skin, hair: M.hair, outfit: M.navy, pants: M.ink,
+  skin: M.skin, hair: M.hair, outfit: 0xe5d8c4, pants: M.ink,
   glasses: true, beard: true, longHair: true,
   hands: { "1": [.28, .9, .42] }, yaw: .22,
 });

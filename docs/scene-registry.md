@@ -166,6 +166,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-22 recurring likeness and aquarium-fish revision: Oleg's eight existing appearances (`02`, `04`, `05`, `07`, `08`, `09`, `10`, `11`) now share a new painted face study made from his two private reference photos, mapped to a broader, taller continuous sculpted head. The original photos remain private. Frame `11` keeps G and Zephrine's same Shedd memory and freestanding portal, while four separated groups of detailed 3D reef fish occupy the rear water at viewing height. No memory, person, title, frame ID, independent sky world, or portal position changes.
 
+2026-10-22 office-light and recurring-portrait revision: frame `05` keeps Jane's same symbolic office move, with cool and warm glazed window washes, a carved daylight oculus in its vault, four joined fluted pendants, and five formed living plants beside its route. Oleg wears a light, wordlessly embroidered shirt that echoes his supplied reference photo. His shared sculpted head in the same eight published appearances has a broader lower jaw, closer to both private reference photos; the painted face and source photos are unchanged. Adjacent outdoor worlds remain independently rendered through their own doors, however large their skies and scenery become. These are revisions of existing art, not new memories or frame assignments.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

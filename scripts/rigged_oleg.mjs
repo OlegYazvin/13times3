@@ -89,8 +89,10 @@ export function makeRiggedOleg(template, { pose = "desk", height = 1.73,
   head.position.y = 1.47 - 1.315 * headHeight;
   figure.add(head);
   const headRings = [
-    [-.445, .108, .082, -.016], [-.375, .148, .131, -.02],
-    [-.27, .173, .151, -.026], [-.14, .177, .158, -.03],
+    // Oleg's beard follows a broad lower jaw in both references. A narrow
+    // terminal cone made the wrapped portrait look like a different person.
+    [-.445, .128, .092, -.016], [-.375, .164, .137, -.02],
+    [-.27, .181, .154, -.026], [-.14, .182, .158, -.03],
     [.025, .165, .146, -.036], [.115, .141, .124, -.043],
     [.155, .112, .099, -.048], [.174, .067, .061, -.05],
     [.181, .008, .012, -.05],
