@@ -12,6 +12,8 @@ The published room uses the photo-backed head-tilt, clothing colors, skin tones 
 
 October 22 close-view garment pass: Zephrine and Charlize's original three-ring skirts read as rounded toy bodies on a phone. Their dresses now have a continuous modeled surface with shaped hems and shallow sewn pleats, still leaving the children's legs visible. Charlize's blue vertical stripes, lower woven cross-bands and pink trim follow that 3D cloth instead of floating as thick rings. Their formed shoes gain two modest fastening straps; Zephrine's small blue bow is tucked into her hair after a larger trial appeared detached. The girls still hold hands, and the dress surfaces contribute collision footprints. Their head and hand finish remains open art review.
 
+October 22 garden-tree revision: the five old shade trees with flattened oval crowns are replaced by palette-adapted copies of [Quaternius's CC0 tree](https://poly.pizza/m/qZtx0AHhcy). Trunk collision stays narrow while the foliage remains overhead. The garden still symbolizes repeated park and dance visits; no new event is asserted.
+
 ## Public setting references
 
 The [Chicago Park District's Hamlin Park page](https://www.chicagoparkdistrict.com/parks-facilities/hamlin-hannibal-park) describes its larger park and playground at 3035 N Hoyne Avenue. Its [Fellger Park page](https://www.chicagoparkdistrict.com/parks-facilities/fellger-charles-park) describes a much smaller shaded playlot at Belmont and Damen, with a soft-surface playground. [Visceral Dance's youth program](https://www.visceraldance.com/youthprogram) is at 3121 N Rockwell Avenue. Use those differences to make three linked memories legible without asserting which exact equipment the girls used or what date a class occurred.

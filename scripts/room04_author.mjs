@@ -11,8 +11,7 @@ import { addContactShadow } from "./stage_shadows.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
 import { paintedFabric } from "./painted_fabric.mjs";
 import { loadRiggedOlegBase, makeRiggedOleg } from "./rigged_oleg.mjs";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import treeUrl from "./assets/room04/quaternius-tree.glb";
+import { loadAdaptedTree, plantAdaptedTree } from "./adapted_tree.mjs";
 
 // A Roscoe Village walk imagined as a long paper street. The blue toy car is
 // an original sculpted object informed by Oleg's Step2 product reference;
@@ -545,29 +544,17 @@ for (let i = 0; i < 35; i++) {
 
 async function authorRoom() {
   const rig = await loadRiggedOlegBase();
-  const treeModel = (await new GLTFLoader().loadAsync(treeUrl)).scene;
+  const treeModel = await loadAdaptedTree();
   for (const side of [-1, 1]) for (let i = -3; i < 4; i++) {
     const x = side * 2.9, z = -5.8 + i * 3.9;
-    const tree = treeModel.clone(true);
-    tree.name = "detailed parkway tree on the Roscoe Village block";
     const scale = .48 + ((i + 4) % 3) * .022;
-    tree.scale.set(scale * (side < 0 ? 1 : .94), scale, scale);
-    tree.rotation.y = (i * 1.79 + side * 2.2);
-    tree.position.set(x, .13, z);
-    tree.traverse(part => {
-      if (!part.isMesh) return;
-      part.material = part.material.clone();
-      part.material.normalMap = null;
-      part.material.roughness = .98;
-      if (part.material.name.includes("Leaves")) {
-        part.material.color.set(side < 0 ? 0xb5c5ad : 0xc2ceb8);
-        part.material.side = THREE.DoubleSide;
-      }
+    plantAdaptedTree(root, treeModel, {
+      x, z, scale: scale * (side < 0 ? 1 : .97),
+      rotation: i * 1.79 + side * 2.2,
+      leafTint: side < 0 ? 0xb5c5ad : 0xc2ceb8,
+      name: "detailed parkway tree on the Roscoe Village block",
+      colliderRadius: .17,
     });
-    root.add(tree);
-    const trunk = add(root, "solid tree trunk collision core",
-      new THREE.CylinderGeometry(.13, .17, 2.1, 10), M.bark, x, 1.08, z);
-    trunk.userData.solidFootprint = true;
   }
   oleg.clear();
   addContactShadow(oleg, 1.73);

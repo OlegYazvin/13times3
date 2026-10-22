@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { foliageLobe } from "./sculpted_foliage.mjs";
+import { loadAdaptedTree, plantAdaptedTree } from "./adapted_tree.mjs";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
@@ -217,44 +217,10 @@ for(const side of [-1,1]) for(let patch=0;patch<8;patch++) {
 
 // A quiet, shaded Fellger-like play nook on the left. The smallness is a
 // setting cue. The flower-table is a symbolic game, not a documented event.
-for (const [x, z] of [[-5.15, -4.7], [-5.1, -.2], [-4.7, 4.2]]) {
-  loft(root, "solid hand-carved shade tree", [[0, .24, .2, x, z],
-    [.7, .21, .17, x + .03, z], [1.55, .15, .13, x - .04, z],
-    [2.3, .1, .09, x + .02, z]], M.bark, 9, true);
-  curve(root, "branch canopy", [[x, 1.8, z], [x + .55, 2.5, z + .25],
-    [x + 1.25, 2.83, z + .35]], .08, M.bark);
-  curve(root, "branch canopy", [[x, 1.72, z], [x - .45, 2.48, z - .3],
-    [x - .9, 2.8, z - .75]], .07, M.bark);
-  foliageLobe(root, "overlapping leafy shade above the play nook",
-    x + .68, 2.82, z + .25, .85, .34, .6, C.leaf, x + z);
-  foliageLobe(root, "second scalloped shade crown",
-    x - .64, 2.77, z - .46, .77, .31, .55, C.paleLeaf, x - z);
-  foliageLobe(root, "deep foliage beneath the park crown",
-    x, 2.91, z, .7, .28, .64, C.leaf, z);
-  for (let i = 0; i < 7; i++) petal(root, "layered park canopy leaf",
-    x + (random() - .5) * 1.25, 2.72 + random() * .31,
-    z + (random() - .5) * .88, .2 + random() * .09,
-    i % 3 ? M.leaf : M.paleLeaf, random() * 6.28);
-}
-for (const [x, z] of [[4.83, 3.55], [4.95, -2.2]]) {
-  loft(root, "solid sculpted shade tree at the park edge",
-    [[0,.23,.21,x,z],[.9,.2,.17,x+.04,z],
-      [1.95,.14,.13,x-.05,z],[2.54,.075,.07,x+.02,z]],M.bark,11,true);
-  for (const side of [-1,1]) {
-    curve(root,"living side branch under the canopy",
-      [[x,1.86,z],[x+side*.4,2.49,z-.2],
-        [x+side*.76,2.94,z-.36]],.07,M.bark,17);
-    foliageLobe(root,"full rounded park tree crown",
-      x+side*.49,2.91,z-.31,.76,.36,.61,
-      side>0?C.leaf:C.paleLeaf,x+z+side);
-  }
-  foliageLobe(root,"layered foliage at the tree center",
-    x,3.16,z,.71,.32,.57,C.leaf,z);
-  for(let i=0;i<7;i++) petal(root,"attached park tree leaf",
-    x+(random()-.5)*1.1,2.8+random()*.25,
-    z+(random()-.5)*.65,.15+random()*.08,
-    i%4?M.leaf:M.paleLeaf,random()*6.28);
-}
+const parkTreePositions = [
+  [-5.15, -4.7], [-5.1, -.2], [-4.7, 4.2],
+  [4.83, 3.55], [4.95, -2.2],
+];
 box(root, "soft shaded play surface", -3.45, .035, -3.55,
   3.75, .055, 2.9, M.lilac);
 for (let i = 0; i < 9; i++) {
@@ -659,6 +625,14 @@ for (const side of [-1, 1]) {
 }
 
 async function authorRoom() {
+  const parkTree = await loadAdaptedTree();
+  parkTreePositions.forEach(([x, z], index) => plantAdaptedTree(root, parkTree, {
+    x, z, scale: .43 + index % 2 * .025,
+    rotation: index * 1.41,
+    leafTint: index % 2 ? 0xc7d2b9 : 0xb9c9ad,
+    name: "detailed shade tree in the friendship garden",
+    colliderRadius: .2,
+  }));
   await finishOlegPortraits(root);
   root.updateMatrixWorld(true);
   const groups = new Map();

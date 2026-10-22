@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { foliageLobe } from "./sculpted_foliage.mjs";
+import { loadAdaptedTree, plantAdaptedTree } from "./adapted_tree.mjs";
 import { createRoomArt } from "./room_art.mjs";
 
 // Shared play is the remembered event. The park's ship, lighthouse, whale,
@@ -266,23 +266,7 @@ wave(-4.2,4.9,3.3);wave(4.15,1.6,3.4,1.3);
 }
 
 // A few distinct connected garden spaces border the large central play area.
-for(const [x,z] of [[-6,5.7],[6.25,.2],[-6.3,-.9],[6,-6.4]]) {
-  const trunk=loft(root,"solid branching garden tree",[[0,.19,.17,x,z],
-    [2.15,.15,.14,x,z],[3.2,.08,.09,x,z]],M.timber,9,true);
-  trunk.userData.solidFootprint=true;
-  for(let j=0;j<5;j++) {
-    const a=j*1.256+z*.1,dx=Math.cos(a),dz=Math.sin(a);
-    curve(root,"bent leafy garden bough",[[x,2.5,z],
-      [x+dx*.65,3.1,z+dz*.65],[x+dx*1.45,3.35,z+dz*1.45]],
-      .047,M.timber,15);
-    foliageLobe(root,"overlapping garden canopy around a branching bough",
-      x+dx*1.08,3.34,z+dz*1.08,.62,.48,.54,
-      j%2?C.leaf:C.darkLeaf,x+z+j);
-    for(let k=0;k<7;k++) petal(root,"leaf in play garden canopy",
-      x+dx*(.6+random()),3.1+(random()-.5)*.65,
-      z+dz*(.6+random()),.27+random()*.15,k%3?M.leaf:M.darkLeaf,a);
-  }
-}
+const playGardenTrees = [[-6,5.7],[6.25,.2],[-6.3,-.9],[6,-6.4]];
 // Small planted islands give the long approach a garden scale. Every bloom
 // grows from a stem and paired leaves; loose confetti would make the ground
 // look unfinished and would not read as the park's planted landscape.
@@ -381,4 +365,13 @@ for(const side of [-1,1]) curve(root,
     return [.16*Math.sin(z*.65)+playSide(z,side),.028,z];
   }),.012,side<0?M.gold:M.paleBlue,50);
 
-window.__authorRoom=()=>exportRoom();
+window.__authorRoom=async()=>{
+  const source = await loadAdaptedTree();
+  playGardenTrees.forEach(([x,z],index)=>plantAdaptedTree(root,source,{
+    x,z,scale:.53+(index%2)*.025,rotation:index*1.35+.4,
+    leafTint:index%2?0xbacdb4:0xadc8aa,
+    name:"detailed garden shade tree beside the shared play space",
+    colliderRadius:.2,
+  }));
+  return exportRoom();
+};

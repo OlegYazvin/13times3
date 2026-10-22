@@ -146,6 +146,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-22 blue-car street-tree revision: frame `04` keeps Jane and Oleg pushing Zephrine in her blue car along the same dreamlike Roscoe Village block. The fourteen foreground trees now use a palette-adapted CC0 3D tree instead of smooth procedural canopy ovals, with narrow collision at the trunks. This changes only environmental art in the existing memory; frame ID, title, people, portal position, open sky, and room boundary remain unchanged.
 
+2026-10-22 shared outdoor tree follow-up: frames `03` and `10` now use the same palette-adapted CC0 shade-tree model as frame `04`, replacing their simplistic oval canopies. The five friendship-garden trees and four Play Garden trees keep narrow trunk collision. These are art revisions of the same published memories; the frame IDs, people, titles, independent sky worlds, portal positions, and reachable boundaries remain unchanged.
+
 ## Overlap cues for frame 01
 
 “Zephrine’s first stage,” “dance classes,” “acting classes,” “enrollment,” “signup,” and “Jane signing Zephrine up” all point to frame `01`, even if a proposed title differs. A separate Zephrine performance, rehearsal, or later class could be its own memory if the user intends a different event.

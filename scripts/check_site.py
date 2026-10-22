@@ -217,6 +217,8 @@ def main() -> None:
     assert any("solid cambered plank-built bridge deck" in name for name in friend_names)
     assert any("joined sculpted timber arch above the open dance floor" in name for name in friend_names)
     assert any("living flower stem beside the path" in name for name in friend_names)
+    assert sum("detailed shade tree in the friendship garden" in name for name in friend_names) == 5
+    assert sum("solid tree trunk collision core" in name for name in friend_names) == 5
     car_room = frames[3]["room"]
     assert car_room["title"] == "Jane Got zephrine the ‘blue car’"
     assert car_room["caption"] == "Zephrine's blue car"
@@ -383,6 +385,8 @@ def main() -> None:
                    "recessed arched play-tower entrance"):
         assert detail in play_names, f"Room 10 missing {detail}"
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in play_json["nodes"]) >= 14, "Play Garden people and props should collide"
+    assert play_names.count("detailed garden shade tree beside the shared play space") == 4
+    assert play_names.count("solid tree trunk collision core") == 4
     aquarium_room = frames[10]["room"]
     assert aquarium_room["title"] == "We took zephrine to the Shedd aquairum with G"
     assert aquarium_room["caption"] == "Wondering at the fish with G"
