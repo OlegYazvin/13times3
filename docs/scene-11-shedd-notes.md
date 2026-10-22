@@ -4,12 +4,12 @@ Oleg's scene idea: “We took zephrine to the Shedd aquairum with G.” G is Ole
 
 ## Private character references
 
-The uploaded `/data/Downloads/Photos-1-001(4).zip` contained four photos. Resized, EXIF-free JPEG copies are saved in `.secrets/reference-photos/g-shedd-aquarium/`, excluded from Git and the published site:
+Four supplied reference photographs were reviewed privately. Resized, EXIF-free JPEG copies are saved in `.secrets/reference-photos/g-shedd-aquarium/`, excluded from Git and the published site:
 
-- `IMG20260605162445.jpg`: G outdoors with Zephrine on her shoulders. G has a shoulder-length brown bob and dark rectangular glasses in this photo.
-- `IMG_5685.jpg`: screenshot of a call showing a close view of G wearing glasses, with Zephrine in a small inset. The screen interface is not part of the character reference.
-- `IMG20251026161356.jpg`: G holding Zephrine outdoors. G wears dark glasses and a dark quilted jacket; Zephrine wears a pale knit cap and floral vest.
-- `IMG_9884.jpg`: G behind Jane in a close portrait. G has no glasses here, making her green eyes and face shape clearer; Jane is the younger woman in front with her hair in a bun. Use the existing private Jane photos for her other angles.
+- Private portrait reference: G outdoors with Zephrine on her shoulders. G has a shoulder-length brown bob and dark rectangular glasses in this photo.
+- Private portrait reference: screenshot of a call showing a close view of G wearing glasses, with Zephrine in a small inset. The screen interface is not part of the character reference.
+- Private portrait reference: G holding Zephrine outdoors. G wears dark glasses and a dark quilted jacket; Zephrine wears a pale knit cap and floral vest.
+- Private portrait reference: G behind Jane in a close portrait. G has no glasses here, making her green eyes and face shape clearer; Jane is the younger woman in front with her hair in a bun. Use the existing private Jane photos for her other angles.
 
 These photos identify likenesses, not the aquarium's location, date, exhibit visited, or actions during the visit. Do not publish the originals or private reference copies without a separate request.
 

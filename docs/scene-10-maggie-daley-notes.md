@@ -6,7 +6,10 @@ On 2026-10-21, Oleg chose **shared play** as the room's center. Give the friends
 
 ## Private references
 
-The uploaded archive `/data/Downloads/Photos-1-001(3).zip` contained two HEIC photos. Resized JPEG copies, without EXIF or location metadata, are stored at `.secrets/reference-photos/maggie-daley-park/IMG_3259.jpg` and `IMG_3253.jpg`. Both `.secrets/` and `.cache/` are excluded from Git and the published site. Never publish these reference photos without a separate request.
+The supplied park references are stored privately as metadata-free JPEGs under
+`.secrets/reference-photos/maggie-daley-park/`. File identifiers remain in ignored
+private notes. `.secrets/` and `.cache/` are excluded from Git and the published
+site. Do not publish the reference photographs.
 
 Both photos show two adults and a young child seated together outside, with trees and a curved pale bench or low wall behind them. One adult has short dark hair, bright yellow glasses, and a rose-colored jacket; the other has a beard, round dark glasses, a knit cap, and a dark jacket. The child's clothes have a light top and a multicolored star pattern. The photos are useful for painted character design and the companion group's feeling, but the friends' names and the child's identity are not established by the images. Do not label anyone based on appearance alone.
 
