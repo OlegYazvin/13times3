@@ -265,7 +265,7 @@ for(const z of [11.4,14.45,16.6]) {
     [[-7.5,.065,z],[-3.9,.07,z-.13],[0,.068,z-.2],
       [3.9,.07,z-.13],[7.5,.065,z]],.024,M.gold,25);
 }
-function fishGeometry(rings) {
+function fishGeometry(rings,species) {
   const vertices=[],uv=[],colors=[],indices=[],sides=22;
   const profile=new THREE.CatmullRomCurve3(rings.map(
     ([x,ry,rz])=>new THREE.Vector3(x,ry,rz)),false,"centripetal");
@@ -277,7 +277,14 @@ function fishGeometry(rings) {
     vertices.push(x,Math.cos(a)*ry,Math.sin(a)*rz);
     uv.push(row/rows,s/sides);
     const upper=(Math.cos(a)+1)/2;
-    colors.push(1-.23*upper,1-.12*upper,1-.07*upper);
+    const band=species===0
+      ? Math.pow(Math.max(0,Math.sin(row*.78+Math.sin(a)*.36)),5)
+      : species===1
+        ? Math.pow(Math.max(0,Math.cos(row*.58+Math.sin(a)*.6)),7)
+        : ((row+Math.floor(s/3))%6===0?.34:0);
+    const pigment=1-band*(species===2?.3:.38);
+    colors.push((1-.23*upper)*pigment,
+      (1-.12*upper)*pigment,(1-.07*upper)*pigment);
   }
   for(let row=0;row<rows;row++) for(let s=0;s<sides;s++) {
     const a=row*sides+s,b=row*sides+(s+1)%sides;
@@ -292,11 +299,11 @@ function fishGeometry(rings) {
 }
 const fishBodies=[
   fishGeometry([[-.46,.02,.02],[-.32,.13,.11],[.03,.19,.15],
-    [.3,.145,.12],[.52,.035,.04]]),
+    [.3,.145,.12],[.52,.035,.04]],0),
   fishGeometry([[-.43,.02,.02],[-.29,.17,.095],[.02,.28,.13],
-    [.25,.23,.11],[.45,.03,.025]]),
+    [.25,.23,.11],[.45,.03,.025]],1),
   fishGeometry([[-.56,.015,.015],[-.37,.083,.075],[.03,.115,.1],
-    [.34,.09,.075],[.61,.022,.02]]),
+    [.34,.09,.075],[.61,.022,.02]],2),
 ];
 function finGeometry(shape) {
   return new THREE.ExtrudeGeometry(shape,{depth:.038,bevelEnabled:true,
@@ -304,28 +311,28 @@ function finGeometry(shape) {
 }
 const tailShape=new THREE.Shape();
 tailShape.moveTo(-.39,0);
-tailShape.bezierCurveTo(-.56,.05,-.72,.19,-.86,.33);
-tailShape.bezierCurveTo(-.78,.16,-.73,.05,-.69,0);
-tailShape.bezierCurveTo(-.73,-.05,-.78,-.16,-.86,-.33);
-tailShape.bezierCurveTo(-.72,-.19,-.56,-.05,-.39,0);
+tailShape.bezierCurveTo(-.55,.04,-.69,.15,-.82,.25);
+tailShape.bezierCurveTo(-.76,.12,-.72,.035,-.69,0);
+tailShape.bezierCurveTo(-.72,-.035,-.76,-.12,-.82,-.25);
+tailShape.bezierCurveTo(-.69,-.15,-.55,-.04,-.39,0);
 const fishTailGeometry=finGeometry(tailShape);
 const fishDorsalGeometries=[.16,.255,.105].map((base)=>{
   const shape=new THREE.Shape();
   shape.moveTo(-.35,base*.7);
-  shape.bezierCurveTo(-.2,base*1.2,-.12,base*2.1,-.09,base*2.25);
-  shape.bezierCurveTo(.015,base*1.6,.18,base*1.2,.31,base*.72);
+  shape.bezierCurveTo(-.2,base*1.12,-.12,base*1.43,-.09,base*1.5);
+  shape.bezierCurveTo(.015,base*1.38,.18,base*1.08,.31,base*.72);
   shape.quadraticCurveTo(-.03,base*.94,-.35,base*.7);
   return finGeometry(shape);
 });
 const bellyShape=new THREE.Shape();
 bellyShape.moveTo(-.17,-.1);
-bellyShape.bezierCurveTo(-.23,-.2,-.33,-.3,-.39,-.32);
+bellyShape.bezierCurveTo(-.23,-.19,-.32,-.24,-.38,-.25);
 bellyShape.bezierCurveTo(-.29,-.18,-.05,-.13,.09,-.1);
 bellyShape.closePath();
 const fishBellyGeometry=finGeometry(bellyShape);
 const sideFinShape=new THREE.Shape();
 sideFinShape.moveTo(.05,-.025);
-sideFinShape.bezierCurveTo(-.06,-.07,-.22,-.17,-.38,-.2);
+sideFinShape.bezierCurveTo(-.06,-.07,-.22,-.14,-.32,-.15);
 sideFinShape.bezierCurveTo(-.23,-.045,-.1,.015,.05,-.025);
 const fishSideFinGeometry=finGeometry(sideFinShape);
 const fishBodyMaterials=new Map();
@@ -352,9 +359,9 @@ function fish(x,y,z,scale,mat,phase,yaw=0) {
     fishDorsalGeometries[species],M.pearl,0,0,-.018);
   add(group,"swept lower fin joined to the belly",
     fishBellyGeometry,mat,0,0,-.018);
-  for(const rayY of [-.22,-.09,.09,.22])
+  for(const rayY of [-.17,-.07,.07,.17])
     curve(group,"fine structural ray inside the forked tail",
-      [[-.46,0,.023],[-.63,rayY*.45,.024],[-.82,rayY,.023]],
+      [[-.46,0,.023],[-.61,rayY*.45,.024],[-.79,rayY,.023]],
       .004,M.pearl,11);
   for(const side of [-1,1]) {
     add(group,"bright fish iris in carved eye socket",

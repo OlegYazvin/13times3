@@ -426,7 +426,12 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
           const count = geometry.attributes.position.count;
           const shade = mesh.material.color;
           const colors = new Float32Array(count * 3);
-          for (let i = 0; i < count; i++) colors.set([shade.r, shade.g, shade.b], i * 3);
+          const painted = geometry.attributes.color;
+          for (let i = 0; i < count; i++) colors.set([
+            shade.r * (painted ? painted.getX(i) : 1),
+            shade.g * (painted ? painted.getY(i) : 1),
+            shade.b * (painted ? painted.getZ(i) : 1),
+          ], i * 3);
           geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
           const signature = `${geometry.index ? 1 : 0}|${Object.keys(geometry.attributes).sort().join("|")}`;
           const list = byTopology.get(signature) || [];
