@@ -7,6 +7,7 @@ import reefVariantURL from "./assets/room11/reef-variant-painted-v2.webp";
 import riverVariantURL from "./assets/room11/river-variant-painted-v2.webp";
 import canopyWatercolorURL from "./assets/room11/canopy-watercolor.webp";
 import paintedBarramundiURL from "./assets/room11/barramundi-painted.glb";
+import mantaURL from "./assets/room11/quaternius-manta.glb";
 
 // A dream of Shedd's aquatic dome, not a literal or dated exhibit replica.
 // G and Zephrine share the still moment; only the little fish gently breathe.
@@ -1317,11 +1318,27 @@ curve(root,"freestanding arched return doorway",
 
 window.__authorRoom=async()=>{
   const loader=new THREE.TextureLoader();
-  const [reef,river,reefVariant,riverVariant,canopy,barramundi]=await Promise.all([
+  const [reef,river,reefVariant,riverVariant,canopy,barramundi,manta]=await Promise.all([
     loader.loadAsync(reefBackdropURL),loader.loadAsync(riverBackdropURL),
     loader.loadAsync(reefVariantURL),loader.loadAsync(riverVariantURL),
     loader.loadAsync(canopyWatercolorURL),
-    new GLTFLoader().loadAsync(paintedBarramundiURL)]);
+    new GLTFLoader().loadAsync(paintedBarramundiURL),
+    new GLTFLoader().loadAsync(mantaURL)]);
+  const overheadRay=new THREE.Group();
+  overheadRay.name="sculpted manta swimming above the aquarium's glass lens";
+  overheadRay.position.set(-.65,5.28,4.05);
+  overheadRay.rotation.y=.34;
+  overheadRay.scale.setScalar(.36);
+  manta.scene.traverse(object=>{
+    if(!object.isMesh)return;
+    object.material=object.material.clone();
+    object.material.color.set(object.material.name==="Bottom"?0xd7d9c8:0x527c83);
+    object.material.roughness=.94;
+    object.material.metalness=0;
+    object.material.side=THREE.DoubleSide;
+  });
+  overheadRay.add(manta.scene);
+  root.add(overheadRay);
   // One CC0 sculpt carries real gills, lips, tapering fins and scales. Its
   // repaint matches the rest of the gouache aquarium; copies share the mesh
   // and texture and move only in a restrained breathing loop.
