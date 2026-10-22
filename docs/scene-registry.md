@@ -32,6 +32,8 @@ Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unass
 
 2026-10-22 Oleg portrait fit follow-up: the shared painted face in frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11` now uses a slightly wider UV area, keeping the eyes and glasses closer to Oleg's reference proportions in the curved sculpt. This changes no scene assignment or memory.
 
+2026-10-22 aquarium rear-habitat finish pass: the existing frame `11` Shedd world keeps its walk-behind portal and gains a shaped, shell-carved stone plinth under the rear glass. The painted water reaches its vault, and two additional detailed painted 3D fish swim in the flanking habitats. This revises the same family memory; no new frame is reserved.
+
 2026-10-21 visual revision: frames `02`, `04`, `05`, `07`, `08`, `09`, `10`, and `11` contain Oleg. His recurring sculpted figure now uses a shared illustrated likeness based on the private references. Outdoor or outdoor-blended frames `02`, `03`, `04`, `07`, `08`, `09`, and `10` have taller sky worlds. All published rooms remain on their original frame IDs; the hallway now treats each as a separate portal world, so adjacent worlds can overlap behind the frames without showing through each other.
 
 2026-10-21 aquarium revision: frame `11` moves the actual portal into the aquarium volume and adds distinct saltwater and freshwater habitats with 3D fish behind glass. The private reference photos remain outside the published site. Jane's shared illustrated likeness has also been revised for the rooms that use the shared sculpted figure. The other published frame IDs and memories stay reserved as above.

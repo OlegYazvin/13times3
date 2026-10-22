@@ -274,8 +274,57 @@ curve(root,"great pearled arch around the distant reef",
 // The rear painting is several metres behind reachable glass. From behind
 // the free-standing portal it gains parallax instead of becoming pixel-sized
 // wallpaper when a visitor walks up to the exhibit.
-box(root,"solid rear aquarium sill beneath deep glass",0,.36,16.93,
-  17.9,.72,.35,M.marble,true);
+// The rear habitat meets a shaped carved plinth instead of a single exposed
+// rectangular slab. Its full-depth mesh retains the same collision boundary.
+{
+  const sections=36,profile=[
+    [0,16.73],[.12,16.70],[.57,16.71],[.69,16.74],
+    [.76,16.82],[.78,16.95],[.72,17.11],[0,17.11],
+  ];
+  const positions=[],uv=[],indices=[],edge=profile.length;
+  for(let step=0;step<=sections;step++) {
+    const x=-8.95+step*17.9/sections;
+    const wave=.016*Math.sin(x*1.3)+.009*Math.sin(x*3.1);
+    for(let p=0;p<edge;p++) {
+      const [y,z]=profile[p];
+      positions.push(x,y+(y>.55?wave:0),z);
+      uv.push(step/sections,p/edge);
+      if(step<sections) {
+        const n=step*edge+p,next=step*edge+(p+1)%edge;
+        indices.push(n,next,n+edge,next,next+edge,n+edge);
+      }
+    }
+  }
+  for(let p=1;p<edge-1;p++) {
+    indices.push(0,p+1,p);
+    const last=sections*edge;
+    indices.push(last,last+p,last+p+1);
+  }
+  const stone=new THREE.BufferGeometry();
+  stone.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
+  stone.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
+  stone.setIndex(indices);stone.computeVertexNormals();
+  add(root,"solid carved wave plinth beneath deep rear glazing",
+    stone,M.marble).userData.solidFootprint=true;
+}
+curve(root,"carved watercourse along the rear stone face",
+  Array.from({length:25},(_,i)=>{
+    const x=-8.7+i*17.4/24;
+    return [x,.38+.035*Math.sin(x*1.15),16.683];
+  }),.013,M.pearl,49);
+curve(root,"lower gold inlay following the rear stone face",
+  [[-8.85,.14,16.681],[-4.4,.14,16.681],[0,.14,16.681],
+    [4.4,.14,16.681],[8.85,.14,16.681]],.011,M.gold,32);
+for(const x of [-6.6,-3.3,0,3.3,6.6]) {
+  curve(root,"shell fan carved into the rear aquarium plinth",
+    [[x-.43,.31,16.679],[x-.28,.52,16.679],
+      [x,.57,16.679],[x+.28,.52,16.679],
+      [x+.43,.31,16.679]],.015,M.pearl,20);
+  for(let rib=-2;rib<=2;rib++) curve(root,"radiating shell flute in stone",
+    [[x,.24,16.677],[x+rib*.075,.38,16.677],
+      [x+rib*.15,.51-Math.abs(rib)*.014,16.677]],
+    .007,M.pearl,12);
+}
 const rearBed=add(root,"modeled seabed continues behind rear glazing",
   new THREE.PlaneGeometry(18,4.5,18,8),M.shadow,0,.045,18.85);
 rearBed.rotation.x=-Math.PI/2;
@@ -294,7 +343,7 @@ for(let rock=0;rock<13;rock++) {
     rock%3===0?M.kelp:rock%3===1?M.deep:M.turquoise,10);
 }
 for(const side of [-1,1]) box(root,"painted habitat behind freestanding portal",
-  side*4.45,3.65,20.55,8.9,7.1,.016,side===1?reefVariantWall:riverVariantWall);
+  side*4.45,4.05,20.55,8.9,8.0,.016,side===1?reefVariantWall:riverVariantWall);
 for(const side of [-1,1]) {
   add(root,"rear aquarium glazing beyond portal",
     new THREE.PlaneGeometry(7.2,5.25),glass,side*5.25,3.2,16.82);
@@ -1255,6 +1304,9 @@ window.__authorRoom=async()=>{
     // where G and Zephrine actually stand, not only in the distant glass.
     [2.12,2.46,4.22,1.04,Math.PI/2,0,311],
     [2.78,3.43,3.48,.92,-Math.PI/2,.11,312],
+    // One fully sculpted swimmer at eye height in each flanking habitat.
+    [-7.95,2.4,5.5,1.22,0,0,313],
+    [7.95,2.65,4.0,1.18,Math.PI,0,314],
   ]) {
     const swimmer=new THREE.Group();
     swimmer.name="painted sculpted barramundi behind aquarium glass";

@@ -384,10 +384,11 @@ def main() -> None:
                    "fluted carved limestone column with joined capital",
                    "carved shell fan supporting the marble crown",
                    "great carved shell arch above the rear water habitat",
+                   "solid carved wave plinth beneath deep rear glazing",
                    "layered, broken-edged sculpted reef shelf in round habitat",
                    "broad curved seagrass ribbon rooted in the reef shelf"):
         assert detail in aquarium_names, f"Room 11 missing {detail}"
-    assert aquarium_names.count("painted sculpted barramundi behind aquarium glass") >= 7, "Room 11 needs detailed fish in the close tank and the surrounding habitats"
+    assert aquarium_names.count("painted sculpted barramundi behind aquarium glass") >= 9, "Room 11 needs detailed fish in the close tank and the surrounding habitats"
     assert {"streamlined", "deep reef", "slender"}.issubset({
         node.get("extras", {}).get("bodyType") for node in aquarium_json["nodes"]
     }), "Room 11 fish must retain three distinct sculpted body shapes"
