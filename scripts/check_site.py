@@ -209,6 +209,9 @@ def main() -> None:
     assert any("Zephrine" in node.get("name", "") for node in friend_json["nodes"])
     assert any("Charlize" in node.get("name", "") for node in friend_json["nodes"])
     assert any("Aibike" in node.get("name", "") for node in friend_json["nodes"])
+    friend_names = [node.get("name", "") for node in friend_json["nodes"]]
+    assert any("separate painted wood slat on the bench" in name for name in friend_names)
+    assert not any("linked hands of two friends" in name for name in friend_names)
     car_room = frames[3]["room"]
     assert car_room["title"] == "Jane Got zephrine the ‘blue car’"
     assert car_room["caption"] == "Zephrine's blue car"

@@ -125,7 +125,7 @@ for (let line = -2; line <= 2; line++) {
     [line * .22, .04, .6], [line * .12, .04, -2.6],
     [line * .32, .04, -5.7]], .012, line === 0 ? M.brass : M.cream, 45);
 }
-for (let i = 0; i < 42; i++) {
+for (let i = 0; i < 15; i++) {
   const x = (random() - .5) * 10.9, z = (random() - .5) * 13.2;
   if (Math.abs(x) < 1.15 && z > -3.3) continue;
   petal(root, "small painted leaf fallen beside the path", x, .038, z,
@@ -167,9 +167,9 @@ for (const [x, z] of [[-5.15, -4.7], [-5.1, -.2], [-4.7, 4.2]]) {
     x - .64, 2.77, z - .46, .77, .31, .55, C.paleLeaf, x - z);
   foliageLobe(root, "deep foliage beneath the park crown",
     x, 2.91, z, .7, .28, .64, C.leaf, z);
-  for (let i = 0; i < 18; i++) petal(root, "layered park canopy leaf",
-    x + (random() - .5) * 2.3, 2.55 + random() * .55,
-    z + (random() - .5) * 1.7, .24 + random() * .15,
+  for (let i = 0; i < 7; i++) petal(root, "layered park canopy leaf",
+    x + (random() - .5) * 1.25, 2.72 + random() * .31,
+    z + (random() - .5) * .88, .2 + random() * .09,
     i % 3 ? M.leaf : M.paleLeaf, random() * 6.28);
 }
 for (const [x, z] of [[4.83, 3.55], [4.95, -2.2]]) {
@@ -186,9 +186,9 @@ for (const [x, z] of [[4.83, 3.55], [4.95, -2.2]]) {
   }
   foliageLobe(root,"layered foliage at the tree center",
     x,3.16,z,.71,.32,.57,C.leaf,z);
-  for(let i=0;i<16;i++) petal(root,"attached park tree leaf",
-    x+(random()-.5)*1.65,2.65+random()*.5,
-    z+(random()-.5)*1.0,.16+random()*.11,
+  for(let i=0;i<7;i++) petal(root,"attached park tree leaf",
+    x+(random()-.5)*1.1,2.8+random()*.25,
+    z+(random()-.5)*.65,.15+random()*.08,
     i%4?M.leaf:M.paleLeaf,random()*6.28);
 }
 box(root, "soft shaded play surface", -3.45, .035, -3.55,
@@ -222,11 +222,22 @@ for (const side of [-1, 1]) {
       .029, .025, M.bark);
   }
 }
-for (const x of [2.05, 5.05]) box(root, "solid park bench base", x, .32, .45,
-  .65, .64, 1.15, M.bark, true);
-box(root, "park bench seat", 3.55, .71, .45, 3.85, .14, 1.12, M.cream, true);
-curve(root, "arched park bench back", [[1.68, 1.04, .9], [2.6, 1.5, 1.01],
-  [3.55, 1.58, 1.05], [4.5, 1.5, 1.01], [5.42, 1.04, .9]], .055, M.bark, 32);
+for (const x of [2.05, 5.05]) {
+  box(root, "solid park bench base", x, .32, .45,
+    .3, .64, .62, M.bark, true);
+  for (const z of [.25, .6]) beam(root, "curved bench iron support",
+    [x, .1, z], [x, .66, z], .035, .03, M.deep);
+}
+box(root, "solid shaped park bench seat", 3.55, .69, .43,
+  3.67, .12, .66, M.bark, true);
+for (const z of [.2, .34, .48, .62]) box(root,
+  "separate painted wood slat on the bench seat",
+  3.55, .77, z, 3.78, .055, .105, M.cream);
+for (const y of [1.07, 1.26, 1.45]) curve(root,
+  "curved timber slat in the bench back",
+  [[1.75, y - .22, .79], [2.6, y + .05, .9],
+    [3.55, y + .12, .92], [4.5, y + .05, .9], [5.35, y - .22, .79]],
+  .034, y === 1.26 ? M.brass : M.bark, 32);
 
 // A dance room rises from the same garden. Its open ribs, floor and barre
 // imply class without blocking the two girls or adding literal class signs.
@@ -352,21 +363,19 @@ function figure(name, x, z, height, options) {
 
 // The held hands and mirrored head tilt quote the supplied photos without
 // publishing them. The girls have distinct skin, hair and clothing shapes.
-const zeph = figure("Zephrine", -.58, -1.8, 1.13, {
+const zeph = figure("Zephrine", -.42, -1.8, 1.13, {
   skin: C.warmSkin, hair: C.hair, outfit: C.peach, skirt: C.blush,
   shoe: C.pink, dress: true, curls: true, yaw: -.13,
-  hands: { "1": [.36, .63, .22], "-1": [-.3, .73, .1] },
+  hands: { "1": [.38, .63, .22], "-1": [-.3, .73, .1] },
 });
 zeph.rotation.z = -.045;
 zeph.position.z = 4.0;
-const charlize = figure("Charlize", .58, 4.0, 1.17, {
+const charlize = figure("Charlize", .42, 4.0, 1.17, {
   skin: C.darkSkin, hair: C.darkHair, outfit: C.white, skirt: C.white,
   shoe: C.ink, dress: true, stripes: true, bun: true, yaw: .12,
-  hands: { "-1": [-.36, .63, .22], "1": [.3, .73, .1] },
+  hands: { "-1": [-.38, .63, .22], "1": [.3, .73, .1] },
 });
 charlize.rotation.z = .045;
-curve(root, "linked hands of two friends", [[-.25, .63, 4.22],
-  [0, .61, 4.29], [.25, .63, 4.22]], .023, M.brass);
 
 // Jane and Aibike become friends too. Aibike is a stylized parent figure;
 // no unprovided face likeness or invented biographical details are claimed.

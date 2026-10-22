@@ -308,8 +308,8 @@ try {
   assert.equal(friendshipEntered.cameraFov, friendshipBefore.cameraFov);
   assert.ok(friendshipEntered.modelColliderCount >= 10, "friends, mothers, and park structures must collide");
   await friendshipPage.screenshot({ path: ".cache/room03-entered-continuous.png" });
-  await friendshipPage.evaluate(() => window.__galleryTestRoomPose(-.58, 5.0, 0));
-  await friendshipPage.evaluate(() => window.__galleryTestRoomMove(-.58, 3.2));
+  await friendshipPage.evaluate(() => window.__galleryTestRoomPose(-.42, 5.0, 0));
+  await friendshipPage.evaluate(() => window.__galleryTestRoomMove(-.42, 3.2));
   assert.ok((await friendshipPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 4.3,
     "Zephrine's figure should be solid");
   await friendshipPage.evaluate(() => window.__galleryTestRoomPose(0, 6.4, Math.PI / 2));
