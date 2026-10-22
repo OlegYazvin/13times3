@@ -275,6 +275,11 @@ def main() -> None:
     assert any("Zephrine nestled at Jane's clothed chest" in node.get("name", "") for node in weaning_json["nodes"])
     assert any("continuous gathered linen vault panel" in node.get("name", "") for node in weaning_json["nodes"])
     assert any("tall arched stained daylight pane" in node.get("name", "") for node in weaning_json["nodes"])
+    assert any("continuous bent trouser leg with a formed knee" in node.get("name", "") for node in weaning_json["nodes"])
+    assert any("Jane's gathered hair rising into one high bun" in node.get("name", "") for node in weaning_json["nodes"])
+    assert any("small turned side table beside the nursing chair" in node.get("name", "") for node in weaning_json["nodes"])
+    assert not any("continuous modest sweater front" in node.get("name", "") or
+                   "solid empty ottoman" in node.get("name", "") for node in weaning_json["nodes"])
     assert not any("overlapping linen sail under" in node.get("name", "") for node in weaning_json["nodes"])
     berry_room = frames[6]["room"]
     assert berry_room["title"] == "The time we went blueberry picking"

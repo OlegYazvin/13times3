@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { createRoomArt } from "./room_art.mjs";
 import { addJanePortrait } from "./oleg_portrait.mjs";
+import { sculptSleevedArm } from "./sculpted_arm.mjs";
 
 // A private transition rendered with tenderness. Jane's sweater covers her
 // chest completely; Zephrine is nestled against the outside of the cloth.
@@ -130,29 +131,62 @@ curve(root, "window arch becoming a new horizon", [[-4.0, 3.85, -5.55],
   [-2.7, 4.54, -5.58], [0, 4.83, -5.6],
   [2.7, 4.54, -5.58], [4.0, 3.85, -5.55]], .075, M.gold, 35);
 
-// Layered woven rug and a few small objects hold the memory at human scale.
+// A slightly irregular woven rug sits under the still moment. Its contours
+// are sewn cloth, not a stack of perfectly circular digital targets.
 const memoryZ=2.0;
-const rug = add(root, "solid woven rug under the nursing chair",
-  new THREE.CylinderGeometry(2.4, 2.52, .035, 32), M.cream,
-  0, .032, .15+memoryZ);
-rug.scale.z = .71;
-for (let i = 0; i < 5; i++) {
-  const arc = new THREE.Mesh(new THREE.TorusGeometry(1.58 + i * .15, .01, 5, 54,
-    Math.PI * 2), i % 2 ? M.rose : M.gold);
-  arc.name = "woven curved rug line";
-  arc.rotation.x = Math.PI / 2; arc.position.set(0, .061, .15+memoryZ);
-  arc.scale.z = .71; root.add(arc);
+const rugOutline=new THREE.Shape();
+for(let i=0;i<=72;i++) {
+  const a=i*Math.PI*2/72;
+  const wave=1+.025*Math.sin(a*5+.4)+.012*Math.sin(a*11+1.2);
+  const x=Math.cos(a)*2.45*wave,z=Math.sin(a)*1.72*wave;
+  if(i===0) rugOutline.moveTo(x,z); else rugOutline.lineTo(x,z);
 }
-box(root, "solid low side table", 2.48, .38, -.72+memoryZ,
-  .83, .76, .72, M.wood, true);
-box(root, "folded blanket on a nearby table", 2.48, .79, -.72+memoryZ,
-  .65, .08, .52, M.paleBlue);
-for (let i = 0; i < 5; i++) curve(root, "small woven blanket fold",
-  [[2.18 + i * .12, .84, -.98+memoryZ],
-    [2.18 + i * .12, .86, -.72+memoryZ],
-    [2.18 + i * .12, .84, -.46+memoryZ]], .006, M.silver, 12);
-box(root, "solid empty ottoman", -2.48, .29, -.76+memoryZ,
-  .86, .58, .78, M.blue, true);
+rugOutline.closePath();
+const rugGeometry=new THREE.ExtrudeGeometry(rugOutline,{depth:.03,
+  bevelEnabled:true,bevelSize:.015,bevelThickness:.009,
+  bevelSegments:1,curveSegments:8});
+rugGeometry.rotateX(Math.PI/2);
+add(root,"thick woven rug with an uneven hand-finished edge",
+  rugGeometry,M.cream,0,.065,.15+memoryZ);
+for (let i = 0; i < 5; i++) {
+  const radius=1.15+i*.24;
+  curve(root,"irregular stitched thread circling the family",
+    Array.from({length:65},(_,step)=>{
+      const a=step*Math.PI*2/64;
+      const wave=1+.025*Math.sin(a*5+i*.45)+.014*Math.sin(a*9-i);
+      return [Math.cos(a)*radius*wave,.081,
+        .15+memoryZ+Math.sin(a)*radius*.7*wave];
+    }),.007,i%2?M.rose:M.gold,65);
+}
+for(let i=0;i<56;i++) {
+  const a=i*Math.PI*2/56;
+  const x=Math.cos(a)*2.45,z=Math.sin(a)*1.72+.15+memoryZ;
+  curve(root,"short woven fringe at the rug edge",
+    [[x,.054,z],[x+Math.cos(a)*.08,.038,
+      z+Math.sin(a)*.065]],.003,i%3?M.cream:M.gold,5);
+}
+const table=new THREE.Group();
+table.name="small turned side table beside the nursing chair";
+table.position.set(2.48,0,-.72+memoryZ);root.add(table);
+loft(table,"scalloped solid table top",[[.70,.35,.28],
+  [.75,.46,.37],[.81,.43,.34],[.84,.3,.24]],M.wood,24,true);
+loft(table,"turned tapered table pedestal",[[.05,.15,.13],
+  [.20,.11,.1],[.4,.075,.07],[.68,.09,.08]],M.wood,18,true);
+for(const side of [-1,1]) curve(table,"curved foot of the side table",
+  [[0,.13,0],[side*.23,.085,.05],[side*.43,.06,.08]],.04,M.wood,13);
+const blanket=new THREE.Shape();
+blanket.moveTo(-.29,-.2);blanket.lineTo(.29,-.2);
+blanket.quadraticCurveTo(.33,-.11,.3,.02);
+blanket.lineTo(.23,.22);blanket.quadraticCurveTo(0,.18,-.28,.21);
+blanket.closePath();
+const folded=add(table,"folded layered cloth resting on the side table",
+  new THREE.ExtrudeGeometry(blanket,{depth:.045,bevelEnabled:true,
+    bevelThickness:.011,bevelSize:.011,bevelSegments:2,
+    curveSegments:10}),M.paleBlue,0,.86,0);
+folded.rotation.x=-Math.PI/2;
+for(let i=0;i<4;i++) curve(table,"fine woven hem on the folded cloth",
+  [[-.24+i*.15,.87,-.19],[-.22+i*.15,.88,.02],
+    [-.2+i*.15,.87,.18]],.005,M.silver,12);
 
 // The chair carries the full collision footprint for Jane and Zephrine.
 const chair = new THREE.Group(); chair.name = "solid deeply cushioned nursing chair";
@@ -190,48 +224,79 @@ const jane = new THREE.Group(); jane.name = "fully clothed sculpted Jane nursing
 jane.position.set(0, 0, .15+memoryZ); root.add(jane);
 loft(jane, "solid clothed seated body", [[.64, .28, .28, 0, .05],
   [.91, .34, .25, 0, .03], [1.21, .29, .21, 0, -.02],
-  [1.43, .22, .16, 0, -.04]], M.sweater, 15, true);
-box(jane, "continuous modest sweater front", 0, 1.1, .22,
-  .5, .58, .035, M.sweater);
+  [1.43, .22, .16, 0, -.04]], M.sweater, 24, true);
 curve(jane, "closed sweater neckline", [[-.17, 1.39, .12],
   [0, 1.35, .19], [.17, 1.39, .12]], .017, M.silver);
-for (const side of [-1, 1]) {
-  beam(jane, "clothed thigh resting on chair", [side * .16, .71, .13],
-    [side * .19, .53, .5], .16, .14, M.shadow);
-  beam(jane, "lower leg by the chair", [side * .19, .53, .5],
-    [side * .2, .14, .64], .13, .11, M.shadow);
-  box(jane, "solid soft house shoe", side * .2, .075, .76,
-    .27, .15, .35, M.wood);
+// Each bent trouser leg is one continuous changing section. The knee projects
+// over the seat, then the fabric falls toward a shaped house shoe.
+for(const side of [-1,1]) {
+  const rings=[
+    [side*.19,.76,.02,.18,.18],
+    [side*.19,.68,.22,.18,.17],
+    [side*.2,.57,.43,.165,.15],
+    [side*.2,.49,.51,.15,.14],
+    [side*.2,.34,.57,.135,.13],
+    [side*.2,.13,.62,.12,.12],
+  ];
+  const vertices=[],uv=[],indices=[],sides=20;
+  for(let row=0;row<rings.length;row++) {
+    const [x,y,z,rx,rz]=rings[row];
+    for(let s=0;s<sides;s++) {
+      const a=s*Math.PI*2/sides;
+      vertices.push(x+Math.cos(a)*rx,y,z+Math.sin(a)*rz);
+      uv.push(s/sides,row/(rings.length-1));
+      if(row<rings.length-1) {
+        const n=row*sides+s,b=row*sides+(s+1)%sides;
+        indices.push(n,b,n+sides,b,b+sides,n+sides);
+      }
+    }
+  }
+  const trouser=new THREE.BufferGeometry();
+  trouser.setAttribute("position",new THREE.Float32BufferAttribute(vertices,3));
+  trouser.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
+  trouser.setIndex(indices);trouser.computeVertexNormals();
+  add(jane,"continuous bent trouser leg with a formed knee",trouser,M.shadow);
+  loft(jane,"soft house shoe with a raised rounded toe",
+    [[.02,.1,.17,side*.2,.71],[.065,.14,.22,side*.2,.73],
+      [.13,.13,.17,side*.2,.65],[.17,.08,.1,side*.2,.6]],
+    M.wood,18);
+  curve(jane,"stitched upper on the house shoe",
+    [[side*.2-.1,.105,.76],[side*.2,.14,.88],
+      [side*.2+.1,.105,.76]],.006,M.silver,12);
 }
-beam(jane, "sweater sleeve supporting Zephrine", [-.25, 1.33, -.02],
-  [-.37, .91, .38], .1, .075, M.sweater);
-beam(jane, "forearm under Zephrine's back", [-.37, .91, .38],
-  [.32, .76, .53], .078, .055, M.skin);
-beam(jane, "sweater sleeve at the chair arm", [.24, 1.33, -.02],
-  [.58, .96, .37], .1, .072, M.sweater);
-beam(jane, "open forearm returning to Jane", [.58, .96, .37],
-  [.82, .88, .43], .067, .05, M.skin);
-loft(jane, "open hand on the chair's edge", [[.83, .033, .034, .82, .43],
-  [.9, .05, .04, .82, .43], [.92, .013, .014, .82, .43]], M.skin, 8);
+sculptSleevedArm(add,jane,{shoulder:[-.25,1.33,-.02],
+  elbow:[-.37,.91,.38],hand:[.32,.76,.53],
+  outfit:M.sweater,skin:M.skin,trim:M.rose,size:.82});
+sculptSleevedArm(add,jane,{shoulder:[.24,1.33,-.02],
+  elbow:[.58,.96,.37],hand:[.82,.88,.43],
+  outfit:M.sweater,skin:M.skin,trim:M.rose,size:.82});
 const head = new THREE.Group(); head.name = "Jane's quiet face looking toward Zephrine";
 head.position.set(-.03, 0, -.06); head.rotation.z = -.07; jane.add(head);
 loft(head, "carved face and jaw", [[1.41, .06, .06], [1.5, .145, .12],
   [1.68, .17, .145], [1.86, .15, .13], [1.98, .02, .02]], M.skin, 15);
 addJanePortrait(head,1.84,[[-.43,.06,.06],[-.34,.145,.12],
   [-.16,.17,.145],[.02,.15,.13],[.14,.02,.02]],M.skin);
-loft(head, "layered dark hair", [[1.87, .1, .08],
-  [1.96, .17, .14, 0, -.02], [2.06, .13, .1, 0, -.035],
-  [2.1, .02, .02, 0, -.035]], M.hair, 14);
-loft(head, "Jane's familiar high bun", [[2.05, .06, .05, 0, -.08],
-  [2.17, .13, .11, 0, -.09], [2.28, .075, .07, 0, -.09],
-  [2.31, .01, .01, 0, -.09]], M.hair, 12);
+loft(head,"Jane's gathered hair rising into one high bun",[
+  [1.83,.1,.085,0,-.025],[1.91,.157,.13,0,-.025],
+  [1.98,.155,.127,0,-.04],[2.04,.106,.093,.01,-.058],
+  [2.09,.088,.079,.018,-.07],[2.14,.098,.088,.025,-.08],
+  [2.2,.069,.063,.028,-.083],[2.23,.008,.01,.03,-.084],
+],M.hair,28);
+for(let strand=0;strand<6;strand++) {
+  const a=strand*Math.PI*2/6;
+  curve(head,"soft combed strand entering Jane's bun",[
+    [Math.cos(a)*.14,1.96,-.04+Math.sin(a)*.105],
+    [Math.cos(a+.28)*.12,2.08,-.064+Math.sin(a+.28)*.085],
+    [.02+Math.cos(a+.56)*.075,2.16,-.083+Math.sin(a+.56)*.065],
+  ],.0045,strand%2?M.wood:M.hair,15);
+}
 
 // A small fully sculpted, clothed Zephrine leans across Jane's lap. Turning
 // the whole figure keeps the face, curls, hands, dress, and shoes dimensional
 // from every angle instead of making the child a side-view cutout or oval.
 const child = person("Zephrine nestled at Jane's clothed chest", .64, .47+memoryZ, 1.07, {
   skin: M.skin, hair: M.zephHair, outfit: M.peach, skirt: M.rose,
-  pants: M.blue, shoes: M.rose, dress: true, curls: true,
+  pants: M.blue, shoes: M.rose, dress: true, curls: false,
   hands: { "-1": [-.27, .72, .2], "1": [.31, .63, .17] },
 });
 child.position.y = .61;
