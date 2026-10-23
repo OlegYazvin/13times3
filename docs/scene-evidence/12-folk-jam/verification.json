@@ -1,0 +1,838 @@
+{
+  "build": {
+    "id": "12",
+    "modelSha256": "843eb10217d0d7b201fb5c5a20e954c777a69795aa0184fc0616fdae2a6dabe3",
+    "paintingSha256": "5432d6da3d4b20fe9bd1167391012c544c43179f02922d8e7a3fa4f21efbdb02",
+    "appSha256": "4fd6e769d167e06c3510d99063c4d8eff483b0912fa8bd94189d52a292dd923f",
+    "recordedAt": "2026-10-23T23:44:14.457Z",
+    "captured": true
+  },
+  "poses": [
+    {
+      "id": "12",
+      "name": "entry",
+      "x": 0,
+      "z": 2.25,
+      "yaw": 0,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "front",
+      "x": 0,
+      "z": 0.7,
+      "yaw": 0,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "profile-left",
+      "x": -1.1,
+      "z": -1.8,
+      "yaw": 1.5707963267948966,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "profile-right",
+      "x": 2,
+      "z": -0.9,
+      "yaw": -1.1479424006619559,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "left",
+      "x": -2.9,
+      "z": -0.10000000000000009,
+      "yaw": 1.0405805540182667,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "right",
+      "x": 2,
+      "z": -0.10000000000000009,
+      "yaw": -0.866302262552679,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "rear",
+      "x": 0.9,
+      "z": -3.6,
+      "yaw": -2.677945044588987,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "close",
+      "x": 0,
+      "z": 0.4999999999999999,
+      "yaw": 0,
+      "pitch": -0.28,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "borellis",
+      "x": 0,
+      "z": 4.5,
+      "yaw": 3.141592653589793,
+      "pitch": -0.08,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "borellis-side",
+      "x": -4.3,
+      "z": 7.5,
+      "yaw": 1.5707963267948966,
+      "pitch": -0.12,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "portal-back",
+      "x": 0,
+      "z": 5,
+      "yaw": 0,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "children",
+      "x": 0.15,
+      "z": 0.6,
+      "yaw": 0,
+      "pitch": -0.4,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "jonas",
+      "x": 2.15,
+      "z": -0.65,
+      "yaw": -1.0796327285086362,
+      "pitch": -0.06,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "beat-windows",
+      "x": -4,
+      "z": -5.8,
+      "yaw": 0,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "viewport": "desktop",
+      "entry": true,
+      "collisionSamples": 40,
+      "return": true,
+      "continuousCamera": true,
+      "controls": true,
+      "cleanup": true
+    },
+    {
+      "id": "12",
+      "name": "phone",
+      "x": 0,
+      "z": 2.25,
+      "yaw": 0,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "thumb-joystick-moves",
+      "passed": true
+    },
+    {
+      "id": "12",
+      "viewport": "phone",
+      "entry": true,
+      "collisionSamples": 40,
+      "return": true,
+      "continuousCamera": true,
+      "controls": true,
+      "cleanup": true
+    }
+  ],
+  "verification": [
+    {
+      "id": "12",
+      "name": "entry",
+      "x": 0,
+      "z": 2.25,
+      "yaw": 0,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "front",
+      "x": 0,
+      "z": 0.7,
+      "yaw": 0,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "profile-left",
+      "x": -1.1,
+      "z": -1.8,
+      "yaw": 1.5707963267948966,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "profile-right",
+      "x": 2,
+      "z": -0.9,
+      "yaw": -1.1479424006619559,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "left",
+      "x": -2.9,
+      "z": -0.10000000000000009,
+      "yaw": 1.0405805540182667,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "right",
+      "x": 2,
+      "z": -0.10000000000000009,
+      "yaw": -0.866302262552679,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "rear",
+      "x": 0.9,
+      "z": -3.6,
+      "yaw": -2.677945044588987,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "close",
+      "x": 0,
+      "z": 0.4999999999999999,
+      "yaw": 0,
+      "pitch": -0.28,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "borellis",
+      "x": 0,
+      "z": 4.5,
+      "yaw": 3.141592653589793,
+      "pitch": -0.08,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "borellis-side",
+      "x": -4.3,
+      "z": 7.5,
+      "yaw": 1.5707963267948966,
+      "pitch": -0.12,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "portal-back",
+      "x": 0,
+      "z": 5,
+      "yaw": 0,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "children",
+      "x": 0.15,
+      "z": 0.6,
+      "yaw": 0,
+      "pitch": -0.4,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "jonas",
+      "x": 2.15,
+      "z": -0.65,
+      "yaw": -1.0796327285086362,
+      "pitch": -0.06,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "beat-windows",
+      "x": -4,
+      "z": -5.8,
+      "yaw": 0,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "viewport": "desktop",
+      "entry": true,
+      "collisionSamples": 40,
+      "return": true,
+      "continuousCamera": true,
+      "controls": true,
+      "cleanup": true
+    },
+    {
+      "id": "12",
+      "name": "phone",
+      "x": 0,
+      "z": 2.25,
+      "yaw": 0,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "thumb-joystick-moves",
+      "passed": true
+    },
+    {
+      "id": "12",
+      "viewport": "phone",
+      "entry": true,
+      "collisionSamples": 40,
+      "return": true,
+      "continuousCamera": true,
+      "controls": true,
+      "cleanup": true
+    }
+  ],
+  "contacts": {
+    "modelSha256": "843eb10217d0d7b201fb5c5a20e954c777a69795aa0184fc0616fdae2a6dabe3",
+    "recordedAt": "2026-10-23T23:44:16.323Z",
+    "method": "Actual exported posed vertices against actor-specific decoded prop triangles. Distances and closed-mesh containment samples supplement visual inspection; they are not a proof of full contact coverage.",
+    "rows": [
+      {
+        "identity": "Jonas Friddle",
+        "part": "hand-left",
+        "label": "fingering hand against its own instrument fingerboard",
+        "minimumSurfaceDistanceM": 0.0017011149729839919,
+        "containmentTested": true,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0
+      },
+      {
+        "identity": "Jonas Friddle",
+        "part": "hand-right",
+        "label": "strumming hand against its own sounding surface",
+        "minimumSurfaceDistanceM": 0.006708097896267302,
+        "containmentTested": false,
+        "verticesDeeperThan1mm": null,
+        "maximumSampledPenetrationM": null
+      },
+      {
+        "identity": "Guitar neighbor",
+        "part": "hand-left",
+        "label": "fingering hand against its own instrument fingerboard",
+        "minimumSurfaceDistanceM": 0.0003528967664703883,
+        "containmentTested": true,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0
+      },
+      {
+        "identity": "Guitar neighbor",
+        "part": "hand-right",
+        "label": "strumming hand against its own sounding surface",
+        "minimumSurfaceDistanceM": 0.0032032690055046396,
+        "containmentTested": false,
+        "verticesDeeperThan1mm": null,
+        "maximumSampledPenetrationM": null
+      },
+      {
+        "identity": "Mandolin neighbor",
+        "part": "hand-left",
+        "label": "fingering hand against its own instrument fingerboard",
+        "minimumSurfaceDistanceM": 0.0016984315795696117,
+        "containmentTested": true,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0
+      },
+      {
+        "identity": "Mandolin neighbor",
+        "part": "hand-right",
+        "label": "strumming hand against its own sounding surface",
+        "minimumSurfaceDistanceM": 0.0019511551276875441,
+        "containmentTested": false,
+        "verticesDeeperThan1mm": null,
+        "maximumSampledPenetrationM": null
+      },
+      {
+        "identity": "Fiddle neighbor",
+        "part": "hand-left",
+        "label": "fingering hand against its own instrument fingerboard",
+        "minimumSurfaceDistanceM": 0.0016968056337821002,
+        "containmentTested": true,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0
+      },
+      {
+        "identity": "Fiddle neighbor",
+        "part": "hand-right",
+        "label": "strumming hand against its own sounding surface",
+        "minimumSurfaceDistanceM": 0.00029922810050393164,
+        "containmentTested": false,
+        "verticesDeeperThan1mm": null,
+        "maximumSampledPenetrationM": null
+      },
+      {
+        "identity": "Borellis guitarist",
+        "part": "hand-left",
+        "label": "fingering hand against its own instrument fingerboard",
+        "minimumSurfaceDistanceM": 0.0003527576419284326,
+        "containmentTested": true,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0
+      },
+      {
+        "identity": "Borellis guitarist",
+        "part": "hand-right",
+        "label": "strumming hand against its own sounding surface",
+        "minimumSurfaceDistanceM": 0.0032031920267114634,
+        "containmentTested": false,
+        "verticesDeeperThan1mm": null,
+        "maximumSampledPenetrationM": null
+      },
+      {
+        "identity": "Borellis banjo player",
+        "part": "hand-left",
+        "label": "fingering hand against its own instrument fingerboard",
+        "minimumSurfaceDistanceM": 0.0017010399897235415,
+        "containmentTested": true,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0
+      },
+      {
+        "identity": "Borellis banjo player",
+        "part": "hand-right",
+        "label": "strumming hand against its own sounding surface",
+        "minimumSurfaceDistanceM": 0.006951950999258448,
+        "containmentTested": false,
+        "verticesDeeperThan1mm": null,
+        "maximumSampledPenetrationM": null
+      },
+      {
+        "identity": "Bass neighbor",
+        "part": "hand-left",
+        "label": "upright bass fingering hand",
+        "minimumSurfaceDistanceM": 0.0005032108693774611,
+        "containmentTested": true,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0
+      },
+      {
+        "identity": "Bass neighbor",
+        "part": "hand-right",
+        "label": "upright bass plucking hand",
+        "minimumSurfaceDistanceM": 0.009177874846516809,
+        "containmentTested": false,
+        "verticesDeeperThan1mm": null,
+        "maximumSampledPenetrationM": null
+      },
+      {
+        "identity": "Guitar neighbor",
+        "part": "trousers",
+        "label": "guitar clearance above the seated thighs",
+        "minimumSurfaceDistanceM": 0.006577373129674872,
+        "containmentTested": true,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0
+      },
+      {
+        "identity": "Borellis guitarist",
+        "part": "trousers",
+        "label": "guitar clearance above the seated thighs",
+        "minimumSurfaceDistanceM": 0.006577355675546119,
+        "containmentTested": true,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0
+      },
+      {
+        "identity": "Jane",
+        "part": "hand-left",
+        "label": "left listening hand on its own lap",
+        "minimumSurfaceDistanceM": 0.00039157040144417466,
+        "containmentTested": true,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0
+      },
+      {
+        "identity": "Jane",
+        "part": "hand-right",
+        "label": "right listening hand on its own lap",
+        "minimumSurfaceDistanceM": 0.00038847676403668707,
+        "containmentTested": true,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0
+      },
+      {
+        "identity": "Jane",
+        "part": "trousers",
+        "label": "seated thigh support on own chair",
+        "minimumSurfaceDistanceM": 0.0004031360149383545,
+        "containmentTested": true,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0
+      },
+      {
+        "identity": "Oleg",
+        "part": "hand-left",
+        "label": "left listening hand on its own lap",
+        "minimumSurfaceDistanceM": 0.0003747389683102281,
+        "containmentTested": true,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0
+      },
+      {
+        "identity": "Oleg",
+        "part": "hand-right",
+        "label": "right listening hand on its own lap",
+        "minimumSurfaceDistanceM": 0.0003797775958617052,
+        "containmentTested": true,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0
+      },
+      {
+        "identity": "Oleg",
+        "part": "trousers",
+        "label": "seated thigh support on own chair",
+        "minimumSurfaceDistanceM": 0.00021219253540039062,
+        "containmentTested": true,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0
+      },
+      {
+        "identity": "Borellis listening neighbor",
+        "part": "hand-left",
+        "label": "left listening hand on its own lap",
+        "minimumSurfaceDistanceM": 0.00037383955079933577,
+        "containmentTested": true,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0
+      },
+      {
+        "identity": "Borellis listening neighbor",
+        "part": "hand-right",
+        "label": "right listening hand on its own lap",
+        "minimumSurfaceDistanceM": 0.0003790609719784907,
+        "containmentTested": true,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0
+      },
+      {
+        "identity": "Borellis listening neighbor",
+        "part": "trousers",
+        "label": "seated thigh support on own chair",
+        "minimumSurfaceDistanceM": 0.00021457672119140625,
+        "containmentTested": true,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0
+      },
+      {
+        "identity": "Borellis drummer",
+        "part": "hand-left",
+        "label": "supporting drum hand",
+        "minimumSurfaceDistanceM": 0.0032022921077958203,
+        "containmentTested": false,
+        "verticesDeeperThan1mm": null,
+        "maximumSampledPenetrationM": null
+      },
+      {
+        "identity": "Borellis drummer",
+        "part": "hand-right",
+        "label": "tapping drum hand",
+        "minimumSurfaceDistanceM": 0.00020047245321199518,
+        "containmentTested": false,
+        "verticesDeeperThan1mm": null,
+        "maximumSampledPenetrationM": null
+      }
+    ]
+  },
+  "globalChecks": {
+    "dragLook": true,
+    "resize": true,
+    "webglLossFallback": true,
+    "noWebglFallback": true,
+    "failedRoomStaysInHall": true,
+    "frameCount": 41,
+    "previewCount": 12
+  },
+  "regressions": [
+    {
+      "build": {
+        "id": "01",
+        "modelSha256": "84421a5c228abbe01bbfc5a79163b453ef136b6d48a1ad47cddaf7669a8946fb",
+        "paintingSha256": "21dcfa8e7f529e325348ea529e55f5fa52bc3d5c98776efb694592926a178b51",
+        "appSha256": "4fd6e769d167e06c3510d99063c4d8eff483b0912fa8bd94189d52a292dd923f",
+        "recordedAt": "2026-10-23T23:50:22.801Z"
+      },
+      "checks": [
+        {
+          "id": "01",
+          "viewport": "desktop",
+          "entry": true,
+          "collisionSamples": 7,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        },
+        {
+          "id": "01",
+          "viewport": "phone",
+          "entry": true,
+          "collisionSamples": 7,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        }
+      ]
+    },
+    {
+      "build": {
+        "id": "11",
+        "modelSha256": "41205df490b1cee7b867b97073c409603c81c1ab8eb454417fcf848b2d449cba",
+        "paintingSha256": "bfcd20f323b0be25ad91c8850c0950d20e2ec7b4936b42851cf53dd1c44e7d4b",
+        "appSha256": "4fd6e769d167e06c3510d99063c4d8eff483b0912fa8bd94189d52a292dd923f",
+        "recordedAt": "2026-10-23T23:50:43.603Z"
+      },
+      "checks": [
+        {
+          "id": "11",
+          "viewport": "desktop",
+          "entry": true,
+          "collisionSamples": 40,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        },
+        {
+          "id": "11",
+          "viewport": "phone",
+          "entry": true,
+          "collisionSamples": 40,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        }
+      ]
+    }
+  ],
+  "footprints": {
+    "method": "Added lower-body collision metadata only. Every render-defining JSON property and every binary byte is unchanged.",
+    "records": [
+      {
+        "path": "src/assets/explore/room12/room.glb",
+        "marked": 40,
+        "beforeSha256": "650533d10ab05f6b79ea0aae5101246565e7ff61e7b3b8a96c48abd5f7107775",
+        "afterSha256": "843eb10217d0d7b201fb5c5a20e954c777a69795aa0184fc0616fdae2a6dabe3",
+        "renderDefinitionUnchanged": true,
+        "binaryChunksSha256": "8ae12f2430806aef1c90f0124c15ea71109ce3a86fe678b987607b36687a53b6"
+      },
+      {
+        "path": ".cache/room12/room-uncompressed.glb",
+        "marked": 40,
+        "beforeSha256": "c50c4c6b4ff0263856f840fe7c337ad9aad4318716f824a6bb06293056de496c",
+        "afterSha256": "c711b82baa65d5b70738116805844d927f295ee400649787a8bc549d3543ff77",
+        "renderDefinitionUnchanged": true,
+        "binaryChunksSha256": "a7e99b12749b44c40982fa1b0815e853a440a4ffc578abd0d98daf4fd955387e"
+      }
+    ]
+  },
+  "soak": {
+    "build": {
+      "id": "12",
+      "modelSha256": "843eb10217d0d7b201fb5c5a20e954c777a69795aa0184fc0616fdae2a6dabe3",
+      "paintingSha256": "5432d6da3d4b20fe9bd1167391012c544c43179f02922d8e7a3fa4f21efbdb02",
+      "appSha256": "4fd6e769d167e06c3510d99063c4d8eff483b0912fa8bd94189d52a292dd923f",
+      "recordedAt": "2026-10-23T23:44:14.457Z"
+    },
+    "movementLoops": 6,
+    "renderedFrames": 144,
+    "contextSurvived": true,
+    "screenshotReadback": false,
+    "samples": [
+      {
+        "elapsedMs": 185.9000000357628,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 120.39999997615814,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 1925.800000011921,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 16228.200000047684,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 9794.399999976158,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 9221.599999964237,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 9413.300000011921,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 3017.100000023842,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 8962.899999976158,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 8110.600000023842,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 4670.100000023842,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 2582.5,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 4183.300000011921,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 4525.5,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 1487.6000000238419,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 938.1999999880791,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 4241,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 7084,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 3759.800000011921,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 3152,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 4258.699999988079,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 5368.300000011921,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 3918.100000023842,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      },
+      {
+        "elapsedMs": 4652.5,
+        "heapBytes": 44700000,
+        "state": "room",
+        "worlds": 1
+      }
+    ]
+  },
+  "downloadBytes": 8555954
+}

@@ -18,7 +18,8 @@
     "build": "npm run build:client && node scripts/clean_output.mjs && eleventy",
     "dev": "npm run build:client && concurrently -k \"esbuild client/explore/main.mjs --bundle --format=esm --target=es2020 --outfile=src/assets/explore/app.js --watch\" \"eleventy --serve\"",
     "check": "python3 scripts/check_site.py && node scripts/validate_gallery_geometry.mjs --published && node --test tests/*.test.mjs",
-    "check:browser": "node scripts/verify_gallery.mjs"
+    "check:browser": "node scripts/verify_gallery.mjs",
+    "build:room12": "node scripts/build_gallery_room.mjs 12"
   },
   "devDependencies": {
     "@11ty/eleventy": "3.1.7",

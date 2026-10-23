@@ -45,7 +45,7 @@ test("movement stays inside the hallway and slides along its walls", () => {
   assert.equal(nearestSection({ x: 18, z: -10 }, layout.sections).section.index, 2);
 });
 
-test("frames 01–11 have room-sized openings and the other frames stay solid", () => {
+test("frames 01–12 have room-sized openings and the other frames stay solid", () => {
   const frame = layout.frames[0];
   assert.equal(roomIsReady(frame), true);
   assert.equal(roomIsReady(layout.frames[1]), true);
@@ -58,7 +58,7 @@ test("frames 01–11 have room-sized openings and the other frames stay solid", 
   assert.equal(roomIsReady(layout.frames[8]), true);
   assert.equal(roomIsReady(layout.frames[9]), true);
   assert.equal(roomIsReady(layout.frames[10]), true);
-  assert.equal(layout.frames.every((record, index) => index <= 10 || !roomIsReady(record)), true);
+  assert.equal(layout.frames.every((record, index) => index <= 11 || !roomIsReady(record)), true);
   assert.deepEqual(portalOpening(frame), { width: 3.35, height: 3.35 });
   assert.deepEqual(portalOpening(layout.frames[1]), { width: 3.35, height: 4.1 });
   assert.deepEqual(portalOpening(layout.frames[2]), { width: 3.35, height: 4.1 });
@@ -81,7 +81,10 @@ test("frames 01–11 have room-sized openings and the other frames stay solid", 
   assert.equal(framePlaqueText(layout.frames[8]), "First apples with friends");
   assert.equal(framePlaqueText(layout.frames[9]), "A day of shared play");
   assert.equal(framePlaqueText(layout.frames[10]), "Wondering at the fish with G");
-  assert.equal(framePlaqueText(layout.frames[11]), "12");
+  assert.equal(roomIsReady(layout.frames[11]), true);
+  assert.deepEqual(portalOpening(layout.frames[11]), { width: 3.35, height: 4.1 });
+  assert.equal(framePlaqueText(layout.frames[11]), "A place in the circle");
+  assert.equal(framePlaqueText(layout.frames[12]), "13");
 });
 
 function roomManager(colliders = layout.frames[0].room.colliders) {
@@ -172,4 +175,26 @@ test("solid footprints travel with authored 3D model parts", () => {
   const manager = roomManager([solid]);
   manager.mode = "room";
   assert.equal(manager.canStand(manager.roomToWorld({x:1,z:-1})), false);
+});
+
+test("the folk jam keeps both interiors accessible around its freestanding portal", () => {
+  const frame = layout.frames[11],outward={x:frame.sectionData.right.x*frame.sideSign,z:frame.sectionData.right.z*frame.sideSign};
+  assert.ok(frame.room.portalZ < frame.room.dimensionsM[2]/2-5,
+    "the opposite venue needs usable space behind the actual doorway");
+  const group=new THREE.Group();group.position.set(frame.center.x+outward.x*frame.room.portalZ,0,frame.center.z+outward.z*frame.room.portalZ);group.rotation.y=Math.atan2(-outward.x,-outward.z);
+  const manager=new RoomManager({gallery:{layout},player:{x:0,z:0}});
+  manager.active={frame,group,colliders:frame.room.colliders};manager.mode='room';
+  assert.equal(manager.canStand(manager.roomToWorld({x:-.25,z:.65})),false,
+    'Jane’s extended shoes block the area beyond her seated torso');
+  for(const x of [-3.2,3.2]){
+    Object.assign(manager.player,manager.roomToWorld({x,z:1.4}));
+    manager.move(manager.roomToWorld({x,z:4.7}));
+    assert.equal(manager.mode,'room');assert.ok(manager.worldToRoom(manager.player).z>4.5);
+  }
+  Object.assign(manager.player,manager.roomToWorld({x:0,z:4.7}));
+  manager.move(manager.roomToWorld({x:0,z:1.7}));
+  assert.equal(manager.mode,'room','walking through the back of the arch remains in the jam world');
+  Object.assign(manager.player,manager.roomToWorld({x:0,z:2.2}));
+  manager.move(manager.roomToWorld({x:0,z:3.4}));
+  assert.equal(manager.mode,'hall','crossing the actual return face reaches the hallway');
 });

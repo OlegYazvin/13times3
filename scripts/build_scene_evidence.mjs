@@ -9,7 +9,7 @@ await mkdir(destination,{recursive:true});
 const gallery=JSON.parse(await readFile('src/_data/gallery.json','utf8'));
 const digest=bytes=>createHash('sha256').update(bytes).digest('hex');
 const appSha256=digest(await readFile('src/assets/explore/app.js'));
-const views={'01':['profile-right'],'02':['embrace','household'],'03':['front','profile-left'],'04':['profile-left'],'05':['front'],'06':['phone'],'07':['front','picking-contact'],'08':['front','route-arts-bank','route-palmisano','route-temple'],'09':['close'],'10':['front','profile-left'],'11':['phone','portal-back']};
+const views={'01':['profile-right'],'02':['embrace','household'],'03':['front','profile-left'],'04':['profile-left'],'05':['front'],'06':['phone'],'07':['front','picking-contact'],'08':['front','route-arts-bank','route-palmisano','route-temple'],'09':['close'],'10':['front','profile-left'],'11':['phone','portal-back'],'12':['entry','borellis','children','portal-back']};
 const records=[],contacts=[],integrity={raw:[],packed:[]};
 for(const frame of gallery.frames.filter(f=>f.room.modelUrl)){
  const id=frame.id,model=await readFile('src'+frame.room.modelUrl),painting=await readFile('src'+frame.room.previewImage);

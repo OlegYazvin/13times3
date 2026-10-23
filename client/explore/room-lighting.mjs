@@ -11,8 +11,9 @@ export function addRoomLighting(parent, roomId = '01') {
     '07':[0xffd7a1,0xb0cfcc,2.75,.96], '08':[0xffcc97,0x8eacc1,2.3,.55],
     '09':[0xffd6a0,0x9aafad,2.25,.60], '10':[0xffdfb7,0x98bdc7,2.3,.64],
     '11':[0xd9eee2,0x75a9b9,1.8,.67],
+    '12':[0xffead1,0xc4d6df,2.4,1.05],
   }[roomId] || [0xffdfab,0xb7c7ff,2.1,.7];
-  parent.add(new THREE.HemisphereLight(settings[1],0x78645b,settings[3]));
+  parent.add(new THREE.HemisphereLight(settings[1],roomId==='12'?0x788e8e:0x78645b,settings[3]));
   const key = new THREE.DirectionalLight(settings[0], settings[2]);
   if(roomId==='07')key.position.set(-5,7,9);
   else key.position.set(roomId==='05'?-3.5:-2.5,4.5,3.2);
@@ -28,6 +29,7 @@ export function addRoomLighting(parent, roomId = '01') {
     '09':[[0,.8,2.6],[-5,7,8],7],
     '10':[[0,1,4],[-5,8,8],8],
     '11':[[0,1,8],[-4,7,5],12],
+    '12':[[0,1,0],[-4,7,8],13],
   }[roomId];
   if(shadow){
     const [target,offset,span]=shadow;
@@ -41,6 +43,7 @@ export function addRoomLighting(parent, roomId = '01') {
   const fill = new THREE.DirectionalLight(settings[1], .48);
   fill.position.set(3, 2.5, -2);
   parent.add(fill, fill.target);
+  if(roomId==='12'){for(const z of [-3,7.5]){const glow=new THREE.PointLight(0xffd3a3,14,10,2);glow.position.set(0,3.8,z);parent.add(glow);}}
   if(roomId==='05'){const focus=new THREE.SpotLight(0xffd6a2,30,12,.70,.9,2);focus.position.set(-1.5,5.4,3.6);focus.target.position.set(-.25,1.1,5.1);parent.add(focus,focus.target);}
   if(roomId==='02'){const bounce=new THREE.PointLight(0xffe5c1,12,9,2);bounce.position.set(-2.6,2.6,4.2);parent.add(bounce);}
   if(roomId==='06'){const bounce=new THREE.PointLight(0xffd4b6,9,10,2);bounce.position.set(.8,2.4,3.1);parent.add(bounce);}
@@ -55,7 +58,7 @@ export function addRoomLighting(parent, roomId = '01') {
 // enclosed studies; a directional art light must not be blocked by their
 // symbolic vaults. Both the exported painting and the live world use this rig.
 export function prepareRoomShadows(root,roomId,renderer){
-  if(!/^0[1-9]$|^1[01]$/.test(roomId))return;
+  if(!/^0[1-9]$|^1[012]$/.test(roomId))return;
   if(renderer){renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFShadowMap;}
   root.traverse(object=>{
     if(!object.isMesh)return;

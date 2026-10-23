@@ -8,6 +8,15 @@ import {createHash} from 'node:crypto';
 import {chromium} from 'playwright';
 import {buildLayout} from '../client/explore/layout.mjs';
 import {galleryBrowserExecutable} from './gallery_browser.mjs';
+// Finish the actual GPU render before PNG readback. This is local review
+// instrumentation; the public renderer and its movement path are unchanged.
+const finishedSnapshot=page=>page.evaluate(()=>{
+ const canvas=document.querySelector('#scene canvas'),original=canvas.toDataURL;
+ canvas.toDataURL=()=>null;
+ try{window.__galleryTestSnapshot();}finally{canvas.toDataURL=original;}
+ canvas.getContext('webgl2').finish();
+ return original.call(canvas,'image/png');
+});
 const executablePath=await galleryBrowserExecutable();
 const manifest=JSON.parse(await readFile('src/_data/gallery.json','utf8'));
 const frames=buildLayout(manifest).frames.filter(f=>f.room.modelUrl);
@@ -34,14 +43,14 @@ if(process.argv.includes('--global')){
  await p.evaluate(()=>document.querySelector('#scene canvas').getContext('webgl2').getExtension('WEBGL_lose_context').loseContext());
  await p.locator('#fallback').waitFor({state:'visible'});assert.equal(await p.locator('.frame-list li').count(),41);await p.close();
  const fallback=await browser.newContext();await fallback.addInitScript(()=>{const get=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(kind,...args){return kind==='webgl2'?null:get.call(this,kind,...args);};});
- const f=await fallback.newPage();await f.goto(base+'/explore/');await f.locator('#fallback').waitFor({state:'visible'});assert.equal(await f.locator('.frame-list li').count(),41);assert.equal(await f.locator('.fallback-previews img').count(),11);await fallback.close();
+ const f=await fallback.newPage();await f.goto(base+'/explore/');await f.locator('#fallback').waitFor({state:'visible'});assert.equal(await f.locator('.frame-list li').count(),41);assert.equal(await f.locator('.fallback-previews img').count(),frames.length);await fallback.close();
  const failed=await browser.newPage();await failed.route('**/assets/explore/room01/room.glb*',r=>r.abort());await failed.goto(base+'/explore/');await failed.getByRole('button',{name:/begin walking/i}).click();await failed.waitForTimeout(500);assert.equal((await failed.evaluate(()=>window.__galleryDebug())).mode,'hall');await failed.close();
- await writeFile(output+'/global-verification.json',JSON.stringify({dragLook:true,resize:true,webglLossFallback:true,noWebglFallback:true,failedRoomStaysInHall:true,frameCount:41,previewCount:11},null,2));
+ await writeFile(output+'/global-verification.json',JSON.stringify({dragLook:true,resize:true,webglLossFallback:true,noWebglFallback:true,failedRoomStaysInHall:true,frameCount:41,previewCount:frames.length},null,2));
  console.log('Global controls, resize and fallback checks passed');
 }else if(process.argv.includes('--functional')){
   const r=await promisify(execFile)(process.execPath,['scripts/browser_check.mjs'],{env:{...process.env,GALLERY_TEST_BASE:base,GALLERY_BROWSER_EXECUTABLE:executablePath},maxBuffer:8e6});console.log(r.stdout);if(r.stderr)console.log(r.stderr.slice(-2000));
 }else{
- const targets={'01':[-.3,0],'02':[-1.0,4.8],'03':[0,5.1],'04':[0,5.5],'05':[-.2,4.9],'06':[0,3.15],'07':[-.58,5.3],'08':[0,7.6],'09':[0,3.05],'10':[-.23,4.37],'11':[-.55,6.6]};
+ const targets={'01':[-.3,0],'02':[-1.0,4.8],'03':[0,5.1],'04':[0,5.5],'05':[-.2,4.9],'06':[0,3.15],'07':[-.58,5.3],'08':[0,7.6],'09':[0,3.05],'10':[-.23,4.37],'11':[-.55,6.6],'12':[0,-1.8]};
  const selected=process.argv.filter(x=>/^\d\d$/.test(x));
  const results=[];
  for(const f of frames.filter(f=>!selected.length||selected.includes(f.id))){
@@ -53,20 +62,20 @@ if(process.argv.includes('--global')){
   browser=await chromium.launch({headless:true,executablePath,args:['--use-gl=angle','--use-angle=swiftshader','--enable-webgl']});
   for(const phone of ((approachesOnly||profilesOnly||returnsOnly||contactsOnly)?[false]:[false,true])){
    console.log(`Review ${f.id}: ${phone?'phone':'desktop'} load`);
-   const p=await browser.newPage(phone?{viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:1}:{viewport:{width:960,height:720}});
+   let p=await browser.newPage(phone?{viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:1}:{viewport:{width:960,height:720}});
    const errors=[];p.on('pageerror',e=>errors.push(e.message));
    await p.goto(base+'/explore/',{waitUntil:'networkidle'});await p.getByRole('button',{name:/begin walking/i}).click();
    const o={x:f.sectionData.right.x*f.sideSign,z:f.sectionData.right.z*f.sideSign},baseYaw=Math.atan2(o.x,-o.z);
    if(!phone&&!profilesOnly&&!returnsOnly&&!contactsOnly&&!process.argv.includes('--checks')){
     await p.evaluate(([x,z,y])=>window.__galleryTestPose(x,z,y),[f.center.x-o.x*4.2,f.center.z-o.z*4.2,baseYaw]);
-    const pixels=await p.evaluate(()=>window.__galleryTestSnapshot());
+    const pixels=await finishedSnapshot(p);
     await writeFile(`${output}/${f.id}-hallway.png`,Buffer.from(pixels.split(',')[1],'base64'));
    }
    await p.evaluate(([x,z,y])=>window.__galleryTestPose(x,z,y),[f.center.x-o.x*2.8,f.center.z-o.z*2.8,baseYaw]);
    await p.waitForFunction(id=>window.__galleryDebug().activeRoom===id,f.id,{timeout:45000});
    console.log(`Review ${f.id}: ${phone?'phone':'desktop'} model loaded`);
    if(!phone&&!profilesOnly&&!returnsOnly&&!contactsOnly&&(!process.argv.includes('--checks')||f.id==='02')){
-    const pixels=await p.evaluate(()=>window.__galleryTestSnapshot());
+    const pixels=await finishedSnapshot(p);
     await writeFile(`${output}/${f.id}-reveal.png`,Buffer.from(pixels.split(',')[1],'base64'));
     if(f.id==='02'){
       // This patch is live sky inside the aperture. It previously showed a
@@ -75,7 +84,7 @@ if(process.argv.includes('--global')){
       const patch=async url=>sharp(Buffer.from(url.split(',')[1],'base64')).extract({left:400,top:325,width:8,height:8}).removeAlpha().raw().toBuffer();
       const before=await patch(pixels);
       await p.evaluate(()=>window.__galleryTestHallTint(0xff00ff));
-      const tinted=await p.evaluate(()=>window.__galleryTestSnapshot());
+      const tinted=await finishedSnapshot(p);
       await p.evaluate(()=>window.__galleryTestHallTint());
       const after=await patch(tinted);
       assert.ok(before.every((value,i)=>Math.abs(value-after[i])<=1),'room 02 sky must be independent of distant hallway wall colors');
@@ -87,7 +96,7 @@ if(process.argv.includes('--global')){
    await p.evaluate(([x,z])=>window.__galleryTestWorldMove(x,z),[f.center.x+o.x*.55,f.center.z+o.z*.55]);
    assert.equal((await p.evaluate(()=>window.__galleryDebug())).mode,'room',`frame ${f.id} entry`);
    if(contactsOnly||(!phone&&process.argv.includes('--record-contacts'))){
-     await p.evaluate(()=>window.__galleryTestSnapshot());
+     await finishedSnapshot(p);
      const meshes=await p.evaluate(()=>window.__galleryTestSubjectMeshes());
      assert.ok(meshes.length,'semantic subject meshes are present');await mkdir('.cache/contact-study',{recursive:true});
      await writeFile(`.cache/contact-study/${f.id}-meshes.json`,JSON.stringify({build:captureBuild,meshes}));
@@ -101,13 +110,26 @@ if(process.argv.includes('--global')){
    const shots=(returnsOnly||process.argv.includes('--checks'))?[]:profilesOnly?profiles:phone?[['phone',0,portal-.55,0]]:[['entry',0,portal-.55,0],['front',tx,Math.min(portal-.55,tz+2.5),0],...profiles,['left',tx-2,tz+1.7,Math.atan2(2,1.7)],['right',tx+2,tz+1.7,Math.atan2(-2,1.7)],['rear',tx+1.8,tz-1.8,Math.atan2(-1.8,-1.8)],['close',tx,Math.min(portal-.55,tz+1.4),0,-.28]];
    if(!phone&&!profilesOnly&&!returnsOnly&&!process.argv.includes('--checks')){
     if(f.id==='02')shots.push(['care',-3.3,-1.2,0],['household',-3.1,-4.6,-Math.PI/2,-.25],['contacts',2.5,4.2,0],['embrace',0,-2.7,0],['embrace-rear',-1,-7.8,2.75]);
+    if(f.id==='12')shots.push(['borellis',0,4.5,Math.PI,-.08],['borellis-side',-4.3,7.5,Math.PI/2,-.12],['portal-back',0,5.0,0],['children',.15,.6,0,-.40],['jonas',1.25,-.65,-.2,-.06],['beat-windows',-4,-5.8,0]);
     if(f.id==='11')shots.push(['portal-back',0,12.7,0],['rear-habitat',0,15.5,Math.PI]);
    }
    if(f.id==='08'&&!phone&&!returnsOnly&&!process.argv.includes('--checks'))for(const [stop,z,side]of[['pullman',7.05,-1],['avalon',5.8,1],['arts-bank',2.1,-1],['narrow-bridge',-1.65,1],['palmisano',-5.4,-1],['saint-ignatius',-9.15,1],['temple',-12.05,-1]]){
     const standZ=stop==='pullman'?9.15:stop==='avalon'?6.6:z,lookX=stop==='pullman'?-3.8:side*4.25;
     shots.push(['route-'+stop,0,standZ,Math.atan2(lookX,standZ-z),stop==='pullman'?.30:stop==='avalon'?.20:stop==='palmisano'?-.06:.15]);
    }
+   let captured=0;
    for(let [name,x,z,yaw,pitch=0] of shots){
+    // Software WebGL retains substantial snapshot memory for the large cast.
+    // Fresh renderers between small capture batches keep evidence reliable.
+    if(f.id==='12'&&captured>0&&captured%2===0){
+      await p.close();await browser.close();
+      browser=await chromium.launch({headless:true,executablePath,args:['--use-gl=angle','--use-angle=swiftshader','--enable-webgl']});
+      p=await browser.newPage({viewport:{width:960,height:720}});p.on('pageerror',e=>errors.push(e.message));
+      await p.goto(base+'/explore/',{waitUntil:'networkidle'});await p.getByRole('button',{name:/begin walking/i}).click();
+      await p.evaluate(([x,z,y])=>window.__galleryTestPose(x,z,y),[f.center.x-o.x*2.8,f.center.z-o.z*2.8,baseYaw]);
+      await p.waitForFunction(id=>window.__galleryDebug().activeRoom===id,f.id,{timeout:45000});
+      await p.evaluate(([x,z])=>window.__galleryTestWorldMove(x,z),[f.center.x+o.x*.55,f.center.z+o.z*.55]);
+    }
     if(name==='front'&&f.id==='03')pitch=-.28;
     if(name==='front'&&f.id==='04')pitch=-.22;
     if(f.id==='06'&&['front','profile-left','profile-right','left','right','rear','close'].includes(name))pitch=name==='front'||name==='close'?-.44:-.32;
@@ -116,9 +138,9 @@ if(process.argv.includes('--global')){
     if(!stand){for(const [dx,dz] of [[.9,0],[-.9,0],[0,.9],[0,-.9],[1.4,0],[-1.4,0],[2.5,0],[-2.5,0]])if(await p.evaluate(([x,z])=>window.__galleryTestRoomCanStand(x,z),[x+dx,z+dz])){x+=dx;z+=dz;yaw=Math.atan2(focal[0]-x,z-focal[1]);stand=true;break;}}
     if(!stand){results.push({id:f.id,name,unreachable:true});continue;}
     await p.evaluate(([x,z,y,pitch])=>window.__galleryTestRoomPose(x,z,y,pitch),[x,z,baseYaw+yaw,pitch]);
-    const pixels=await p.evaluate(()=>window.__galleryTestSnapshot());
+    const pixels=await finishedSnapshot(p);
     await writeFile(`${output}/${f.id}-${name}.png`,Buffer.from(pixels.split(',')[1],'base64'));
-    results.push({id:f.id,name,x,z,yaw,pitch,stand});console.log(`Review ${f.id}: captured ${name}`);
+    captured++;results.push({id:f.id,name,x,z,yaw,pitch,stand});console.log(`Review ${f.id}: captured ${name}`);
    }
    if(profilesOnly){await p.close();continue;}
    // Check actual exported footprints rather than stale author-name counts.
@@ -129,6 +151,31 @@ if(process.argv.includes('--global')){
    const interior=state.roomColliders.filter(c=>c.minX>-f.room.dimensionsM[0]/2&&c.maxX<f.room.dimensionsM[0]/2&&c.minZ>-f.room.dimensionsM[2]/2&&c.maxZ<f.room.dimensionsM[2]/2);
    const permitted=await p.evaluate(cs=>cs.map(c=>window.__galleryTestRoomCanStand((c.minX+c.maxX)/2,(c.minZ+c.maxZ)/2)),interior.slice(0,40));
    assert.ok(permitted.every(x=>x===false),`frame ${f.id}: cannot stand inside solid`);
+   if(f.id==='12'&&process.argv.includes('--soak')&&!phone){
+    const samples=[];
+    for(let cycle=0;cycle<6;cycle++){
+      await p.evaluate(y=>window.__galleryTestRoomPose(3.2,1.4,y),baseYaw);
+      for(const [x,z]of[[3.2,4.7],[-3.2,4.7],[-3.2,1.4],[0,1.4]]){
+        await p.evaluate(([x,z])=>window.__galleryTestRoomMove(x,z),[x,z]);
+        const result=await p.evaluate(async y=>{
+          window.__galleryTestRoomPose(window.__galleryDebug().roomLocal.x,window.__galleryDebug().roomLocal.z,y);
+          const start=performance.now();for(let i=0;i<6;i++)await new Promise(requestAnimationFrame);
+          return {elapsedMs:performance.now()-start,heapBytes:performance.memory?.usedJSHeapSize??null,state:window.__galleryDebug().mode,worlds:window.__galleryDebug().loadedWorldCount};
+        },baseYaw+cycle*.8);
+        assert.equal(result.state,'room');assert.equal(result.worlds,1);samples.push(result);
+      }
+    }
+    await writeFile(output+'/12-soak.json',JSON.stringify({build:captureBuild,movementLoops:6,renderedFrames:144,contextSurvived:true,screenshotReadback:false,samples},null,2));
+    console.log('Frame 12: repeated continuous-render exploration survived without screenshot readbacks');
+   }
+   if(f.id==='12'){
+    for(const x of [-3.2,3.2]){
+      await p.evaluate(x=>window.__galleryTestRoomPose(x,1.4,0),x);
+      await p.evaluate(x=>window.__galleryTestRoomMove(x,4.7),x);
+      const loop=await p.evaluate(()=>window.__galleryDebug());assert.equal(loop.mode,'room');assert.ok(loop.roomLocal.z>4.5,`frame 12: clear route to Borellis around post at ${x}`);
+    }
+    await p.evaluate(()=>window.__galleryTestRoomPose(0,4.7,0));await p.evaluate(()=>window.__galleryTestRoomMove(0,1.7));assert.equal((await p.evaluate(()=>window.__galleryDebug())).mode,'room','rear crossing stays in the continuous jam world');
+   }
    if(f.id==='11'){
     assert.ok(state.driftingFishCount>0,'frame 11: moving inhabitants retained');
     await p.waitForFunction(before=>window.__galleryDebug().fishProbeY.some((y,i)=>Math.abs(y-before[i])>.0001),state.fishProbeY,{timeout:20000});
@@ -149,6 +196,16 @@ if(process.argv.includes('--global')){
     const mid=(await p.evaluate(()=>window.__galleryDebug())).yaw;
     await p.waitForFunction(y=>window.__galleryDebug().yaw>y+.08,mid,{timeout:10000});
     await touch.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+    if(f.id==='12'){
+      await p.evaluate(([z,y])=>window.__galleryTestRoomPose(0,z,y),[portal-.58,baseYaw]);
+      const ring=await p.locator('.joystick-ring').boundingBox();assert.ok(ring);
+      const x=ring.x+ring.width/2,y=ring.y+ring.height/2,prior=(await p.evaluate(()=>window.__galleryDebug())).roomLocal.z;
+      await touch.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y,id:2}]});
+      await touch.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x,y:y-32,id:2}]});
+      await p.waitForFunction(z=>window.__galleryDebug().roomLocal.z<z-.02,prior,{timeout:15000});
+      await touch.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+      results.push({id:f.id,name:'thumb-joystick-moves',passed:true});
+    }
    }else{
     const before=(await p.evaluate(()=>window.__galleryDebug())).roomLocal.z;
     await p.keyboard.down('w');await p.waitForFunction(z=>window.__galleryDebug().roomLocal.z<z-.02,before,{timeout:10000});await p.keyboard.up('w');
@@ -160,7 +217,7 @@ if(process.argv.includes('--global')){
    assert.equal(afterExit.mode,'hall',`frame ${f.id}: return crossing`);
    assert.equal(afterExit.yaw,beforeExit.yaw,`frame ${f.id}: no heading jump`);
    assert.equal(afterExit.cameraFov,beforeExit.cameraFov,`frame ${f.id}: no FOV jump`);
-   if(!phone&&!process.argv.includes('--checks')){const pixels=await p.evaluate(()=>window.__galleryTestSnapshot());await writeFile(`${output}/${f.id}-return.png`,Buffer.from(pixels.split(',')[1],'base64'));}
+   if(!phone&&!process.argv.includes('--checks')){const pixels=await finishedSnapshot(p);await writeFile(`${output}/${f.id}-return.png`,Buffer.from(pixels.split(',')[1],'base64'));}
    await p.evaluate(()=>window.__galleryTestPose(45,-20,0));
    await p.waitForFunction(()=>window.__galleryDebug().activeRoom===null);
    assert.equal((await p.evaluate(()=>window.__galleryDebug())).loadedWorldCount,0,`frame ${f.id}: cleanup`);
@@ -172,7 +229,7 @@ if(process.argv.includes('--global')){
   else if(returnsOnly){await writeFile(`${output}/${f.id}-return-build.json`,JSON.stringify(captureBuild,null,2));console.log(`Frame ${f.id}: continuous return view captured`);}
   else if(profilesOnly){await writeFile(`${output}/${f.id}-profiles.json`,JSON.stringify(results.filter(r=>r.id===f.id),null,2));await writeFile(`${output}/${f.id}-profile-build.json`,JSON.stringify(captureBuild,null,2));console.log(`Frame ${f.id}: accessible side-profile views captured`);}
   else if(approachesOnly){await writeFile(`${output}/${f.id}-approach-build.json`,JSON.stringify(captureBuild,null,2));console.log(`Frame ${f.id}: hallway painting and partial reveal captured`);}
-  else {await writeFile(`${output}/${f.id}-verification.json`,JSON.stringify(results.filter(r=>r.id===f.id),null,2));await writeFile(`${output}/${f.id}-verification-build.json`,JSON.stringify(captureBuild,null,2));if(!process.argv.includes('--checks')){await writeFile(`${output}/${f.id}-capture-build.json`,JSON.stringify({...captureBuild,captured:true},null,2));await writeFile(`${output}/${f.id}-return-build.json`,JSON.stringify(captureBuild,null,2));}console.log(`Frame ${f.id}: desktop and fresh phone checks passed${process.argv.includes('--checks')?'':' with walkaround captures'}`);}
+  else {await writeFile(`${output}/${f.id}-verification.json`,JSON.stringify(results.filter(r=>r.id===f.id),null,2));await writeFile(`${output}/${f.id}-verification-build.json`,JSON.stringify(captureBuild,null,2));if(!process.argv.includes('--checks')){await writeFile(`${output}/${f.id}-capture-poses.json`,JSON.stringify(results.filter(r=>r.id===f.id),null,2));await writeFile(`${output}/${f.id}-capture-build.json`,JSON.stringify({...captureBuild,captured:true},null,2));await writeFile(`${output}/${f.id}-return-build.json`,JSON.stringify(captureBuild,null,2));}console.log(`Frame ${f.id}: desktop and fresh phone checks passed${process.argv.includes('--checks')?'':' with walkaround captures'}`);}
  }
 }
 }finally{await browser?.close();await new Promise(r=>server.close(r));}

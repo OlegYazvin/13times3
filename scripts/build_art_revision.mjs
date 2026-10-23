@@ -1,10 +1,10 @@
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
-import {mkdir,copyFile} from 'node:fs/promises';
+import {mkdir,copyFile,readFile} from 'node:fs/promises';
 import {galleryBrowserExecutable} from './gallery_browser.mjs';
 const run=promisify(execFile);
 const executablePath=await galleryBrowserExecutable();
-const ids=process.argv.slice(2).length?process.argv.slice(2):Array.from({length:11},(_,i)=>String(i+1).padStart(2,'0'));
+const ids=process.argv.slice(2).length?process.argv.slice(2):JSON.parse(await readFile('src/_data/gallery.json','utf8')).frames.filter(f=>f.room.modelUrl).map(f=>f.id);
 await mkdir('.cache/art-review/before',{recursive:true});
 const failures=[];
 for(const id of ids){

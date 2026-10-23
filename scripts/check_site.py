@@ -103,7 +103,7 @@ def main() -> None:
     assert len(registry_ids) == len(set(registry_ids)), "The scene registry repeats a frame ID"
     assert set(registry_ids) <= {frame["id"] for frame in frames}, "The scene registry has an unknown frame ID"
     live_ids = {frame["id"] for frame in frames if frame["room"]["modelUrl"]}
-    for frame in frames[:11]:
+    for frame in frames[:12]:
         assert re.fullmatch(r"#[0-9a-fA-F]{6}", frame["room"]["backgroundColor"]), (
             f"Room {frame['id']} needs a sky or interior clear color for its isolated render space"
         )
@@ -147,7 +147,7 @@ def main() -> None:
     assert all(all(key in collider for key in ("minX", "maxX", "minZ", "maxZ"))
                for collider in first_room["colliders"])
     assert all(not frame["room"]["previewImage"] and not frame["room"]["modelUrl"]
-               for index, frame in enumerate(frames) if index not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
+               for index, frame in enumerate(frames) if index not in (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11))
     preview = OUTPUT / first_room["previewImage"].lstrip("/")
     model = OUTPUT / first_room["modelUrl"].lstrip("/")
     assert preview.read_bytes()[:4] == b"RIFF"
@@ -413,7 +413,15 @@ def main() -> None:
     }), "Room 11 fish must retain three distinct sculpted body shapes"
     assert sum("driftPhase" in node.get("extras", {}) for node in aquarium_json["nodes"]) >= 24, "Room 11 fish need gentle motion metadata"
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in aquarium_json["nodes"]) >= 20, "Aquarium columns, tanks, figures, and doorway posts must collide"
-    expected_counts = [2, 10, 4, 3, 3, 2, 4, 2, 7, 7, 4]
+    jam_room = frames[11]["room"]
+    assert jam_room["portalZ"] < jam_room["dimensionsM"][2] / 2 - 5, "The folk jam needs an interior behind its return portal"
+    jam_bytes = (OUTPUT / jam_room["modelUrl"].lstrip("/")).read_bytes()
+    jam_json = json.loads(jam_bytes[20:20 + int.from_bytes(jam_bytes[12:16], "little")])
+    assert all(n.get("extras", {}).get("solidFootprint") for n in jam_json["nodes"] if n.get("extras", {}).get("storyPart") in ("trousers", "shoe")), "The jam's lower bodies and shoes must block walking"
+    jam_people = {n.get("extras", {}).get("identity") for n in jam_json["nodes"] if n.get("extras", {}).get("storyFigure")}
+    assert {"Jane", "Zephrine", "Jam child friend", "Jonas Friddle", "Oleg"} <= jam_people, "The jam lost a principal person or the children's friendship"
+    assert {"guitar", "banjo", "mandolin", "fiddle", "bass", "frame drum"} <= {n.get("extras", {}).get("folkInstrument") for n in jam_json["nodes"]}, "The jam lost its varied folk instruments"
+    expected_counts = [2, 10, 4, 3, 3, 2, 4, 2, 7, 7, 4, 13]
     for frame_id, minimum in enumerate(expected_counts, 1):
         model = (OUTPUT / f"assets/explore/room{frame_id:02d}/room.glb").read_bytes()
         json_length = int.from_bytes(model[12:16], "little")
@@ -471,7 +479,7 @@ def main() -> None:
 
     total_bytes = sum(path.stat().st_size for path in OUTPUT.rglob("*") if path.is_file())
     assert total_bytes < 1_000_000_000, "GitHub Pages published-site limit exceeded"
-    print(f"Verified 39 detail pages, 2 grid routes, credits, 41 gallery frames (rooms 01–11 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
+    print(f"Verified 39 detail pages, 2 grid routes, credits, 41 gallery frames (rooms 01–12 live), 39 unique card images, sitemap, and local fonts ({total_bytes / 1_000_000:.1f} MB).")
 
 
 if __name__ == "__main__":

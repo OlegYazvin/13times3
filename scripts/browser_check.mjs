@@ -190,7 +190,7 @@ try {
   await fallbackPage.goto(`${base}/explore/`, { waitUntil: "domcontentloaded" });
   await fallbackPage.locator("#fallback").waitFor({ state: "visible" });
   assert.equal(await fallbackPage.locator(".frame-list li").count(), 41);
-  assert.equal(await fallbackPage.locator(".fallback-previews img").count(), 11);
+  assert.equal(await fallbackPage.locator(".fallback-previews img").count(), 12);
   assert.equal(await fallbackPage.locator(".frame-list li").first().textContent(), "Zephrine's first stage");
   await context.close();
   console.log("WebGL fallback: 41 frames listed with the completed painting caption");

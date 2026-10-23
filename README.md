@@ -7,7 +7,7 @@ A static recreation of [13times3.com](https://www.13times3.com), hosted on GitHu
 - 39 achievement detail pages, with their original URL paths and previous/next order.
 - The achievement grid at `/` and `/achievements` (canonical URL: `/`).
 - 39 locally stored card images and locally served Archivo and Ojuju fonts.
-- A public first-person gallery at `/explore/` with 41 stable frames across five winding sections. Frames 01–11 open into story worlds; frames 12–41 remain blank.
+- A public first-person gallery at `/explore/` with 41 stable frames across five winding sections. Frames 01–12 open into story worlds; frames 13–41 remain blank.
 
 The portfolio data is in `src/_data/site.json`; shared templates and styles are in `src/_includes` and `src/assets`. The public Squarespace source snapshot is in `audit/source-manifest.json`. `scripts/import_squarespace.py` can recapture the current public source, but running it will overwrite the data file and downloaded media, so review changes before committing.
 
@@ -43,3 +43,10 @@ SITE_BASE_PATH=/13times3 npm run check
 The GitHub Actions workflow uses `/13times3` for staging unless the repository variable `SITE_BASE_PATH` is set to `/` for the custom domain. Staging builds include `noindex` metadata.
 
 See [MIGRATION.md](MIGRATION.md) for the remaining account and domain steps.
+
+
+Frame 12, **A place in the circle**, joins Beat Kitchen upstairs and Borelli’s in
+one walkable folk jam memory. Jane listens, Zephrine meets her friend, and Jonas
+Friddle leads a varied acoustic circle. Walk around either side of the return
+portal to find the second interior behind it. See the [scene notes](docs/scene-12-folk-jam-notes.md)
+and [review evidence](docs/scene-evidence/12-folk-jam/index.html).

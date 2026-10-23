@@ -188,3 +188,19 @@ For ongoing refinement of the published rooms, use the [visual quality audit](vi
 - Keep evidence keyed to model hashes. Align fallback collision boxes only
   from the current reviewed exports; functional entry/return passes remain
   separate from visual acceptance, source integrity and actual contact tests.
+
+
+## Frame 12 — joined interiors and seated collisions
+
+- A larger vault needs end-wall infill up to its actual surface. Refit hanging
+  fixtures to that roof after changing its height; an old fixed suspension
+  height can leave a chandelier unsupported in the middle of the air.
+- Keep a seated adult’s shoulder-to-hip length consistent with their standing
+  proportions. Lowering the head alone compresses the torso and lets a correctly
+  sized instrument obscure the face. Fit the whole person, instrument and chair.
+- Include extended trousers and shoes in collision, not only a torso and chair.
+  Sampling the blockers that already exist cannot reveal a missing leg blocker.
+  The folk scene tags actual posed lower-body meshes and tests a foot-only area.
+- Wait for GPU completion before screenshot readback. Separate screenshot-tool
+  failures from ordinary exploration with a continuous-render test. A stable
+  software-browser run is not a physical-phone frame-rate measurement.
