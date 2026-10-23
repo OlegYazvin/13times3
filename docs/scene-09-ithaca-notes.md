@@ -57,3 +57,19 @@ remaining artistic weaknesses. This does not change the memory or frame ID.
 Publication status: the reviewed adult-height field and shared portal follow-ups
 are included in the user-authorized release after `f28cbb7`. Earlier local-pass
 wording above records the development sequence. Artistic acceptance remains open.
+
+## Continued native sculpture review, October 23
+
+The October 23 local apple is a closed sculpted surface with a genuine concave bite and pale cut pigment. The separate flesh insert is removed. Both native cupped hands meet the exported apple with no tested vertices deeper than 1 mm. Orchard continuation was not being generated because a tree-name match missed the current authored groups; the source now extends their rows over the distant terrain with atmospheric fading. The apple contact check does not establish the vest, friends or landscape’s artistic acceptance.
+
+A later rear/contact review confirms Jane's right hand penetrated the child's
+shirt by about 33 mm. The source now lowers her crouch and fits an open palm
+against the clothed upper back with an explicit hand axis. The vest was also
+inside the shirt: it had inherited the reduced collision torso. Its new shell
+uses the original ordered garment profile plus material thickness, and its
+zipper is ray-fitted to that actual surface. Both corrections require the next
+packed export; the preceding apple-only pass did not establish these contacts.
+
+### Current exported evidence, October 23
+
+The exported outer vest is now visibly teal and has a zipper sampled on its actual surface. Jane’s reassuring hand measures 0.40 mm from the vest and 5.05 mm from the inner shirt, with no tested penetration deeper than 1 mm or tested hand/vest edge crossings. The whole scene’s coarse inter-person scan has no flags. Both hands continue to support the real concave apple. Desktop and fresh portrait-emulation entry, walkaround, controls, return and cleanup pass at the current hash.

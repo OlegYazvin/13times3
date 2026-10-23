@@ -1,0 +1,396 @@
+{
+  "date": "2026-10-23",
+  "method": "Unmodified canvas snapshots from the actual reviewed GLB exports. Portrait-phone views use fresh browser contexts with touch emulation. These are not physical-device performance measurements.",
+  "scenes": [
+    {
+      "id": "01",
+      "title": "You signed Zephrine up for dance and acting classes!",
+      "modelSha256": "84421a5c228abbe01bbfc5a79163b453ef136b6d48a1ad47cddaf7669a8946fb",
+      "paintingSha256": "21dcfa8e7f529e325348ea529e55f5fa52bc3d5c98776efb694592926a178b51",
+      "appSha256": "5562af5890990444c4aed4664425fa5533426e07d68cdd12d283bfe313b415ec",
+      "modelBytes": 2277864,
+      "paintingBytes": 31460,
+      "capturedAt": "2026-10-23T18:17:30.530Z",
+      "images": [
+        "01-profile-right.png"
+      ],
+      "functionalChecks": [
+        {
+          "id": "01",
+          "viewport": "desktop",
+          "entry": true,
+          "collisionSamples": 7,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        },
+        {
+          "id": "01",
+          "viewport": "phone",
+          "entry": true,
+          "collisionSamples": 7,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        }
+      ]
+    },
+    {
+      "id": "02",
+      "title": "Jane helped me (Oleg) get a job",
+      "modelSha256": "59c21d9a5656427729bf643c13c00df91c570462c714cd07e10f9331e4574845",
+      "paintingSha256": "82b35e4e25354748ef7118b055660741ffbe5f2e17feb7f9ba2549af6c3ea7f5",
+      "appSha256": "5562af5890990444c4aed4664425fa5533426e07d68cdd12d283bfe313b415ec",
+      "modelBytes": 6531224,
+      "paintingBytes": 26014,
+      "capturedAt": "2026-10-23T18:18:25.995Z",
+      "images": [
+        "02-embrace.png",
+        "02-household.png"
+      ],
+      "functionalChecks": [
+        {
+          "id": "02",
+          "viewport": "desktop",
+          "entry": true,
+          "collisionSamples": 37,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        },
+        {
+          "id": "02",
+          "viewport": "phone",
+          "entry": true,
+          "collisionSamples": 37,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        }
+      ]
+    },
+    {
+      "id": "03",
+      "title": "Jane made sure Zephrine has a best friend (Charlize)",
+      "modelSha256": "6369fb1e9e5639fae41a70330ea8033e66b517546ea84dea5327a8b6661149aa",
+      "paintingSha256": "9cdde09d8abaa542c4508cb740a237d80c22c8d9ff606e64b5641354d45b7e0f",
+      "appSha256": "5562af5890990444c4aed4664425fa5533426e07d68cdd12d283bfe313b415ec",
+      "modelBytes": 4815512,
+      "paintingBytes": 45954,
+      "capturedAt": "2026-10-23T18:20:38.469Z",
+      "images": [
+        "03-front.png"
+      ],
+      "functionalChecks": [
+        {
+          "id": "03",
+          "viewport": "desktop",
+          "entry": true,
+          "collisionSamples": 22,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        },
+        {
+          "id": "03",
+          "viewport": "phone",
+          "entry": true,
+          "collisionSamples": 22,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        }
+      ]
+    },
+    {
+      "id": "04",
+      "title": "Jane Got zephrine the ‘blue car’",
+      "modelSha256": "1948243b2b4b1f6eec5041b1404bcb9f75936828f13a927236d157701ae86c9a",
+      "paintingSha256": "5a761e242f18fd90dd50fc84d75a5f22dabc45d5a95bc473bc8314a5f2a4e4e2",
+      "appSha256": "5562af5890990444c4aed4664425fa5533426e07d68cdd12d283bfe313b415ec",
+      "modelBytes": 5025304,
+      "paintingBytes": 41396,
+      "capturedAt": "2026-10-23T18:22:08.776Z",
+      "images": [
+        "04-profile-left.png"
+      ],
+      "functionalChecks": [
+        {
+          "id": "04",
+          "viewport": "desktop",
+          "entry": true,
+          "collisionSamples": 24,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        },
+        {
+          "id": "04",
+          "viewport": "phone",
+          "entry": true,
+          "collisionSamples": 24,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        }
+      ]
+    },
+    {
+      "id": "05",
+      "title": "Jane moved offices",
+      "modelSha256": "5c0e9d8f8030f023fc0f53f6ec53f16a63d1a5a2f6ea579db838cca7a2809bd4",
+      "paintingSha256": "eaf2d8d3a14d1c7dda2ba92b0049d71303b02430d3dfdfb3684238010e06eeb8",
+      "appSha256": "5562af5890990444c4aed4664425fa5533426e07d68cdd12d283bfe313b415ec",
+      "modelBytes": 2712080,
+      "paintingBytes": 39674,
+      "capturedAt": "2026-10-23T18:23:41.612Z",
+      "images": [
+        "05-front.png"
+      ],
+      "functionalChecks": [
+        {
+          "id": "05",
+          "viewport": "desktop",
+          "entry": true,
+          "collisionSamples": 40,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        },
+        {
+          "id": "05",
+          "viewport": "phone",
+          "entry": true,
+          "collisionSamples": 40,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        }
+      ]
+    },
+    {
+      "id": "06",
+      "title": "Jane ended breast feeding",
+      "modelSha256": "94a250030d5d52e0dc16554581a9500aed4cd0d0d78906811235b9f357c620d8",
+      "paintingSha256": "0a975c50514d748fe3ee489eb07271c6e6e40c34fc0eb0eafe1bed6f716ce7a3",
+      "appSha256": "5562af5890990444c4aed4664425fa5533426e07d68cdd12d283bfe313b415ec",
+      "modelBytes": 1479200,
+      "paintingBytes": 22280,
+      "capturedAt": "2026-10-23T18:49:15.124Z",
+      "images": [
+        "06-phone.png"
+      ],
+      "functionalChecks": [
+        {
+          "id": "06",
+          "viewport": "desktop",
+          "entry": true,
+          "collisionSamples": 15,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        },
+        {
+          "id": "06",
+          "viewport": "phone",
+          "entry": true,
+          "collisionSamples": 15,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        }
+      ]
+    },
+    {
+      "id": "07",
+      "title": "The time we went blueberry picking",
+      "modelSha256": "20eecb83e707ec8739ab6b170e1b6793c859d23c1d7daeac020ff0398fea7854",
+      "paintingSha256": "29f6ede97c2dba8bca5df4ac74348af75b307f3b5b2b8e27cb9f9a4c04e2e0f8",
+      "appSha256": "5562af5890990444c4aed4664425fa5533426e07d68cdd12d283bfe313b415ec",
+      "modelBytes": 5602268,
+      "paintingBytes": 48160,
+      "capturedAt": "2026-10-23T18:49:55.521Z",
+      "images": [
+        "07-front.png",
+        "07-picking-contact.png"
+      ],
+      "functionalChecks": [
+        {
+          "id": "07",
+          "viewport": "desktop",
+          "entry": true,
+          "collisionSamples": 31,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        },
+        {
+          "id": "07",
+          "viewport": "phone",
+          "entry": true,
+          "collisionSamples": 31,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        }
+      ]
+    },
+    {
+      "id": "08",
+      "title": "Chicago Open house",
+      "modelSha256": "a9f3678dce4be4110568cd4b1b4db4bb14aa48e0f8a869e507164eb020bfec61",
+      "paintingSha256": "53cdafb6f2a556cb48f5d2c9768105c1b6079f80660b11fb65d0c6e0462c45dd",
+      "appSha256": "5562af5890990444c4aed4664425fa5533426e07d68cdd12d283bfe313b415ec",
+      "modelBytes": 2043632,
+      "paintingBytes": 24086,
+      "capturedAt": "2026-10-23T18:27:05.343Z",
+      "images": [
+        "08-front.png",
+        "08-route-arts-bank.png"
+      ],
+      "functionalChecks": [
+        {
+          "id": "08",
+          "viewport": "desktop",
+          "entry": true,
+          "collisionSamples": 40,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        },
+        {
+          "id": "08",
+          "viewport": "phone",
+          "entry": true,
+          "collisionSamples": 40,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        }
+      ]
+    },
+    {
+      "id": "09",
+      "title": "We FINALLY visited our friends in Ithaca for the first time where Zephrine got to try apple picking for the first time.",
+      "modelSha256": "465e8211c11903fec753f17dc422de53a573c44c1d063ba14fd57e4c8e222c0d",
+      "paintingSha256": "e0610862470aa92972e8772d7ace8b4f4aa1575947004aa597cd703e4f48b95d",
+      "appSha256": "5562af5890990444c4aed4664425fa5533426e07d68cdd12d283bfe313b415ec",
+      "modelBytes": 5656420,
+      "paintingBytes": 45220,
+      "capturedAt": "2026-10-23T18:28:05.489Z",
+      "images": [
+        "09-close.png"
+      ],
+      "functionalChecks": [
+        {
+          "id": "09",
+          "viewport": "desktop",
+          "entry": true,
+          "collisionSamples": 29,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        },
+        {
+          "id": "09",
+          "viewport": "phone",
+          "entry": true,
+          "collisionSamples": 29,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        }
+      ]
+    },
+    {
+      "id": "10",
+      "title": "We visited maggie daley park for the first time with Zephrine!",
+      "modelSha256": "1cd5f9908da889f2002b650b5396076fba87950612301e3732a0120c2a0df1e2",
+      "paintingSha256": "4968840eab22e4876951717c7e333e10a46a362143bf64c84d3a02e99f50302f",
+      "appSha256": "5562af5890990444c4aed4664425fa5533426e07d68cdd12d283bfe313b415ec",
+      "modelBytes": 5736892,
+      "paintingBytes": 28692,
+      "capturedAt": "2026-10-23T18:30:13.470Z",
+      "images": [
+        "10-front.png",
+        "10-profile-left.png"
+      ],
+      "functionalChecks": [
+        {
+          "id": "10",
+          "viewport": "desktop",
+          "entry": true,
+          "collisionSamples": 26,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        },
+        {
+          "id": "10",
+          "viewport": "phone",
+          "entry": true,
+          "collisionSamples": 26,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        }
+      ]
+    },
+    {
+      "id": "11",
+      "title": "We took zephrine to the Shedd aquairum with G",
+      "modelSha256": "41205df490b1cee7b867b97073c409603c81c1ab8eb454417fcf848b2d449cba",
+      "paintingSha256": "bfcd20f323b0be25ad91c8850c0950d20e2ec7b4936b42851cf53dd1c44e7d4b",
+      "appSha256": "5562af5890990444c4aed4664425fa5533426e07d68cdd12d283bfe313b415ec",
+      "modelBytes": 5992536,
+      "paintingBytes": 80628,
+      "capturedAt": "2026-10-23T18:31:27.606Z",
+      "images": [
+        "11-phone.png",
+        "11-portal-back.png"
+      ],
+      "functionalChecks": [
+        {
+          "id": "11",
+          "viewport": "desktop",
+          "entry": true,
+          "collisionSamples": 40,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        },
+        {
+          "id": "11",
+          "viewport": "phone",
+          "entry": true,
+          "collisionSamples": 40,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        }
+      ]
+    }
+  ]
+}

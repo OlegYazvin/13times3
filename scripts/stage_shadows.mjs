@@ -27,7 +27,7 @@ export function addContactShadow(parent, stature = 1.7, scale = 1) {
   const shadow = new THREE.Mesh(new THREE.PlaneGeometry(.94, .68), shadowMaterial());
   shadow.name = "soft contact shadow anchoring the sculpted figure";
   shadow.rotation.x = -Math.PI / 2;
-  shadow.position.y = .034;
+  shadow.position.y = .002;
   shadow.scale.setScalar((stature < 1.3 ? .72 : 1) * scale);
   parent.add(shadow);
   return shadow;

@@ -66,11 +66,11 @@ ground(C.street, (x, z) => new THREE.Color(C.ground).lerp(
 // Layered facades continue between the seven named stops. They make the route
 // feel like a real piece of city fabric rather than objects on a blank plane.
 for (const side of [-1,1]) for (let bay=0;bay<7;bay++) {
-  const z=10.8-bay*3.55, x=side*6.12;
+  const z=10.8-bay*3.55, x=side*(7.75+(bay%3)*.18);
   const height=2.65+(bay*5%4)*.43;
   const mat=bay%3===0?M.warmBrick:bay%3===1?M.arch:M.limestone;
   box(root,"solid layered Chicago streetscape facade",x,height/2,z,
-    .78,height,3.12,mat,true);
+    4.04,height,3.12,mat,true);
   box(root,"projecting civic cornice",side*5.7,height-.08,z,
     .26,.18,3.25,M.cream);
   for (let row=0;row<2;row++) for (let window=0;window<3;window++) {
@@ -90,14 +90,14 @@ for (const side of [-1,1]) for (let bay=0;bay<7;bay++) {
 }
 
 // An inlaid route bends through seven walkable architectural miniatures.
-for (const side of [-1, 1]) curve(root, "thin brass edge of Jane's route",
+for (const side of []) curve(root, "thin brass edge of Jane's route",
   [[side * 1.4, .045, 13], [side * 1.28, .045, 8],
     [side * 1.57, .045, 3], [side * 1.22, .045, -2],
     [side * 1.5, .045, -8], [side * 1.15, .045, -13]],
   .025, M.gold, 72);
-for (let z = -12; z <= 12; z += .87) {
+for (let z = -12; z <= 12; z += 2.6) {
   beam(root, "fine cut in stone pavement", [-1.34, .05, z],
-    [1.34, .05, z + .07], .011, .011, M.limestone, 5);
+    [1.34, .001, z + .07], .002, .002, M.limestone, 5);
 }
 function archedDoor(parent, x, z, y = 1.1, w = 1.55, h = 2.4, mat = M.ink) {
   box(parent, "deep doorway recess", x, y, z, w, h - .4, .12, mat, true);
@@ -118,13 +118,13 @@ function plaque(text, x, z, side) {
   const px = near ? -2.35 : side * 2.95;
   const pz = near ? z + 1.15 : z + .48;
   const face = add(root, `route label ${text}`,
-    new THREE.PlaneGeometry(1.42, .26), material,
-    px, .78, pz);
+    new THREE.PlaneGeometry(1.05, .175), material,
+    px, .51, pz);
   // Face both a visitor advancing along the route and one looking into the
   // stop. A near-forward plane vanished edge-on beside its new side facade.
   face.rotation.y = side < 0 ? .65 : -.65;
-  box(root, "slim label stand", px, .36, pz - .01,
-    .04, .65, .04, M.bronze);
+  box(root, "slim label stand", px, .25, pz - .01,
+    .025, .48, .025, M.bronze);
 }
 function monument(name, z, side, material = M.brick, inset = 0, width = 3.7) {
   const x = side * (4.25 - inset);
@@ -374,6 +374,51 @@ function pathFacingFacade(name, x, z, side, bodyWidth, treatment) {
     .2,M.mint,random()*6.28);
   plaque("Zen Buddhist Temple", x, z, -1);
 }
+
+// These are small, walk-around architectural worlds. Preserve the street
+// elevations while carrying each building back into a real volume.
+const deeperBodies = new Map([
+  ['solid Pullman administration facade',[1.45,2.90]],
+  ['solid layered theater facade',[1.60,3.05]],
+  ['solid neoclassical arts bank body',[1.60,2.95]],
+  ['solid former congregation building',[1.65,3.05]],
+  ['solid broad school masonry',[1.55,2.95]],
+]);
+root.traverse(o=>{
+  const sizes=deeperBodies.get(o.name);if(!sizes)return;
+  o.scale.z*=sizes[1]/sizes[0];o.position.z-=(sizes[1]-sizes[0])/2;
+});
+function pitchedRoof(name,x,z,w,d,y,rise,material){
+  const profile=new THREE.Shape();profile.moveTo(-w/2,0);
+  profile.lineTo(0,rise);profile.lineTo(w/2,0);profile.closePath();
+  return add(root,name,new THREE.ExtrudeGeometry(profile,{depth:d,
+    bevelEnabled:false}),material,x,y,z-d/2);
+}
+pitchedRoof('joined pitched roof over Pullman administration wings',-3.35,6.34,3.12,2.95,2.55,.30,M.night);
+pitchedRoof('deep auditorium roof behind the Avalon minaret',4.25,5.10,3.35,3.08,2.82,.39,M.rose);
+box(root,'whole bank roof behind its carved pediment',-4.25,3.02,1.40,3.55,.17,3.0,M.arch);
+pitchedRoof('continuous roof over the former congregation hall',4.25,-2.35,3.4,3.07,2.83,.67,M.night);
+pitchedRoof('deep red schoolhouse roof',4.25,-9.85,3.53,3.0,3.12,.53,M.brick);
+// Return windows and courses articulate the depth from either direction.
+for(const [x,z,h,half]of[[-3.35,6.34,2.3,1.5],[4.25,5.10,2.55,1.6],[-4.25,1.4,2.4,1.675],[4.25,-2.35,2.55,1.625],[4.25,-9.85,2.63,1.675]]){
+  for(const side of[-1,1])for(const dz of[-.92,0,.92]){
+    box(root,'recessed window in a complete building return',x+side*(half+.014),1.62,z+dz,.035,.87,.31,M.night);
+    box(root,'projecting stone sill on a building return',x+side*(half+.05),1.15,z+dz,.12,.055,.40,M.limestone);
+  }
+  box(root,'continuous cornice over a deep architectural volume',x,h+.29,z,half*2+.17,.10,3.05,M.limestone);
+}
+// The Lakeview temple is in a former lodge hall. A quiet masonry hall and
+// planted forecourt replace the generic floating leaves and pagoda-like gate.
+root.traverse(o=>{if(/temple gate|upper timber eave|quiet gate lintel|quiet courtyard leaf/.test(o.name))o.visible=false;});
+const tx=-4.25,tz=-12.3;
+box(root,'solid masonry hall at the quiet end of the route',tx,1.52,tz-.25,3.1,2.72,2.85,M.warmBrick,true);
+box(root,'restrained lodge-hall stone parapet',tx,2.96,tz-.25,3.28,.18,2.98,M.limestone);
+box(root,'temple hall recessed timber entry',tx,.99,tz+1.19,.62,1.42,.06,M.bronze);
+for(const dx of[-1,0,1]){
+  box(root,'tall quiet temple-hall window',tx+dx,2.21,tz+1.195,.42,.63,.045,M.paleGlass);
+  box(root,'temple-hall stone window surround',tx+dx,2.58,tz+1.21,.55,.07,.12,M.limestone);
+}
+for(const dx of[-1.33,1.33])loft(root,'rooted planting in the temple forecourt',[[.36,.18,.18,tx+dx,tz+1.31],[.50,.21,.20,tx+dx,tz+1.31],[.85,.14,.12,tx+dx,tz+1.31],[1.10,.04,.03,tx+dx,tz+1.31]],M.mint,16);
 
 // Jane and Oleg become fellow travelers, not invented actors at any stop.
 person("Jane walking the chosen route", 1.1, -3.2, 1.68,

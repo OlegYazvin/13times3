@@ -1,6 +1,8 @@
 import * as THREE from "three";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { createRoomArt } from "./room_art.mjs";
+import {shapedTube} from './storybook_figures.mjs';
+import {addContactShadow} from './stage_shadows.mjs';
 
 // Blueberries of Indiana, near La Porte, becomes an expansive summer field
 // of adult-height or taller bushes and deep-blue fruit. G helps Zephrine pick; Zephrine rides
@@ -21,13 +23,25 @@ const art = createRoomArt({ index: 6,
 const { root, M, random, add, box, beam, curve, loft, petal,
   wrapSky, ground, person, exportRoom } = art;
 wrapSky(C.sky, true);
-ground(C.ground, (x, z) => {
+function fieldHeightAt(x,z){
+  const far=THREE.MathUtils.smoothstep(Math.hypot(x,z),13,38);
+  const gathering=1-THREE.MathUtils.smoothstep(Math.hypot(x*.7,z-5.3),3,5);
+  return .012*Math.sin(x*2.8+z*1.9)*(1-gathering)+far*(.25+.22*Math.sin(x*.13+z*.055)+.15*Math.sin(z*.17-x*.05));
+}
+const field=ground(C.ground, (x, z) => {
   const distance=Math.hypot(x,z);
   const path = Math.exp(-Math.pow((x - .23 * Math.sin(z * .4)) / 1.45, 2))
     * (1-THREE.MathUtils.smoothstep(distance,18,40));
   const color=new THREE.Color(C.grass).lerp(new THREE.Color(C.linen),path*.68);
   return color.lerp(new THREE.Color(0xa9bca6),THREE.MathUtils.smoothstep(distance,14,66)*.8);
 }, {width:144,depth:144});
+{
+  const p=field.geometry.attributes.position;
+  for(let i=0;i<p.count;i++){
+    const x=p.getX(i),z=p.getZ(i);p.setY(i,fieldHeightAt(x,z));
+  }
+  field.geometry.computeVertexNormals();
+}
 
 // The rows continue into this independent world beyond its walkable bounds.
 // No invented farm building, date or cultivar is needed to establish summer.
@@ -150,7 +164,7 @@ function plantCopy(x,z,variant,scenery=false,turn=0) {
   const prototypes=scenery?distantPrototypes:bushPrototypes;
   const group=prototypes[variant%prototypes.length].clone(true);
   group.name=scenery?'adult-height blueberry rows continuing into the distance':'adult-height multi-cane blueberry bush';
-  group.position.set(x,0,z);group.rotation.y=turn;
+  group.position.set(x,fieldHeightAt(x,z),z);group.rotation.y=turn;
   if(scenery)group.traverse(o=>o.userData.solidFootprint=false);
   root.add(group);return group;
 }
@@ -159,7 +173,8 @@ function plantCopy(x,z,variant,scenery=false,turn=0) {
 // than Oleg's 1.75 m standing figure; leaf and fruit sizes remain independent.
 for(const side of [-1,1])for(const row of [0,1])for(let i=0;i<5;i++) {
   const z=-6.5+i*3.25+row*1.30+.25*Math.sin(i*2.8+side);
-  const x=side*(3.05+row*2.25+.13*Math.sin(i*1.7));
+  const gatheringSpace=row===0?.60*Math.exp(-(((z-4)/2.6)**2)):0;
+  const x=side*(3.05+row*2.25+.13*Math.sin(i*1.7)+gatheringSpace);
   plantCopy(x,z,i+row,false,i*.83+side);
 }
 plantCopy(2.6,-1.15,1,false,.7);
@@ -169,12 +184,12 @@ for(const side of [-1,1])for(let row=0;row<3;row++)for(let i=0;i<5;i++) {
 // The family bush has its crown beyond G rather than inside her torso. Its
 // fruiting arm bends into the shared picking space. Preserve the actual hand
 // targets and leave air around the faces and carried child's legs.
-bush(2.25,2.10,2.19,{phase:1.1,lean:.08});
+const pickingBush=bush(2.25,2.10,2.19,{phase:1.1,lean:.08});pickingBush.userData.pickingArrangement=true;
 {
-  const reach=new THREE.Group();reach.name="fruiting blueberry bough beside Zephrine";root.add(reach);
-  const points=[[2.25,.85,2.1],[1.45,1.85,2.45],[.55,1.715,2.78],[-.20,1.71,2.88]];
+  const reach=new THREE.Group();reach.name="fruiting blueberry bough beside Zephrine";reach.userData.pickingArrangement=true;root.add(reach);
+  const points=[[2.25,.055,2.1],[2.22,.80,2.10],[1.58,2.02,2.26],[.92,1.88,2.51],[.55,1.715,2.78],[.12,1.77,2.91],[-.20,1.71,2.88]];
   const path=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)));
-  curve(reach,"bent woody branch ending at Zephrine's reaching hand",points,.014,M.bark,24);
+  shapedTube(reach,"tapering arch of living blueberry cane to the picking fingers",points,[.017,.014,.011,.006,.0028],M.bark);
   for(let i=0;i<24;i++) {
     const t=.10+i*.035,p=path.getPoint(t),side=i%2?-1:1;
     blueberryLeaf(reach,p.toArray(),[p.x-.035,p.y+.035,p.z+side*.08],.022,leafMaterials[i%leafMaterials.length]);
@@ -219,23 +234,29 @@ person("Jane enjoying the blueberry outing", -2.54, 1.33, 1.68, {
 
 // One woven picking pail and bright fruit connect the family with the field.
 const pail = new THREE.Group(); pail.name = "solid woven berry picking pail";
+pail.userData.pickingArrangement=true;
+pail.scale.setScalar(.55);
 pail.position.set(2.4, 0, 3.84); root.add(pail);
-const basket = add(pail, "solid small woven pail",
-  new THREE.CylinderGeometry(.31, .25, .45, 12, 1, true), M.linen,
-  0, .29, 0);
+const pailShadow=addContactShadow(pail,1,.85);pailShadow.position.y=.002/.55;
+const basket = add(pail,"shaped wicker pail with a real inner floor and rounded lip",
+  new THREE.LatheGeometry([[0,0],[.215,0],[.235,.014],[.252,.11],[.277,.32],[.291,.420],[.294,.437],[.287,.450],[.277,.443],[.270,.420],[.235,.075],[.218,.035],[0,.035]].map(p=>new THREE.Vector2(...p)),64),M.linen);
+basket.scale.z=.88;
 basket.userData.solidFootprint = true;
-for (let stripe = 0; stripe < 5; stripe++) {
-  const ring = add(pail, "woven band around berry pail",
-    new THREE.TorusGeometry(.29 - stripe * .006, .01, 5, 18), M.bark,
-    0, .14 + stripe * .08, 0);
-  ring.rotation.x = Math.PI / 2;
+for(let row=0;row<17;row++){
+  const y=.024+row*.024,r=.235+.055*y/.437;
+  const points=Array.from({length:129},(_,k)=>{const a=k/128*Math.PI*2,wave=.003*Math.sin(a*32+(row%2)*Math.PI);return [Math.cos(a)*(r+wave),y,Math.sin(a)*(r+wave)*.88];});
+  const strand=curve(pail,'interwoven horizontal willow course',points,.0052,row%3?M.gold:M.cream,96);strand.userData.batchPetal=true;
 }
-curve(pail, "arched carrying handle", [[-.3, .5, 0],
-  [-.15, .8, 0], [0, .86, 0], [.15, .8, 0], [.3, .5, 0]], .025, M.bark);
+for(let warp=0;warp<32;warp++){
+  const a=warp/32*Math.PI*2,points=Array.from({length:49},(_,k)=>{const t=k/48,y=.018+t*.405,r=.235+.055*y/.437+.0035*Math.cos(t*17*Math.PI*2+warp*Math.PI);return [Math.cos(a)*r,y,Math.sin(a)*r*.88];});
+  const strand=curve(pail,'willow upright woven through the crossing courses',points,.0048,warp%3?M.gold:M.cream,40);strand.userData.batchPetal=true;
+}
+const handle=shapedTube(pail,'one joined curved wicker carrying strap',[[-.281,.42,0],[-.20,.72,.005],[0,.80,.012],[.20,.72,.005],[.281,.42,0]],[.016,.018,.018,.016],M.gold,.40);handle.userData.batchPetal=true;
+const collected=new THREE.Group();collected.scale.setScalar(1/.55);pail.add(collected);
 for (let i = 0; i < 10; i++) {
   const a = i * Math.PI * 2 / 10;
-  blueberry(pail, Math.cos(a) * .19, .53 + .035 * (i % 3),
-    Math.sin(a) * .18, i % 3 === 0);
+  blueberry(collected,Math.cos(a)*.19*.55,.035*.55+.010,
+    Math.sin(a)*.18*.55,i%3===0);
 }
 
 // Adult-height planting is modeled in world units, with separate small leaves

@@ -20,6 +20,42 @@ The gallery has 41 stable frame IDs. The 39 original achievement pages are a sep
 
 Frames `01`–`11` are published walkable rooms. Frames `12`–`41` remain unassigned blank portals.
 
+October 23 continued local revision: the seven-stop route gains deeper building
+volumes and return windows, quieter plaques and a lodge-hall temple interpretation.
+The orchard gains an actual concave bitten apple and fitted cupped palms; the
+playground studies two opposed child grips and their supporting pads. G and
+Zephrine now target the same aquarium fish; the canopy patches share world-space
+texture coordinates. The support scene studies a complete window wall and
+actually supported desk equipment. These changes revise frames 02 and 08–11
+without adding memories or people. Exports and artistic checks are tracked
+separately in the checklist; these are local studies, not a new publication.
+
+October 23 local character revision: the adult/child study now uses dimensional
+age-specific CC0 anatomy, continuous posed necks, curved eyes, fitted shoes and
+joined cloth sleeves. It has been exported into the eleven existing memories for a first functional review.
+The first builds exposed unreachable gestures in `01`, `02`, `04`, `05`, `06`,
+`09` and `10`; the targets were revised and all eleven completed a sequential
+desktop/emulated-phone functional pass. Subsequent contact and art edits make
+those captures historical rather than approval of the current candidate.
+The active `01` study fits an articulated pencil grip to its signup paper and
+reduces cave rails; `02` lowers the kitchen arrangement and replaces the rigid
+blanket; `06` rebuilds the clothed lap embrace, chair and fabric sanctuary.
+The active `03` study revises the two-hand grip, brings the mothers into a
+conversation and develops the open dance arch into a studio volume looking
+back into the garden. The active `04` study rebuilds the seat, footwell,
+steering and parent grips around the manufacturer-sized toy envelope rather
+than the oversized legacy car. Frame `05` studies a fitted parent/child handhold, the child looking up at
+Jane, a closer supporting Oleg and warm light on her planted stance. The shared
+rounded clothing profiles now propagate across the same cast and memories;
+every occurrence requires fresh pose review. These remain local, under review.
+Exact vertex welding and 16-bit position
+packing preserve fine contact surfaces without removing character anatomy. A successful
+export is not pose or artistic acceptance. The currently verified website is
+still release `fa3eb23`. A shared footing study removes artificial floor ripples in the office, route
+and aquarium, flattens the orchard gathering patch, and fits the sanctuary
+arrangement to the actual rug. These require fresh exported support checks.
+No person, memory, title, frame assignment or blank slot changes in this local work.
+
 On October 22, commit `f28cbb7` was deployed and verified at the live site after Oleg authorized publishing the reviewed geometry-first iteration and continuing toward the requested artistic standard. This release includes the dimensional cast and fuller Zephrine hair across the existing rooms. The known partial-reveal artifact, under-scaled blueberry bushes and scene-specific art weaknesses remain explicitly open in [the report](scene-revision-report.md). Publication does not mark those targets complete.
 
 October 22 Zephrine hair correction: Oleg confirms her abundant hair is an important likeness feature. The shared sculpt is rebuilt locally from the private portrait and full-body references with fuller curls around the temples, sides and nape. This revises her existing appearances in frames `01`–`07` and `09`–`11`; no memory, person or frame assignment changes. Exported pose review is recorded in [her character notes](character-zephrine-notes.md). Included in the user-authorized October 22 publication iteration; artistic acceptance remains open.
@@ -211,3 +247,28 @@ This changes rendering of the existing assigned memories only. Full desktop,
 phone and approach verification is recorded separately in the report; frame
 01's upper aperture mismatch and the wider artistic targets remain open. This
 commit releases the reviewed follow-up after `f28cbb7`; further art work remains active.
+
+Confirmed follow-up release: `fa3eb23`, Pages workflow `39871689690`, all 24
+live gallery file hashes and fresh desktop/portrait smoke loads checked. The
+subsequent local garment and shoulder-carry study revises frame `07`'s existing
+family interaction; it reserves no new memory or frame. Its initial sleeve
+trial failed close review and is being corrected before wider cast propagation.
+
+October 23 local frame `07` prototype: the same four people now test actual
+adult/child CC0 anatomical heads and hands, connected posed necks, constrained
+arm lengths, fitted footwear and continuous shirts. A separate environment
+study brings the complete picking arrangement toward the doorway, tapers its
+rooted cane, and revises the field light, distant terrain and woven pail. These
+are local revisions of the existing memory, with artistic acceptance and export
+review still open. The physical painting/aperture correction also remains
+local and requires fresh client/painting verification across all eleven rooms.
+
+Later October 23 local environment follow-up: frame `05` closes exposed side
+and return-wall gaps around its existing vault. Frame `10` removes the old
+petal islands before batching and constructs continuous park ground and rooted
+planting around the shared game. Frame `11` studies a single continuous water
+vault and recenters its same G/Zephrine/tank interaction for portrait viewing.
+These are revisions of the existing published memories; final exports and
+current-hash visual acceptance are still tracked separately from source intent.
+
+October 23 final contact follow-up revises the existing clothed embrace in frame 06 and shoulder carry in frame 07. It tapers a supporting sleeve around the fitted wrist and moves the child torso back from Oleg’s head while preserving the coupled leg support and berry interaction. These are revisions of the same memories; assignments, people, titles and blank slots remain. Final packed-export evidence is tracked in the checklist.

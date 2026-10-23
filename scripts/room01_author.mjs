@@ -2,10 +2,10 @@ import {portalPreviewCamera} from './portal_preview_camera.mjs';
 import {replaceStoryFigures} from './storybook_figures.mjs';
 import {finishStoryWorld} from './storyworld_finish.mjs';
 import * as THREE from "three";
+import {SIGNUP_DESK_Y_SCALE} from './scene01_arrangement.mjs';
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import gallery from "../src/_data/gallery.json";
-import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
-import { addRoomLighting } from "../client/explore/room-lighting.mjs";
+import { addRoomLighting, prepareRoomShadows } from "../client/explore/room-lighting.mjs";
 import { addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
@@ -344,7 +344,7 @@ const caveStone = new THREE.MeshStandardMaterial({
 const caveIndigo = new THREE.Color(0x376577);
 const caveRose = new THREE.Color(0x93a09a);
 function caveHeight(x,z) {
-  return 3.53 - .22*Math.pow(Math.abs(x)/2.7,1.6) - .07*Math.pow(Math.abs(z)/2.7,2)
+  return 3.56 - .39*Math.pow(Math.abs(x)/2.7,2) - .09*Math.pow(Math.abs(z)/2.7,2)
     + .045*Math.sin(x*2.9+z*.8)*Math.cos(z*1.7);
 }
 function caveSurface(name,columns,rows,point,offset=0,palette=[caveIndigo,caveRose]) {
@@ -376,8 +376,8 @@ function caveShell() {
   },.8);
   for(const sign of [-1,1]) caveSurface(`${sign<0?"left":"right"} tide-carved cavern wall`,22,14,(u,v)=>{
     const z=-2.7+5.4*u,y=3.42*v;
-    const swell=.045*Math.sin(z*2.3+y*2.8+sign)+.02*Math.sin(z*6.2-y*5.1);
-    return [sign*(2.56-swell),y,z];
+    const swell=.12*Math.sin(z*1.35+y*1.4+sign)+.035*Math.sin(z*3.2-y*2.1);
+    return [sign*(2.54-swell),y,z];
   },sign);
   caveSurface("broad back wall of the grotto",22,14,(u,v)=>{
     const x=-2.7+5.4*u,y=3.42*v;
@@ -590,7 +590,8 @@ export async function authorRoom() {
   box("sandstone under the grotto floor",0,-.08,0,5.4,.16,5.4,mat(0x9a766f));
   caveSurface("softly undulating sandy cave floor",24,24,(u,v)=>{
     const x=-2.7+5.4*u,z=-2.7+5.4*v;
-    return [x,.035+.012*Math.sin(x*2.8+z*1.9)+.008*Math.sin(x*6.1-z*3.7),z];
+    const worn=THREE.MathUtils.smoothstep(Math.hypot((x+.40)/.85,(z-.55)/.60),.6,1.2);
+    return [x,.035+worn*(.012*Math.sin(x*2.8+z*1.9)+.008*Math.sin(x*6.1-z*3.7)),z];
   },1.7,[new THREE.Color(0xa37f79),new THREE.Color(0xe0b991)]);
   caveShell();
   box("back wall",0,1.8,-2.7,5.4,3.6,.14,mat(C.wall));
@@ -703,20 +704,22 @@ export async function authorRoom() {
   oval("Jane's soft floor shadow",-.47,.064,.28,.32,.006,.17,mat(0x604052,{transparent:true,opacity:.22,depthWrite:false}),root);
   const signupPropsStart=root.children.length;
   carvedDesk();
-  box("desk paper",-1.3,.94,.62,.56,.012,.38,paper);
-  for(let i=0;i<4;i++) box("paper rule",-1.36,.951,.48+i*.07,.39,.002,.009,mat(0xbba08e));
-  box("script booklet cover",-.78,.965,.52,.2,.035,.32,mat(0x8a6e8d));
-  for(let page=0;page<3;page++) box("script booklet layered pages",-.78,.986+page*.006,.49,.18,.004,.25,paper);
-  shellFan("tiny shell paperweight on the desk",-1.95,.96,.48,.18,pearl);
-  for(const x of [-1.0,-.9,-.8]) sphere("sea-glass beads by the script",x,.964,.84,.025,bubbleGlass);
+  box("desk paper",-1.3,.9288,.62,.56,.0015,.38,paper);
+  for(let i=0;i<4;i++) box("paper rule",-1.36,.9297,.48+i*.07,.39,.0002,.009,mat(0xbba08e));
+  box("script booklet cover",-.78,.9324,.52,.2,.008,.32,mat(0x8a6e8d));
+  for(let page=0;page<3;page++) box("script booklet layered pages",-.78,.9372+page*.0016,.49,.18,.0015,.25,paper);
+  shellFan("tiny shell paperweight on the desk",-1.95,.9543,.48,.18,pearl);
+  for(const x of [-1.0,-.9,-.8]) sphere("sea-glass beads by the script",x,.9533,.84,.025,bubbleGlass);
   sign("little mermaid storybook","MERMAID","a favorite story",-2.42,2.15,-.65,.54,.42,Math.PI/2);
-  oval("red wax seal on signup",-1.52,.954,.77,.035,.006,.035,rose,root);
+  oval("red wax seal on signup",-1.52,.9312,.77,.035,.0015,.035,rose,root);
   sign("signup card","ZEPHRINE","dance + acting",-1.35,.77,.997,.5,.18);
 
   // Keep the whole signup action inside a portrait doorway view. The wall
   // storybook remains mounted in the cave; the desk and its held props move
   // together with Jane rather than breaking pen/paper contact.
-  for(const o of root.children.slice(signupPropsStart))if(o.name!=="little mermaid storybook")o.position.x+=1.10;
+  const signupDesk=new THREE.Group();signupDesk.name='complete grounded signup desk and supported writing props';
+  for(const o of root.children.slice(signupPropsStart))if(o.name!=="little mermaid storybook"){o.position.x+=1.10;signupDesk.add(o);}
+  signupDesk.scale.y=SIGNUP_DESK_Y_SCALE;root.add(signupDesk);
 
   // A trail of little steps connects the signed page to the stage.
   for (let i=0;i<4;i++) {
@@ -745,8 +748,9 @@ export async function authorRoom() {
   scene.add(root);
   const camera = portalPreviewCamera(gallery.frames[0].room);
   const renderer = new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});
+  prepareRoomShadows(root,'01',renderer);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.setPixelRatio(1); renderer.setSize(735,Math.round(735*FRAME_HEIGHT/FRAME_WIDTH));
+  renderer.setPixelRatio(1); renderer.setSize(735,Math.round(735/camera.aspect));
   document.body.append(renderer.domElement);
   renderer.render(scene,camera);
   const preview = renderer.domElement.toDataURL("image/webp",.88);

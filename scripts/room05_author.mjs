@@ -61,8 +61,9 @@ ground(C.floorDark, (x, z) => {
 for (const side of [-1, 1]) {
   for (let i = 0; i < 5; i++) {
     const z = -7.1 + i * 3.55;
-    box(root, "solid brick pier between high windows", side * 6.12, 3.22,
-      z, .35, 6.43, .4, i % 2 ? M.brick : M.brickLight, true);
+    box(root, "solid brick pier between high windows", side * 6.12, 3.0,
+      z, .35, 6.0, .4, i % 2 ? M.brick : M.brickLight, true);
+    if(i===4)continue;
     box(root, "tall silver-blue shared-workspace window", side * 6.13,
       3.1, z + 1.48, .045, 3.83, 2.44, coolGlass);
     box(root, "deep lower brick spandrel", side * 6.09, .59,
@@ -76,9 +77,27 @@ for (const side of [-1, 1]) {
       [side * 5.99, 3.1, z + .28], [side * 5.99, 3.1, z + 2.68],
       .025, .025, M.mortar, 6);
   }
+  const shell=new THREE.Shape();shell.moveTo(-8.85,0);shell.lineTo(8.85,0);shell.lineTo(8.85,5.98);shell.lineTo(-8.85,5.98);shell.closePath();
+  for(let i=0;i<4;i++){
+    const z=-7.1+i*3.55+1.48,hole=new THREE.Path();
+    hole.moveTo(z-1.22,1.185);hole.lineTo(z-1.22,5.015);hole.lineTo(z+1.22,5.015);hole.lineTo(z+1.22,1.185);hole.closePath();shell.holes.push(hole);
+  }
+  const sideWall=add(root,'solid joined office masonry around the actual window bays',new THREE.ExtrudeGeometry(shell,{depth:.20,bevelEnabled:false}),M.brickLight,side*6.13,0,0);
+  sideWall.rotation.y=side<0?Math.PI/2:-Math.PI/2;
+  // Reverse the profile along the opposite side so its openings remain
+  // registered with the existing glazing rather than a mirrored blank wall.
+  if(side<0)sideWall.scale.x=-1;
+  sideWall.userData.solidFootprint=true;
+  box(root,'continuous masonry cornice joining the office wall to its vault',side*6.02,5.95,0,.32,.20,17.7,M.mortar);
 }
-box(root, "far wall of warm paper and brick", 0, 3.18, -8.75,
-  12.3, 6.3, .18, M.brickLight);
+// The return portal remains a clear opening in a complete front wall.
+for(const side of[-1,1])box(root,'solid office return wall beside the open portal',side*3.9875,2.99,8.87,4.425,5.98,.18,M.brickLight,true);
+box(root,'joined office lintel above the clear return portal',0,5.115,8.87,3.55,1.73,.18,M.brickLight);
+const returnSpandrel=new THREE.Shape();returnSpandrel.moveTo(-6.2,5.85);returnSpandrel.lineTo(6.2,5.85);
+for(let i=0;i<=40;i++){const x=6.2-i*12.4/40;returnSpandrel.lineTo(x,5.992+.47*(1-(x/6.2)**2)+.025*Math.sin(8.85*1.6+x*.3));}returnSpandrel.closePath();
+add(root,'arched masonry spandrel sealing the return wall to the plaster vault',new THREE.ExtrudeGeometry(returnSpandrel,{depth:.18,bevelEnabled:false}),M.brickLight,0,0,8.78);
+box(root, "far wall of warm paper and brick", 0, 3.3, -8.75,
+  12.3, 6.6, .18, M.brickLight);
 for (let i = -5; i <= 5; i++) {
   if (i < -3 || i > 3) continue;
   const x = i * 1.55;

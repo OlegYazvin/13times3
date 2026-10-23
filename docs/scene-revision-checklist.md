@@ -1,5 +1,20 @@
 # Gallery art revision — iteration acceptance record
 
+## Current native-sculpture candidate, October 23
+
+- [x] All eleven current exports have doorway, normal-distance, front/profile/three-quarter/rear, return and fresh portrait-phone evidence at their exact model/painting/client hashes.
+- [x] All 48 appearances use dimensional age-specific anatomy, native articulated hands and joined posed clothing; private reference photographs are excluded.
+- [x] All eleven raw and packed GLBs pass finite-data and triangle-index validation. These are source-integrity checks, not artistic approval.
+- [x] Selected actual contact checks pass the 1 mm penetration threshold. The final broad scan found an omitted sleeve/leg crossing in 06 and head/shirt crossing in 07; both were corrected and re-exported.
+- [x] Frame 06 supporting palms measure 0.315/0.409 mm, lap 0.440 mm, sleeve/legs 2.17–2.32 mm clearance, zero tested sleeve/leg edge crossings. The two remaining broad containment flags have zero edge crossings at open neck/wrist boundaries and no corresponding visible overlap.
+- [x] Frame 07 shoulder support measures 0.507 mm, shin grips 0.715/0.038 mm, head/shirt clearance 31.51 mm; the broad inter-actor scan has no flags. Bushes remain 2.015–2.345 m tall.
+- [x] Fresh 06 portrait view includes the feet; fresh 11 portrait view includes G, Zephrine and their shared moving fish. Both routes around/behind the aquarium portal pass.
+- [x] Build/site checks and 18 tests pass. Global controls, resize and fallback checks pass; the full control suite is recorded separately before publication.
+- [x] Room downloads remain approximately 1.5–6.6 MB; the soft loading target does not limit essential anatomy.
+- [ ] Final likeness, expression and environment artistic acceptance: weaker areas remain in the [current scene report](scene-revision-report.md).
+
+Representative current renders and hash metadata are in [the evidence folder](scene-evidence/2026-10-23/README.md). Entries below preserve the history of previous iterations; their unresolved measurements are superseded only by the current evidence above.
+
 Baseline: existing 11 memories, 39 achievement URLs and 41 frame IDs. This work
 was developed in `/tmp/jane-quality-revision` to preserve concurrent migration work.
 The other task has now acknowledged the stop instruction.
@@ -99,3 +114,143 @@ This follow-up is included in the user-authorized release after `f28cbb7`.
 
 The source-note privacy redaction is separately published in `d946d79`; the
 reviewed artwork and portal follow-ups are released by this commit. Further artistic acceptance remains open.
+
+## Character foundation after release `fa3eb23` — local study
+
+- [x] Compare adult and child prototypes against the private references; reject a resized adult face as the child base.
+- [x] Inspect actual CC0 MakeHuman adult and child anatomy together; preserve reference photographs outside source and exports.
+- [x] Reject the overlay-eye test; seat dimensional eyeballs inside the source's modeled eyelids.
+- [x] Check accelerated sculpt fitting against Three.js ray intersections on adult and toddler geometry.
+- [ ] Complete the curl silhouette, adult likeness, neck joins, hands and constrained-arm study in front/profile/rear views.
+- [ ] Export the complete character foundation into the blueberry interaction and inspect actual support, fruit contact and fresh phone views.
+- [ ] Propagate only after that review; recheck every occurrence and every scene-specific contact.
+- [ ] Finish each scene's environment, emotional composition and artistic acceptance.
+
+The initial local shirt export and subsequent studio images are development
+evidence, not a new website release. The currently verified live release is
+`fa3eb23`; the latest study is not claimed as an accepted cast.
+
+## October 23 coupled-contact review — in progress
+
+- [x] Inspect adult/child native heads together from front, profile, three-quarter and rear; reject the detached fringe pieces and the inward-dipping curl surface.
+- [x] Inspect the continuous neck through a posed, exported scene; correct the exposed lower-neck flare by seating the connected neck inside the shirt.
+- [x] Measure actual exported surfaces, distinguishing penetrations from gaps. The carry study exposed up to 4 cm of leg/shirt penetration, 1.4 cm of hand/trouser penetration and 3 cm of head/thigh penetration.
+- [x] Correct leg/shirt and head/thigh clearance in the measured study (no sampled penetration deeper than 1 mm). Tighter finger curls still failed, so grip acceptance remains open.
+- [x] Verify the offline GLB inspection against the browser: 1,239,549 position components match exactly for the same export, including posed heads.
+- [ ] Inspect the revised diagonal grips, G's cupped support and all contacts in the final blueberry export.
+- [ ] Recheck the revised adult-height field and cast on desktop and fresh portrait-phone views.
+- [ ] Complete and inspect every new cast occurrence in all eleven rooms; correct unreachable legacy targets rather than stretching arms.
+- [ ] Verify consistent hand, arm and shoe dimensions when the same person is seated or standing.
+- [ ] Complete scene-specific environment and emotional acceptance, portal painting review and final functional verification.
+
+## Continued local review, October 23
+
+- [x] First native-anatomy exports completed desktop and fresh emulated portrait
+  entry, side/rear, return and cleanup checks in all eleven rooms. These are a
+  functional baseline, not current artistic acceptance: subsequent models differ.
+- [x] Diagnose buried field shadows against decoded ground triangles. Default
+  14-bit packing raised the flat ground by 3.90 mm. The 16-bit candidate measures
+  −0.496 mm; its authored 2 mm shadows are above the ground. Recheck the picture.
+- [x] Validate a real articulated writing pinch, pencil clearance, paper tip and
+  resting-hand plane in geometry tests. Frame 01's exported side views show the
+  writing arrangement; final front, phone and cave lighting review remains open.
+- [x] Inspect the cave without roof rods and wall rails. The subjects read more
+  clearly, but harsh wall shadows and dark lighting require further tuning.
+- [x] Expose frame 06's false weight, arm/head and hand/clothing intersections
+  from profile views and exported surfaces; reject those prototypes.
+- [ ] Review the latest coupled embrace and exact supporting contacts. The
+  preceding mesh scan still found a forearm/child-trouser intersection. A
+  fitted hand alone did not establish that its sleeve cleared the child.
+- [ ] Review the resized/depressed chair cushion and closer back in the actual
+  scene. Remove floating upholstery lines; resolve shadow artifacts separately.
+- [ ] Review frame 02's waist-height kitchen, pan grip and thin draped blanket.
+- [ ] Complete every scene's composition, likeness, environment and emotional
+  acceptance, then rerun the final current-hash browser and phone checks.
+
+Only `fa3eb23` is the verified website release. These are local art studies.
+
+### Latest observed contacts and studies
+
+Frame 06's exact surface study now separates the large false open-neck/wrist
+parity flags from actual crossings. The earlier 14 neck crossings and 105
+shirt crossings were confirmed; later elbow/shoulder/cloth changes removed
+those coarse-scale crossings. The complete vertex check still finds up to
+1.88 mm of sleeve contact penetration and 1.43 mm at the lap, with a 5.91 mm
+right-palm gap. Left-palm clearance is 0.315 mm and the child's face remains
+outside Jane's closed shirt surface. Do not describe all contact as finished.
+
+Frame 02's latest completed functional pass includes the revised writing pose,
+waist-height kitchen, draped cloth and side embrace. The roof and lighting have
+changed again afterward, so the final current-hash art review is still required.
+The lower-profile ceiling study replaces the rejected dominant dark slab.
+
+Frame 03's first native export has confirmed overlapping held hands (about
+12 mm). A separately fitted opposed-palm study, closer mothers, grounded path
+origins, irregular planting and real dance-studio volume are now being exported.
+No new scene is reserved or published by these studies.
+
+### Footing and car evidence
+
+- The completed footing export puts Jane's signup soles 0.50 mm above her
+  worn sand patch and her planted stage child's foot within 0.02 mm of the
+  deck. The other stage foot is intentionally raised 50 mm.
+- The old sanctuary soles were 74 mm below the rug surface. The coupled chair
+  and embrace now rise to that actual surface; Jane's soles measure 0.47 mm
+  above it. The child's feet remain carried above the rug intentionally.
+- Office, route, orchard and aquarium standing soles meet their revised flat
+  gathering surfaces; the playground's planted soles have about 0.50 mm of
+  pad clearance. Zephrine's balancing foot remains raised intentionally.
+- The new friendship grip measures about 0.31 mm of skin clearance, no vertices
+  deeper than 1 mm in either direction and no tested hand-edge crossings.
+  This is geometry evidence; its gesture still needs visual acceptance.
+- The first correctly sized car study revealed toe/shell, seat and grip
+  failures. Full prop checks use floating-point decoded attributes; applying
+  transforms directly to normalized integer GLB buffers invalidates distances.
+  Reject that inspection artifact rather than reporting multi-meter gaps as
+  product defects. Corrected prop checks remain in progress.
+
+Recent completed desktop/emulated-phone passes cover the changed `01`, `03`,
+`04` and `06` candidates at their recorded hashes. Later source and footing
+changes require fresh checks. Final artistic acceptance remains open for all 11.
+
+### October 23 contact and composition evidence — supersedes older open measurements above
+
+- Frame 05: correcting the inherited child yaw closes the 33 mm held-hand gap.
+  The current export measures 0.064/0.042 mm minimum vertex distances, no vertices
+  deeper than 1 mm and zero tested hand-edge crossings (4,705 tested edges).
+- Frame 06: the latest selected full-vertex pairs measure 0.315/0.409 mm support
+  palm gaps, 0.440 mm lap gap, 2.019 mm face/shirt clearance, and no vertices
+  deeper than 1 mm. Both clothing directions pass the same test. The phone
+  doorway image still crops the feet; moving the complete arrangement back
+  0.70 m is a new unverified composition change, not a contact completion claim.
+- Frame 09: both cupped hands meet the actual closed, concave bitten apple in
+  the packed export. No tested hand vertices penetrate deeper than 1 mm. The
+  old separate pale insert has been removed. Full visual acceptance remains open.
+- Frame 07: the refined shirt opens a 15.98 mm thigh/shoulder support gap.
+  Both shin grips remain within 1 mm and the head clears the thighs by 2.89 mm.
+  A paired shoulder-root lift is now authored; its new export needs measurement.
+- Frame 10: raw opposed grips pass full skin checks, but the room export rejects
+  one unreachable arm. The right child and supporting pad are restaged together;
+  the pending export must establish reach and contact together.
+- Frame 02: actual close views show a much clearer clothed side embrace,
+  a shared cloth touch and differentiated street contacts. Stiff contact gestures,
+  floating desk equipment and the sparse open home wall remain observed failures.
+  Source fixes are in progress; do not mark these resolved before re-export.
+- Frame 11: the source water lens had a fixed 5.95 m upper rim and 6.70 m
+  supports that exceed the curved dome at its outer edge. Fitting these surfaces
+  under the real ceiling is separate from the now-shared canopy UV coordinates.
+  Both fixes require new side/behind-portal images and moving-fish route checks.
+
+All of these are local changes after the verified `fa3eb23` release. No new
+publication or final artistic acceptance is implied by the functional checks.
+
+### Source geometry integrity — new confirmed defects
+
+The jellyfish bell used an incorrect lower-ring index. The shared generic hair
+cap also used an off-by-one lower-ring index; each affected raw mesh contains one
+out-of-range index and six nonfinite normal components. The rendered hair could
+still appear mostly intact after packing, so preceding browser passes did not
+establish source integrity. Both constructions are corrected. The packer now
+checks finite surface data and index bounds before welding. All eleven rooms
+must be re-exported and their affected appearances rechecked after this shared
+correction. No new release is recorded by this source fix.

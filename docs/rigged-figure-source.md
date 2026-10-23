@@ -1,4 +1,35 @@
-# Oleg figure understructure
+# Figure sources and historical understructure
+
+## Current local anatomical study after `fa3eb23`
+
+The local cast study uses the official MakeHuman graphical base and actual
+adult, older-adult and child age targets, pinned to revision
+`a8bc2d54ff0ac92e78ff71431b1023eda42bf482`. These graphical assets are
+[CC0](https://github.com/makehumancommunity/makehuman/blob/a8bc2d54ff0ac92e78ff71431b1023eda42bf482/LICENSE.md#c-the-license-for-the-bundled-assets).
+Application code is not reused. The complete asset license and source hashes
+are stored beside `scripts/assets/figures/story-heads.json` and
+`story-hands.json`.
+
+`scripts/fetch_story_head_sources.mjs` retrieves the pinned public sources into
+ignored cache; `scripts/prepare_story_heads.mjs` applies the age targets,
+subdivides the skin topology, and extracts head and hand geometry with joint
+landmarks. It exports no source skin photographs or full body assets. The
+gallery's private reference photographs are not inputs to this preparation
+script and are never embedded in the results. Identity, hair, clothing,
+expression, finger articulation and narrative poses are authored separately.
+
+The first test using a resized adult female head for Zephrine was rejected
+because it still looked adult. The current study uses a real child-age morph
+and a full fitted curl mass. Eyeballs are dimensional and sit within modeled
+sockets and eyelids. Anatomical hands and constrained elbows are being checked
+in the adult/child studio and blueberry carry. This is not yet a published or
+artistically accepted character replacement. See the shared revision checklist.
+
+## Historical Sam and Maya body study
+
+The remainder of this document records the earlier imported-body and portrait
+experiments. It does not describe the October 23 native exports. References
+to active or published illustrations below apply only to those older releases.
 
 The eight published Oleg appearances use a modified copy of Innerscene's
 [Relaxed walk — Sam 3D Person](https://www.innerscene.com/tools/library/3d-parts/relaxed-walk-sam-3d-person-animated-732f1206).
@@ -84,3 +115,11 @@ photos remain in ignored `.secrets/`. G is Oleg's mother, not Anna Shersher.
 The aquarium and blueberry field both need a close in-room likeness review;
 this shared figure improves anatomy but does not finish the child figures or
 every gesture around her.
+
+The October 23 raw-geometry audit found an off-by-one lower-ring index in the
+shared fitted hair cap. It caused one out-of-range index and nonfinite normals
+per affected cap; packing concealed the invalid data in otherwise mostly visible
+hair. The source index is corrected. `validate_gallery_geometry.mjs` now checks
+all exported position/normal data and index ranges before welding, and supports
+checking the packed files as well. This is data-integrity evidence, not automatic
+acceptance of hair silhouette, likeness or facial expression.

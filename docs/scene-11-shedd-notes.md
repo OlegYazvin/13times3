@@ -92,3 +92,28 @@ remaining artistic weaknesses. This does not change the memory or frame ID.
 Publication status: the reviewed adult-height field and shared portal follow-ups
 are included in the user-authorized release after `f28cbb7`. Earlier local-pass
 wording above records the development sequence. Artistic acceptance remains open.
+
+## Continued native sculpture review, October 23
+
+The October 23 local study directs G and Zephrine’s heads and pointing indices toward the same nearby sculpted fish at its authored drift center. The dome, shoulder and rear vault use continuous world-space canopy UVs, removing a known texture-coordinate discontinuity; that source correction still requires the actual side-route images. Loose floor shell loops are removed. Fish movement, the four people and the freestanding portal with both walk-around paths remain required.
+
+The overhead water lens had a real mesh/ceiling conflict: its constant 5.95 m
+upper rim and 6.70 m support endpoints exceed the dome toward its outer edge.
+The next source fits the complete upper rim, glass edge and supports beneath
+the dome's actual curved height. This is a geometry revision, distinct from
+shared canopy texture coordinates. Keep the moving fish and both portal paths
+in the next exported verification.
+
+### Current exported evidence, October 23
+
+The fitted overhead tank rim and supports, continuous canopy UVs and shared fish attention complete a current-hash desktop and fresh portrait-emulation walkthrough, including views behind the freestanding portal. Both routes around the posts remain clear, fish drift remains active, and return, control and cleanup checks pass. The rich habitat painting remains an artistic contrast with the modeled foreground and should be judged separately from those functional results.
+
+The later side/portrait review still found canopy clutter and a weak phone
+composition. Habitat arches reached above the old round roof, while secondary
+ribs exposed loose ends. A new local study uses one continuous water vault,
+three complete shell arches and grounded column assemblies, with fewer overhead
+tank supports. The close tank and its detailed fish move together; G and Zephrine
+move back and toward the doorway center so the portrait view can include both
+people and their shared fish. The same four people, moving inhabitants and
+freestanding return portal remain. Re-export and inspect this study before
+calling the canopy or phone staging resolved.

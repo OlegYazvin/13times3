@@ -3,16 +3,14 @@ import { chromium } from "playwright";
 import { createServer } from "node:http";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
-import { execFile } from "node:child_process";
-import { promisify } from "node:util";
 import { galleryBrowserExecutable } from "./gallery_browser.mjs";
+import {packGalleryRoom} from './pack_gallery_room.mjs';
 
 const id = process.argv[2];
 if (!/^\d{2}$/.test(id || "")) throw new Error("Usage: node scripts/build_gallery_room.mjs 09");
 const executablePath = await galleryBrowserExecutable();
 const cache = resolve(`.cache/room${id}`);
 const destination = resolve(`src/assets/explore/room${id}`);
-const execFileAsync = promisify(execFile);
 await mkdir(cache, { recursive: true });
 await mkdir(destination, { recursive: true });
 await build({
@@ -46,8 +44,7 @@ try {
   const rawPath = resolve(cache, "room-uncompressed.glb");
   const packedPath = resolve(cache, "room-meshopt.glb");
   await writeFile(rawPath, model);
-  await execFileAsync(resolve("node_modules/.bin/gltf-transform"),
-    ["meshopt", rawPath, packedPath], { maxBuffer: 1024 * 1024 });
+  await packGalleryRoom(rawPath,packedPath);
   model = await readFile(packedPath);
   if (preview.length + model.length > 8_000_000) console.warn(
     `Room ${id} is above the approximate 8 MB download target; review loading and performance (${preview.length} preview + ${model.length} model bytes)`);

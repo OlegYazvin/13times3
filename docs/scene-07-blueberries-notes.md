@@ -86,3 +86,9 @@ pass does not resolve those sleeves or establish final character acceptance.
 Publication status: the reviewed adult-height field and shared portal follow-ups
 are included in the user-authorized release after `f28cbb7`. Earlier local-pass
 wording above records the development sequence. Artistic acceptance remains open.
+
+## Continued native sculpture review, October 23
+
+The latest refined shared shirt opened a 16 mm thigh-to-shoulder support gap, despite both shin grips still meeting the trousers. A paired 15.5 mm shoulder-root lift is under review; it must not be marked complete until the new exported support surface is measured. The living bough now has a curved descent through G’s helping position to the same picked berry. All bushes remain adult height; no low-shrub assumption is reintroduced.
+
+Final carry follow-up: the lower child shirt crossed Oleg’s turned head. The child pelvis/body moves 6 cm back while the knees, ankles and berry contact stay together; the shoulder roots and shin grips are fitted again. Adult-height bushes and Zephrine’s abundant curls remain. Raw study clears the head/shirt pair; packed-export and fresh browser views must confirm it.

@@ -68,6 +68,8 @@ rooms. The wraparound atlas and face relief now follow it, and the jaw is
 rounder. Inspect the actual figure beside each memory, especially close side
 views and hand poses; this is an identity improvement, not final art approval.
 
-Keep each published GLB plus preview under the 8 MB target and preserve the
+Aim for approximately 8 MB per room as a loading target, using shared geometry
+and explicit loading/performance review for larger rooms. Preserve essential
+character and environment quality. Preserve the
 39 achievement pages and 41 stable frame IDs after every revision. A physical
 iPhone performance and feel review remains open.

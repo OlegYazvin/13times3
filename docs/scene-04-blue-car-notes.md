@@ -48,3 +48,26 @@ remaining artistic weaknesses. This does not change the memory or frame ID.
 Publication status: the reviewed adult-height field and shared portal follow-ups
 are included in the user-authorized release after `f28cbb7`. Earlier local-pass
 wording above records the development sequence. Artistic acceptance remains open.
+
+## October 23 coupled toy-car study
+
+The active local candidate fits the car to the manufacturer's approximately
+0.864 m height × 0.483 m width × 1.156 m depth envelope, including the parent
+handle. The previous scaled authoring block was oversized. The molded seat is
+lower and rounded, the cabin and bonnet are separated to make real foot room,
+the steering ring tilts toward its driver, and a joined curved stem carries the
+smaller parent grip. Jane, Oleg and the car move forward together. The actual
+manufacturer pose image is reference only; no product pixels or logo enter the
+model. This is still an original storybook interpretation.
+
+The first new export passed people-to-people checks but failed prop checks:
+toes entered the blue shell by up to 42 mm, the thighs missed the seat by about
+9.5 mm, and the grips penetrated the rods. Those are actual geometry failures,
+not portal defects. The cabin, leg arrangement, seat height and hand poses are
+being revised against decoded prop triangles. Treat the latest export as a
+candidate until its full contacts and walking views are checked again. The
+street, silhouettes and emotional acceptance remain open.
+
+### Current exported evidence, October 23
+
+The current full prop check finds no tested vertices deeper than 1 mm against the actual footwell, shell, seat, seatback, steering rim and both parent grips. Seat support is within 0.66 mm; both parent grips meet within 0.46 mm. The child leans forward from the backrest intentionally. The street buildings continue behind their facades and beyond the walk, while the car and family move together in the composition. Desktop and fresh portrait-emulation walking/return/collision checks pass at the current hash. A new child joy expression is sculpted in geometry.

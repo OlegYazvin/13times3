@@ -1,0 +1,74 @@
+{
+  "repository": "https://github.com/makehumancommunity/makehuman",
+  "sha": "a8bc2d54ff0ac92e78ff71431b1023eda42bf482",
+  "files": [
+    "LICENSE.md",
+    "LICENSE.ASSETS.md",
+    "makehuman/data/3dobjs/base.obj",
+    "makehuman/data/targets/macrodetails/caucasian-female-baby.target",
+    "makehuman/data/targets/macrodetails/caucasian-female-child.target",
+    "makehuman/data/targets/macrodetails/caucasian-female-young.target",
+    "makehuman/data/targets/macrodetails/caucasian-female-old.target",
+    "makehuman/data/targets/macrodetails/caucasian-male-young.target",
+    "makehuman/data/targets/macrodetails/universal-female-baby-averagemuscle-averageweight.target",
+    "makehuman/data/targets/macrodetails/universal-female-child-averagemuscle-averageweight.target",
+    "makehuman/data/targets/macrodetails/universal-female-young-averagemuscle-averageweight.target",
+    "makehuman/data/targets/macrodetails/universal-female-old-averagemuscle-averageweight.target",
+    "makehuman/data/targets/macrodetails/universal-male-young-averagemuscle-averageweight.target"
+  ],
+  "license": "CC0-1.0 graphical assets; application code is not reused",
+  "sourceFiles": [
+    {
+      "name": "LICENSE.ASSETS.md",
+      "sha256": "f6089cba01cb570a24712b41ab8a586ccd3cc5ef53dc266ca50b95c288956d2c"
+    },
+    {
+      "name": "LICENSE.md",
+      "sha256": "edd99571ca62698f78c943fd4fffb159a413c315fa0d4819d3cec5cadaf8b4f1"
+    },
+    {
+      "name": "base.obj",
+      "sha256": "8e761e6624b8f54536409135d1636da63b32486a90d4897f84e121d144f6fb4c"
+    },
+    {
+      "name": "caucasian-female-baby.target",
+      "sha256": "2ae0b8f760a3608b8e628b9af80054592d0fd0ac4b7867f81d8fc86b5a75c170"
+    },
+    {
+      "name": "caucasian-female-child.target",
+      "sha256": "17fc408839c0a407bf4efd96d9af7eebcdf20d74698659f3597b0647ed6b147e"
+    },
+    {
+      "name": "caucasian-female-old.target",
+      "sha256": "6560982486c4b1a7a0b1d82b0ad3f09770c16b4f87c8f949537dc9cfc941a0b0"
+    },
+    {
+      "name": "caucasian-female-young.target",
+      "sha256": "118379f6e8ba9266247fdb8788a20e1df40a239f97ced0b9905bcbcc74f6e820"
+    },
+    {
+      "name": "caucasian-male-young.target",
+      "sha256": "70e228ba7164737dae664454394536fc5935fa48d333c1a97d77e2dc6eacc5f5"
+    },
+    {
+      "name": "universal-female-baby-averagemuscle-averageweight.target",
+      "sha256": "4ba5396ddabda448ece15650a566fbebfbb10239256ccb201e8f883429e12249"
+    },
+    {
+      "name": "universal-female-child-averagemuscle-averageweight.target",
+      "sha256": "4ba5396ddabda448ece15650a566fbebfbb10239256ccb201e8f883429e12249"
+    },
+    {
+      "name": "universal-female-old-averagemuscle-averageweight.target",
+      "sha256": "4ba5396ddabda448ece15650a566fbebfbb10239256ccb201e8f883429e12249"
+    },
+    {
+      "name": "universal-female-young-averagemuscle-averageweight.target",
+      "sha256": "4ba5396ddabda448ece15650a566fbebfbb10239256ccb201e8f883429e12249"
+    },
+    {
+      "name": "universal-male-young-averagemuscle-averageweight.target",
+      "sha256": "4ba5396ddabda448ece15650a566fbebfbb10239256ccb201e8f883429e12249"
+    }
+  ]
+}

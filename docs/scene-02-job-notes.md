@@ -57,3 +57,24 @@ remaining artistic weaknesses. This does not change the memory or frame ID.
 Publication status: the reviewed adult-height field and shared portal follow-ups
 are included in the user-authorized release after `f28cbb7`. Earlier local-pass
 wording above records the development sequence. Artistic acceptance remains open.
+
+## October 23 local support study
+
+The active candidate uses native dimensional faces and hands; the portrait
+illustration experiments above are historical and must not be resumed. The
+kitchen counter, pan and handle are lowered together to waist height, with Jane
+restaged at the handle and a supporting hand fitted to the counter plane. The
+caregiving cloth is a thin sagging mesh instead of an extruded tray, and the
+child reaches toward its edge. The first cloth still read as a board, so its
+catenary, folds and hem have been revised again pending inspection.
+
+A single lifted ceiling studies the home-to-street transformation. Its first
+underside looked like a dark slab and was rejected; the next material study is
+still under review. The comforting pair remains visibly unsuccessful: Oleg's
+arm goes above Jane's head, and their bodies do not yet communicate support.
+The real desk, multiple Janes, all five support roles and frame assignment stay
+as before. None of these local studies is a new published release.
+
+## Continued native sculpture review, October 23
+
+The caregiving cloth and child fingertip now share one transformed surface target. The pan is hollow, the counter meets the floor, and street contacts use differentiated adult anatomy and conversational gestures. A review still showed floating equipment on the real desk; the next source study lowers those objects to its actual beveled top and completes the home wall around true window openings. Re-export and inspect these changes before treating them as resolved.

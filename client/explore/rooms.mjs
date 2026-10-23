@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 import { nearestFrame, PLAYER_RADIUS, isWalkable, portalOpening } from "./layout.mjs";
-import { addRoomLighting } from "./room-lighting.mjs";
+import { addRoomLighting, prepareRoomShadows } from "./room-lighting.mjs";
 
 const LOAD_DISTANCE = 12;
 const UNLOAD_DISTANCE = 14;
@@ -50,6 +50,7 @@ function disposeScene(scene) {
   const textures = new Set();
   const images = new Set();
   scene.traverse((object) => {
+    if (object.isLight&&object.shadow) object.shadow.dispose();
     if (object.geometry) geometries.add(object.geometry);
     const list = Array.isArray(object.material) ? object.material : [object.material];
     for (const material of list) if (material) materials.add(material);
@@ -115,6 +116,7 @@ export class RoomManager {
   }
 
   render(renderer, camera) {
+    renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFShadowMap;
     renderer.autoClear = false;
     renderer.setClearColor(this.mode === "room" && this.active ?
       this.active.backgroundColor : 0xc9b5ae);
@@ -197,6 +199,7 @@ export class RoomManager {
       group.rotation.y = Math.atan2(-outward.x, -outward.z);
       group.add(gltf.scene);
       addRoomLighting(group,frame.id);
+      prepareRoomShadows(gltf.scene,frame.id);
       const modelColliders = collidersFromScene(gltf.scene);
       const driftingFish = [];
       if (frame.id === "11") gltf.scene.traverse(object => {

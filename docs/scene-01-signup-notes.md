@@ -43,3 +43,16 @@ remaining artistic weaknesses. This does not change the memory or frame ID.
 Publication status: the reviewed adult-height field and shared portal follow-ups
 are included in the user-authorized release after `f28cbb7`. Earlier local-pass
 wording above records the development sequence. Artistic acceptance remains open.
+
+### Current exported evidence, October 23
+
+The current native export completes full desktop and fresh portrait-emulation doorway, front, profile, three-quarter, rear and return inspection. The articulated writing grip, sharpened pencil and actual paper contact replace the old independent hovering pen. Jane’s soles meet the sand patch within 0.50 mm, and the planted stage foot is within 0.02 mm of the deck. The other foot is deliberately raised. The cave roof/wall rails and small competing ornaments are reduced; its stage, cave and signup memory remain.
+
+The later complete desk-support study corrects more than the pencil target:
+Jane's seated torso now retains her standing torso length instead of stretching
+it above the low chair. The paper, rules, booklet, wax, shell and beads are
+seated on the actual 0.928 m beveled desk top. Her free hand rests on that desk,
+and the pinched pencil follows the lowered paper. These source changes require
+the next packed prop and browser checks; the earlier paper-plane test did not
+establish support for every desktop object. Zephrine's stage smile uses the
+same sculpted joy expression already inspected in the car and playground.

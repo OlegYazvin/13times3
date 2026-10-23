@@ -1,12 +1,13 @@
 import {portalPreviewCamera} from './portal_preview_camera.mjs';
 import {replaceStoryFigures} from './storybook_figures.mjs';
 import {finishStoryWorld} from './storyworld_finish.mjs';
+import {TOY_CAR_SCALE,TOY_CAR_Y} from './scene04_arrangement.mjs';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
 import * as THREE from "three";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
-import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
-import { addRoomLighting } from "../client/explore/room-lighting.mjs";
+import { addRoomLighting, prepareRoomShadows } from "../client/explore/room-lighting.mjs";
 import { addOpenSky } from "./open_sky.mjs";
 import { addOlegPortrait, addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
@@ -94,12 +95,12 @@ function loft(parent, name, rings, mat, sides = 12, solid = false) {
   }
   for (let row = 0; row < rings.length - 1; row++) for (let side = 0; side < sides; side++) {
     const a = row * sides + side, b = row * sides + (side + 1) % sides;
-    indices.push(a, b, a + sides, b, b + sides, a + sides);
+    indices.push(a, a + sides, b, b, a + sides, b + sides);
   }
   for (let side = 1; side < sides - 1; side++) {
-    indices.push(0, side + 1, side);
+    indices.push(0, side, side + 1);
     const top = (rings.length - 1) * sides;
-    indices.push(top, top + side, top + side + 1);
+    indices.push(top, top + side + 1, top + side);
   }
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3));
@@ -115,7 +116,7 @@ floor.rotateX(-Math.PI / 2);
 const floorColors = [];
 for (let i = 0; i < floor.attributes.position.count; i++) {
   const x = floor.attributes.position.getX(i), z = floor.attributes.position.getZ(i);
-  floor.attributes.position.setY(i, .008 * Math.sin(x * 3 + z * 2));
+  floor.attributes.position.setY(i, (Math.abs(x)<2.1?.001:.008) * Math.sin(x * 3 + z * 2));
   const distance = Math.abs(x - .18 * Math.sin(z * .35));
   const pigment = new THREE.Color(distance < 2.1 ? C.road : C.sidewalk);
   pigment.offsetHSL(0, 0, (random() - .5) * .045);
@@ -125,14 +126,15 @@ floor.setAttribute("color", new THREE.Float32BufferAttribute(floorColors, 3));
 floor.computeVertexNormals();
 add(root, "walkable Chicago sidewalk widening into a memory street", floor,
   material(0xffffff, { vertexColors: true }));
-const streetContinuation=new THREE.PlaneGeometry(10.8,20,30,44);
+const streetContinuation=new THREE.PlaneGeometry(144,144,96,96);
 streetContinuation.rotateX(-Math.PI/2);
-streetContinuation.translate(0,-.006,-18.2);
+streetContinuation.translate(0,-.006,-12);
 const distantPigment=[];
 for(let i=0;i<streetContinuation.attributes.position.count;i++) {
   const x=streetContinuation.attributes.position.getX(i),
     z=streetContinuation.attributes.position.getZ(i);
-  const lane=Math.abs(x-.18*Math.sin(z*.35));
+  const bend=-2.5*THREE.MathUtils.smoothstep(-z,18,45);
+  const lane=Math.abs(x-bend-.18*Math.sin(z*.35));
   const color=new THREE.Color(lane<2.1?C.road:C.sidewalk);
   color.offsetHSL(0,0,(random()-.5)*.035);
   distantPigment.push(color.r,color.g,color.b);
@@ -159,13 +161,13 @@ addOpenSky(root, C.sky, C.sidewalk);
 for (const side of [-1, 1]) for (let unit = -3; unit < 4; unit++) {
   const z = -6.6 + unit * 4.1;
   const group = new THREE.Group(); group.name = "unaddressed brick two-flat with stoop";
-  group.position.set(side * 4.58, 0, z); root.add(group);
+  group.position.set(side * (4.58+((unit+4)%3)*.12), 0, z);group.scale.y=.94+((unit+4+(side>0?1:0))%3)*.09;root.add(group);
   const front = -side * .63;
   const tint = brickFacades[((unit + (side > 0 ? 1 : 0)) % 4 + 4) % 4];
-  box(group, "solid brick facade", 0, 2.05, 0, 1.45, 4.1, 3.82,
+  box(group, "solid brick facade", side*1.775, 2.05, 0, 5.0, 4.1, 3.82,
     tint, unit>=0);
-  box(group, "stone foundation", 0, .45, 0, 1.5, .9, 3.87, M.mortar);
-  box(group, "projecting cornice", 0, 4.18, 0, 1.58, .16, 4.05, M.cream);
+  box(group, "stone foundation", side*1.775, .45, 0, 5.05, .9, 3.87, M.mortar);
+  box(group, "projecting cornice", side*1.775, 4.18, 0, 5.13, .16, 4.05, M.cream);
   if(unit%2===0) {
     curve(group,"shaped limestone parapet rising above the two-flat",[
       [front-side*.12,4.26,-1.9],
@@ -291,7 +293,7 @@ for (const side of [-1, 1]) for (let unit = -3; unit < 4; unit++) {
 // shell. It is open at the seat, has four wheels, steering wheel and a push
 // handle, and remains one solid obstacle for a visitor.
 const car = new THREE.Group(); car.name = "sculpted blue toddler push car with Zephrine driving";
-car.position.set(0, 0, 4.0); root.add(car);
+car.position.set(0, TOY_CAR_Y, 4.0); root.add(car);
 const bodyShape = new THREE.Shape();
 bodyShape.moveTo(-.35, -.83);
 bodyShape.bezierCurveTo(-.51, -.77, -.53, -.49, -.5, -.21);
@@ -304,11 +306,11 @@ bodyShape.closePath();
 // The occupied cabin must be an actual recess. Previously this extrusion was
 // solid underneath the child, with a seat simply placed on top of the shell.
 const cabin=new THREE.Path();
-cabin.moveTo(-.25,-.35);cabin.lineTo(.25,-.35);
-cabin.quadraticCurveTo(.35,-.35,.35,-.25);
-cabin.lineTo(.35,.56);cabin.quadraticCurveTo(.35,.67,.24,.67);
-cabin.lineTo(-.24,.67);cabin.quadraticCurveTo(-.35,.67,-.35,.56);
-cabin.lineTo(-.35,-.25);cabin.quadraticCurveTo(-.35,-.35,-.25,-.35);
+cabin.moveTo(-.29,-.43);cabin.lineTo(.29,-.43);
+cabin.quadraticCurveTo(.36,-.43,.36,-.34);
+cabin.lineTo(.36,.56);cabin.quadraticCurveTo(.36,.67,.24,.67);
+cabin.lineTo(-.24,.67);cabin.quadraticCurveTo(-.36,.67,-.36,.56);
+cabin.lineTo(-.36,-.34);cabin.quadraticCurveTo(-.36,-.43,-.29,-.43);
 cabin.closePath();bodyShape.holes.push(cabin);
 const bodyGeometry = new THREE.ExtrudeGeometry(bodyShape,
   { depth: .37, bevelEnabled: true, bevelSize: .026, bevelThickness: .03,
@@ -328,11 +330,11 @@ add(car, "rounded sculpted front of Zephrine's blue car",
   new THREE.ExtrudeGeometry(noseShape, { depth: .07, bevelEnabled: true,
     bevelSize: .04, bevelThickness: .025, bevelSegments: 3, curveSegments: 14 }),
   M.blue, 0, 0, .89);
-box(car, "dark recessed seat", 0, .61, -.24, .58, .12, .43, M.dark);
-box(car, "solid rising seat back", 0, .79, -.49, .57, .38, .12, M.blueShade, true);
+add(car, 'dark recessed seat',new RoundedBoxGeometry(.62,.12,.43,4,.035),M.dark,0,.40,-.24);
+add(car, 'solid rising seat back',new RoundedBoxGeometry(.62,.30,.12,4,.025),M.blueShade,0,.56,-.49).userData.solidFootprint=true;
 const hoodShape = new THREE.Shape();
-hoodShape.moveTo(-.43, -.87); hoodShape.bezierCurveTo(-.48, -.3, -.35, -.14, 0, -.15);
-hoodShape.bezierCurveTo(.35, -.14, .48, -.3, .43, -.87); hoodShape.closePath();
+hoodShape.moveTo(-.43, -1.00); hoodShape.bezierCurveTo(-.48, -.62, -.35, -.48, 0, -.48);
+hoodShape.bezierCurveTo(.35, -.48, .48, -.62, .43, -1.00); hoodShape.closePath();
 const hoodGeometry = new THREE.ExtrudeGeometry(hoodShape,
   { depth: .09, bevelEnabled: true, bevelSize: .026, bevelThickness: .03,
     bevelSegments: 2, curveSegments: 15 });
@@ -372,7 +374,7 @@ curve(car, "silver contour of rounded front bumper",
 beam(car, "steering column", [0, .65, .34], [0, .86, .28], .035, .035, M.dark);
 const wheel = add(car, "working-looking toy steering wheel",
   new THREE.TorusGeometry(.17, .024, 7, 20), M.dark, 0, .9, .32);
-wheel.rotation.x = Math.PI / 2.5;
+wheel.rotation.x = Math.PI / 4;
 beam(car, "steering-wheel spoke", [-.12, .9, .32], [.12, .9, .32], .012, .012, M.dark, 5);
 for (const side of [-1, 1]) {
   const holder = add(car, "deep molded cup holder beside the steering wheel",
@@ -382,13 +384,9 @@ for (const side of [-1, 1]) {
   box(car, "cup-holder dark well", side * .335, .691, .28,
     .1, .012, .1, M.dark);
 }
-for (const side of [-1, 1]) {
-  beam(car, "tall black parent push-handle shaft",
-    [side * .22, .46, -.75], [side * .24, 1.48, -1.05], .039, .034, M.dark);
-}
-beam(car, "shared parent push grip", [-.37, 1.48, -1.05],
-  [.37, 1.48, -1.05], .055, .055, M.dark);
-car.scale.set(.6,.78,.68);
+curve(car,'continuous molded parent push-handle stem',[[0,.53,-.55],[0,.89,-.68],[0,1.27,-.92],[0,1.48,-1.05]],.07,M.dark,40);
+beam(car, 'shared parent push grip',[-.37,1.48,-1.05],[.37,1.48,-1.05],.025,.025,M.dark,20);
+car.scale.fromArray(TOY_CAR_SCALE);
 
 function adult(name, x, z, outfit, options = {}) {
   const cloth = paintedFabric(outfit);
@@ -557,6 +555,14 @@ async function authorRoom() {
       colliderRadius: .17,
     });
   }
+  const blocks=root.children.filter(o=>o.name==='unaddressed brick two-flat with stoop');
+  for(const side of[-1,1])for(let i=0;i<5;i++){
+    const building=blocks.filter(o=>Math.sign(o.position.x)===side)[i%7].clone(true),z=-24-i*4.4;
+    building.name='full-depth distant neighborhood volume following the continuing street';
+    building.position.set(side*(4.58+(i%3)*.12)-2.5*THREE.MathUtils.smoothstep(-z,18,45),0,z);
+    building.rotation.y=-.04*(1+Math.sin(i*.7));
+    building.traverse(o=>{o.userData={...o.userData,solidFootprint:false};if(o.isMesh){o.material=o.material.clone();o.material.color.lerp(new THREE.Color(0xb6c3b8),.20+i*.07);}});root.add(building);
+  }
   oleg.clear();
   addContactShadow(oleg, 1.73);
   oleg.add(makeRiggedOleg(rig, {
@@ -587,8 +593,9 @@ async function authorRoom() {
   scene.add(root);
   const camera = portalPreviewCamera(gallery.frames[3].room);
   const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  prepareRoomShadows(root,'04',renderer);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.setPixelRatio(1); renderer.setSize(735, Math.round(735 * FRAME_HEIGHT / FRAME_WIDTH));
+  renderer.setPixelRatio(1); renderer.setSize(735, Math.round(735 / camera.aspect));
   document.body.append(renderer.domElement);
   renderer.render(scene, camera);
   const preview = renderer.domElement.toDataURL("image/webp", .86);

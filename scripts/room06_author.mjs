@@ -31,16 +31,16 @@ ground(C.ground, (x, z) => {
 // stage or street. Folded cloth panels give the walls actual depth.
 for (const side of [-1, 1]) {
   const wallPositions = [], wallUvs = [], wallIndices = [];
-  for (let zi = 0; zi <= 24; zi++) for (let yi = 0; yi <= 8; yi++) {
-    const z = -5.78 + zi * 11.56 / 24;
-    const y = yi * 4.35 / 8;
-    const x = side * (4.47 - .09 * Math.sin(z * 2.15 + y * .4)
-      * Math.sin(Math.PI * yi / 8));
+  for (let zi = 0; zi <= 128; zi++) for (let yi = 0; yi <= 24; yi++) {
+    const z = -5.78 + zi * 11.56 / 128;
+    const y = yi * 4.35 / 24;
+    const x = side * (4.47 - .17 * Math.sin(z * 2.15 + y * .24)
+      * Math.sin(Math.PI * yi / 24));
     wallPositions.push(x, y, z);
-    wallUvs.push(zi / 24, yi / 8);
+    wallUvs.push(zi / 128, yi / 24);
   }
-  for (let zi = 0; zi < 24; zi++) for (let yi = 0; yi < 8; yi++) {
-    const a = zi * 9 + yi, b = a + 1, c = a + 9, d = c + 1;
+  for (let zi = 0; zi < 128; zi++) for (let yi = 0; yi < 24; yi++) {
+    const a = zi * 25 + yi, b = a + 1, c = a + 25, d = c + 1;
     wallIndices.push(a, b, c, b, d, c);
   }
   const drapery = new THREE.BufferGeometry();

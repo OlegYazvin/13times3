@@ -1,176 +1,52 @@
-# Eleven-scene visual revision — reviewed publication and continuing art work
+# Eleven-scene visual revision — October 23
 
-Oleg authorized publishing this iteration on October 22 and continuing the art work.
-This release replaces the painted-face construction in
-all eleven exported rooms and improves several interactions and environments.
-It does not yet meet every part of the requested art standard. In particular,
-the cast still looks too mannequin-like in its shoulders, clothing and expressions.
-Several environments still look like model displays. Resemblance to the private
-references also needs human review. Passing
-browser checks does not resolve those artistic weaknesses.
+This is the native-sculpture revision of the eleven existing memories. It replaces the painted portrait/head construction with dimensional, age-specific anatomy, fitted hair, joined posed clothing and articulated hands. Private reference photographs and their metadata stay outside the public assets and evidence.
 
-The illustrated walkthrough is generated at
-[`../.cache/art-review/index.html`](../.cache/art-review/index.html). It includes
-the saved baseline painting, revised painting, doorway, side/rear views and a
-fresh portrait viewport for each room. These are local evidence files, not site
-content. The baseline is the local build captured before this revision; it is
-not a claim about the latest concurrent production deployment.
+The preceding verified release was `fa3eb23`. This iteration is being verified at its current model and client hashes before publication. The outstanding artistic weaknesses below remain active work; a successful functional check is not artistic approval. The faces are substantially more coherent in three dimensions, but likeness and emotional expression still need further judgment against the private references.
 
-## Character system and provenance
+## Character construction and licenses
 
-`scripts/storybook_figures.mjs` builds the current cast from original modeled
-surfaces. The face has a continuous skull, cheeks, nose, chin and mouth contour;
-the eyes sit under modeled lids, with fitted ears, hair and necks. Painted
-materials supply color and fabric treatment. Portrait panels, face atlases,
-depth-map inserts and previous imported bodies are removed before export.
-The old authoring studies remain in the repository; they are not the current
-exported characters. Zephrine's shared hair has a fuller curly side/back and nape silhouette based
-on the private portrait and full-body references, replacing the tight cap. See
-[her character notes](character-zephrine-notes.md) and the local
-[hair comparison](../.cache/hair-revision/index.html).
+The face, skull, modeled lids, cheeks, nose, mouth, ears, hair and posed neck form one dimensional character. Adults and children use the official MakeHuman graphical base and actual age targets, pinned to revision `a8bc2d54ff0ac92e78ff71431b1023eda42bf482`. These graphical assets are CC0; MakeHuman application code is not reused. See [sources and licenses](rigged-figure-source.md) and [the included asset license](../scripts/assets/figures/MakeHuman-LICENSE.ASSETS.md).
 
-Thumbs are mirrored anatomically between the two hands, and the irises fit inside the modeled eyelids. The current figures introduce no third-party character
-model license. Existing CC0 trees, ray and barramundi, CC BY reef-fish schools,
-and the music attribution remain credited. The private reference photos were used locally and were not copied
-into the public assets or this evidence report.
+Reference-guided proportions, glasses, hair, clothing, expressions and narrative poses are authored locally. Zephrine has a fuller curly crown, sides and nape. Painted materials support the sculpture; no portrait panel or private photographic pixels appear in the exported cast. Native articulated hands replace the earlier finger tubes, and constrained two-bone arms preserve reach. Joined garment surfaces accommodate bent elbows rather than folding sweep rings through themselves.
 
-Adult and child prototypes were inspected together from the front, profile,
-three-quarter and rear before rollout. Every occurrence then received a
-scene-specific pose and was exported and inspected in its room. This establishes
-the replacement construction and its visible consistency, not an approval of
-every likeness or expression.
+Adult and child prototypes were inspected together before propagation. All 48 appearances across eleven rooms then received pose-specific checks. Existing licensed trees, fish and ray retain their credits. The original authoring experiments remain as historical sources; they are removed before current exports.
 
 ## Changes and remaining weaknesses
 
 | Frame | Implemented and observed locally | Still below the requested art target |
 | --- | --- | --- |
-| 01 — Signup | Replaced both figures; Jane sits on a joined walnut chair at the desk with a pen over the notebook; Zephrine has an open stage gesture and lifted foot. Moved Jane and the complete desk arrangement inward after portrait review cut off the signup action. Reduced competing cave ornaments. Undersea cave and small stage retained. | Stage performance remains restrained. The desk and cave still need more convincing authored forms and a stronger focal lighting hierarchy. |
-| 02 — Job search | Replaced the whole cast in one style, including the intentional repeated Janes. Preserved the referenced desk, blanket and satchel. Oleg now faces the desk and open notebook, with Jane beside him and a hand at his shoulder; side review exposed and corrected the previous empty-space reach. Separate advice, care, household, outreach and comfort poses. The comforting pair now lean together with an arm around the shoulder. Extended terrain beyond the home/street. | Caregiving reads partly through the blanket prop. Several household actions remain schematic. The home-to-street transition still has large empty areas and towering thin facade slabs and needs a more deliberate spatial transformation. |
-| 03 — Friendship | Compatible adults and children; the girls turn toward each other and walk with alternating strides while their modeled hands meet. Charlize's stripes lie on the garment surface instead of floating as bands. Park/dance arrangement and paths retained; ground and distant planting extend beyond the first view. | The setting remains relatively generic; repeated visits and dance are not yet as emotionally readable as the brief requires. |
-| 04 — Blue car | Cut a real open cabin into the previously solid car body, added a recessed footwell, and resized the vehicle. Child now fits its actual seat, with feet in the footwell, hands on the scaled steering rim, and a belt. Both parents' hands meet the resized pushing grip. Street bay materials and distant ground adjusted. | Car trim and street architecture remain simplified. Parent poses remain fairly symmetrical and restrained. |
-| 05 — Office move | Family placed together around Jane. Raised, grounded gesture and lifted chin replace the isolated mannequin stance; a warm opening crosses the cooler office floor. Preserved the migration task's lamps, diffuse windows, oculus and living planters in the combined local candidate. | The hall remains too vacant, and side views expose an abrupt architecture/background edge. The current expression does not fully carry triumph, resolve and release without the caption. |
-| 06 — Ending breastfeeding | Purpose-built seated mother and reclined clothed child. Corrected the actual chair scale/position after a side view exposed a real contact error. Child wears a clearly blue top and mauve trousers. Supporting arms, curled legs and chair/lap arrangement were reviewed from both sides. | The embrace remains visibly stylized; hands and clothing folds need finer sculpting. The room's repeated ribs, exposed side limits and broad surfaces still feel architectural rather than intimately dreamlike. |
-| 07 — Blueberries | Child sits behind Oleg's head with bent legs and supporting hands at the lower legs. Smaller reachable fruit and relocated branch meet the child's reaching hand; G helps from the other side. Replaced the trunk-like bough with basal canes and smaller leaves sampled from the actual branch curves; reduced and attached the berry calyces. The post-publication local follow-up replaces low shrubs with measured 2.015–2.345 m multi-cane bushes, small leaves and fruit, and deeper rows. G and Zephrine meet the lower bough. Continuous ground removes the side-view rectangle; simpler distant prototypes reduce geometry. | Lower foliage and summer light still need more variety and atmosphere. Oleg’s sleeves visibly pinch and collapse at the bent elbows in `07-picking-contact.png`; that garment geometry still needs repair. Supporting hands need more nuanced finger wrapping. |
-| 08 — Chicago route | Seven stops and itinerary retained. Labels reduced and moved beside the route; continuous promenade edges and quieter masonry connect the journey. Added real window framing and recess detail to the bridge stop. | Buildings still resemble compact architectural studies. Several stops need more distinctive volumes and silhouette, and less reliance on signs. |
-| 09 — First apples | Corrected reversed child contour ordering; replaced cage hair and rigid vest boards with fitted forms. Cupped palms and curled fingers now follow the lower surface of the bitten apple; the apple-print fabric lies on the shirt rather than floating above it. Jane turns toward Zephrine with a hand at her shoulder, and Oleg looks into the interaction. Moved character replacement before leaf batching so a leaf from the removed figure no longer survives through the new sleeve. Terrain and trees extend the orchard. | The apple and its bite are still a simple sculpt. Hands and garment folds remain simplified; orchard tree repetition and restrained group expression remain visible. |
-| 10 — Maggie Daley Park | Brought the game forward from the distant display layout. Two older friends steady Zephrine's hands as she balances on a modeled play pad with one leg raised. The skirt hem gathers around that leg after a rear view exposed a fabric intersection. Preserved the supporting children's relative heights and dress; adults form a staggered group watching the game, with yellow glasses, rose jacket and knit cap cues retained. The low pads are an authored interpretation of shared play, not a claim about an exact park fixture. | Side and rear views still show sparse ground, regular grass color bands, oval planting islands and a generic skyline. The large ship, lighthouse and slide remain mostly background scenery. Material and environmental finish remain below the requested standard. |
-| 11 — Aquarium | Replaced the family; G and Zephrine turn toward the relocated real side habitat and fish. Preserved moving inhabitants and the freestanding return portal, including both side routes and access behind it. Retained the migration task's additional fish schools and manta. Removed selected guide strands. | Painted habitats and modeled figures still differ in detail. Canopy seams/ribs and some empty floor areas remain conspicuous. |
+| 01 — Signup | Dimensional Jane writes with a fitted articulated pencil pinch; her free hand rests on the actual desk. The complete desk and supported paper/booklet/props are lowered to suit normal seated proportions, and a joined chair supports her thighs. Zephrine keeps the little stage and expressive raised-foot pose, now with sculpted joy. Cave rails and competing hanging decoration are reduced. | The cave wall wash and some shell/coral forms remain visibly stylized. The performance is a frozen theatrical gesture. |
+| 02 — Job search | All ten people, including five symbolic Janes, share the dimensional cast. Advising, a shared-cloth caregiving touch, household pan/counter contact, differentiated street conversations and a fitted side embrace are separate arrangements. The real curved desk keeps its equipment with corrected support; a complete window wall and lifted ceiling join home to street. | The simultaneous acts remain spread across a symbolic home/street world. Some distant buildings and household furniture are still simplified. |
+| 03 — Friendship | The girls use a fitted opposed handhold and mutual attention; Jane and Aibike converse behind them. Charlize retains her navy/white dress and pink trim. A real open dance-studio volume looks back into a shaded garden, with a bridge, paths and modeled trees. | The garden planting and the two park identities are less specific than the character interaction and dance setting. |
+| 04 — Blue car | The manufacturer-sized push-car interpretation has a real molded cabin, seat, footwell, steering rim, belt and joined parent handle. Zephrine’s feet, thighs and hands fit those surfaces; both parents grip the handle. Full-depth buildings, varied setbacks and a continuing street replace shallow facades. | Window and tree motifs still repeat along the block. The vehicle remains a sculpted interpretation of the referenced car. |
+| 05 — Office move | Jane’s planted stance, proud expression and open gesture lead a warm family group; Zephrine looks up while holding her hand. Oleg stands close. Joined masonry, real window openings, a continuous cornice and return-wall spandrel close the exposed gray edges around the vault. Moving furniture, boxes, work pods and the opening light carry the abstract office. | Triumph and release rely on the family stance, light and architecture more than a broad facial expression. |
+| 06 — Ending breastfeeding | A fully clothed, coupled lap embrace replaces intersecting body pieces. Both supporting palms, the lap, clothing, chair and rug are fitted together. The complete arrangement sits farther from the doorway so portrait viewing includes the feet. A continuous folded fabric sanctuary and cool-to-warm light frame the tenderness and loss. | Zephrine’s face is partly hidden by her abundant hair and the embrace. Fine garment folds remain understated. |
+| 07 — Blueberries | Adult-height, multi-cane bushes retain small attached leaves and berries. Zephrine’s thighs meet Oleg’s shoulders, both shin grips stay fitted, and G helps at the same living bough as the child’s picked berry. Complete family/bough staging, a woven pail, continuous ground and deeper hazed rows preserve the summer memory. | The rows still share bush prototypes; distant planting is more uniform than the close family interaction. |
+| 08 — Chicago route | Jane and Oleg now read at the Pullman beginning of the same seven-stop itinerary. Stop buildings have real depth, joined roofs, return windows and distinct massing; plaques and paving lines are quieter. A masonry former-lodge hall replaces the generic temple gate. All seven stops have separate route-view evidence. | These are architectural miniatures, with limited interiors and simplified detail. Less distinctive stops still benefit from their names. |
+| 09 — First apples | The child’s ordered torso, abundant curls and outer teal vest form a coherent outfit; its zipper follows the actual garment. Both hands support a closed apple with a real concave bite. Jane’s reassuring palm meets the vest instead of penetrating the shirt. All seven people remain, with orchard rows continuing beyond the initial view. | Canopy prototypes repeat, and the friends’ background gestures remain quiet. |
+| 10 — Maggie Daley Park | Two fitted child grips make the balancing game clear; the right child and her supporting pad are positioned together. Adults watch from staggered positions. Full-depth skyline forms, preserved play structures, continuous ground and rooted dimensional planting replace the petal islands and terrain bands. | The skyline and large play structures remain more simplified than the characters and their shared game. |
+| 11 — Aquarium | G and Zephrine’s heads and pointing indices follow the same moving sculpted fish. Their close habitat is staged with them for portrait viewing. A continuous painted water vault and complete shell arches replace clashing roof patches and loose ribs. The jellyfish bell’s invalid triangles are corrected. Moving inhabitants and both routes around/behind the freestanding portal remain. | Painted habitat depths are more intricate than the modeled people and stone. The overhead water lens deliberately floats as part of the dream. |
 
-## What verification establishes
 
-`npm run build` and `npm run check` pass locally. They check the original 39
-achievement routes, 41 stable frame IDs, published assignments 01–11, blank
-frames 12–41, credits, sitemap, local fonts and room assets. The current GLBs
-plus room paintings fit under 8 MB each; room 02 is the largest at about 7.47 MB.
-This measures room assets, not the initial shared client or a complete network
-waterfall.
+## Evidence and verification
 
-`scripts/run_gallery_review.mjs` checks fresh desktop and portrait-phone browser
-contexts for each room: loading, actual portal crossing, one isolated loaded
-world, exported collision footprints, sampled solid centers, walking/turning,
-return without heading or field-of-view jumps, and cleanup after leaving. It
-also checks both routes around the aquarium portal and traversing its back
-while remaining in the aquarium. Separate global checks cover drag look,
-portrait resize, WebGL loss, no-WebGL fallback and a failed room download.
-Manifest fallback collision rectangles are synchronized from the actual
-exported model footprints.
+The [representative renders](scene-evidence/2026-10-23/README.md) show the actual exported rooms. Their manifest records model, painting and client hashes. Full local captures additionally cover hallway painting, partial reveal, doorway, normal distance, frontal/profile/three-quarter/rear, contact details, return and fresh portrait-phone contexts for every room. Aquarium checks include moving inhabitants and walking around both posts and behind the freestanding portal; the route scene has a separate view of each of its seven stops.
 
-Phone evidence is Chromium touch emulation at 390 × 844. A physical phone,
-Safari/WebKit behavior, sustained low-end GPU performance and exact memory use
-have not been verified. Solid-center samples do not prove every boundary or
-all mesh intersections. Contact and art judgments come from the saved views.
-The local screenshot hook forces a completed render/readback so a stale browser
-compositor buffer is not mistaken for scene geometry.
+Raw and packed geometry checks validate finite positions/normals, complete triangles and index bounds. They caught and corrected lower-ring indexing errors in fitted hair caps and the jellyfish bell. Exact welding and 16-bit position packing retain contact geometry without removing anatomy. These integrity checks do not establish freedom from self-intersection or artistic quality.
 
-The published iteration's partial-reveal captures exposed doubled subjects
-where the painting and live room had different projections. The local follow-up
-renders all paintings through the actual physical frame from the hall and
-shortens the cutout interval to 3.2–2.6 m. The tested signup view no longer shows
-two differently sized people and stages. The upper cave edge still exposes the
-mismatch between frame 01's taller painting and smaller live aperture; this
-transition remains below the art target.
+Selected posed-surface checks measure actual vertex-to-triangle distances and containment. Broad inter-actor scans are followed by edge/triangle checks because open neck and wrist boundaries can produce false containment results. Important handholds, supports, steering, writing and prop contacts are measured separately. No sampled clearance test proves that every possible triangle pair is clear.
 
-The new room 02 approach also exposed a pink rectangle across the distant sky.
-A separate isolated render experiment confirmed that a later gallery wall was
-occluding the room because both worlds shared the first pass's depth buffer.
-Clearing depth after the foreground-tested portal stencil removes that wall.
-This preserves the stencil, actual camera and continuous doorway crossing. A
-browser regression tints the unrelated hall and checks that the live sky pixels
-inside the aperture do not change. This is distinct from intentional world
-coordinate overlap, actual mesh clipping or a stale capture.
+The site checks preserve 39 original achievement routes, 41 stable frame IDs, existing scene assignments and blank frames 12–41. Browser verification covers entry/return, isolated lazy-loaded rooms, collision footprints, controls, cleanup, resize, WebGL fallback and failed room loading. Manifest fallback boxes are synchronized from the reviewed exports, with a small positive thickness for wall planes.
 
-Rear contact review also exposed depth gaps in room 05's handhold and room 07's
-supporting hands that were hidden in front views. Their world positions were
-corrected before the final local exports. G now helps at the actual blueberry
-branch. Cloud forms in the shared sky atlas now wrap across both horizontal
-edges, addressing the vertical texture cut visible in the earlier side view.
+The painting and doorway now use the physical frame projection. The reveal completes at 3.2–2.6 m; clearing depth between stencil-isolated worlds removes gallery walls incorrectly covering room skies. A room 02 regression tests that unrelated hall-wall tint cannot alter the sky in its opening. Geometric overlap between independent portal worlds remains intentional.
 
-## Integration and publication scope
+Room model-plus-painting downloads range from about 1.5 to 6.6 MB. The approximately 8 MB target is a loading guideline, not an artistic quality cap. It excludes the shared client and is not a complete network waterfall.
 
-Work was isolated in `/tmp/jane-quality-revision` while the migration task was
-editing, building and deploying the same files. After earlier delivery failures,
-the authorized stop instruction was delivered successfully. “Plan 13times3.com
-migration” acknowledged that it stopped edits, builds, commits, pushes and
-deployments. Its already-pushed `29f138f` predates this handoff.
+Phone checks use fresh Chromium touch emulation at 390 × 844. Physical phones, Safari/WebKit, sustained low-end GPU performance and exact memory use remain unverified. Screenshots wait for completed rendering/readback; distorted stale captures are investigated separately from product defects.
 
-The local candidate preserves that task's later office furnishings, aquarium
-inhabitants, environment changes and browser capture fixes. The candidate is integrated into the original checkout on top of `29f138f`.
-The release build is checked against the reviewed model and client hashes; the
-checklist records the result. Publication uses the existing main-branch GitHub
-Pages workflow. The website release is an iteration with open art targets.
+## Publication history and privacy
 
-Do not describe this release as a completed art revision. The unchecked art
-targets above remain active work. The later local field follow-up corrects the blueberry bushes to at least
-adult height, while its character and atmospheric work remains open. The user explicitly
-authorized publishing this iteration before those further improvements.
+The migration task acknowledged the user-authorized stop to concurrent gallery edits. This revision preserves its furnishings, inhabitants and environment work while revising the shared cast and failed arrangements. Publication uses the existing main-branch GitHub Pages workflow.
 
-## Confirmed publication of this iteration
-
-Commit `f28cbb7` was published at <https://13times3.com/explore/> on October 22.
-The [GitHub Pages workflow](https://github.com/OlegYazvin/13times3/actions/runs/39855115360)
-succeeded. The live gallery HTML, JavaScript, eleven GLBs and eleven paintings
-match the saved release hashes exactly. Fresh live desktop and emulated phone
-loads rendered the first room asset with no page errors or fallback activation.
-Those smoke checks supplement the full local per-room functional checks; they
-do not imply artistic acceptance or a physical-phone performance measurement.
-The reviewed blueberry and portal follow-ups are released in this subsequent commit.
-
-## Reviewed follow-up publication after the first iteration
-
-The adult-height blueberry field and the shared painting/depth changes are
-reviewed work after `f28cbb7`, included in this user-authorized publication. Their
-source, model, painting and browser evidence are tracked separately from the earlier release. The physical phone, sustained
-GPU performance, likeness and full environment/character artistic targets remain
-open. The scene table records those weaknesses rather than declaring completion.
-
-## Source-note privacy correction
-
-The reference photographs themselves remain excluded from Git and site output.
-A later source audit found pre-existing photo-derived dates, location notes and
-timestamped filenames in repository documentation. Those details have been moved
-to ignored private notes and redacted from the current tracked documents. Earlier
-public Git commits still retain their historical text; this change does not
-rewrite shared repository history. Public farm pages remain visual references,
-without publishing the photographs' metadata or asserting a visit date.
-
-The source-note redaction was published separately in `d946d79`; its
-[Pages workflow](https://github.com/OlegYazvin/13times3/actions/runs/39867455776)
-succeeded. That commit changes five documentation files only and leaves the
-published gallery assets at the reviewed `f28cbb7` iteration. The later art and
-renderer changes described above are included in the subsequent reviewed publication.
-
-## Verification of the reviewed follow-up
-
-All eleven final model/painting/client hash sets have current desktop and fresh
-portrait-phone functional and walkaround evidence. The final field contact
-correction was exported and rechecked separately. Global controls, resize,
-fallback and failed-load behavior pass; aquarium fish motion and both routes
-around the freestanding portal pass. Build/site checks preserve all 39 original
-achievement routes, 41 frame IDs and blank frames 12–41. This is functional
-verification and saved visual evidence, with the artistic weaknesses in the
-scene table still open.
-
-Representative local comparisons:
-[adult-height field](../.cache/blueberry-height/index.html) and
-[portal reveal/depth](../.cache/portal-projection/index.html). The illustrated
-walkthrough includes each room's normal, side, rear, contact and phone views.
+Earlier releases `f28cbb7`, the documentation privacy correction `d946d79`, and field/portal follow-up `fa3eb23` were published and their live hashes verified. Those releases are historical baselines, not evidence for this candidate. The source-note correction removed photo-derived metadata from current public documentation; older Git commits retain their historical text. Shared repository history has not been rewritten.

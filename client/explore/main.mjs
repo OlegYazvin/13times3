@@ -1,3 +1,4 @@
+import {subjectMeshesInRoot} from './subject-meshes.mjs';
 import * as THREE from "three";
 import { GalleryControls } from "./controls.mjs";
 import { createGalleryScene } from "./gallery-scene.mjs";
@@ -66,6 +67,7 @@ try {
     },
   });
   if (["localhost", "127.0.0.1"].includes(window.location.hostname)) {
+    window.__galleryTestSubjectMeshes = () => rooms.active?subjectMeshesInRoot(rooms.active.group):[];
     window.__galleryDebug = () => ({
       x: player.x, z: player.z, yaw: controls.yaw,
       section: nearestSection(player, gallery.layout.sections).section.index + 1,

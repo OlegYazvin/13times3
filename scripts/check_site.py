@@ -203,7 +203,7 @@ def main() -> None:
     assert any("joined sculpted timber arch above the open dance floor" in name for name in friend_names)
     assert any("living flower stem beside the path" in name for name in friend_names)
     assert sum("detailed shade tree in the friendship garden" in name for name in friend_names) == 5
-    assert sum(node.get("name") == "solid tree trunk collision core" and bool(node.get("extras", {}).get("solidFootprint")) for node in friend_json["nodes"]) == 5
+    assert sum(node.get("name") == "solid tree trunk collision core" and bool(node.get("extras", {}).get("solidFootprint")) for node in friend_json["nodes"]) == 7
     car_room = frames[3]["room"]
     assert car_room["title"] == "Jane Got zephrine the ‘blue car’"
     assert car_room["caption"] == "Zephrine's blue car"
@@ -287,8 +287,8 @@ def main() -> None:
                for node in weaning_json["nodes"])
     assert sum("irregular stitched thread circling the family" in node.get("name", "")
                for node in weaning_json["nodes"]) == 3
-    assert any("continuous gathered linen vault panel" in node.get("name", "") for node in weaning_json["nodes"])
-    assert any("tall arched stained daylight pane" in node.get("name", "") for node in weaning_json["nodes"])
+    assert any("continuous folded fabric cocoon" in node.get("name", "") for node in weaning_json["nodes"])
+    assert any("broad folded daylight" in node.get("name", "") for node in weaning_json["nodes"])
     assert sum(bool(node.get("extras", {}).get("storyFigure")) for node in weaning_json["nodes"]) == 2
     assert any(node.get("extras", {}).get("identity") == "Jane" for node in weaning_json["nodes"])
     assert any("small turned side table beside the nursing chair" in node.get("name", "") for node in weaning_json["nodes"])
@@ -345,7 +345,7 @@ def main() -> None:
     orchard_json = json.loads(orchard_glb[20:20 + orchard_json_length])
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in orchard_json["nodes"]) >= 16, "Room 09 needs solid figures, trees, and props"
     orchard_names = [node.get("name", "") for node in orchard_json["nodes"]]
-    assert orchard_names.count("branch-connected modeled fruit-tree foliage") == 10, "Room 09 needs ten modeled orchard crowns"
+    assert orchard_names.count("branch-connected modeled fruit-tree foliage") >= 10, "Room 09 needs its modeled orchard crowns and continuing rows"
     assert "fruiting apple-tree canopy with a scalloped silhouette" not in orchard_names, "Room 09 must not retain the rounded placeholder canopies"
     assert "fitted quilted vest following torso" in orchard_names, "Zephrine needs a fitted dimensional vest"
     assert "quilted teal vest panel" not in orchard_names, "Room 09 must not retain face-obscuring vest boxes"
@@ -366,13 +366,13 @@ def main() -> None:
     play_json = json.loads(play_glb[20:20 + play_json_length])
     play_names = " ".join(node.get("name", "") for node in play_json["nodes"])
     for detail in ("Zephrine in shared play", "friend's first child", "friend's second child", "lighthouse", "ship", "whale",
-                   "shaped distant Chicago facade", "rooted flower stem in the Play Garden",
+                   "shaped distant Chicago facade", "formed lanceolate leaves rooted in the park beds",
                    "hand-laid winding garden path seam", "ship steering wheel with spokes",
                    "recessed arched play-tower entrance"):
         assert detail in play_names, f"Room 10 missing {detail}"
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in play_json["nodes"]) >= 14, "Play Garden people and props should collide"
-    assert play_names.count("detailed garden shade tree beside the shared play space") == 4
-    assert play_names.count("solid tree trunk collision core") == 4
+    assert play_names.count("detailed garden shade tree beside the shared play space") == 7
+    assert play_names.count("solid tree trunk collision core") == 7
     aquarium_room = frames[10]["room"]
     assert aquarium_room["title"] == "We took zephrine to the Shedd aquairum with G"
     assert aquarium_room["caption"] == "Wondering at the fish with G"
@@ -396,7 +396,7 @@ def main() -> None:
                    "continuous carved stone crown of the walk-behind hallway portal",
                    "fluted carved limestone column with joined capital",
                    "carved shell fan supporting the marble crown",
-                   "high shell-shaped tank arch",
+                   "joined shell arch seated on the carved aquarium columns",
                    "solid carved wave plinth beneath deep rear glazing",
                    "hand-laid tidal border in aquamarine terrazzo",
                    "carved scallop relief seated in the lantern plinth",

@@ -17,6 +17,13 @@ export function portalOpening(frame) {
   };
 }
 
+export function portalCanvas(room) {
+  const opening=portalOpening({room});
+  // Keep the physical painting inside the live opening, including short
+  // worlds such as the signup cave. Its top must end at the lintel.
+  return {width:opening.width,height:opening.height-.08,bottom:.08};
+}
+
 export const PATH = Object.freeze([
   { x: 0, z: 0 },
   { x: 0, z: -27 },

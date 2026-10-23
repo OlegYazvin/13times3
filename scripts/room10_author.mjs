@@ -55,9 +55,9 @@ for(let i=0;i<13;i++) {
   }
   facade.closePath();
   const body=add(root,"shaped distant Chicago facade with an authored roofline",
-    new THREE.ExtrudeGeometry(facade,{depth:.27,bevelEnabled:false,
+    new THREE.ExtrudeGeometry(facade,{depth:2.27,bevelEnabled:false,
       curveSegments:8}),
-    i%4===0?M.blueDark:i%3===0?M.blue:M.paleBlue,x,0,-9.29);
+    i%4===0?M.blueDark:i%3===0?M.blue:M.paleBlue,x,0,-11.29);
   body.userData.solidFootprint=true;
   const top=h-(i%4===1?.18:.08);
   curve(root,"masonry cornice below the skyline roof",
@@ -79,20 +79,20 @@ for(let i=0;i<13;i++) {
   }
 }
 for (const side of [-1,1]) curve(root,"curving garden promenade edge",
-  [[side*1.45,.05,8.8],[side*1.6,.05,4],
-    [side*1.3,.05,-1],[side*1.7,.05,-5.3],
-    [side*1.4,.05,-8.8]],.025,M.ochre,54);
+  [[side*1.45,.003,8.8],[side*1.6,.003,4],
+    [side*1.3,.003,-1],[side*1.7,.003,-5.3],
+    [side*1.4,.003,-8.8]],.010,M.timber,54);
 // Gently uneven inlaid seams make the approach read as a made garden path,
 // not an untextured beige plane. They stay low enough to remain non-solid.
-for(let row=0;row<20;row++) {
-  const z=8.05-row*.79;
+for(let row=0;row<10;row++) {
+  const z=8.05-row*1.58;
   if(z>1.0&&z<5.6)continue;
   const width=1.42+.17*Math.sin(z*.42);
   curve(root,"hand-laid winding garden path seam",
-    [[-width,.057,z-.035],[-width*.53,.057,z+.045],
-      [0,.057,z-.025],[width*.48,.057,z+.065],
-      [width,.057,z-.035]],.008,
-    row%4===0?M.white:M.ochre,18);
+    [[-width,.003,z-.035],[-width*.53,.003,z+.045],
+      [0,.003,z-.025],[width*.48,.003,z+.065],
+      [width,.003,z-.035]],.002,
+    M.timber,18);
 }
 
 function wave(x,z,length,scale=1) {
@@ -113,7 +113,7 @@ function wave(x,z,length,scale=1) {
     [x,.55,z+.68*scale],[x+length*.47,.18,z+.68*scale]],
     .025,M.paleBlue);
 }
-wave(-4.2,4.9,3.3);wave(4.15,1.6,3.4,1.3);
+wave(-4.4,6.25,3.3);wave(4.15,1.6,3.4,1.3);
 
 // A storybook lighthouse and a small play ship make the garden recognizable.
 {
@@ -267,40 +267,8 @@ wave(-4.2,4.9,3.3);wave(4.15,1.6,3.4,1.3);
 }
 
 // A few distinct connected garden spaces border the large central play area.
-const playGardenTrees = [[-6,5.7],[6.25,.2],[-6.3,-.9],[6,-6.4]];
-// Small planted islands give the long approach a garden scale. Every bloom
-// grows from a stem and paired leaves; loose confetti would make the ground
-// look unfinished and would not read as the park's planted landscape.
-for(const side of [-1,1]) for(const z of [6.4,4.25,1.9,-1.55,-4.6,-7.1]) {
-  const x=side*(2.45+.27*Math.sin(z*1.4));
-  loft(root,"low sculpted garden mound supporting rooted flowers",
-    [[.025,.46,.72,x,z],[.105,.52,.7,x,z],
-      [.18,.36,.49,x,z],[.21,.035,.05,x,z]],M.deepGrass,16);
-  for(let plant=0;plant<4;plant++) {
-    const px=x+(plant-1.5)*.19,
-      pz=z+.18*Math.sin(plant*2.3),
-      h=.36+.12*((plant+z*3+12)%3);
-    curve(root,"rooted flower stem in the Play Garden",
-      [[px,.15,pz],[px+.035,h*.58,pz-.025],[px,h,pz]],
-      .012,plant%2?M.darkLeaf:M.leaf,11);
-    for(const leafSide of [-1,1]) {
-      const leaf=petal(root,"veined leaf attached to a garden stem",
-        px+leafSide*.085,.21+plant%2*.055,pz+.018,
-        .18,plant%3?M.leaf:M.darkLeaf,leafSide*.5);
-      leaf.rotation.z=leafSide*.66;
-    }
-    const flowerColor=plant%3===0?M.rose:plant%3===1?M.ochre:M.white;
-    for(let petalIndex=0;petalIndex<5;petalIndex++) {
-      const a=petalIndex*Math.PI*2/5;
-      const bloom=petal(root,"five-petal garden blossom with real thickness",
-        px+Math.cos(a)*.055,h+Math.sin(a)*.055,pz+.04,
-        .13,flowerColor,a);
-      bloom.rotation.z=a-Math.PI/2;
-    }
-    add(root,"small center of a modeled garden blossom",
-      new THREE.IcosahedronGeometry(.026,0),M.gold,px,h,pz+.075);
-  }
-}
+const playGardenTrees = [[-6.1,7.0],[6.1,7.4],[6.25,.2],[-6.3,-.9],[6,-6.4],[-7.5,-9],[8,-12]];
+// Continuous planted beds are built around the final cast by scene10_landscape.
 // The three children gather around a shared play ribbon. Jane, Oleg and the
 // two friends form a supportive ring; likeness details use private photos.
 const zeph=person("Zephrine in shared play",-.23,1.37,1.03,{
@@ -369,7 +337,7 @@ for(const side of [-1,1]) curve(root,
 window.__authorRoom=async()=>{
   const source = await loadAdaptedTree();
   playGardenTrees.forEach(([x,z],index)=>plantAdaptedTree(root,source,{
-    x,z,scale:.53+(index%2)*.025,rotation:index*1.35+.4,
+    x,z,scale:index<2?.66:.50+(index%3)*.035,rotation:index*1.35+.4,
     leafTint:index%2?0xbacdb4:0xadc8aa,
     name:"detailed garden shade tree beside the shared play space",
     colliderRadius:.2,

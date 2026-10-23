@@ -69,3 +69,16 @@ remaining artistic weaknesses. This does not change the memory or frame ID.
 Publication status: the reviewed adult-height field and shared portal follow-ups
 are included in the user-authorized release after `f28cbb7`. Earlier local-pass
 wording above records the development sequence. Artistic acceptance remains open.
+
+## Continued native sculpture review, October 23
+
+The October 23 local study fits both child-to-child grips using actual posed skin surfaces, then converts those world positions into each child’s local coordinates. Export rejected one unreachable arm; the right child and her pad move together before the next export. The skyline gains full building depth, foreground trees frame the approach, and path linework is reduced. The three children, four adults and symbolic play setting remain unchanged. Current export, full pose, contact, route and phone review remain open.
+
+The next landscape export replaces the flat flower islands and broad overlapping
+terrain patches with one continuous park ground, curving planted beds and rooted
+3D leaves/seed heads. The beds bend around the adults and stay low beneath the
+play elements; the center game and routes remain clear. The first preview still
+contained old flower petals after their names were lost during batching. Their
+source construction is now removed before batching; re-export this correction
+before accepting the new landscape. The planted soles remain within 0.51 mm of
+the pads, and adult soles meet the revised ground within 0.20 mm.

@@ -1,0 +1,205 @@
+{
+  "method": "Finite positions/normals, vertex-count alignment, complete triangles and in-bounds primitive indices. These checks do not establish freedom from intersections or artistic quality.",
+  "raw": [
+    {
+      "path": ".cache/room01/room-uncompressed.glb",
+      "sha256": "f8d071d5ec87104e638112d251e7275349d3be4176c843d60c59ab17b89a90c0",
+      "meshes": 620,
+      "primitives": 620,
+      "vertices": 370250,
+      "triangles": 352686,
+      "valid": true
+    },
+    {
+      "path": ".cache/room02/room-uncompressed.glb",
+      "sha256": "247fe9b9900be55d46c058cba00023b6899ff8e59076c53fed0540bc05cbf240",
+      "meshes": 889,
+      "primitives": 889,
+      "vertices": 1458160,
+      "triangles": 1013082,
+      "valid": true
+    },
+    {
+      "path": ".cache/room03/room-uncompressed.glb",
+      "sha256": "5098749f6f905678bead0ee39b94b15dfebca0eee3f1b87faca5bc5166e3233d",
+      "meshes": 319,
+      "primitives": 319,
+      "vertices": 695104,
+      "triangles": 606327,
+      "valid": true
+    },
+    {
+      "path": ".cache/room04/room-uncompressed.glb",
+      "sha256": "c17de59b040160a312d503f63fda4312b9869e3f81206bc5269dfcc3c5e444a6",
+      "meshes": 3221,
+      "primitives": 3221,
+      "vertices": 683255,
+      "triangles": 574994,
+      "valid": true
+    },
+    {
+      "path": ".cache/room05/room-uncompressed.glb",
+      "sha256": "f96b5f9a167a9463d45f36d8881087deee4998da958e629480eaf673f2fce059",
+      "meshes": 563,
+      "primitives": 563,
+      "vertices": 467872,
+      "triangles": 393082,
+      "valid": true
+    },
+    {
+      "path": ".cache/room06/room-uncompressed.glb",
+      "sha256": "e8bfb97c9ddf0d8587975d6203e44777c7fe23fac300ca9dccf1b8ef396f9a88",
+      "meshes": 120,
+      "primitives": 120,
+      "vertices": 274474,
+      "triangles": 261963,
+      "valid": true
+    },
+    {
+      "path": ".cache/room07/room-uncompressed.glb",
+      "sha256": "cc7ea9be9ae520fefefc978bcb98cf753b90d8322d997a408f7ef11c96877fc6",
+      "meshes": 185,
+      "primitives": 185,
+      "vertices": 948796,
+      "triangles": 974184,
+      "valid": true
+    },
+    {
+      "path": ".cache/room08/room-uncompressed.glb",
+      "sha256": "fd69993ed1628d4169a45c7ce37b1369cb0bb632383dbba08cab63c21e95d63b",
+      "meshes": 647,
+      "primitives": 647,
+      "vertices": 350975,
+      "triangles": 274072,
+      "valid": true
+    },
+    {
+      "path": ".cache/room09/room-uncompressed.glb",
+      "sha256": "78f6ae7dce9b60ef4b1048e14afd2f33fffb40f2f6df6fdfbb46b8090d530cd1",
+      "meshes": 1648,
+      "primitives": 1648,
+      "vertices": 1294751,
+      "triangles": 1021880,
+      "valid": true
+    },
+    {
+      "path": ".cache/room10/room-uncompressed.glb",
+      "sha256": "e3cc52bd119ab3e5f43125f66db38e55948cfa2e055c1e52f1af80ecf24a5eaf",
+      "meshes": 435,
+      "primitives": 439,
+      "vertices": 1069399,
+      "triangles": 858149,
+      "valid": true
+    },
+    {
+      "path": ".cache/room11/room-uncompressed.glb",
+      "sha256": "20164d4496017262e41b935ffcc11858deb9e20162236b1367094ff34660310e",
+      "meshes": 382,
+      "primitives": 382,
+      "vertices": 1312397,
+      "triangles": 1058930,
+      "valid": true
+    }
+  ],
+  "packed": [
+    {
+      "path": "src/assets/explore/room01/room.glb",
+      "sha256": "84421a5c228abbe01bbfc5a79163b453ef136b6d48a1ad47cddaf7669a8946fb",
+      "meshes": 620,
+      "primitives": 620,
+      "vertices": 211503,
+      "triangles": 352686,
+      "valid": true
+    },
+    {
+      "path": "src/assets/explore/room02/room.glb",
+      "sha256": "59c21d9a5656427729bf643c13c00df91c570462c714cd07e10f9331e4574845",
+      "meshes": 889,
+      "primitives": 889,
+      "vertices": 551628,
+      "triangles": 1013082,
+      "valid": true
+    },
+    {
+      "path": "src/assets/explore/room03/room.glb",
+      "sha256": "6369fb1e9e5639fae41a70330ea8033e66b517546ea84dea5327a8b6661149aa",
+      "meshes": 319,
+      "primitives": 319,
+      "vertices": 379561,
+      "triangles": 606327,
+      "valid": true
+    },
+    {
+      "path": "src/assets/explore/room04/room.glb",
+      "sha256": "1948243b2b4b1f6eec5041b1404bcb9f75936828f13a927236d157701ae86c9a",
+      "meshes": 3221,
+      "primitives": 3221,
+      "vertices": 405481,
+      "triangles": 574994,
+      "valid": true
+    },
+    {
+      "path": "src/assets/explore/room05/room.glb",
+      "sha256": "5c0e9d8f8030f023fc0f53f6ec53f16a63d1a5a2f6ea579db838cca7a2809bd4",
+      "meshes": 563,
+      "primitives": 563,
+      "vertices": 214713,
+      "triangles": 393082,
+      "valid": true
+    },
+    {
+      "path": "src/assets/explore/room06/room.glb",
+      "sha256": "94a250030d5d52e0dc16554581a9500aed4cd0d0d78906811235b9f357c620d8",
+      "meshes": 120,
+      "primitives": 120,
+      "vertices": 138690,
+      "triangles": 261963,
+      "valid": true
+    },
+    {
+      "path": "src/assets/explore/room07/room.glb",
+      "sha256": "20eecb83e707ec8739ab6b170e1b6793c859d23c1d7daeac020ff0398fea7854",
+      "meshes": 185,
+      "primitives": 185,
+      "vertices": 611759,
+      "triangles": 974184,
+      "valid": true
+    },
+    {
+      "path": "src/assets/explore/room08/room.glb",
+      "sha256": "a9f3678dce4be4110568cd4b1b4db4bb14aa48e0f8a869e507164eb020bfec61",
+      "meshes": 647,
+      "primitives": 647,
+      "vertices": 151341,
+      "triangles": 274072,
+      "valid": true
+    },
+    {
+      "path": "src/assets/explore/room09/room.glb",
+      "sha256": "465e8211c11903fec753f17dc422de53a573c44c1d063ba14fd57e4c8e222c0d",
+      "meshes": 1648,
+      "primitives": 1648,
+      "vertices": 701397,
+      "triangles": 1021880,
+      "valid": true
+    },
+    {
+      "path": "src/assets/explore/room10/room.glb",
+      "sha256": "1cd5f9908da889f2002b650b5396076fba87950612301e3732a0120c2a0df1e2",
+      "meshes": 435,
+      "primitives": 439,
+      "vertices": 484559,
+      "triangles": 858149,
+      "valid": true
+    },
+    {
+      "path": "src/assets/explore/room11/room.glb",
+      "sha256": "41205df490b1cee7b867b97073c409603c81c1ab8eb454417fcf848b2d449cba",
+      "meshes": 382,
+      "primitives": 382,
+      "vertices": 877581,
+      "triangles": 1058930,
+      "valid": true
+    }
+  ]
+}

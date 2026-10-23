@@ -26,6 +26,31 @@ async function newTestContext(options) {
   return context;
 }
 
+
+// Interactions were restaged during the art revision. Exercise movement against
+// their current exported footprints rather than the previous staging coordinates.
+async function assertWalkBlocked(page, point, label) {
+  const boxes=(await page.evaluate(()=>window.__galleryDebug())).roomColliders;
+  const [x,z]=point;
+  const box=boxes.filter(b=>x>b.minX&&x<b.maxX&&z>b.minZ&&z<b.maxZ)
+    .sort((a,b)=>(a.maxX-a.minX)*(a.maxZ-a.minZ)-(b.maxX-b.minX)*(b.maxZ-b.minZ))[0];
+  assert.ok(box, label+': expected a current exported solid at the story position');
+  const cx=(box.minX+box.maxX)/2,cz=(box.minZ+box.maxZ)/2;
+  let start;
+  for(const gap of [.60,.85,1.15,1.65]){
+    for(const candidate of [[cx,box.maxZ+gap],[cx,box.minZ-gap],[box.maxX+gap,cz],[box.minX-gap,cz]]){
+      if(await page.evaluate(([x,z])=>window.__galleryTestRoomCanStand(x,z),candidate)){start=candidate;break;}
+    }
+    if(start)break;
+  }
+  assert.ok(start,label+': a clear walking approach must remain');
+  await page.evaluate(([x,z])=>window.__galleryTestRoomPose(x,z,0),start);
+  await page.evaluate(([x,z])=>window.__galleryTestRoomMove(x,z),[cx,cz]);
+  const after=(await page.evaluate(()=>window.__galleryDebug()));
+  assert.equal(after.mode,'room',label+': obstacle test stays in the room');
+  assert.ok(Math.hypot(after.roomLocal.x-cx,after.roomLocal.z-cz)>PLAYER_RADIUS-.02,label+': walking into the solid must stop');
+}
+
 async function checkViewport(name, options) {
   const context = await newTestContext(options);
   const page = await context.newPage();
@@ -212,12 +237,7 @@ try {
   await roomPage.waitForTimeout(220);
   await roomPage.keyboard.up("w");
   assert.ok((await roomPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > -.55, "stage should block movement");
-  await roomPage.evaluate(() => window.__galleryTestRoomPose(-1.57, -.5, -Math.PI / 2));
-  await roomPage.keyboard.down("s");
-  await roomPage.waitForTimeout(520);
-  await roomPage.keyboard.up("s");
-  assert.ok((await roomPage.evaluate(() => window.__galleryDebug().roomLocal.z)) < -.28,
-    "Jane's figure should block movement");
+  await assertWalkBlocked(roomPage,[-0.47,0.05],"Jane and the signup chair");
 
   await roomPage.evaluate(() => window.__galleryTestRoomPose(0, 2.1, Math.PI / 2));
   await roomPage.screenshot({ path: ".cache/room01-real-hallway-return.png" });
@@ -268,18 +288,8 @@ try {
     "room 02 entry should not move the camera abruptly");
   assert.ok(jobEntered.modelColliderCount >= 20, "desk, figures, and street trees should collide");
   await jobPage.screenshot({ path: ".cache/room02-entered-continuous.png" });
-  await jobPage.evaluate(() => window.__galleryTestRoomPose(0, 5.6, 0));
-  await jobPage.keyboard.down("w");
-  await jobPage.waitForTimeout(450);
-  await jobPage.keyboard.up("w");
-  assert.ok((await jobPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 5.1,
-    "Jane's advising figure should be solid");
-  await jobPage.evaluate(() => window.__galleryTestRoomPose(-4.4, 5.2, 0));
-  await jobPage.keyboard.down("w");
-  await jobPage.waitForTimeout(450);
-  await jobPage.keyboard.up("w");
-  assert.ok((await jobPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 4.65,
-    "the curved desk should be solid");
+  await assertWalkBlocked(jobPage,[-1.08,4.67],"Jane advising at the desk");
+  await assertWalkBlocked(jobPage,[-3,3],"the referenced curved desk");
   await jobPage.evaluate(() => window.__galleryTestRoomPose(0, 7.85, -Math.PI / 2));
   const jobBeforeExit = await jobPage.evaluate(() => window.__galleryDebug());
   await jobPage.keyboard.down("w");
@@ -317,10 +327,7 @@ try {
   assert.equal(friendshipEntered.cameraFov, friendshipBefore.cameraFov);
   assert.ok(friendshipEntered.modelColliderCount >= 10, "friends, mothers, and park structures must collide");
   await friendshipPage.screenshot({ path: ".cache/room03-entered-continuous.png" });
-  await friendshipPage.evaluate(() => window.__galleryTestRoomPose(-.42, 5.0, 0));
-  await friendshipPage.evaluate(() => window.__galleryTestRoomMove(-.42, 3.2));
-  assert.ok((await friendshipPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 4.3,
-    "Zephrine's figure should be solid");
+  await assertWalkBlocked(friendshipPage,[-0.42,5.1],"Zephrine holding hands");
   await friendshipPage.evaluate(() => window.__galleryTestRoomPose(0, 6.4, Math.PI / 2));
   const friendshipBeforeExit = await friendshipPage.evaluate(() => window.__galleryDebug());
   await friendshipPage.keyboard.down("w");
@@ -357,10 +364,7 @@ try {
   assert.equal(carEntered.cameraFov, carBefore.cameraFov);
   assert.ok(carEntered.modelColliderCount >= 20, "car, figures, trees and houses must collide");
   await carPage.screenshot({ path: ".cache/room04-entered-continuous.png" });
-  await carPage.evaluate(() => window.__galleryTestRoomPose(0, 6.5, 0));
-  await carPage.evaluate(() => window.__galleryTestRoomMove(0, 3.2));
-  assert.ok((await carPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 5.1,
-    "blue car and Zephrine should block the sidewalk");
+  await assertWalkBlocked(carPage,[0,5.38],"blue car and its seated child");
   await carPage.evaluate(() => window.__galleryTestRoomPose(0, 7.2, -Math.PI / 2));
   const carBeforeExit = await carPage.evaluate(() => window.__galleryDebug());
   await carPage.keyboard.down("w");
@@ -398,12 +402,7 @@ try {
   assert.equal(officeEntered.cameraFov, officeBefore.cameraFov);
   assert.ok(officeEntered.modelColliderCount >= 20, "office architecture and figures must collide");
   await officePage.screenshot({ path: ".cache/room05-entered-continuous.png" });
-  await officePage.evaluate(() => window.__galleryTestRoomPose(0, 4.45, 0));
-  await officePage.keyboard.down("w");
-  await officePage.waitForTimeout(430);
-  await officePage.keyboard.up("w");
-  assert.ok((await officePage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 5.55,
-    "Jane's figure should be solid at the heart of the office room");
+  await assertWalkBlocked(officePage,[0,5.05],"Jane in the office");
   await officePage.evaluate(() => window.__galleryTestRoomPose(0, 7.9, Math.PI / 2));
   const officeBeforeExit = await officePage.evaluate(() => window.__galleryDebug());
   await officePage.keyboard.down("w");
@@ -440,12 +439,7 @@ try {
   assert.equal(weaningEntered.cameraFov, weaningBefore.cameraFov);
   assert.ok(weaningEntered.modelColliderCount >= 12, "chair, people and room details must collide");
   await weaningPage.screenshot({ path: ".cache/room06-entered-continuous.png" });
-  await weaningPage.evaluate(() => window.__galleryTestRoomPose(0, 3.55, 0));
-  await weaningPage.keyboard.down("w");
-  await weaningPage.waitForTimeout(430);
-  await weaningPage.keyboard.up("w");
-  assert.ok((await weaningPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 3.02,
-    "Jane, Zephrine and the nursing chair should block movement");
+  await assertWalkBlocked(weaningPage,[0,3.15],"the occupied nursing chair");
   await weaningPage.evaluate(() => window.__galleryTestRoomPose(0, 5.0, -Math.PI / 2));
   const weaningBeforeExit = await weaningPage.evaluate(() => window.__galleryDebug());
   await weaningPage.keyboard.down("w");
@@ -483,10 +477,7 @@ try {
   assert.equal(berryEntered.cameraFov, berryBefore.cameraFov);
   assert.ok(berryEntered.modelColliderCount >= 20, "berry bushes and figures should collide");
   await berryPage.screenshot({ path: ".cache/room07-entered-continuous.png" });
-  await berryPage.evaluate(() => window.__galleryTestRoomPose(-.58, 4.25, -Math.PI / 2));
-  await berryPage.evaluate(() => window.__galleryTestRoomMove(-.58, 2.25));
-  assert.ok((await berryPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 3.45,
-    "Oleg and Zephrine should block movement in the berry row");
+  await assertWalkBlocked(berryPage,[-0.58,5.32],"the coupled shoulder carry");
   await berryPage.evaluate(() => window.__galleryTestRoomPose(0, 7.0, Math.PI / 2));
   const berryBeforeExit = await berryPage.evaluate(() => window.__galleryDebug());
   await berryPage.keyboard.down("w");
@@ -523,10 +514,7 @@ try {
   assert.equal(routeEntered.cameraFov, routeBefore.cameraFov);
   assert.ok(routeEntered.modelColliderCount >= 16, "Chicago's architectural stops should collide");
   await routePage.screenshot({ path: ".cache/room08-entered-continuous.png" });
-  await routePage.evaluate(() => window.__galleryTestRoomPose(-3.35, 9.5, 0));
-  await routePage.evaluate(() => window.__galleryTestRoomMove(-3.35, 7.5));
-  assert.ok((await routePage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 8.9,
-    "Pullman sculpture should block movement");
+  await assertWalkBlocked(routePage,[-3.35,7.05],"Pullman architecture");
   await routePage.evaluate(() => window.__galleryTestRoomPose(0, 12.5, -Math.PI / 2));
   const routeBeforeExit = await routePage.evaluate(() => window.__galleryDebug());
   await routePage.keyboard.down("w");
@@ -570,12 +558,7 @@ try {
     "orchard entry should cross the doorway without a camera jump");
   assert.ok(orchardEntered.modelColliderCount >= 15, "orchard figures and trees need solid footprints");
   await orchardPage.screenshot({ path: ".cache/room09-entered-continuous.png" });
-  await orchardPage.evaluate(() => window.__galleryTestRoomPose(0, 4.2, 0));
-  await orchardPage.keyboard.down("w");
-  await orchardPage.waitForTimeout(400);
-  await orchardPage.keyboard.up("w");
-  assert.ok((await orchardPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 3.7,
-    "Zephrine's figure should block the orchard path");
+  await assertWalkBlocked(orchardPage,[0,3.05],"Zephrine holding her apple");
   await orchardPage.evaluate(() => window.__galleryTestRoomPose(0, 6.3, Math.PI));
   const orchardBeforeExit = await orchardPage.evaluate(() => window.__galleryDebug());
   await orchardPage.keyboard.down("w");
@@ -621,12 +604,7 @@ try {
   assert.equal(playEntered.cameraFov, playBefore.cameraFov);
   assert.ok(playEntered.modelColliderCount >= 14, "Play Garden figures and sculptures must collide");
   await playPage.screenshot({ path: ".cache/room10-entered-continuous.png" });
-  await playPage.evaluate(() => window.__galleryTestRoomPose(-.23, 2.1, -Math.PI / 2));
-  await playPage.keyboard.down("w");
-  await playPage.waitForTimeout(500);
-  await playPage.keyboard.up("w");
-  assert.ok((await playPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 1.58,
-    "Zephrine's figure should block the path");
+  await assertWalkBlocked(playPage,[-0.23,4.37],"Zephrine in shared play");
   await playPage.evaluate(() => window.__galleryTestRoomPose(0, 8.1, 0));
   const playBeforeExit = await playPage.evaluate(() => window.__galleryDebug());
   await playPage.keyboard.down("w");
@@ -675,14 +653,8 @@ try {
     const samples = fishPositions.map(row => row[index]);
     return Math.max(...samples) - Math.min(...samples) > .004;
   }), "sculpted fish should move slightly across the inhabited tanks");
-  await aquariumPage.evaluate(() => window.__galleryTestRoomPose(1.13, 8.35, 0));
-  await aquariumPage.evaluate(() => window.__galleryTestRoomMove(1.13, 6.45));
-  assert.ok((await aquariumPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 7.45,
-    "G's figure should block movement");
-  await aquariumPage.evaluate(() => window.__galleryTestRoomPose(2.35, 6.5, 0));
-  await aquariumPage.evaluate(() => window.__galleryTestRoomMove(2.35, 3.8));
-  assert.ok((await aquariumPage.evaluate(() => window.__galleryDebug().roomLocal.z)) > 5.35,
-    "the central curved fish habitat should block movement");
+  await assertWalkBlocked(aquariumPage,[-0.1,6.25],"G watching the fish");
+  await assertWalkBlocked(aquariumPage,[1.6,6],"the curved fish habitat");
   await aquariumPage.evaluate(() => window.__galleryTestRoomPose(1.95, 9.2, Math.PI));
   await aquariumPage.evaluate(() => window.__galleryTestRoomMove(1.95, 11.2));
   assert.ok((await aquariumPage.evaluate(() => window.__galleryDebug().roomLocal.z)) < 10.0,

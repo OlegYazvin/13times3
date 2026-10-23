@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import {
-  buildLayout, corridorOutline, framePlaqueText, HALL_WIDTH, HALL_HEIGHT, FRAME_HEIGHT, FRAME_WIDTH, portalOpening,
+  buildLayout, corridorOutline, framePlaqueText, HALL_WIDTH, HALL_HEIGHT, FRAME_HEIGHT, FRAME_WIDTH, portalOpening, portalCanvas,
 } from "./layout.mjs";
 
 // Five related plaster washes give each turn a slightly different atmosphere.
@@ -203,30 +203,32 @@ function frameMesh(frame, placeholderMaterials) {
   sectionGroup.rotation.y = -section.yaw;
 
   const root = new THREE.Group();
-  root.position.set(frame.sideSign * (HALL_WIDTH / 2 - .14), FRAME_HEIGHT / 2 + .08, -frame.along);
+  const descriptive = Boolean(frame.room?.modelUrl);
+  const canvas=descriptive?portalCanvas(frame.room):{width:FRAME_WIDTH,height:FRAME_HEIGHT,bottom:.08};
+  const frameHeight=canvas.height,frameWidth=canvas.width;
+  root.position.set(frame.sideSign * (HALL_WIDTH / 2 - .14), frameHeight / 2 + canvas.bottom, -frame.along);
   root.rotation.y = frame.sideSign === 1 ? -Math.PI / 2 : Math.PI / 2;
   sectionGroup.add(root);
 
   if (!frame.room?.modelUrl) {
-    box(root, "painted wooden frame back", 0, 0, .025, FRAME_WIDTH + .25, FRAME_HEIGHT + .25, .07, wood);
+    box(root, "painted wooden frame back", 0, 0, .025, frameWidth + .25, frameHeight + .25, .07, wood);
   }
-  const surface = new THREE.Mesh(new THREE.PlaneGeometry(FRAME_WIDTH, FRAME_HEIGHT), placeholderMaterials[frame.section]);
+  const surface = new THREE.Mesh(new THREE.PlaneGeometry(frameWidth, frameHeight), placeholderMaterials[frame.section]);
   surface.position.z = .09;
   root.add(surface);
 
   for (const sign of [-1, 1]) {
-    box(root, "frame upright", sign * (FRAME_WIDTH / 2 + .055), 0, .14, .115, FRAME_HEIGHT + .22, .12, woodHighlight);
-    box(root, "frame inner line", sign * (FRAME_WIDTH / 2 - .025), 0, .152, .025, FRAME_HEIGHT, .025, gold);
-    box(root, "frame rail", 0, sign * (FRAME_HEIGHT / 2 + .055), .14, FRAME_WIDTH + .22, .115, .12, woodHighlight);
-    box(root, "frame inner rail", 0, sign * (FRAME_HEIGHT / 2 - .025), .152, FRAME_WIDTH, .025, .025, gold);
+    box(root, "frame upright", sign * (frameWidth / 2 + .055), 0, .14, .115, frameHeight + .22, .12, woodHighlight);
+    box(root, "frame inner line", sign * (frameWidth / 2 - .025), 0, .152, .025, frameHeight, .025, gold);
+    box(root, "frame rail", 0, sign * (frameHeight / 2 + .055), .14, frameWidth + .22, .115, .12, woodHighlight);
+    box(root, "frame inner rail", 0, sign * (frameHeight / 2 - .025), .152, frameWidth, .025, .025, gold);
   }
 
-  const descriptive = Boolean(frame.room?.modelUrl);
   const plaqueWidth = descriptive ? 3.12 : .93;
   const plaqueHeight = descriptive ? .36 : .40;
   // Set finished-painting captions across the upper canvas. From the center
   // of this wide hall, an above-frame plaque falls outside the 75° view.
-  const plaqueY = FRAME_HEIGHT / 2 + (descriptive ? -.63 : .29);
+  const plaqueY = frameHeight / 2 + (descriptive ? -.63 : .29);
   box(root, descriptive ? "painting caption plaque" : "number plaque",
     0, plaqueY, .12, plaqueWidth, plaqueHeight, .07, ivory);
   const label = new THREE.Mesh(

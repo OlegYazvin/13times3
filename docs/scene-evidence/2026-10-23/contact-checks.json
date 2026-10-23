@@ -1,0 +1,1108 @@
+{
+  "method": "Selected exported posed surfaces: vertex distances and closed-surface containment with a 1 mm penetration threshold. Open cloth receives distance checks only. Minimum clearance does not establish full support coverage or absence of every edge crossing; visual and edge checks supplement this data.",
+  "scenes": [
+    {
+      "id": "01",
+      "build": {
+        "id": "01",
+        "modelSha256": "84421a5c228abbe01bbfc5a79163b453ef136b6d48a1ad47cddaf7669a8946fb",
+        "recordedAt": "2026-10-23T18:36:20.639Z"
+      },
+      "method": "Every posed source vertex against actual decoded prop triangles. Closed prop containment supplements distance; visual inspection and support coverage remain separate requirements.",
+      "results": [
+        {
+          "label": "resting hand on the actual signup desk",
+          "identity": "Jane",
+          "part": "hand-left",
+          "target": "shaped walnut signup desk top",
+          "vertices": 6653,
+          "minimumVertexSurfaceDistanceM": 0.0005291104316711426,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "nearest": {
+            "source": [
+              -0.5484455227851868,
+              0.7800564169883728,
+              0.5403593182563782
+            ],
+            "target": [
+              -0.5484455227851865,
+              0.7795273065567017,
+              0.5403593182563783
+            ]
+          }
+        },
+        {
+          "label": "pencil tip on the supported signup paper",
+          "identity": "Jane",
+          "part": "writing-pen",
+          "target": "desk paper",
+          "vertices": 800,
+          "minimumVertexSurfaceDistanceM": 0.0001506805419921875,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "nearest": {
+            "source": [
+              -0.2778518497943878,
+              0.7809743285179138,
+              0.5147984623908997
+            ],
+            "target": [
+              -0.2778518497943878,
+              0.7808236479759216,
+              0.5147984623908997
+            ]
+          }
+        },
+        {
+          "label": "signup chair supporting the seated thighs",
+          "identity": "Jane",
+          "part": "trousers",
+          "target": "formed wooden chair seat beneath the seated thighs",
+          "vertices": 1600,
+          "minimumVertexSurfaceDistanceM": 0.0003531105479073886,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "nearest": {
+            "source": [
+              -0.39156973361968994,
+              0.43549641966819763,
+              0.04293028265237808
+            ],
+            "target": [
+              -0.3915805020169713,
+              0.43514350572116184,
+              0.04293506246943148
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "01",
+      "build": {
+        "id": "01",
+        "modelSha256": "84421a5c228abbe01bbfc5a79163b453ef136b6d48a1ad47cddaf7669a8946fb",
+        "paintingSha256": "21dcfa8e7f529e325348ea529e55f5fa52bc3d5c98776efb694592926a178b51",
+        "recordedAt": "2026-10-23T18:36:19.564Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Coarse, symmetric vertex sampling against posed exported character surfaces. Flags require exact follow-up and visual classification; gaps and intentional surrealism are not classified by this scan.",
+      "findings": []
+    },
+    {
+      "id": "02",
+      "build": {
+        "id": "02",
+        "modelSha256": "59c21d9a5656427729bf643c13c00df91c570462c714cd07e10f9331e4574845",
+        "paintingSha256": "82b35e4e25354748ef7118b055660741ffbe5f2e17feb7f9ba2549af6c3ea7f5",
+        "recordedAt": "2026-10-23T18:36:21.366Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Exported, posed room surfaces. Vertex-to-triangle distances and closed-surface ray parity. This supplements visual inspection; it does not prove the absence of every triangle intersection.",
+      "results": [
+        {
+          "label": "advising palm on the clothed shoulder",
+          "source": "Jane/hand-left",
+          "target": "Oleg/shirt",
+          "sampledVertices": 6653,
+          "minimumVertexSurfaceDistanceM": 0.0003875848982806091,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "caregiving hand clear of the child face",
+          "source": "Jane/hand-right",
+          "target": "Zephrine/face-neck",
+          "sampledVertices": 6653,
+          "minimumVertexSurfaceDistanceM": 0.06127426707426795,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "comforting arm grip on the clothed shoulder",
+          "source": "Oleg/hand-left",
+          "target": "Jane/shirt",
+          "sampledVertices": 6656,
+          "minimumVertexSurfaceDistanceM": 0.0004879037454107963,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "comforting palm on the clothed chest",
+          "source": "Jane/hand-right",
+          "target": "Oleg/shirt",
+          "sampledVertices": 6653,
+          "minimumVertexSurfaceDistanceM": 0.0004469587771879591,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "comforting clothing clearance",
+          "source": "Jane/shirt",
+          "target": "Oleg/shirt",
+          "sampledVertices": 11670,
+          "minimumVertexSurfaceDistanceM": 0.05340525535933336,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "reverse comforting clothing clearance",
+          "source": "Oleg/shirt",
+          "target": "Jane/shirt",
+          "sampledVertices": 6556,
+          "minimumVertexSurfaceDistanceM": 0.05346472947994961,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "comforting sleeve clears the neck",
+          "source": "Oleg/shirt",
+          "target": "Jane/face-neck",
+          "sampledVertices": 6556,
+          "minimumVertexSurfaceDistanceM": 0.02310822984326604,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        }
+      ]
+    },
+    {
+      "id": "02",
+      "build": {
+        "id": "02",
+        "modelSha256": "59c21d9a5656427729bf643c13c00df91c570462c714cd07e10f9331e4574845",
+        "recordedAt": "2026-10-23T18:36:34.898Z"
+      },
+      "method": "Every posed source vertex against actual decoded prop triangles. Closed prop containment supplements distance; visual inspection and support coverage remain separate requirements.",
+      "results": [
+        {
+          "label": "household grip on the actual pan handle",
+          "identity": "Jane",
+          "part": "hand-right",
+          "target": "pan handle",
+          "vertices": 6653,
+          "minimumVertexSurfaceDistanceM": 0.00020047063403242222,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "nearest": {
+            "source": [
+              -4.269412994384766,
+              1.0133804082870483,
+              -4.956589221954346
+            ],
+            "target": [
+              -4.2694415271361725,
+              1.0132096930821242,
+              -4.956488075150075
+            ]
+          }
+        },
+        {
+          "label": "resting household hand on the counter",
+          "identity": "Jane",
+          "part": "hand-left",
+          "target": "home counter",
+          "vertices": 6653,
+          "minimumVertexSurfaceDistanceM": 0.00020372867584228516,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "nearest": {
+            "source": [
+              -4.154723167419434,
+              0.9662004113197327,
+              -4.941524982452393
+            ],
+            "target": [
+              -4.154723167419434,
+              0.9659966826438904,
+              -4.941524982452393
+            ]
+          }
+        },
+        {
+          "label": "child index touching the shared cloth",
+          "identity": "Zephrine",
+          "part": "hand-left",
+          "target": "soft child blanket draped",
+          "vertices": 6666,
+          "minimumVertexSurfaceDistanceM": 0.000003396135129510177,
+          "containmentTested": false,
+          "verticesDeeperThan1mm": null,
+          "maximumSampledPenetrationM": null,
+          "nearest": {
+            "source": [
+              -3.4350736141204834,
+              0.7394474744796753,
+              -3.3505098819732666
+            ],
+            "target": [
+              -3.435070769230133,
+              0.7394478635314454,
+              -3.350508068421108
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "02",
+      "build": {
+        "id": "02",
+        "modelSha256": "59c21d9a5656427729bf643c13c00df91c570462c714cd07e10f9331e4574845",
+        "paintingSha256": "82b35e4e25354748ef7118b055660741ffbe5f2e17feb7f9ba2549af6c3ea7f5",
+        "recordedAt": "2026-10-23T18:36:21.366Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Coarse, symmetric vertex sampling against posed exported character surfaces. Flags require exact follow-up and visual classification; gaps and intentional surrealism are not classified by this scan.",
+      "findings": []
+    },
+    {
+      "id": "02",
+      "build": {
+        "id": "02",
+        "modelSha256": "59c21d9a5656427729bf643c13c00df91c570462c714cd07e10f9331e4574845",
+        "paintingSha256": "82b35e4e25354748ef7118b055660741ffbe5f2e17feb7f9ba2549af6c3ea7f5",
+        "recordedAt": "2026-10-23T18:36:21.366Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Actual source mesh edges intersecting target triangles, independent of closed-surface ray parity. Coplanar contact and a fully enclosed object may have no crossings; this supplements distance and visual inspection.",
+      "results": []
+    },
+    {
+      "id": "03",
+      "build": {
+        "id": "03",
+        "modelSha256": "6369fb1e9e5639fae41a70330ea8033e66b517546ea84dea5327a8b6661149aa",
+        "paintingSha256": "9cdde09d8abaa542c4508cb740a237d80c22c8d9ff606e64b5641354d45b7e0f",
+        "recordedAt": "2026-10-23T18:36:35.282Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Exported, posed room surfaces. Vertex-to-triangle distances and closed-surface ray parity. This supplements visual inspection; it does not prove the absence of every triangle intersection.",
+      "results": [
+        {
+          "label": "paired girls holding hands",
+          "source": "Zephrine/hand-right",
+          "target": "Charlize/hand-left",
+          "sampledVertices": 6666,
+          "minimumVertexSurfaceDistanceM": 0.0003049037981020444,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "reverse held-hand clearance",
+          "source": "Charlize/hand-left",
+          "target": "Zephrine/hand-right",
+          "sampledVertices": 6664,
+          "minimumVertexSurfaceDistanceM": 0.0003146526869175158,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        }
+      ]
+    },
+    {
+      "id": "03",
+      "build": {
+        "id": "03",
+        "modelSha256": "6369fb1e9e5639fae41a70330ea8033e66b517546ea84dea5327a8b6661149aa",
+        "paintingSha256": "9cdde09d8abaa542c4508cb740a237d80c22c8d9ff606e64b5641354d45b7e0f",
+        "recordedAt": "2026-10-23T18:36:35.282Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Coarse, symmetric vertex sampling against posed exported character surfaces. Flags require exact follow-up and visual classification; gaps and intentional surrealism are not classified by this scan.",
+      "findings": []
+    },
+    {
+      "id": "03",
+      "build": {
+        "id": "03",
+        "modelSha256": "6369fb1e9e5639fae41a70330ea8033e66b517546ea84dea5327a8b6661149aa",
+        "paintingSha256": "9cdde09d8abaa542c4508cb740a237d80c22c8d9ff606e64b5641354d45b7e0f",
+        "recordedAt": "2026-10-23T18:36:35.282Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Actual source mesh edges intersecting target triangles, independent of closed-surface ray parity. Coplanar contact and a fully enclosed object may have no crossings; this supplements distance and visual inspection.",
+      "results": []
+    },
+    {
+      "id": "04",
+      "build": {
+        "id": "04",
+        "modelSha256": "1948243b2b4b1f6eec5041b1404bcb9f75936828f13a927236d157701ae86c9a",
+        "recordedAt": "2026-10-23T18:36:41.185Z"
+      },
+      "method": "Every posed source vertex against actual decoded prop triangles. Closed prop containment supplements distance; visual inspection and support coverage remain separate requirements.",
+      "results": [
+        {
+          "label": "feet against the molded footwell",
+          "identity": "Zephrine",
+          "part": "shoe",
+          "target": "recessed molded footwell floor",
+          "vertices": 1670,
+          "minimumVertexSurfaceDistanceM": 0.0000022277235984802246,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "nearest": {
+            "source": [
+              -0.040382713079452515,
+              0.1125001609325409,
+              5.656160354614258
+            ],
+            "target": [
+              -0.040382713079452515,
+              0.11250238865613937,
+              5.656160354614258
+            ]
+          }
+        },
+        {
+          "label": "shoe clearance inside the cabin shell",
+          "identity": "Zephrine",
+          "part": "shoe",
+          "target": "solid curved blue Whisper Ride inspired body",
+          "vertices": 1670,
+          "minimumVertexSurfaceDistanceM": 0.016286849975585938,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "nearest": {
+            "source": [
+              -0.06059296056628227,
+              0.11990408599376678,
+              5.70591926574707
+            ],
+            "target": [
+              -0.060592960566282245,
+              0.11990408599376678,
+              5.722206115722656
+            ]
+          }
+        },
+        {
+          "label": "thigh support on the seat",
+          "identity": "Zephrine",
+          "part": "trousers",
+          "target": "dark recessed seat",
+          "vertices": 1600,
+          "minimumVertexSurfaceDistanceM": 0.0006566643714904785,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "nearest": {
+            "source": [
+              -0.05850193277001381,
+              0.24945665895938873,
+              5.396879196166992
+            ],
+            "target": [
+              -0.05850193277001381,
+              0.24879999458789825,
+              5.396879196166992
+            ]
+          }
+        },
+        {
+          "label": "back clearance against the molded seat",
+          "identity": "Zephrine",
+          "part": "shirt",
+          "target": "solid rising seat back",
+          "vertices": 9638,
+          "minimumVertexSurfaceDistanceM": 0.015026092529296875,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "nearest": {
+            "source": [
+              0,
+              0.34947454929351807,
+              5.278526306152344
+            ],
+            "target": [
+              6.938893903907228e-18,
+              0.34947454929351807,
+              5.263500213623047
+            ]
+          }
+        },
+        {
+          "label": "left steering grip",
+          "identity": "Zephrine",
+          "part": "hand-left",
+          "target": "working-looking toy steering wheel",
+          "vertices": 6666,
+          "minimumVertexSurfaceDistanceM": 0.00005676816810003788,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "nearest": {
+            "source": [
+              -0.05411957949399948,
+              0.48887401819229126,
+              5.651938438415527
+            ],
+            "target": [
+              -0.054079023684605626,
+              0.48890970499956576,
+              5.651920994132212
+            ]
+          }
+        },
+        {
+          "label": "right steering grip",
+          "identity": "Zephrine",
+          "part": "hand-right",
+          "target": "working-looking toy steering wheel",
+          "vertices": 6666,
+          "minimumVertexSurfaceDistanceM": 0.000056793860297588535,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "nearest": {
+            "source": [
+              0.05411957949399948,
+              0.48887401819229126,
+              5.651938438415527
+            ],
+            "target": [
+              0.05407900565011517,
+              0.48890972179210895,
+              5.651920986804713
+            ]
+          }
+        },
+        {
+          "label": "Jane pushing the actual grip",
+          "identity": "Jane",
+          "part": "hand-left",
+          "target": "shared parent push grip",
+          "vertices": 6653,
+          "minimumVertexSurfaceDistanceM": 0.00004714722249690434,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "nearest": {
+            "source": [
+              0.11939193308353424,
+              0.8546095490455627,
+              4.923957824707031
+            ],
+            "target": [
+              0.11939193308353424,
+              0.8546560559781766,
+              4.923965568466326
+            ]
+          }
+        },
+        {
+          "label": "Oleg pushing the actual grip",
+          "identity": "Oleg",
+          "part": "hand-right",
+          "target": "shared parent push grip",
+          "vertices": 6656,
+          "minimumVertexSurfaceDistanceM": 0.00045346923214395366,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "nearest": {
+            "source": [
+              -0.12622292339801788,
+              0.8552783131599426,
+              4.922989368438721
+            ],
+            "target": [
+              -0.1262229233980179,
+              0.8548310023343011,
+              4.922914887771665
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "04",
+      "build": {
+        "id": "04",
+        "modelSha256": "1948243b2b4b1f6eec5041b1404bcb9f75936828f13a927236d157701ae86c9a",
+        "paintingSha256": "5a761e242f18fd90dd50fc84d75a5f22dabc45d5a95bc473bc8314a5f2a4e4e2",
+        "recordedAt": "2026-10-23T18:36:39.071Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Coarse, symmetric vertex sampling against posed exported character surfaces. Flags require exact follow-up and visual classification; gaps and intentional surrealism are not classified by this scan.",
+      "findings": []
+    },
+    {
+      "id": "05",
+      "build": {
+        "id": "05",
+        "modelSha256": "5c0e9d8f8030f023fc0f53f6ec53f16a63d1a5a2f6ea579db838cca7a2809bd4",
+        "paintingSha256": "eaf2d8d3a14d1c7dda2ba92b0049d71303b02430d3dfdfb3684238010e06eeb8",
+        "recordedAt": "2026-10-23T18:36:41.557Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Exported, posed room surfaces. Vertex-to-triangle distances and closed-surface ray parity. This supplements visual inspection; it does not prove the absence of every triangle intersection.",
+      "results": [
+        {
+          "label": "mother and child held hands",
+          "source": "Jane/hand-left",
+          "target": "Zephrine/hand-right",
+          "sampledVertices": 6653,
+          "minimumVertexSurfaceDistanceM": 0.00006380984725002525,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "child holding mother fingers",
+          "source": "Zephrine/hand-right",
+          "target": "Jane/hand-left",
+          "sampledVertices": 6666,
+          "minimumVertexSurfaceDistanceM": 0.00004221339057129107,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        }
+      ]
+    },
+    {
+      "id": "05",
+      "build": {
+        "id": "05",
+        "modelSha256": "5c0e9d8f8030f023fc0f53f6ec53f16a63d1a5a2f6ea579db838cca7a2809bd4",
+        "paintingSha256": "eaf2d8d3a14d1c7dda2ba92b0049d71303b02430d3dfdfb3684238010e06eeb8",
+        "recordedAt": "2026-10-23T18:36:41.557Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Coarse, symmetric vertex sampling against posed exported character surfaces. Flags require exact follow-up and visual classification; gaps and intentional surrealism are not classified by this scan.",
+      "findings": []
+    },
+    {
+      "id": "05",
+      "build": {
+        "id": "05",
+        "modelSha256": "5c0e9d8f8030f023fc0f53f6ec53f16a63d1a5a2f6ea579db838cca7a2809bd4",
+        "paintingSha256": "eaf2d8d3a14d1c7dda2ba92b0049d71303b02430d3dfdfb3684238010e06eeb8",
+        "recordedAt": "2026-10-23T18:36:41.557Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Actual source mesh edges intersecting target triangles, independent of closed-surface ray parity. Coplanar contact and a fully enclosed object may have no crossings; this supplements distance and visual inspection.",
+      "results": []
+    },
+    {
+      "id": "06",
+      "build": {
+        "id": "06",
+        "modelSha256": "94a250030d5d52e0dc16554581a9500aed4cd0d0d78906811235b9f357c620d8",
+        "paintingSha256": "0a975c50514d748fe3ee489eb07271c6e6e40c34fc0eb0eafe1bed6f716ce7a3",
+        "recordedAt": "2026-10-23T18:49:08.177Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Exported, posed room surfaces. Vertex-to-triangle distances and closed-surface ray parity. This supplements visual inspection; it does not prove the absence of every triangle intersection.",
+      "results": [
+        {
+          "label": "supporting palm against child back",
+          "source": "Jane/hand-left",
+          "target": "Zephrine/shirt",
+          "sampledVertices": 6653,
+          "minimumVertexSurfaceDistanceM": 0.00031464041152880597,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "supporting palm beneath child legs",
+          "source": "Jane/hand-right",
+          "target": "Zephrine/trousers",
+          "sampledVertices": 6653,
+          "minimumVertexSurfaceDistanceM": 0.0004091001106161022,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "child resting on the clothed lap",
+          "source": "Zephrine/trousers",
+          "target": "Jane/trousers",
+          "sampledVertices": 1600,
+          "minimumVertexSurfaceDistanceM": 0.0004400083881055708,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "child face and neck against mother clothing",
+          "source": "Zephrine/face-neck",
+          "target": "Jane/shirt",
+          "sampledVertices": 17623,
+          "minimumVertexSurfaceDistanceM": 0.0020186444439622944,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "mother sleeves against child shirt",
+          "source": "Jane/shirt",
+          "target": "Zephrine/shirt",
+          "sampledVertices": 7160,
+          "minimumVertexSurfaceDistanceM": 0.004891508675498314,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "child shirt against mother sleeves",
+          "source": "Zephrine/shirt",
+          "target": "Jane/shirt",
+          "sampledVertices": 9140,
+          "minimumVertexSurfaceDistanceM": 0.0049355384077540915,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "mother sleeve clears child legs",
+          "source": "Jane/shirt",
+          "target": "Zephrine/trousers",
+          "sampledVertices": 7160,
+          "minimumVertexSurfaceDistanceM": 0.0023165146724842696,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "reverse child leg and sleeve clearance",
+          "source": "Zephrine/trousers",
+          "target": "Jane/shirt",
+          "sampledVertices": 1600,
+          "minimumVertexSurfaceDistanceM": 0.0021704600363573914,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        }
+      ]
+    },
+    {
+      "id": "06",
+      "build": {
+        "id": "06",
+        "modelSha256": "94a250030d5d52e0dc16554581a9500aed4cd0d0d78906811235b9f357c620d8",
+        "paintingSha256": "0a975c50514d748fe3ee489eb07271c6e6e40c34fc0eb0eafe1bed6f716ce7a3",
+        "recordedAt": "2026-10-23T18:49:08.177Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Coarse, symmetric vertex sampling against posed exported character surfaces. Flags require exact follow-up and visual classification; gaps and intentional surrealism are not classified by this scan.",
+      "findings": [
+        {
+          "sourceActor": "fully_clothed_sculpted_Jane_nursing_Zephrine",
+          "sourcePart": "shirt",
+          "targetActor": "solid_sculpted_figure_of_Zephrine_nestled_at_Jane's_clothed_chest",
+          "targetPart": "face-neck",
+          "sampleStride": 4,
+          "samplesDeeperThan3mm": 8,
+          "maximumSampledDepthM": 0.05419372484133644,
+          "worstPoint": [
+            -0.0982101708650589,
+            0.8730016350746155,
+            3.743905544281006
+          ]
+        },
+        {
+          "sourceActor": "solid_sculpted_figure_of_Zephrine_nestled_at_Jane's_clothed_chest",
+          "sourcePart": "trousers",
+          "targetActor": "fully_clothed_sculpted_Jane_nursing_Zephrine",
+          "targetPart": "hand-right",
+          "sampleStride": 1,
+          "samplesDeeperThan3mm": 3,
+          "maximumSampledDepthM": 0.011518127823748545,
+          "worstPoint": [
+            0.34977203607559204,
+            0.7023022174835205,
+            3.768446922302246
+          ]
+        }
+      ]
+    },
+    {
+      "id": "06",
+      "build": {
+        "id": "06",
+        "modelSha256": "94a250030d5d52e0dc16554581a9500aed4cd0d0d78906811235b9f357c620d8",
+        "paintingSha256": "0a975c50514d748fe3ee489eb07271c6e6e40c34fc0eb0eafe1bed6f716ce7a3",
+        "recordedAt": "2026-10-23T18:49:08.177Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Actual source mesh edges intersecting target triangles, independent of closed-surface ray parity. Coplanar contact and a fully enclosed object may have no crossings; this supplements distance and visual inspection.",
+      "results": [
+        {
+          "source": "fully_clothed_sculpted_Jane_nursing_Zephrine/shirt",
+          "target": "solid_sculpted_figure_of_Zephrine_nestled_at_Jane's_clothed_chest/face-neck",
+          "edgesTested": 1462,
+          "crossings": 0,
+          "examples": []
+        },
+        {
+          "source": "solid_sculpted_figure_of_Zephrine_nestled_at_Jane's_clothed_chest/trousers",
+          "target": "fully_clothed_sculpted_Jane_nursing_Zephrine/hand-right",
+          "edgesTested": 181,
+          "crossings": 0,
+          "examples": []
+        }
+      ]
+    },
+    {
+      "id": "06",
+      "build": {
+        "id": "06",
+        "modelSha256": "94a250030d5d52e0dc16554581a9500aed4cd0d0d78906811235b9f357c620d8",
+        "paintingSha256": "0a975c50514d748fe3ee489eb07271c6e6e40c34fc0eb0eafe1bed6f716ce7a3",
+        "recordedAt": "2026-10-23T18:49:08.177Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Actual source mesh edges intersecting target triangles, independent of closed-surface ray parity. Coplanar contact and a fully enclosed object may have no crossings; this supplements distance and visual inspection.",
+      "results": [
+        {
+          "source": "fully_clothed_sculpted_Jane_nursing_Zephrine/shirt",
+          "target": "solid_sculpted_figure_of_Zephrine_nestled_at_Jane's_clothed_chest/trousers",
+          "edgesTested": 396,
+          "crossings": 0,
+          "examples": []
+        }
+      ]
+    },
+    {
+      "id": "07",
+      "build": {
+        "id": "07",
+        "modelSha256": "20eecb83e707ec8739ab6b170e1b6793c859d23c1d7daeac020ff0398fea7854",
+        "paintingSha256": "29f6ede97c2dba8bca5df4ac74348af75b307f3b5b2b8e27cb9f9a4c04e2e0f8",
+        "recordedAt": "2026-10-23T18:49:12.122Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Exported, posed room surfaces. Vertex-to-triangle distances and closed-surface ray parity. This supplements visual inspection; it does not prove the absence of every triangle intersection.",
+      "results": [
+        {
+          "label": "carried legs against parent clothing",
+          "source": "Zephrine/trousers",
+          "target": "Oleg/shirt",
+          "sampledVertices": 1600,
+          "minimumVertexSurfaceDistanceM": 0.0005066337497385624,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "left supporting grip",
+          "source": "Oleg/hand-left",
+          "target": "Zephrine/trousers",
+          "sampledVertices": 6656,
+          "minimumVertexSurfaceDistanceM": 0.0007151820817164773,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "right supporting grip",
+          "source": "Oleg/hand-right",
+          "target": "Zephrine/trousers",
+          "sampledVertices": 6656,
+          "minimumVertexSurfaceDistanceM": 0.000038294123146978003,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "head clearance beside carried thighs",
+          "source": "Oleg/face-neck",
+          "target": "Zephrine/trousers",
+          "sampledVertices": 17258,
+          "minimumVertexSurfaceDistanceM": 0.014224062567333655,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "head clears the carried child shirt",
+          "source": "Oleg/face-neck",
+          "target": "Zephrine/shirt",
+          "sampledVertices": 17258,
+          "minimumVertexSurfaceDistanceM": 0.03151228878349612,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        }
+      ]
+    },
+    {
+      "id": "07",
+      "build": {
+        "id": "07",
+        "modelSha256": "20eecb83e707ec8739ab6b170e1b6793c859d23c1d7daeac020ff0398fea7854",
+        "paintingSha256": "29f6ede97c2dba8bca5df4ac74348af75b307f3b5b2b8e27cb9f9a4c04e2e0f8",
+        "recordedAt": "2026-10-23T18:49:12.122Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Coarse, symmetric vertex sampling against posed exported character surfaces. Flags require exact follow-up and visual classification; gaps and intentional surrealism are not classified by this scan.",
+      "findings": []
+    },
+    {
+      "id": "07",
+      "build": {
+        "id": "07",
+        "modelSha256": "20eecb83e707ec8739ab6b170e1b6793c859d23c1d7daeac020ff0398fea7854",
+        "paintingSha256": "29f6ede97c2dba8bca5df4ac74348af75b307f3b5b2b8e27cb9f9a4c04e2e0f8",
+        "recordedAt": "2026-10-23T18:49:12.122Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Actual source mesh edges intersecting target triangles, independent of closed-surface ray parity. Coplanar contact and a fully enclosed object may have no crossings; this supplements distance and visual inspection.",
+      "results": []
+    },
+    {
+      "id": "07",
+      "build": {
+        "id": "07",
+        "modelSha256": "20eecb83e707ec8739ab6b170e1b6793c859d23c1d7daeac020ff0398fea7854",
+        "paintingSha256": "29f6ede97c2dba8bca5df4ac74348af75b307f3b5b2b8e27cb9f9a4c04e2e0f8",
+        "recordedAt": "2026-10-23T18:49:12.122Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Actual source mesh edges intersecting target triangles, independent of closed-surface ray parity. Coplanar contact and a fully enclosed object may have no crossings; this supplements distance and visual inspection.",
+      "results": [
+        {
+          "source": "solid_sculpted_figure_of_Oleg_with_Zephrine_on_his_shoulders/face-neck",
+          "target": "solid_sculpted_figure_of_Zephrine_picking_her_own_blueberries_up_high/shirt",
+          "edgesTested": 0,
+          "crossings": 0,
+          "examples": []
+        }
+      ]
+    },
+    {
+      "id": "08",
+      "build": {
+        "id": "08",
+        "modelSha256": "a9f3678dce4be4110568cd4b1b4db4bb14aa48e0f8a869e507164eb020bfec61",
+        "paintingSha256": "53cdafb6f2a556cb48f5d2c9768105c1b6079f80660b11fb65d0c6e0462c45dd",
+        "recordedAt": "2026-10-23T18:36:52.302Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Coarse, symmetric vertex sampling against posed exported character surfaces. Flags require exact follow-up and visual classification; gaps and intentional surrealism are not classified by this scan.",
+      "findings": []
+    },
+    {
+      "id": "09",
+      "build": {
+        "id": "09",
+        "modelSha256": "465e8211c11903fec753f17dc422de53a573c44c1d063ba14fd57e4c8e222c0d",
+        "paintingSha256": "e0610862470aa92972e8772d7ace8b4f4aa1575947004aa597cd703e4f48b95d",
+        "recordedAt": "2026-10-23T18:36:53.448Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Exported, posed room surfaces. Vertex-to-triangle distances and closed-surface ray parity. This supplements visual inspection; it does not prove the absence of every triangle intersection.",
+      "results": [
+        {
+          "label": "reassuring hand against the outer vest",
+          "source": "Jane/hand-right",
+          "target": "Zephrine/vest",
+          "sampledVertices": 6653,
+          "minimumVertexSurfaceDistanceM": 0.0004001827303257373,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "reassuring hand clears the inner shirt",
+          "source": "Jane/hand-right",
+          "target": "Zephrine/shirt",
+          "sampledVertices": 6653,
+          "minimumVertexSurfaceDistanceM": 0.005047281188054783,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        }
+      ]
+    },
+    {
+      "id": "09",
+      "build": {
+        "id": "09",
+        "modelSha256": "465e8211c11903fec753f17dc422de53a573c44c1d063ba14fd57e4c8e222c0d",
+        "recordedAt": "2026-10-23T18:37:01.226Z"
+      },
+      "method": "Every posed source vertex against actual decoded prop triangles. Closed prop containment supplements distance; visual inspection and support coverage remain separate requirements.",
+      "results": [
+        {
+          "label": "left palm and fingers beneath the first apple",
+          "identity": "Zephrine",
+          "part": "hand-left",
+          "target": "closed first apple with an actual concave bite",
+          "vertices": 6666,
+          "minimumVertexSurfaceDistanceM": 0.0000064350731959189485,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "nearest": {
+            "source": [
+              -0.04629099741578102,
+              0.6300340294837952,
+              3.346052646636963
+            ],
+            "target": [
+              -0.04628559571540823,
+              0.630036148826733,
+              3.3460498645180525
+            ]
+          }
+        },
+        {
+          "label": "right palm and fingers beneath the first apple",
+          "identity": "Zephrine",
+          "part": "hand-right",
+          "target": "closed first apple with an actual concave bite",
+          "vertices": 6666,
+          "minimumVertexSurfaceDistanceM": 0.000006541347153804102,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "nearest": {
+            "source": [
+              0.04629099741578102,
+              0.6300340294837952,
+              3.346052646636963
+            ],
+            "target": [
+              0.046285506509659256,
+              0.6300361838345551,
+              3.3460498185730754
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "09",
+      "build": {
+        "id": "09",
+        "modelSha256": "465e8211c11903fec753f17dc422de53a573c44c1d063ba14fd57e4c8e222c0d",
+        "paintingSha256": "e0610862470aa92972e8772d7ace8b4f4aa1575947004aa597cd703e4f48b95d",
+        "recordedAt": "2026-10-23T18:36:53.448Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Coarse, symmetric vertex sampling against posed exported character surfaces. Flags require exact follow-up and visual classification; gaps and intentional surrealism are not classified by this scan.",
+      "findings": []
+    },
+    {
+      "id": "09",
+      "build": {
+        "id": "09",
+        "modelSha256": "465e8211c11903fec753f17dc422de53a573c44c1d063ba14fd57e4c8e222c0d",
+        "paintingSha256": "e0610862470aa92972e8772d7ace8b4f4aa1575947004aa597cd703e4f48b95d",
+        "recordedAt": "2026-10-23T18:36:53.448Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Actual source mesh edges intersecting target triangles, independent of closed-surface ray parity. Coplanar contact and a fully enclosed object may have no crossings; this supplements distance and visual inspection.",
+      "results": []
+    },
+    {
+      "id": "10",
+      "build": {
+        "id": "10",
+        "modelSha256": "1cd5f9908da889f2002b650b5396076fba87950612301e3732a0120c2a0df1e2",
+        "paintingSha256": "4968840eab22e4876951717c7e333e10a46a362143bf64c84d3a02e99f50302f",
+        "recordedAt": "2026-10-23T18:37:01.763Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Exported, posed room surfaces. Vertex-to-triangle distances and closed-surface ray parity. This supplements visual inspection; it does not prove the absence of every triangle intersection.",
+      "results": [
+        {
+          "label": "first friend steadying Zephrine",
+          "source": "Companion/hand-right",
+          "target": "Zephrine/hand-left",
+          "sampledVertices": 6664,
+          "minimumVertexSurfaceDistanceM": 0.0004364305806383811,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "reverse first shared grip",
+          "source": "Zephrine/hand-left",
+          "target": "Companion/hand-right",
+          "sampledVertices": 6666,
+          "minimumVertexSurfaceDistanceM": 0.0004509387592875373,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "Zephrine holding the second friend",
+          "source": "Zephrine/hand-right",
+          "target": "Companion/hand-left",
+          "sampledVertices": 6666,
+          "minimumVertexSurfaceDistanceM": 0.00029307209624244225,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        },
+        {
+          "label": "reverse second shared grip",
+          "source": "Companion/hand-left",
+          "target": "Zephrine/hand-right",
+          "sampledVertices": 6664,
+          "minimumVertexSurfaceDistanceM": 0.00022062305029952405,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "worstPoint": null
+        }
+      ]
+    },
+    {
+      "id": "10",
+      "build": {
+        "id": "10",
+        "modelSha256": "1cd5f9908da889f2002b650b5396076fba87950612301e3732a0120c2a0df1e2",
+        "paintingSha256": "4968840eab22e4876951717c7e333e10a46a362143bf64c84d3a02e99f50302f",
+        "recordedAt": "2026-10-23T18:37:01.763Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Coarse, symmetric vertex sampling against posed exported character surfaces. Flags require exact follow-up and visual classification; gaps and intentional surrealism are not classified by this scan.",
+      "findings": []
+    },
+    {
+      "id": "10",
+      "build": {
+        "id": "10",
+        "modelSha256": "1cd5f9908da889f2002b650b5396076fba87950612301e3732a0120c2a0df1e2",
+        "paintingSha256": "4968840eab22e4876951717c7e333e10a46a362143bf64c84d3a02e99f50302f",
+        "recordedAt": "2026-10-23T18:37:01.763Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Actual source mesh edges intersecting target triangles, independent of closed-surface ray parity. Coplanar contact and a fully enclosed object may have no crossings; this supplements distance and visual inspection.",
+      "results": []
+    },
+    {
+      "id": "11",
+      "build": {
+        "id": "11",
+        "modelSha256": "41205df490b1cee7b867b97073c409603c81c1ab8eb454417fcf848b2d449cba",
+        "paintingSha256": "bfcd20f323b0be25ad91c8850c0950d20e2ec7b4936b42851cf53dd1c44e7d4b",
+        "recordedAt": "2026-10-23T18:37:07.887Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Coarse, symmetric vertex sampling against posed exported character surfaces. Flags require exact follow-up and visual classification; gaps and intentional surrealism are not classified by this scan.",
+      "findings": []
+    }
+  ]
+}

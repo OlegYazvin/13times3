@@ -44,3 +44,14 @@ remaining artistic weaknesses. This does not change the memory or frame ID.
 Publication status: the reviewed adult-height field and shared portal follow-ups
 are included in the user-authorized release after `f28cbb7`. Earlier local-pass
 wording above records the development sequence. Artistic acceptance remains open.
+
+## Continued native sculpture review, October 23
+
+The native family study fits an opposed parent/child handhold and directs Zephrine up toward Jane. An inherited child rotation initially left a 33 mm gap. Correcting that rotation gives minimum skin distances of 0.064/0.042 mm, no tested vertices deeper than 1 mm and no tested hand-edge crossings in the exported model. Desktop and fresh portrait emulation entry, return, collision and cleanup passed at the recorded hash. This is contact and functional evidence; Jane’s expression, office composition and emotional reading still require visual judgment.
+
+The October 23 enclosure pass replaces the exposed gray side/front gaps with
+joined masonry around real window openings, a continuous cornice, and an arched
+return-wall spandrel following the vault. The return aperture remains clear.
+The last side window previously extended beyond the actual room front; the
+corrected front corner closes it within the existing world. This is part of the
+same abstract office move, with no new people or factual claims.

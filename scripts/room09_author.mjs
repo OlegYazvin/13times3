@@ -6,8 +6,7 @@ import { loadAdaptedTree, attachAdaptedCanopy } from "./adapted_tree.mjs";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
-import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
-import { addRoomLighting } from "../client/explore/room-lighting.mjs";
+import { addRoomLighting, prepareRoomShadows } from "../client/explore/room-lighting.mjs";
 import { addOpenSky } from "./open_sky.mjs";
 import { addOlegPortrait, addJanePortrait, addZephrinePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
@@ -129,7 +128,8 @@ const colors = [];
 const position = floor.attributes.position;
 for (let i = 0; i < position.count; i++) {
   const x = position.getX(i), z = position.getZ(i);
-  const y = .045 * Math.sin(x * 2.7 + z * 1.3) + .025 * Math.cos(z * 3.7 - x);
+  const nearGroup=THREE.MathUtils.smoothstep(Math.hypot(x*.7,z-2),3.1,5.2);
+  const y = nearGroup*(.045 * Math.sin(x * 2.7 + z * 1.3) + .025 * Math.cos(z * 3.7 - x));
   position.setY(i, y);
   const path = Math.max(0, 1 - Math.abs(x - .22 * Math.sin(z * .55)) / 1.38);
   const base = new THREE.Color(P.grass).lerp(new THREE.Color(P.path), path * .9);
@@ -591,8 +591,9 @@ async function authorRoom() {
   scene.add(root);
   const camera = portalPreviewCamera(gallery.frames[8].room);
   const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  prepareRoomShadows(root,'09',renderer);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.setPixelRatio(1); renderer.setSize(735, Math.round(735 * FRAME_HEIGHT / FRAME_WIDTH));
+  renderer.setPixelRatio(1); renderer.setSize(735, Math.round(735 / camera.aspect));
   document.body.append(renderer.domElement);
   renderer.render(scene, camera);
   const preview = renderer.domElement.toDataURL("image/webp", .87);

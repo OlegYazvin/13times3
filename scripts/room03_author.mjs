@@ -6,8 +6,7 @@ import { loadAdaptedTree, plantAdaptedTree } from "./adapted_tree.mjs";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
-import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
-import { addRoomLighting } from "../client/explore/room-lighting.mjs";
+import { addRoomLighting, prepareRoomShadows } from "../client/explore/room-lighting.mjs";
 import { addOpenSky } from "./open_sky.mjs";
 import { addJanePortrait, addZephrinePortrait, addCharlizePortrait,
   finishOlegPortraits } from "./oleg_portrait.mjs";
@@ -75,12 +74,12 @@ function loft(parent, name, rings, material, sides = 12, solid = false) {
   }
   for (let row = 0; row < rings.length - 1; row++) for (let side = 0; side < sides; side++) {
     const a = row * sides + side, b = row * sides + (side + 1) % sides;
-    indices.push(a, b, a + sides, b, b + sides, a + sides);
+    indices.push(a, a + sides, b, b, a + sides, b + sides);
   }
   for (let side = 1; side < sides - 1; side++) {
-    indices.push(0, side + 1, side);
+    indices.push(0, side, side + 1);
     const top = (rings.length - 1) * sides;
-    indices.push(top, top + side, top + side + 1);
+    indices.push(top, top + side + 1, top + side);
   }
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
@@ -170,12 +169,12 @@ for(let seam=0;seam<10;seam++) {
 // Cluster rooted stems along the walk. Broad low foliage volumes looked like
 // sacks at human eye height, so the leaves and flowers grow from visible stalks.
 for(const side of [-1,1]) for(let patch=0;patch<16;patch++) {
-  const z=6.5-patch*.78;
+  const z=6.5-patch*.78+(random()-.5)*.34;
   if(z>.55&&z<2.4) continue; // Jane and Aibike keep their clear silhouettes.
-  const x=side*(1.72+.24*Math.sin(patch*1.8));
+  const x=side*(1.86+.36*Math.sin(patch*1.8)+(random()-.5)*.26);
   for(let stalk=0;stalk<3;stalk++) {
     const sx=x+side*(stalk-1)*.13,sz=z+(stalk-1)*.18;
-    const height=.33+.12*((patch+stalk)%3);
+    const height=.22+random()*.23;
     curve(root,"rooted flowering stalk in the friendship garden",
       [[sx,.025,sz],[sx+side*.035,height*.55,sz-.025],
         [sx-side*.026,height,sz-.06]],.011,M.moss,10);
@@ -636,6 +635,7 @@ async function authorRoom() {
     name: "detailed shade tree in the friendship garden",
     colliderRadius: .2,
   }));
+  for(const [x,z,scale,rotation,tint] of [[-2.7,6.35,.82,.55,0xb3c4aa],[2.9,6.9,.72,2.2,0xc4c8a6]])plantAdaptedTree(root,parkTree,{x,z,scale,rotation,leafTint:tint,name:'foreground park canopy sheltering the friendship path',colliderRadius:.22});
   // The garden continues beyond its reachable edge as a shaded neighborhood
   // park. Reuse complete modeled trees rather than stretching the playable
   // ground into a blank horizon or surrounding the children with a low roof.
@@ -670,8 +670,9 @@ async function authorRoom() {
   scene.add(root);
   const camera = portalPreviewCamera(gallery.frames[2].room);
   const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  prepareRoomShadows(root,'03',renderer);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.setPixelRatio(1); renderer.setSize(735, Math.round(735 * FRAME_HEIGHT / FRAME_WIDTH));
+  renderer.setPixelRatio(1); renderer.setSize(735, Math.round(735 / camera.aspect));
   document.body.append(renderer.domElement);
   renderer.render(scene, camera);
   const preview = renderer.domElement.toDataURL("image/webp", .86);

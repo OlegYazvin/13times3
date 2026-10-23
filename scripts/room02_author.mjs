@@ -1,13 +1,13 @@
 import {portalPreviewCamera} from './portal_preview_camera.mjs';
 import {replaceStoryFigures} from './storybook_figures.mjs';
 import {finishStoryWorld} from './storyworld_finish.mjs';
+import {caregivingBlanketPoint} from './scene02_arrangement.mjs';
 import * as THREE from "three";
 import { loadAdaptedTree, plantAdaptedTree } from "./adapted_tree.mjs";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import gallery from "../src/_data/gallery.json";
-import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
-import { addRoomLighting } from "../client/explore/room-lighting.mjs";
+import { addRoomLighting, prepareRoomShadows } from "../client/explore/room-lighting.mjs";
 import janeFaceURL from "./assets/room02/jane-face.webp";
 import zephrineFaceURL from "./assets/room02/zephrine-face.webp";
 import { addOpenSky } from "./open_sky.mjs";
@@ -191,7 +191,7 @@ floor.rotateX(-Math.PI / 2);
 const floorColors = [];
 for (let i = 0; i < floor.attributes.position.count; i++) {
   const x = floor.attributes.position.getX(i), z = floor.attributes.position.getZ(i);
-  floor.attributes.position.setY(i, .017 * Math.sin(x * 2.4 + z * 1.5));
+  floor.attributes.position.setY(i, 0);
   const interior = 1 - THREE.MathUtils.smoothstep(
     Math.hypot(x * .82, z * .72), 6.2, 11.5);
   const amount = THREE.MathUtils.lerp(1,
@@ -248,7 +248,7 @@ addOpenSky(root, C.sky, C.street);
 // edge stays open to the sky; a formed garden rail marks the walking boundary
 // without leaving a row of dark rectangular blocks against the horizon.
 for (let z = -7; z <= 7; z += 2.2) {
-  const height = 1.15 + .35 * Math.sin(z * .7 - 5.95);
+  const height = 1.10;
   box(root, "low plaster foundation below the home windows", -5.95,
     height / 2, z, .23, height, 1.9, M.plaster);
 }
@@ -379,8 +379,8 @@ for (let i = 0; i < 7; i++) {
   const x = -.1 + i * .88;
   const height = 2.15 + .54 * Math.sin(i * 1.38) + (i % 3) * .24;
   const brick = i % 2 ? M.orange : M.plaster;
-  box(root, "distant brick building body", x, height / 2, -8.3,
-    .8, height, .42, brick);
+  box(root, "distant brick building body", x, height / 2, -9.35,
+    .8, height, 2.52, brick);
   for (let row = 0; row < 3; row++) for (const offset of [-.17, .17]) {
     const wx = x + offset, wy = .63 + row * .58;
     box(root, "recessed dark glass in an apartment window", wx, wy,
@@ -751,18 +751,18 @@ person("Oleg at the job-search desk", -1.35, 4.82, 1.73, M.cream,
 // over his chest.
 const notes = new THREE.Group();
 notes.name = "worn open job-search notebook with many blank attempts";
-notes.position.set(-1.7, .948, 3.95);
+notes.position.set(-1.7, .9385, 3.95);
 notes.rotation.y = -.18;
 root.add(notes);
 box(notes, "dark cloth notebook cover with rounded bevel", 0, 0, 0,
   .51, .017, .37, M.ink);
 for (const side of [-1, 1]) {
   const page = box(notes, "cream page with an uneven hand-folded edge",
-    side * .126, .016, 0, .237, .006, .345, M.paper);
+    side * .126, .012, 0, .237, .006, .345, M.paper);
   page.rotation.y = side * .035;
   for (let line = 0; line < 5; line++) box(notes,
-    "short unreadable penciled job-search line", side * .126, .021,
-    -.115 + line * .047, .14 - .023 * (line % 3), .003, .006, M.brass);
+    "short unreadable penciled job-search line", side * .126, .0154,
+    -.115 + line * .047, .14 - .023 * (line % 3), .0006, .006, M.brass);
 }
 beam(notes, "stitched cloth notebook spine", [0, .015, -.18],
   [0, .015, .18], .011, .011, M.desk, 8);
@@ -788,15 +788,16 @@ person("Oleg leaning into Jane's embrace", .12, -5.48, 1.73, M.cream,
     olegPose: "embrace", yaw: -.4 });
 
 // A quiet kitchen and ordinary work make the support concrete.
+const kitchenStart=root.children.length;
 box(root, "home counter", -4.82, .71, -5.02, 1.55, 1.38, .58, M.plaster, true);
 box(root, "counter's orange front", -4.82, .48, -4.71, 1.39, .7, .04, M.orange);
 for (const x of [-5.18, -4.45]) {
   box(root, "cabinet pull", x, .55, -4.68, .22, .025, .025, M.brass);
 }
-add(root, "small cooking pan", new THREE.CylinderGeometry(.24, .21, .07, 12),
-  M.ink, -4.88, 1.44, -5.01);
-beam(root, "pan handle", [-4.68, 1.46, -5.02], [-4.22, 1.46, -4.94],
-  .028, .023, M.ink);
+add(root, 'small cooking pan',new THREE.LatheGeometry([[0,0],[.19,0],[.23,.012],[.24,.060],[.223,.065],[.215,.020],[0,.020]].map(([r,y])=>new THREE.Vector2(r*.72,y)),32),M.ink,-4.70,1.40,-5.01);
+beam(root, "pan handle", [-4.54, 1.46, -5.02], [-4.24, 1.46, -4.94],
+  .014, .011, M.ink,16);
+const kitchen=new THREE.Group();kitchen.name='waist-height kitchen counter and attached pan';for(const object of root.children.slice(kitchenStart))kitchen.add(object);kitchen.scale.y=.70;kitchen.position.y=-.014;root.add(kitchen);
 // The connection between the simultaneous versions of Jane is instead
 // carried by the existing gold seam in the pavement and her repeated actions.
 
@@ -853,25 +854,16 @@ async function authorRoom() {
     .012, M.desk, 11);
   box(contactsJane, "small rounded brass satchel clasp", -.26, .82, .249,
     .045, .038, .012, M.brass);
-  const blanketShape = new THREE.Shape();
-  blanketShape.moveTo(-.29, .8);
-  blanketShape.quadraticCurveTo(-.14, .89, .04, .83);
-  blanketShape.quadraticCurveTo(.19, .84, .23, .72);
-  blanketShape.quadraticCurveTo(.11, .63, -.02, .66);
-  blanketShape.quadraticCurveTo(-.21, .58, -.32, .7);
-  blanketShape.closePath();
-  const blanket = add(caringJane, "folded cloth blanket across Jane's forearm",
-    new THREE.ExtrudeGeometry(blanketShape, { depth: .045,
-      bevelEnabled: true, bevelSize: .015, bevelThickness: .014,
-      bevelSegments: 2, curveSegments: 10 }), M.paleBlue, 0, 0, .29);
-  blanket.rotation.z = -.11;
-  curve(caringJane, "blanket's soft stitched lower hem",
-    [[-.29, .69, .31], [-.12, .63, .34], [.05, .65, .34],
-      [.21, .71, .31]], .008, M.paper, 18);
-  for (const x of [-.14, .02, .15]) curve(caringJane,
-    "fabric fold crossing the child blanket",
-    [[x - .04, .78, .345], [x, .72, .351], [x + .02, .66, .346]],
-    .006, M.teal, 9);
+  // A thin sagging sheet spans the two actual hand targets and hangs
+  // forward under gravity; the previous extruded outline was a rigid tray.
+  const positions=[],uvs=[],indices=[],cols=24,rows=18;
+  for(let j=0;j<=rows;j++)for(let i=0;i<=cols;i++){
+    const u=i/cols,v=j/rows;positions.push(...caregivingBlanketPoint(u,v));
+    uvs.push(u,v);
+    if(j<rows&&i<cols){const a=j*(cols+1)+i,b=a+1,c=a+cols+1;indices.push(a,c,b,b,c,c+1);}
+  }
+  const blanketGeometry=new THREE.BufferGeometry();blanketGeometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));blanketGeometry.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));blanketGeometry.setIndex(indices);blanketGeometry.computeVertexNormals();
+  const blanket=add(caringJane,'soft child blanket draped between the caregiving hands',blanketGeometry,M.paleBlue);blanket.material=blanket.material.clone();blanket.material.side=THREE.DoubleSide;
   for (const { group, hands, height, pose } of olegFigures) {
     group.clear();
     addContactShadow(group, height);
@@ -889,8 +881,9 @@ async function authorRoom() {
   scene.add(root);
   const camera = portalPreviewCamera(gallery.frames[1].room);
   const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  prepareRoomShadows(root,'02',renderer);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.setPixelRatio(1); renderer.setSize(735, Math.round(735 * FRAME_HEIGHT / FRAME_WIDTH));
+  renderer.setPixelRatio(1); renderer.setSize(735, Math.round(735 / camera.aspect));
   document.body.append(renderer.domElement);
   renderer.render(scene, camera);
   const preview = renderer.domElement.toDataURL("image/webp", .86);

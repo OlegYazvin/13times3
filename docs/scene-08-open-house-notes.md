@@ -44,3 +44,16 @@ remaining artistic weaknesses. This does not change the memory or frame ID.
 Publication status: the reviewed adult-height field and shared portal follow-ups
 are included in the user-authorized release after `f28cbb7`. Earlier local-pass
 wording above records the development sequence. Artistic acceptance remains open.
+
+## Continued native sculpture review, October 23
+
+The October 23 local study carries five principal stop facades back into approximately three-meter volumes with joined roofs, continuous cornices and windows on their returns. The promenade has fewer raised lines and smaller plaques. A quiet masonry hall replaces the generic pagoda-like temple gate, following the saved former-lodge reference. All seven stops and Jane’s order remain. These are architectural interpretations, not precise building replicas or invented visit activities. Side, rear, route and fresh phone inspection remain required.
+
+The travelers were too distant to read from the doorway. The next local study
+places Jane and Oleg near the Pullman beginning, looking toward the clock tower
+and continuing street. No other participants or visit episode is introduced.
+Seven named side-route inspection positions now complement the people views.
+
+### Current exported evidence, October 23
+
+The latest current-hash walkthrough captures all seven named stops from the route, in addition to the travelers, doorway, side/rear and fresh portrait-phone views. Both travelers’ soles meet the path. The temple remains the Lakeview former-lodge interpretation from the saved itinerary. These views establish the revised volumes and preserved itinerary; they do not claim exact architectural reconstruction.

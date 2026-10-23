@@ -5,14 +5,13 @@ import * as THREE from "three";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import gallery from "../src/_data/gallery.json";
-import { FRAME_WIDTH, FRAME_HEIGHT } from "../client/explore/layout.mjs";
 import { addOlegPortrait, addJanePortrait, addGPortrait,
   addZephrinePortrait, finishOlegPortraits } from "./oleg_portrait.mjs";
 import { addOpenSky } from "./open_sky.mjs";
 import { addContactShadow } from "./stage_shadows.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
 import { paintedFabric } from "./painted_fabric.mjs";
-import { addRoomLighting } from "../client/explore/room-lighting.mjs";
+import { addRoomLighting, prepareRoomShadows } from "../client/explore/room-lighting.mjs";
 import { loadRiggedOlegBase, makeRiggedOleg } from "./rigged_oleg.mjs";
 import { loadRiggedJaneBase, makeRiggedG, makeRiggedJane } from "./rigged_jane.mjs";
 
@@ -80,12 +79,12 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
     }
     for (let row = 0; row < rings.length - 1; row++) for (let side = 0; side < sides; side++) {
       const a = row * sides + side, b = row * sides + (side + 1) % sides;
-      indices.push(a, b, a + sides, b, b + sides, a + sides);
+      indices.push(a, a + sides, b, b, a + sides, b + sides);
     }
     for (let side = 1; side < sides - 1; side++) {
-      indices.push(0, side + 1, side);
+      indices.push(0, side, side + 1);
       const top = (rings.length - 1) * sides;
-      indices.push(top, top + side, top + side + 1);
+      indices.push(top, top + side + 1, top + side);
     }
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3));
@@ -137,7 +136,7 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
     const shades = [];
     for (let i = 0; i < plane.attributes.position.count; i++) {
       const x = plane.attributes.position.getX(i), z = plane.attributes.position.getZ(i);
-      plane.attributes.position.setY(i, .012 * Math.sin(x * 2.8 + z * 1.9));
+      plane.attributes.position.setY(i, 0);
       const shade = colorAt ? colorAt(x, z) : color;
       const pigment = new THREE.Color(shade);
       pigment.offsetHSL(0, 0, (random() - .5) * .043);
@@ -433,6 +432,7 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
         const groups = new Map();
         for (const mesh of parent.children) {
           if (!mesh.isMesh || mesh.isSkinnedMesh || mesh.userData.solidFootprint ||
+            mesh.userData.preserveSculptGeometry || mesh.userData.storyPart ||
             mesh.name.includes("painted likeness")) continue;
           const attributes = Object.entries(mesh.geometry.attributes)
             .map(([name, attribute]) => `${name}:${attribute.itemSize}`).sort().join("|");
@@ -490,8 +490,9 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
     scene.add(root);
     const camera = portalPreviewCamera(gallery.frames[index].room);
     const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    prepareRoomShadows(root,roomId,renderer);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.setPixelRatio(1); renderer.setSize(735, Math.round(735 * FRAME_HEIGHT / FRAME_WIDTH));
+    renderer.setPixelRatio(1); renderer.setSize(735, Math.round(735 / camera.aspect));
     document.body.append(renderer.domElement);
     renderer.render(scene, camera);
     const preview = renderer.domElement.toDataURL("image/webp", .86);

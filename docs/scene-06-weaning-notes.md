@@ -34,3 +34,32 @@ remaining artistic weaknesses. This does not change the memory or frame ID.
 Publication status: the reviewed adult-height field and shared portal follow-ups
 are included in the user-authorized release after `f28cbb7`. Earlier local-pass
 wording above records the development sequence. Artistic acceptance remains open.
+
+## October 23 local anatomical and arrangement study
+
+The native adult/child study is separate from the published release. The child
+turns her whole clothed body toward Jane; her legs fold forward beyond the lap,
+and Jane's palms are fitted to the actual child shirt and trousers. Several
+prototypes were rejected after exported-surface checks exposed hands, sleeves,
+heads and lap intersections. The current shoulder and elbow study fixes hand
+orientation independently of the arm hint so an elbow can move without losing
+its contact. It is not yet accepted: exact edge/triangle checks, alongside the
+coarser inside-surface scan, still determine which remaining flags are actual
+crossings rather than open-neck/wrist parity errors.
+
+The environment study replaces the striped wall/ceiling box with one curved,
+folded cloth shell and a broad cool-to-warm daylight opening. A narrower chair,
+closer back and depressed seat are under review. A complete arrangement moves
+forward together for doorway readability; the return and side routes require a
+fresh check. Earlier screenshots and notes are development history, not approval
+of these changed assets. No reference photograph or metadata enters the model.
+
+## Continued native sculpture review, October 23
+
+The latest native embrace has tested supporting-palm clearances of 0.315 and 0.409 mm, lap clearance 0.440 mm, and no tested vertices deeper than 1 mm in the selected shirt, lap, face and support pairs. The phone doorway view nevertheless crops the feet. The next composition study moves the complete chair, rug, child, mother and table 0.70 m farther from the doorway while retaining their internal contacts. Do not confuse the preceding functional pass with acceptance of that phone composition.
+
+### Current exported evidence, October 23
+
+The farther-back arrangement now shows the full chair, mother, child and feet from the fresh portrait-phone doorway capture. The selected full-vertex contact clearances remain 0.315/0.409 mm at the supporting palms and 0.440 mm at the clothed lap, without tested penetration deeper than 1 mm. Jane’s soles remain within 0.47 mm of the rug. The child’s feet are carried intentionally. The continuous fabric sanctuary replaces the old repeated roof panels and support cage.
+
+Final contact follow-up: the broad inter-actor scan found a real supporting-sleeve/child-trouser crossing that the original selected pairs omitted. The forearm and cuff are retapered around the same wrist/palm arrangement. The raw study now has zero tested edge crossings for that pair; packed-export checks remain the acceptance evidence. Other open neck/wrist containment flags require edge classification rather than being reported as clipping.

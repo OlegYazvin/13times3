@@ -1,5 +1,12 @@
 # Lessons for future gallery scenes
 
+Current character standard, October 23: use coherent, dimensional anatomy and
+connected posed clothing. The active cast uses age-specific CC0 head, hand and
+footwear sources with reference-guided sculpting. Private reference pixels stay
+out of public assets. Earlier portrait-panel/curved-painting paragraphs below
+record rejected experiments; they are not an authoring workflow and do not
+supersede the current character acceptance requirements.
+
 These are decisions and corrections from developing frame `01`. Read them with the [scene registry](scene-registry.md) before building another room. Apply the interaction lessons to every room; choose each new room's own visual theme from its memory.
 
 ## Active character policy — October 22 geometry revision
@@ -159,3 +166,25 @@ For ongoing refinement of the published rooms, use the [visual quality audit](vi
 - Frame 01's painting remains taller than its live aperture. Its upper cave
   edge can still expose a distracting transition band. Do not describe the
   entire reveal as artistically finished merely because people align better.
+
+## Geometry and composition verification follow-up, October 23
+
+- Validate finite positions/normals and every index against its raw primitive's
+  vertex count before welding or quantization. A fitted hair cap's off-by-one
+  lower-ring index survived as mostly visible packed hair while producing
+  nonfinite raw normals. The jellyfish bell had a related lower-ring error.
+- For an indexed surface with an inclusive seam column, the row stride is
+  `columns + 1`. For a wrapped ring with no seam duplicate, use its actual
+  wrapped neighbor plus the row stride. Inspect the final seam and last row.
+- Remove rejected geometry before batching. Hiding flower meshes by their old
+  names after merging left their petals in the scene under a new batch name.
+- Fit coupled contacts in world space and retain explicit hand axes when
+  changing shoulders or sleeves. A better shoulder support moved both previously
+  fitted shin grips until their orientations were stabilized.
+- Fit a roof against all the surrounding architecture, including habitat
+  arches, tank rims and supports. Closing one patch's UV seam does not establish
+  that its other meshes clear the roof. Recompose a complete people/tank/fish
+  group when a portrait doorway crop hides the shared object of attention.
+- Keep evidence keyed to model hashes. Align fallback collision boxes only
+  from the current reviewed exports; functional entry/return passes remain
+  separate from visual acceptance, source integrity and actual contact tests.

@@ -48,3 +48,24 @@ remaining artistic weaknesses. This does not change the memory or frame ID.
 Publication status: the reviewed adult-height field and shared portal follow-ups
 are included in the user-authorized release after `f28cbb7`. Earlier local-pass
 wording above records the development sequence. Artistic acceptance remains open.
+
+## October 23 local friendship arrangement
+
+The current study changes the original finger pile into opposed anatomical
+palms with separately fitted finger curls. The initial candidate's exported
+hands overlapped by roughly 12 mm; the new target was selected against actual
+hand surfaces and still requires exported crossing and close-view inspection.
+Free hands remain relaxed. Jane and Aibike move closer into a conversation,
+behind the girls, and the complete group moves forward together for doorway
+readability. Their standing origins and contact shadows are fitted to the path.
+
+The dance arch develops into a three-dimensional studio with side walls,
+continued floor, curved ceiling and rear windows looking into the modeled park.
+Planting becomes less regular, and the raised brass path outline is removed.
+This is a dream fusion of the same repeated park/dance visits, not a new event
+or a claim about an exact studio building. These are local candidates; final
+composition, contact, mobile and route acceptance remain open.
+
+### Current exported evidence, October 23
+
+The current opposed handhold and coherent cast complete desktop and fresh portrait-emulation entry, profiles, rear and return checks at the recorded export hash. The dance arch now enters an actual studio volume with side walls, ceiling and garden-facing windows. Both mothers turn toward their conversation. The held-hand mesh clearance is approximately 0.31 mm with no tested edge crossings; camera tests and a geometric grip do not by themselves establish the emotional success of the park setting.

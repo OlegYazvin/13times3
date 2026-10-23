@@ -69,7 +69,7 @@ const floor=ground(C.ground,(x,z)=>{
 // A restrained pair of broad stone inlays locates the rotunda without
 // drawing a digital target across the walking floor. The watercolor mineral
 // wash and inhabited glass carry the rest of the room's rhythm.
-for(const radius of [2.45,7.15]) {
+for(const radius of [7.15]) {
   const points=[];
   for(let i=0;i<=64;i++) {
     const a=i*Math.PI*2/64;
@@ -80,42 +80,25 @@ for(const radius of [2.45,7.15]) {
   curve(root,"hand-laid tidal border in aquamarine terrazzo",points,
     radius<3?.021:.013,radius<3?M.gold:M.marble,64);
 }
-// A continuous paneled canopy gives the rotunda an actual luminous roof,
-// rather than leaving ribs hanging over a flat dark ceiling.
-let canopyMaterial;
+// One continuous water vault closes the former round/rectangular joins.
+// Its height clears the actual habitat arches at the glazing line.
+function aquariumVaultHeight(x,z){return 5.85+1.95*(1-(x/9.15)**2)+.05*Math.cos(z*.16)*(1-(x/9.15)**2);}
+const canopyMaterial=new THREE.MeshBasicMaterial({color:0xdbe8df,side:THREE.DoubleSide});
 {
-  const positions=[],colors=[],uv=[],indices=[],rings=9,slices=48;
-  const shallow=new THREE.Color(0xa6cdd0),deep=new THREE.Color(0x6a9bab);
-  for(let ring=0;ring<=rings;ring++) {
-    const r=.08+ring*8.12/rings;
-    const y=7.75-2.65*Math.pow(r/8.2,2);
-    for(let slice=0;slice<=slices;slice++) {
-      const a=slice*Math.PI*2/slices;
-      const wash=.05*Math.sin(a*7+ring*1.2)+.04*Math.cos(a*11-ring*.8);
-      const c=shallow.clone().lerp(deep,.18+.48*r/8.2+wash);
-      positions.push(Math.cos(a)*r,y,Math.sin(a)*r);
-      colors.push(c.r,c.g,c.b);
-      uv.push(.5+Math.cos(a)*r/16.4,.5+Math.sin(a)*r/16.4);
-      if(ring<rings&&slice<slices) {
-        const i=ring*(slices+1)+slice;
-        indices.push(i,i+slices+1,i+1,i+1,i+slices+1,i+slices+2);
-      }
-    }
+  const p=[],uv=[],idx=[],across=64,along=68;
+  for(let j=0;j<=along;j++)for(let i=0;i<=across;i++){
+    const x=-9.15+i*18.3/across,z=-13.4+j*34.1/along;
+    p.push(x,aquariumVaultHeight(x,z),z);uv.push(.5+x/20,.5+z/42);
+    if(i<across&&j<along){const n=j*(across+1)+i;idx.push(n,n+across+1,n+1,n+1,n+across+1,n+across+2);}
   }
-  const geometry=new THREE.BufferGeometry();
-  geometry.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
-  geometry.setAttribute("color",new THREE.Float32BufferAttribute(colors,3));
-  geometry.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
-  geometry.setIndex(indices);geometry.computeVertexNormals();
-  canopyMaterial=new THREE.MeshBasicMaterial({color:0xffffff,
-    side:THREE.DoubleSide});
-  add(root,"continuous aquamarine glass canopy between shell ribs",geometry,
-    canopyMaterial);
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));g.setIndex(idx);g.computeVertexNormals();
+  add(root,'one continuous painted water vault over the aquarium and return portal',g,canopyMaterial);
 }
 // Continuous fluted stone, with carved shell crowns, carries the water vault.
 // The custom shaft silhouette avoids a stack of cylinders and leaves a single
 // simple footprint for walking collision.
 function carvedRotundaColumn(x,z) {
+  const start=root.children.length;
   const profile=[
     [.08,.34],[.20,.42],[.34,.38],[.48,.29],
     [.75,.265],[1.6,.25],[3.55,.235],[4.58,.25],
@@ -177,28 +160,17 @@ function carvedRotundaColumn(x,z) {
       const a=i*Math.PI*2/32;
       return [x+Math.cos(a)*.41,.22,z+Math.sin(a)*.41];
     }),.009,M.gold,33);
+  const column=new THREE.Group();column.name='grounded carved column supporting the continuous water vault';
+  for(const object of root.children.slice(start))column.add(object);
+  const scale=(aquariumVaultHeight(x,z)-.065)/(5.18-.08);column.scale.y=scale;column.position.y=-.08*scale;root.add(column);
 }
-// The column rhythm evokes Shedd's historic rotunda as a dream, rather than
-// claiming this scene reproduces a particular visit or exhibit.
-for(let i=0;i<8;i++) {
-  const a=i*Math.PI*2/8+.13;
-  const x=Math.cos(a)*8.1,z=Math.sin(a)*8.0;
-  if (z > 7) continue; // leave the entrance sightline open
-  carvedRotundaColumn(x,z);
-  curve(root,"high dome rib like a rising wave",
-    [[x,5.1,z],[x*.7,6.35,z*.7],[x*.36,7.27,z*.36],
-      [0,7.65,0]],.067,M.gold,28);
+// Three pairs of grounded carved columns carry complete vault arches.
+// Their caps touch the roof; there are no loose radial ribs or cut ring ends.
+for(const z of[-6.0,1.2,8.4]){
+  for(const side of[-1,1])carvedRotundaColumn(side*7.1,z);
+  const points=Array.from({length:57},(_,i)=>{const x=-7.1+i*14.2/56;return [x,aquariumVaultHeight(x,z)-.065,z];});
+  curve(root,'joined shell arch seated on the carved aquarium columns',points,.085,M.pearl,72);
 }
-{
-  const r=7.2,y=5.65,points=[];
-  for(let i=0;i<=64;i++) {
-    const a=i*Math.PI*2/64;
-    points.push([Math.cos(a)*r,y,Math.sin(a)*r*.96]);
-  }
-  curve(root,"continuous shell-carved rim joining the dome ribs",
-    points,.05,M.marble,65);
-}
-
 // The visitor stands between actual inhabited saltwater and freshwater
 // habitats, with a third reef across the end. Fish and plants live behind the
 // glass, not over the open floor. The glazing is almost invisible except for
@@ -257,7 +229,7 @@ for(const side of [-1,1]) {
         [side*7.535,5.1,z-1.72+glint*1.15]],.009,M.glass,15);
   }
 }
-box(root,"solid distant reef backdrop",0,3.25,-13.28,18.1,6.5,.12,M.deep,true);
+box(root,"solid distant reef backdrop",0,4.10,-13.28,18.3,8.2,.12,M.deep,true);
 for(const side of [-1,1]) box(root,"painted distant reef habitat",
   side*4.45,3.25,-13.18,8.9,6.3,.016,side<0?reefWall:reefVariantWall);
 add(root,"distant reef aquarium viewing pane",new THREE.PlaneGeometry(15.8,5.52),
@@ -392,66 +364,6 @@ curve(root,"thin gilded wave inside the rear shell arch",
     [-4,6.64,16.66],[0,6.96,16.64],
     [4,6.64,16.66],[6.5,6.13,16.69],
     [8.78,5.71,16.72]],.026,M.gold,48);
-{
-  // The round water dome and the long rear vault meet along a curved edge.
-  // Without a joined shoulder, walking toward either side of the portal
-  // exposes a dark sky wedge between the two ceilings.
-  const positions=[],uv=[],indices=[],across=40,along=18;
-  for(let row=0;row<=along;row++) {
-    const t=row/along,s=t*t*(3-2*t);
-    for(let col=0;col<=across;col++) {
-      const x=-8.2+col*16.4/across,u=x/8.3;
-      const innerZ=Math.sqrt(Math.max(0,8.2*8.2-x*x));
-      const z=THREE.MathUtils.lerp(innerZ,10.08,t);
-      const domeY=7.75-2.65*Math.pow(8.2/8.2,2);
-      const vaultY=7.77-1.92*u*u+.035*Math.sin(10.08*1.8+u*5);
-      positions.push(x,THREE.MathUtils.lerp(domeY,vaultY,s),z);
-      uv.push(col/across,.5+(z-8.2)/18);
-      if(row<along&&col<across) {
-        const n=row*(across+1)+col;
-        indices.push(n,n+across+1,n+1,n+1,n+across+1,n+across+2);
-      }
-    }
-  }
-  const geometry=new THREE.BufferGeometry();
-  geometry.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
-  geometry.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
-  geometry.setIndex(indices);geometry.computeVertexNormals();
-  add(root,"continuous curved shoulder joining dome to rear aquarium vault",
-    geometry,canopyMaterial);
-}
-{
-  // The path behind the freestanding doorway belongs to the same enchanted
-  // aquarium. Continue the inhabited vault there instead of exposing a flat
-  // rectangular sky ceiling once the visitor rounds a post.
-  const positions=[],uv=[],indices=[],across=28,along=14;
-  for(let row=0;row<=along;row++) {
-    const z=10.08+row*7.18/along;
-    for(let col=0;col<=across;col++) {
-      const x=-8.3+col*16.6/across,u=x/8.3;
-      positions.push(x,7.77-1.92*u*u+.035*Math.sin(z*1.8+u*5),z);
-      uv.push(col/across,.5+(z-8.2)/18);
-      if(row<along&&col<across) {
-        const n=row*(across+1)+col;
-        indices.push(n,n+across+1,n+1,n+1,n+across+1,n+across+2);
-      }
-    }
-  }
-  const geometry=new THREE.BufferGeometry();
-  geometry.setAttribute("position",new THREE.Float32BufferAttribute(positions,3));
-  geometry.setAttribute("uv",new THREE.Float32BufferAttribute(uv,2));
-  geometry.setIndex(indices);geometry.computeVertexNormals();
-  add(root,"painted vaulted water ceiling beyond the freestanding portal",
-    geometry,canopyMaterial);
-}
-for(const z of [11.4,14.45,16.6]) {
-  curve(root,"vaulted wave rib over the aquarium behind its portal",
-    [[-8.3,5.75,z],[-5.7,7.15,z-.17],[0,7.72,z-.32],
-      [5.7,7.15,z-.17],[8.3,5.75,z]],.085,M.pearl,31);
-  curve(root,"fine inlaid waterline beneath the rear vault",
-    [[-7.5,.065,z],[-3.9,.07,z-.13],[0,.068,z-.2],
-      [3.9,.07,z-.13],[7.5,.065,z]],.024,M.gold,25);
-}
 function fishGeometry(rings,species) {
   const vertices=[],uv=[],colors=[],indices=[],sides=22;
   const profile=new THREE.CatmullRomCurve3(rings.map(
@@ -586,10 +498,10 @@ function jellyfish(x,y,z,scale,phase) {
   const membrane=new THREE.MeshPhysicalMaterial({color:0xf0d9cc,
     transparent:true,opacity:.56,roughness:.42,metalness:0,
     depthWrite:false,side:THREE.DoubleSide});
-  const vertices=[],indices=[],rows=9,sides=28;
+  const vertices=[],indices=[],rows=18,sides=48;
   for(let row=0;row<=rows;row++) {
     const t=row/rows;
-    const radius=.08+.64*Math.sin(t*Math.PI*.61);
+    const radius=.66*Math.sin(t*Math.PI*.61);
     const yy=.48-.52*t+.10*Math.sin(Math.PI*t);
     for(let side=0;side<sides;side++) {
       const a=side*Math.PI*2/sides;
@@ -599,7 +511,7 @@ function jellyfish(x,y,z,scale,phase) {
         Math.sin(a)*(radius+scallop));
       if(row<rows) {
         const n=row*sides+side,b=row*sides+(side+1)%sides;
-        indices.push(n,n+sides,b,b,n+sides,n+sides+(side+1)%sides);
+        indices.push(n,n+sides,b,b,n+sides,b+sides);
       }
     }
   }
@@ -609,29 +521,22 @@ function jellyfish(x,y,z,scale,phase) {
   add(group,"scalloped translucent jelly bell with real volume",geometry,cap);
   for(let rib=0;rib<8;rib++) {
     const a=rib*Math.PI*2/8;
-    const radial=[];
-    for(let step=0;step<=6;step++) {
-      const t=step/6,r=.08+.64*Math.sin(t*Math.PI*.61);
-      radial.push([Math.cos(a)*r,.49-.52*t+.1*Math.sin(Math.PI*t),
-        Math.sin(a)*r]);
-    }
-    curve(group,"fine structural ridge following the jelly bell",
-      radial,.009,M.pearl,17);
-    const base=[Math.cos(a)*.69,-.05,Math.sin(a)*.69];
+    const radius=.66*Math.sin(Math.PI*.61)+.035*Math.sin(a*8);
+    const base=[Math.cos(a)*radius,-.04+.018*Math.cos(a*8),Math.sin(a)*radius];
     curve(group,"trailing filament with a gentle underwater curl",
       [base,[base[0]*.75,-.48,base[2]*.8],
         [base[0]*.56+.12*Math.sin(a*3),-.97,base[2]*.55],
         [base[0]*.42,-1.5-(rib%3)*.12,base[2]*.42]],
-      .012,membrane,23);
+      .007,membrane,23);
   }
   for(let arm=0;arm<4;arm++) {
     const a=arm*Math.PI/2+.27;
     curve(group,"folded central oral arm, distinct from the tentacles",
-      [[Math.cos(a)*.13,-.035,Math.sin(a)*.13],
+      [[0,.48,0],[Math.cos(a)*.13,.10,Math.sin(a)*.13],
         [Math.cos(a)*.2,-.48,Math.sin(a)*.2],
         [Math.cos(a)*.1+.09,-1.01,Math.sin(a)*.11],
         [Math.cos(a)*.12-.06,-1.32,Math.sin(a)*.13]],
-      .037,membrane,21);
+      .025,membrane,21);
   }
   return group;
 }
@@ -719,6 +624,8 @@ ray(4.3,2.9,-12.45,.62,-.26);
 // aquarium canopy rather than a literal reconstruction of a Shedd gallery.
 {
   const cx=-.65, cz=3.9, rx=4.65, rz=3.35;
+  const ceilingAt=aquariumVaultHeight;
+  const rimAt=a=>{const x=cx+Math.cos(a)*rx,z=cz+Math.sin(a)*rz;return [x,Math.min(5.95,ceilingAt(x,z)-.10),z];};
   const underside=new THREE.MeshPhysicalMaterial({color:0x70b7c2,
     transparent:true,opacity:.27,roughness:.08,metalness:0,
     depthWrite:false,side:THREE.DoubleSide});
@@ -745,9 +652,8 @@ ray(4.3,2.9,-12.45,.62,-.26);
   const sidePoints=[],sideIndices=[];
   for(let level=0;level<2;level++) for(let i=0;i<=64;i++) {
     const a=i*Math.PI*2/64;
-    sidePoints.push(cx+Math.cos(a)*rx,
-      level?5.95:4.74+.025*Math.sin(8*a),
-      cz+Math.sin(a)*rz);
+    const [x,top,z]=rimAt(a);
+    sidePoints.push(x,level?top:4.74+.025*Math.sin(8*a),z);
     if(level===0&&i<64) {
       sideIndices.push(i,i+65,i+1,i+1,i+65,i+66);
     }
@@ -764,20 +670,14 @@ ray(4.3,2.9,-12.45,.62,-.26);
     const rim=[];
     for(let i=0;i<=64;i++) {
       const a=i*Math.PI*2/64;
-      rim.push([cx+Math.cos(a)*rx,y+.025*Math.sin(8*a),
-        cz+Math.sin(a)*rz]);
+      const [x,top,z]=rimAt(a);
+      rim.push([x,y<5?y+.025*Math.sin(8*a):top,z]);
     }
     curve(root,"scalloped shell rim around the overhead aquarium",
       rim,y<5?.058:.035,y<5?M.pearl:M.gold,65);
   }
-  for(let i=0;i<8;i++) {
-    const a=i*Math.PI*2/8+.18;
-    const px=cx+Math.cos(a)*rx,pz=cz+Math.sin(a)*rz;
-    curve(root,"swept pearl support joining water lens to dome",
-      [[px,4.74,pz],
-        [px*1.03,5.82,pz+.09],
-        [px*.93,6.7,pz-.08]],.035,M.pearl,18);
-  }
+  // The enclosed water lens deliberately floats in this dream. Its complete
+  // upper/lower frame replaces loose supports ending against the ceiling.
   const overheadPigment=[
     new THREE.MeshStandardMaterial({color:0xb9d7c2,
       emissive:0x6b8e83,emissiveIntensity:1.1,roughness:.88,
@@ -824,7 +724,7 @@ function sculptedTurtle(x,y,z,scale,yaw=0) {
       uv.push(side/sides,t);
       if(ring<rings) {
         const n=ring*sides+side,b=ring*sides+(side+1)%sides;
-        indices.push(n,n+sides,b,b,n+sides,n+sides+(side+1)%sides);
+        indices.push(n,n+sides,b,b,n+sides,b+sides);
       }
     }
   }
@@ -1042,7 +942,7 @@ for(const side of [-1,1]) {
 // study from several angles. The curved glazing holds its own fish, stone,
 // kelp and branch coral; its base is a real collision obstacle.
 {
-  const x=3.0,z=7.0;
+  const x=1.6,z=6.0;
   loft(root,"solid shell-carved base of the tide-pool lantern",
     [[.04,1.35,1.25,x,z],[.14,1.48,1.38,x,z],
       [.39,1.39,1.31,x,z],[.49,1.31,1.22,x,z]],M.marble,28,true);
@@ -1205,7 +1105,7 @@ for(const side of [-1,1]) for(let patch=0;patch<10;patch++) {
     }
   }
 }
-for(let i=0;i<15;i++) {
+for(let i=0;i<0;i++) {
   const x=(random()-.5)*14,z=-9+random()*19;
   if(Math.abs(x)<2.2&&z>2) continue;
   add(root,"inlaid pearly shell",new THREE.TorusGeometry(.11+random()*.11,.022,5,12),
@@ -1402,8 +1302,8 @@ window.__authorRoom=async()=>{
     [.15,5.38,2.28,1.45,.3,1.08,310],
     // Two close, richly modeled fish give the round habitat readable life
     // where G and Zephrine actually stand, not only in the distant glass.
-    [2.77,2.46,7.42,1.04,Math.PI/2,0,311],
-    [3.43,3.43,6.68,.92,-Math.PI/2,.11,312],
+    [1.37,2.46,6.42,1.04,Math.PI/2,0,311],
+    [2.03,3.43,5.68,.92,-Math.PI/2,.11,312],
     // One fully sculpted swimmer at eye height in each flanking habitat.
     [-7.95,2.4,5.5,1.22,0,0,313],
     [7.95,2.65,4.0,1.18,Math.PI,0,314],
