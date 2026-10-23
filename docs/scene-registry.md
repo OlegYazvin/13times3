@@ -272,3 +272,9 @@ These are revisions of the existing published memories; final exports and
 current-hash visual acceptance are still tracked separately from source intent.
 
 October 23 final contact follow-up revises the existing clothed embrace in frame 06 and shoulder carry in frame 07. It tapers a supporting sleeve around the fitted wrist and moves the child torso back from Oleg’s head while preserving the coupled leg support and berry interaction. These are revisions of the same memories; assignments, people, titles and blank slots remain. Final packed-export evidence is tracked in the checklist.
+
+The reviewed native-cast revision was published as `d966cbf` on October 23. Its [Pages workflow](https://github.com/OlegYazvin/13times3/actions/runs/40009286584) succeeded and all 24 live gallery files match the saved reviewed hashes. This preserves every existing assignment and blank frame; artistic weaknesses remain listed in the scene report.
+
+The next local environment revision affects only existing frames 03 and 08: rooted park planting, supported play furniture and bridge arrivals in the friendship memory, and principal building elevations facing the same seven-stop route with a continuous quarry/pond landform. No scene, person, event or assignment is added. Exported visual and functional acceptance is tracked separately.
+
+The park/route follow-up now has reviewed current-hash desktop, side/rear, contact and portrait-phone evidence. The original seven-stop order remains; lamp/plaque placement, quarry water level and park furniture supports were corrected against the rendered exports. The subsequent authorized publication revises only frames 03 and 08.

@@ -97,17 +97,21 @@ if(process.argv.includes('--global')){
    const [tx,tz]=targets[f.id],portal=f.room.portalZ??f.room.dimensionsM[2]/2;
    const profiles=f.id==='01'?[['profile-left',-1.8,.05,Math.PI/2],['profile-right',1.7,.05,-Math.PI/2]]:f.id==='02'?[['profile-left',-2.20,4.95,Math.PI/2],['profile-right',1,4.8,-Math.PI/2]]:[['profile-left',tx-2,tz,Math.PI/2],['profile-right',tx+2,tz,-Math.PI/2]];
    if(f.id==='07')profiles.push(['picking-contact',.15,6.0,Math.atan2(-.13825-.15,6.0-5.08899),.026]);
+   if(profilesOnly&&f.id==='03')profiles.unshift(['front',tx,Math.min(portal-.55,tz+2.5),0,-.28]);
    const shots=(returnsOnly||process.argv.includes('--checks'))?[]:profilesOnly?profiles:phone?[['phone',0,portal-.55,0]]:[['entry',0,portal-.55,0],['front',tx,Math.min(portal-.55,tz+2.5),0],...profiles,['left',tx-2,tz+1.7,Math.atan2(2,1.7)],['right',tx+2,tz+1.7,Math.atan2(-2,1.7)],['rear',tx+1.8,tz-1.8,Math.atan2(-1.8,-1.8)],['close',tx,Math.min(portal-.55,tz+1.4),0,-.28]];
    if(!phone&&!profilesOnly&&!returnsOnly&&!process.argv.includes('--checks')){
     if(f.id==='02')shots.push(['care',-3.3,-1.2,0],['household',-3.1,-4.6,-Math.PI/2,-.25],['contacts',2.5,4.2,0],['embrace',0,-2.7,0],['embrace-rear',-1,-7.8,2.75]);
-    if(f.id==='08')for(const [stop,z,side]of[['pullman',7.05,-1],['avalon',5.8,1],['arts-bank',2.1,-1],['narrow-bridge',-1.65,1],['palmisano',-5.4,-1],['saint-ignatius',-9.15,1],['temple',-12.05,-1]])shots.push(['route-'+stop,0,z,side*Math.PI/2,-.06]);
     if(f.id==='11')shots.push(['portal-back',0,12.7,0],['rear-habitat',0,15.5,Math.PI]);
    }
+   if(f.id==='08'&&!phone&&!returnsOnly&&!process.argv.includes('--checks'))for(const [stop,z,side]of[['pullman',7.05,-1],['avalon',5.8,1],['arts-bank',2.1,-1],['narrow-bridge',-1.65,1],['palmisano',-5.4,-1],['saint-ignatius',-9.15,1],['temple',-12.05,-1]]){
+    const standZ=stop==='pullman'?9.15:stop==='avalon'?6.6:z,lookX=stop==='pullman'?-3.8:side*4.25;
+    shots.push(['route-'+stop,0,standZ,Math.atan2(lookX,standZ-z),stop==='pullman'?.30:stop==='avalon'?.20:stop==='palmisano'?-.06:.15]);
+   }
    for(let [name,x,z,yaw,pitch=0] of shots){
-    if(name==='front'&&f.id==='03')pitch=-.18;
+    if(name==='front'&&f.id==='03')pitch=-.28;
     if(name==='front'&&f.id==='04')pitch=-.22;
     if(f.id==='06'&&['front','profile-left','profile-right','left','right','rear','close'].includes(name))pitch=name==='front'||name==='close'?-.44:-.32;
-    const focal=f.id==='02'?({care:[-3.5,-3.3],household:[-4.16,-4.50],contacts:[3.1,1.9],embrace:[-.1,-5.65],'embrace-rear':[-.1,-5.65]}[name]||[tx,tz]):[tx,tz];
+    const focal=f.id==='02'?({care:[-3.5,-3.3],household:[-4.16,-4.50],contacts:[3.1,1.9],embrace:[-.1,-5.65],'embrace-rear':[-.1,-5.65]}[name]||[tx,tz]):f.id==='08'?({'route-pullman':[-3.8,7.05],'route-avalon':[4.25,5.8],'route-arts-bank':[-4.25,2.1],'route-narrow-bridge':[4.25,-1.65],'route-palmisano':[-4.25,-5.4],'route-saint-ignatius':[4.25,-9.15],'route-temple':[-4.25,-12.05]}[name]||[tx,tz]):[tx,tz];
     let stand=await p.evaluate(([x,z])=>window.__galleryTestRoomCanStand(x,z),[x,z]);
     if(!stand){for(const [dx,dz] of [[.9,0],[-.9,0],[0,.9],[0,-.9],[1.4,0],[-1.4,0],[2.5,0],[-2.5,0]])if(await p.evaluate(([x,z])=>window.__galleryTestRoomCanStand(x,z),[x+dx,z+dz])){x+=dx;z+=dz;yaw=Math.atan2(focal[0]-x,z-focal[1]);stand=true;break;}}
     if(!stand){results.push({id:f.id,name,unreachable:true});continue;}

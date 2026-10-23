@@ -69,3 +69,11 @@ composition, contact, mobile and route acceptance remain open.
 ### Current exported evidence, October 23
 
 The current opposed handhold and coherent cast complete desktop and fresh portrait-emulation entry, profiles, rear and return checks at the recorded export hash. The dance arch now enters an actual studio volume with side walls, ceiling and garden-facing windows. Both mothers turn toward their conversation. The held-hand mesh clearance is approximately 0.31 mm with no tested edge crossings; camera tests and a geometric grip do not by themselves establish the emotional success of the park setting.
+
+## Grounded planting and park follow-up after d966cbf
+
+A further local revision removes the polygon flower cards before batching, replacing them with closed curved perennial leaves rooted in soft beds and small flower heads on connected stems. A continuous shaded lawn replaces overlapping ground patches; distant tree roots follow its actual height. Two grounded benches and one continuous rounded play surface give the park more identity. The previously floating play-table top gains a joined pedestal, and three steps meet each end of the bridge. The existing girls, mothers, held-hand pose, studio, memories and assignments are unchanged. New packed-export views and contact/ground checks are required before publication.
+
+The first closed-leaf follow-up rendered as upright cups. It was rejected and changed to outward-arching leaf surfaces before publication. This is a silhouette correction, not extra grain or ornament.
+
+Final export checks: the held hands retain 0.305/0.315 mm minimum distances with no tested vertices deeper than 1 mm. Both bridge arrivals meet the deck ends within 0.01 mm; the play-table pedestal is about 1 mm above the play surface. Fresh desktop and portrait-phone entry/return, full figure, side and rear views pass at the final model hash. Artistic limitations remain in the shared report.

@@ -1,6 +1,6 @@
 # Reviewed native sculpture evidence
 
-These are unmodified renders of the current room exports. Private reference photographs and historical art experiments are excluded. The [manifest](manifest.json) identifies model and application hashes; [contact checks](contact-checks.json) record selected geometry measurements. The [geometry integrity record](geometry-integrity.json) covers all eleven raw and packed models. Functional verification and artistic judgment are separate. See the [scene report](../../scene-revision-report.md) for the changes and remaining weaknesses.
+These are unmodified renders of the current room exports. Private reference photographs and historical art experiments are excluded. The [manifest](manifest.json) identifies model and application hashes; [contact checks](contact-checks.json) record selected geometry measurements. The [geometry integrity record](geometry-integrity.json) covers every raw and packed room. Functional verification and artistic judgment are separate. See the [scene report](../../scene-revision-report.md) for the changes and remaining weaknesses.
 
 ## 01 — You signed Zephrine up for dance and acting classes!
 
@@ -15,6 +15,8 @@ These are unmodified renders of the current room exports. Private reference phot
 ## 03 — Jane made sure Zephrine has a best friend (Charlize)
 
 ![Scene 03, front](./03-front.png)
+
+![Scene 03, profile-left](./03-profile-left.png)
 
 ## 04 — Jane Got zephrine the ‘blue car’
 
@@ -39,6 +41,10 @@ These are unmodified renders of the current room exports. Private reference phot
 ![Scene 08, front](./08-front.png)
 
 ![Scene 08, route-arts-bank](./08-route-arts-bank.png)
+
+![Scene 08, route-palmisano](./08-route-palmisano.png)
+
+![Scene 08, route-temple](./08-route-temple.png)
 
 ## 09 — We FINALLY visited our friends in Ithaca for the first time where Zephrine got to try apple picking for the first time.
 

@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { createRoomArt } from "./room_art.mjs";
+import {composeArchitecturalRoute,finishArchitecturalRouteGround} from './scene08_composition.mjs';
 
 // Jane's chosen Open House route is a single impossible city promenade. The
 // order comes from the saved Pullman-first itinerary, not her preference rank.
@@ -105,7 +106,11 @@ function archedDoor(parent, x, z, y = 1.1, w = 1.55, h = 2.4, mat = M.ink) {
     [x-w*.3, h+.2, z+.1], [x, h+.35, z+.1],
     [x+w*.3, h+.2, z+.1], [x+w/2, h-.05, z+.1]], .085, M.limestone, 24);
 }
+const routeStops=[];
+let activeStop;
 function plaque(text, x, z, side) {
+  const architecture=root.children.filter(o=>!activeStop.before.has(o));
+  routeStops.push({...activeStop,parts:architecture});
   const canvas = document.createElement("canvas"); canvas.width = 640; canvas.height = 96;
   const c = canvas.getContext("2d");
   c.fillStyle = "#eee0c9"; c.fillRect(0, 0, 640, 96);
@@ -124,10 +129,11 @@ function plaque(text, x, z, side) {
   // stop. A near-forward plane vanished edge-on beside its new side facade.
   face.rotation.y = side < 0 ? .65 : -.65;
   box(root, "slim label stand", px, .25, pz - .01,
-    .025, .48, .025, M.bronze);
+    .025, .50, .025, M.bronze);
 }
 function monument(name, z, side, material = M.brick, inset = 0, width = 3.7) {
   const x = side * (4.25 - inset);
+  activeStop={name,x,z,side,before:new Set(root.children)};
   const base = box(root, `solid ${name} sculpted foundation`, x, .18, z,
     width, .36, 3.2, material, true);
   base.userData.solidFootprint = true;
@@ -432,7 +438,7 @@ person("Oleg walking the chosen route", 1.65, -4.5, 1.78,
 for(const [n,z] of [7.68,3.96,.22,-3.54,-7.28,-10.62].entries()) {
   const side=n%2===0?-1:1,x=side*3.03;
   const post=loft(root,"solid fluted route lantern post",
-    [[.08,.13,.13,x,z],[.24,.09,.09,x,z],
+    [[0,.13,.13,x,z],[.24,.09,.09,x,z],
       [2.85,.055,.055,x,z],[3.04,.09,.09,x,z]],M.ink,10,true);
   post.userData.solidFootprint=true;
   for(let f=0;f<4;f++) {
@@ -492,4 +498,5 @@ for(let i=0;i<12;i++) {
   }
 }
 
-window.__authorRoom = () => exportRoom();
+composeArchitecturalRoute(root,routeStops);
+window.__authorRoom = () => exportRoom({afterCompose:finishArchitecturalRouteGround});

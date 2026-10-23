@@ -201,7 +201,9 @@ def main() -> None:
     assert any(node.get("extras", {}).get("identity") == "Charlize" for node in friend_json["nodes"])
     assert any("solid cambered plank-built bridge deck" in name for name in friend_names)
     assert any("joined sculpted timber arch above the open dance floor" in name for name in friend_names)
-    assert any("living flower stem beside the path" in name for name in friend_names)
+    assert any("closed curved perennial leaves growing from the friendship beds" in name for name in friend_names)
+    assert any("continuous rounded rubber surface in the shaded play nook" in name for name in friend_names)
+    assert any("solid park bench seating" in name for name in friend_names)
     assert sum("detailed shade tree in the friendship garden" in name for name in friend_names) == 5
     assert sum(node.get("name") == "solid tree trunk collision core" and bool(node.get("extras", {}).get("solidFootprint")) for node in friend_json["nodes"]) == 7
     car_room = frames[3]["room"]

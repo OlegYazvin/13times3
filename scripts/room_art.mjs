@@ -370,7 +370,7 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
     }
     return group;
   }
-  async function exportRoom({ batchStatic = false } = {}) {
+  async function exportRoom({ batchStatic = false, afterCompose = null } = {}) {
     if (janePeople.length || gPeople.length) {
       const template = await loadRiggedJaneBase();
       for (const { group, stature, options } of janePeople) {
@@ -485,6 +485,7 @@ export function createRoomArt({ index, title, width, height, depth, colors, seed
     const roomId=String(index+1).padStart(2,'0');
     replaceStoryFigures(root,roomId);
     finishStoryWorld(root,roomId);
+    afterCompose?.(root);
     const scene = new THREE.Scene(); scene.background = new THREE.Color(colors.sky);
     addRoomLighting(scene,roomId);
     scene.add(root);

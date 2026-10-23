@@ -21,11 +21,11 @@
     },
     {
       "path": ".cache/room03/room-uncompressed.glb",
-      "sha256": "5098749f6f905678bead0ee39b94b15dfebca0eee3f1b87faca5bc5166e3233d",
-      "meshes": 319,
-      "primitives": 319,
-      "vertices": 695104,
-      "triangles": 606327,
+      "sha256": "2612a53085b2266fece82eb8a0c18e9ab8aae0e1f184f436b91a0024e9543632",
+      "meshes": 223,
+      "primitives": 223,
+      "vertices": 693618,
+      "triangles": 658507,
       "valid": true
     },
     {
@@ -66,11 +66,11 @@
     },
     {
       "path": ".cache/room08/room-uncompressed.glb",
-      "sha256": "fd69993ed1628d4169a45c7ce37b1369cb0bb632383dbba08cab63c21e95d63b",
-      "meshes": 647,
-      "primitives": 647,
-      "vertices": 350975,
-      "triangles": 274072,
+      "sha256": "78371d9b1f4f8660660c621b47f4e0a2f894973a090900f4a9cc5faddc69c059",
+      "meshes": 639,
+      "primitives": 639,
+      "vertices": 350120,
+      "triangles": 273190,
       "valid": true
     },
     {
@@ -122,11 +122,11 @@
     },
     {
       "path": "src/assets/explore/room03/room.glb",
-      "sha256": "6369fb1e9e5639fae41a70330ea8033e66b517546ea84dea5327a8b6661149aa",
-      "meshes": 319,
-      "primitives": 319,
-      "vertices": 379561,
-      "triangles": 606327,
+      "sha256": "41aa0f96a91e678cc1e2b4ce9b92d5ade1917bb31068499a7e491fb1f20b5a46",
+      "meshes": 223,
+      "primitives": 223,
+      "vertices": 402219,
+      "triangles": 658507,
       "valid": true
     },
     {
@@ -167,11 +167,11 @@
     },
     {
       "path": "src/assets/explore/room08/room.glb",
-      "sha256": "a9f3678dce4be4110568cd4b1b4db4bb14aa48e0f8a869e507164eb020bfec61",
-      "meshes": 647,
-      "primitives": 647,
-      "vertices": 151341,
-      "triangles": 274072,
+      "sha256": "dac4ce805c7da8fb135c570ac796659f16ecfca26994d3b9d1f1ab71f705f94a",
+      "meshes": 639,
+      "primitives": 639,
+      "vertices": 150871,
+      "triangles": 273190,
       "valid": true
     },
     {

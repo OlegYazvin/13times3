@@ -9,7 +9,7 @@
 - [x] Frame 06 supporting palms measure 0.315/0.409 mm, lap 0.440 mm, sleeve/legs 2.17–2.32 mm clearance, zero tested sleeve/leg edge crossings. The two remaining broad containment flags have zero edge crossings at open neck/wrist boundaries and no corresponding visible overlap.
 - [x] Frame 07 shoulder support measures 0.507 mm, shin grips 0.715/0.038 mm, head/shirt clearance 31.51 mm; the broad inter-actor scan has no flags. Bushes remain 2.015–2.345 m tall.
 - [x] Fresh 06 portrait view includes the feet; fresh 11 portrait view includes G, Zephrine and their shared moving fish. Both routes around/behind the aquarium portal pass.
-- [x] Build/site checks and 18 tests pass. Global controls, resize and fallback checks pass; the full control suite is recorded separately before publication.
+- [x] Build/site checks and 18 tests pass. Global controls, resize and fallback checks pass. The broader control suite also passes all eleven desktop and high-resolution portrait-phone entries, touch input, stable FOV, collision, return, music and failed-load behavior.
 - [x] Room downloads remain approximately 1.5–6.6 MB; the soft loading target does not limit essential anatomy.
 - [ ] Final likeness, expression and environment artistic acceptance: weaker areas remain in the [current scene report](scene-revision-report.md).
 
@@ -254,3 +254,13 @@ establish source integrity. Both constructions are corrected. The packer now
 checks finite surface data and index bounds before welding. All eleven rooms
 must be re-exported and their affected appearances rechecked after this shared
 correction. No new release is recorded by this source fix.
+
+## Reviewed park and route follow-up after d966cbf
+
+- [x] Frame 03 replaces floating-looking flower cards with rooted arched leaves and small connected flower heads, continuous lawn, supported benches/table and bridge arrivals. The first upright-cup leaf trial was rejected. Fresh full figures, profiles, rear and portrait-phone views are saved at the final model hash.
+- [x] Frame 08 rotates complete buildings toward the route, lowers display bases, models the quarry bowl/pond, removes hidden leaf slivers before batching and moves complete lanterns/plaques clear of the enlarged facades. All seven stop views and fresh portrait-phone entry/return pass.
+- [x] The girls’ handhold remains 0.305/0.315 mm with no tested penetration. Bridge step/deck gaps are below 0.01 mm; the play-table pedestal is about 1 mm above the play mat and joins the table by 40 mm.
+- [x] Six lanterns have at least 0.788 m projected clearance from principal wall meshes, seven plaques at least 0.348 m; lantern feet meet the packed floor within 0.9 mm. These are selected bounds/ray checks, not proof for every ornament triangle.
+- [x] All eleven raw and packed geometry files pass again; build/site checks and 18 tests pass. Only 03 and 08 changed after the full control suite; their current exported models have fresh functional walkthroughs.
+- [x] Manifest fallback footprints are synchronized from the current exports. Original routes, frame IDs, assignments and blank slots remain unchanged.
+- [ ] Final human likeness and artistic acceptance remain open as described in the current scene report.

@@ -284,9 +284,9 @@
       "id": "03",
       "build": {
         "id": "03",
-        "modelSha256": "6369fb1e9e5639fae41a70330ea8033e66b517546ea84dea5327a8b6661149aa",
-        "paintingSha256": "9cdde09d8abaa542c4508cb740a237d80c22c8d9ff606e64b5641354d45b7e0f",
-        "recordedAt": "2026-10-23T18:36:35.282Z",
+        "modelSha256": "41aa0f96a91e678cc1e2b4ce9b92d5ade1917bb31068499a7e491fb1f20b5a46",
+        "paintingSha256": "49ecbe0e4878f6a491f09771ecc4604ab4ded266bcf170ab7a0488139d323da4",
+        "recordedAt": "2026-10-23T19:32:24.811Z",
         "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
       },
       "method": "Exported, posed room surfaces. Vertex-to-triangle distances and closed-surface ray parity. This supplements visual inspection; it does not prove the absence of every triangle intersection.",
@@ -317,9 +317,9 @@
       "id": "03",
       "build": {
         "id": "03",
-        "modelSha256": "6369fb1e9e5639fae41a70330ea8033e66b517546ea84dea5327a8b6661149aa",
-        "paintingSha256": "9cdde09d8abaa542c4508cb740a237d80c22c8d9ff606e64b5641354d45b7e0f",
-        "recordedAt": "2026-10-23T18:36:35.282Z",
+        "modelSha256": "41aa0f96a91e678cc1e2b4ce9b92d5ade1917bb31068499a7e491fb1f20b5a46",
+        "paintingSha256": "49ecbe0e4878f6a491f09771ecc4604ab4ded266bcf170ab7a0488139d323da4",
+        "recordedAt": "2026-10-23T19:32:24.811Z",
         "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
       },
       "method": "Coarse, symmetric vertex sampling against posed exported character surfaces. Flags require exact follow-up and visual classification; gaps and intentional surrealism are not classified by this scan.",
@@ -329,13 +329,39 @@
       "id": "03",
       "build": {
         "id": "03",
-        "modelSha256": "6369fb1e9e5639fae41a70330ea8033e66b517546ea84dea5327a8b6661149aa",
-        "paintingSha256": "9cdde09d8abaa542c4508cb740a237d80c22c8d9ff606e64b5641354d45b7e0f",
-        "recordedAt": "2026-10-23T18:36:35.282Z",
+        "modelSha256": "41aa0f96a91e678cc1e2b4ce9b92d5ade1917bb31068499a7e491fb1f20b5a46",
+        "paintingSha256": "49ecbe0e4878f6a491f09771ecc4604ab4ded266bcf170ab7a0488139d323da4",
+        "recordedAt": "2026-10-23T19:32:24.811Z",
         "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
       },
       "method": "Actual source mesh edges intersecting target triangles, independent of closed-surface ray parity. Coplanar contact and a fully enclosed object may have no crossings; this supplements distance and visual inspection.",
       "results": []
+    },
+    {
+      "id": "03",
+      "build": {
+        "id": "03",
+        "modelSha256": "41aa0f96a91e678cc1e2b4ce9b92d5ade1917bb31068499a7e491fb1f20b5a46",
+        "recordedAt": "2026-10-23T19:31:57.131Z"
+      },
+      "method": "Actual decoded world-space vertices and ground ray tests. Wall clearance uses projected surface bounds; join overlaps are intentional support construction. This does not test all environmental triangles.",
+      "results": [
+        {
+          "label": "play-table pedestal meets the play surface and joins the tabletop",
+          "footMinusSurfaceM": 0.0010144062477311366,
+          "verticalJoinOverlapM": 0.0400052921203079
+        },
+        {
+          "label": "left stair joins the bridge end",
+          "horizontalGapM": 0.000007377523751017634,
+          "topMinusDeckEndM": -0.000006266513291164344
+        },
+        {
+          "label": "right stair joins the bridge end",
+          "horizontalGapM": 0.000007377523751017634,
+          "topMinusDeckEndM": -0.000006266513291164344
+        }
+      ]
     },
     {
       "id": "04",
@@ -893,13 +919,106 @@
       "id": "08",
       "build": {
         "id": "08",
-        "modelSha256": "a9f3678dce4be4110568cd4b1b4db4bb14aa48e0f8a869e507164eb020bfec61",
-        "paintingSha256": "53cdafb6f2a556cb48f5d2c9768105c1b6079f80660b11fb65d0c6e0462c45dd",
-        "recordedAt": "2026-10-23T18:36:52.302Z",
+        "modelSha256": "dac4ce805c7da8fb135c570ac796659f16ecfca26994d3b9d1f1ab71f705f94a",
+        "paintingSha256": "1497a18579e80901ca118e093091aeb5b94ff74b513d31c56bf406b7f4bc7b7d",
+        "recordedAt": "2026-10-23T19:32:28.372Z",
         "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
       },
       "method": "Coarse, symmetric vertex sampling against posed exported character surfaces. Flags require exact follow-up and visual classification; gaps and intentional surrealism are not classified by this scan.",
       "findings": []
+    },
+    {
+      "id": "08",
+      "build": {
+        "id": "08",
+        "modelSha256": "dac4ce805c7da8fb135c570ac796659f16ecfca26994d3b9d1f1ab71f705f94a",
+        "paintingSha256": "1497a18579e80901ca118e093091aeb5b94ff74b513d31c56bf406b7f4bc7b7d",
+        "recordedAt": "2026-10-23T19:32:28.372Z",
+        "extractor": "Three.js GLTFLoader; textures omitted; exported geometry and skinning preserved"
+      },
+      "method": "Actual source mesh edges intersecting target triangles, independent of closed-surface ray parity. Coplanar contact and a fully enclosed object may have no crossings; this supplements distance and visual inspection.",
+      "results": []
+    },
+    {
+      "id": "08",
+      "build": {
+        "id": "08",
+        "modelSha256": "dac4ce805c7da8fb135c570ac796659f16ecfca26994d3b9d1f1ab71f705f94a",
+        "recordedAt": "2026-10-23T19:32:24.467Z"
+      },
+      "method": "Actual decoded world-space vertices and ground ray tests. Wall clearance uses projected surface bounds; join overlaps are intentional support construction. This does not test all environmental triangles.",
+      "results": [
+        {
+          "label": "lantern clears principal building walls and meets the street",
+          "x": -2.0481800031661987,
+          "z": 7.680000066757202,
+          "minimumHorizontalWallClearanceM": 0.7881308065949595,
+          "footMinusGroundM": -0.0008846818336638584
+        },
+        {
+          "label": "lantern clears principal building walls and meets the street",
+          "x": 2.0518199396133423,
+          "z": 3.959999918937683,
+          "minimumHorizontalWallClearanceM": 1.1481469614493318,
+          "footMinusGroundM": -0.0008846818336638584
+        },
+        {
+          "label": "lantern clears principal building walls and meets the street",
+          "x": -2.0481800031661987,
+          "z": 0.2199999988079071,
+          "minimumHorizontalWallClearanceM": 1.1518307878385445,
+          "footMinusGroundM": -0.0008846818336638584
+        },
+        {
+          "label": "lantern clears principal building walls and meets the street",
+          "x": 2.0518199396133423,
+          "z": -3.540000081062317,
+          "minimumHorizontalWallClearanceM": 1.1194034750783128,
+          "footMinusGroundM": -0.00088468183366186
+        },
+        {
+          "label": "lantern clears principal building walls and meets the street",
+          "x": -2.0481800031661987,
+          "z": -7.2799999713897705,
+          "minimumHorizontalWallClearanceM": 3.0361119337307394,
+          "footMinusGroundM": -0.00088468183366186
+        },
+        {
+          "label": "lantern clears principal building walls and meets the street",
+          "x": 2.0518199396133423,
+          "z": -10.619999885559082,
+          "minimumHorizontalWallClearanceM": 1.1769338586689098,
+          "footMinusGroundM": -0.0008846818336638584
+        },
+        {
+          "label": "route label Pullman",
+          "minimumHorizontalWallClearanceM": 0.3483463854706432
+        },
+        {
+          "label": "route label Avalon Regal",
+          "minimumHorizontalWallClearanceM": 0.7120024767721591
+        },
+        {
+          "label": "route label Stony Island Arts Bank",
+          "minimumHorizontalWallClearanceM": 0.7120463667142283
+        },
+        {
+          "label": "route label Narrow Bridge",
+          "minimumHorizontalWallClearanceM": 0.6832589904011401
+        },
+        {
+          "label": "route label Palmisano Park",
+          "minimumHorizontalWallClearanceM": 4.828814130117838
+        },
+        {
+          "label": "route label Saint Ignatius",
+          "minimumHorizontalWallClearanceM": 0.740789373991737
+        },
+        {
+          "label": "route label Zen Buddhist Temple",
+          "minimumHorizontalWallClearanceM": 0.5682788755351216
+        }
+      ]
     },
     {
       "id": "09",

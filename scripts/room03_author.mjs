@@ -1,6 +1,7 @@
 import {portalPreviewCamera} from './portal_preview_camera.mjs';
 import {replaceStoryFigures} from './storybook_figures.mjs';
 import {finishStoryWorld} from './storyworld_finish.mjs';
+import {clearFriendshipPlanting,landscapeFriendshipGarden} from './scene03_landscape.mjs';
 import * as THREE from "three";
 import { loadAdaptedTree, plantAdaptedTree } from "./adapted_tree.mjs";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
@@ -650,6 +651,7 @@ async function authorRoom() {
   });
   await finishOlegPortraits(root);
   replaceStoryFigures(root,'03');
+  clearFriendshipPlanting(root);
   root.updateMatrixWorld(true);
   const groups = new Map();
   root.traverse(object => {
@@ -665,6 +667,7 @@ async function authorRoom() {
     add(root, "grouped dimensional leaves and petals", geometry, material);
   }
   finishStoryWorld(root,'03');
+  landscapeFriendshipGarden(root);
   const scene = new THREE.Scene(); scene.background = new THREE.Color(C.sky);
   addRoomLighting(scene,'03');
   scene.add(root);

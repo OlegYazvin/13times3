@@ -22,8 +22,8 @@ The first test using a resized adult female head for Zephrine was rejected
 because it still looked adult. The current study uses a real child-age morph
 and a full fitted curl mass. Eyeballs are dimensional and sit within modeled
 sockets and eyelids. Anatomical hands and constrained elbows are being checked
-in the adult/child studio and blueberry carry. This is not yet a published or
-artistically accepted character replacement. See the shared revision checklist.
+in the adult/child studio and blueberry carry. The reviewed native exports are included in published release `d966cbf`;
+final likeness and artistic acceptance remain open. See the shared revision checklist.
 
 ## Historical Sam and Maya body study
 

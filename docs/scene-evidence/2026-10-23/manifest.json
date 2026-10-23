@@ -76,21 +76,22 @@
     {
       "id": "03",
       "title": "Jane made sure Zephrine has a best friend (Charlize)",
-      "modelSha256": "6369fb1e9e5639fae41a70330ea8033e66b517546ea84dea5327a8b6661149aa",
-      "paintingSha256": "9cdde09d8abaa542c4508cb740a237d80c22c8d9ff606e64b5641354d45b7e0f",
+      "modelSha256": "41aa0f96a91e678cc1e2b4ce9b92d5ade1917bb31068499a7e491fb1f20b5a46",
+      "paintingSha256": "49ecbe0e4878f6a491f09771ecc4604ab4ded266bcf170ab7a0488139d323da4",
       "appSha256": "5562af5890990444c4aed4664425fa5533426e07d68cdd12d283bfe313b415ec",
-      "modelBytes": 4815512,
-      "paintingBytes": 45954,
-      "capturedAt": "2026-10-23T18:20:38.469Z",
+      "modelBytes": 5026268,
+      "paintingBytes": 46648,
+      "capturedAt": "2026-10-23T19:22:36.093Z",
       "images": [
-        "03-front.png"
+        "03-front.png",
+        "03-profile-left.png"
       ],
       "functionalChecks": [
         {
           "id": "03",
           "viewport": "desktop",
           "entry": true,
-          "collisionSamples": 22,
+          "collisionSamples": 29,
           "return": true,
           "continuousCamera": true,
           "controls": true,
@@ -100,7 +101,7 @@
           "id": "03",
           "viewport": "phone",
           "entry": true,
-          "collisionSamples": 22,
+          "collisionSamples": 29,
           "return": true,
           "continuousCamera": true,
           "controls": true,
@@ -252,22 +253,24 @@
     {
       "id": "08",
       "title": "Chicago Open house",
-      "modelSha256": "a9f3678dce4be4110568cd4b1b4db4bb14aa48e0f8a869e507164eb020bfec61",
-      "paintingSha256": "53cdafb6f2a556cb48f5d2c9768105c1b6079f80660b11fb65d0c6e0462c45dd",
+      "modelSha256": "dac4ce805c7da8fb135c570ac796659f16ecfca26994d3b9d1f1ab71f705f94a",
+      "paintingSha256": "1497a18579e80901ca118e093091aeb5b94ff74b513d31c56bf406b7f4bc7b7d",
       "appSha256": "5562af5890990444c4aed4664425fa5533426e07d68cdd12d283bfe313b415ec",
-      "modelBytes": 2043632,
-      "paintingBytes": 24086,
-      "capturedAt": "2026-10-23T18:27:05.343Z",
+      "modelBytes": 2045368,
+      "paintingBytes": 24744,
+      "capturedAt": "2026-10-23T19:30:30.726Z",
       "images": [
         "08-front.png",
-        "08-route-arts-bank.png"
+        "08-route-arts-bank.png",
+        "08-route-palmisano.png",
+        "08-route-temple.png"
       ],
       "functionalChecks": [
         {
           "id": "08",
           "viewport": "desktop",
           "entry": true,
-          "collisionSamples": 40,
+          "collisionSamples": 20,
           "return": true,
           "continuousCamera": true,
           "controls": true,
@@ -277,7 +280,7 @@
           "id": "08",
           "viewport": "phone",
           "entry": true,
-          "collisionSamples": 40,
+          "collisionSamples": 20,
           "return": true,
           "continuousCamera": true,
           "controls": true,

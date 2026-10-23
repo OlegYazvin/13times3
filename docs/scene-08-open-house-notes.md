@@ -57,3 +57,11 @@ Seven named side-route inspection positions now complement the people views.
 ### Current exported evidence, October 23
 
 The latest current-hash walkthrough captures all seven named stops from the route, in addition to the travelers, doorway, side/rear and fresh portrait-phone views. Both travelers’ soles meet the path. The temple remains the Lakeview former-lodge interpretation from the saved itinerary. These views establish the revised volumes and preserved itinerary; they do not claim exact architectural reconstruction.
+
+## Principal elevations and quarry follow-up after d966cbf
+
+The saved route views exposed the temple’s blank side wall and Palmisano’s stacked display slabs. A local composition revision rotates each complete stop toward the promenade, removes redundant copied side elevations, increases architectural scale, lowers the display bases to paving height and moves background street volumes outward to clear the deeper structures. The quarry becomes one modeled meadow descending into a recessed pond with rooted curved grasses. The original seven-stop order and two travelers remain, with continuous ground beyond the reachable street. These are architectural interpretations, not exact replicas; the new views must confirm the result.
+
+The first new quarry view exposed a partially buried water disk; the terrain now forms a real bowl and bank around the water level. The temple view also exposed old hidden courtyard leaves restored by batching. They are removed before batching rather than hidden afterward. A route review camera that relocated around the travelers now keeps the building as its target; the earlier wrong-target capture is an inspection defect, not displaced architecture.
+
+Final export checks: all seven stop views and fresh desktop/portrait-phone entry/return pass. Six lanterns clear the principal wall bounds by at least 0.788 m; seven plaques clear them by at least 0.348 m. The lantern bases and travelers meet the actual packed street within 0.9 mm. These are selected bounds/ray measurements and visual inspection, not proof for every architectural triangle.
