@@ -234,7 +234,7 @@ Current checklist, reviewed against the packed export:
   mermaid close/oblique views and a fresh portrait-phone load.
 - [x] Check current geometry, aquarium containment, collision fallback,
   moving fish, both portal loops, controls, return and cleanup.
-- [ ] Publish only the reviewed result and verify the live assets.
+- [x] Publish only the reviewed result and verify the live assets.
 
 The side and end exhibits now have continuous, physically thick glass fronts,
 beveled stone surrounds, recessed sediment beds, opaque end returns, waterlines
@@ -283,3 +283,5 @@ Evidence: [coral discovery](scene-evidence/11-tanks/coral-discovery.webp),
 [phone](scene-evidence/11-tanks/phone.webp),
 [phone coral discovery](scene-evidence/11-tanks/coral-phone.webp), and
 [verification](scene-evidence/11-tanks/verification.json).
+
+Published in `3988656` through [the successful Pages release](https://github.com/OlegYazvin/13times3/actions/runs/40055328612). The normal live model and preview, the actual app/CSS URLs referenced by the live gallery, and the credits page match the reviewed build. Fresh desktop and portrait-emulation production loads show 41 frames, twelve assigned rooms, no fallback and no page errors. The full Shedd traversal was tested locally against those identical deployed bytes. See [publication evidence](scene-evidence/11-tanks/publication.json).

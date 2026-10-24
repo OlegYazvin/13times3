@@ -1,0 +1,117 @@
+{
+  "verifiedAt": "2026-10-24T02:44:51.414Z",
+  "url": "https://13times3.com/explore/",
+  "applicationCommit": "3988656bf14b3e5c3e7db6f5fdfc2e150037bf95",
+  "workflow": {
+    "id": 40055328612,
+    "url": "https://github.com/OlegYazvin/13times3/actions/runs/40055328612",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "liveHashes": {
+    "at": "2026-10-24T02:44:15.296Z",
+    "results": [
+      {
+        "path": "assets/explore/app.js",
+        "url": "https://13times3.com/assets/explore/app.js?review=0b06197b19af",
+        "query": true,
+        "status": 200,
+        "sha256": "0b06197b19af8935bae0b44d4683ad164f4ad1da076f63604eea68ddc7d892ab",
+        "match": true
+      },
+      {
+        "path": "assets/explore.css",
+        "url": "https://13times3.com/assets/explore.css?review=9f07b2fb7b9e",
+        "query": true,
+        "status": 200,
+        "sha256": "9f07b2fb7b9e0fc84f0f0cbf14dd134ffba2314c51359a331d1a09985746c7c7",
+        "match": true
+      },
+      {
+        "path": "assets/explore/room11/room.glb",
+        "url": "https://13times3.com/assets/explore/room11/room.glb?review=8acfbe4b848a",
+        "query": true,
+        "status": 200,
+        "sha256": "8acfbe4b848a2736d2297e26d8868932d11db6b8e287d37ebd2b28697aa1413f",
+        "match": true
+      },
+      {
+        "path": "assets/explore/room11/preview.webp",
+        "url": "https://13times3.com/assets/explore/room11/preview.webp?review=a947e5f96568",
+        "query": true,
+        "status": 200,
+        "sha256": "a947e5f965689ad37d81888463a9a8bcaf7d0cfcf6c4b2aabf33476bbf0d96a4",
+        "match": true
+      },
+      {
+        "path": "credits/index.html",
+        "url": "https://13times3.com/credits/index.html?review=e1d04a04cc8f",
+        "query": true,
+        "status": 200,
+        "sha256": "e1d04a04cc8f1ee97146111ecf62cf96e73d75aa23c43310cfd82d32b37d24db",
+        "match": true
+      },
+      {
+        "path": "assets/explore/app.js",
+        "url": "https://13times3.com/assets/explore/app.js?v=0b06197b19af",
+        "query": false,
+        "status": 200,
+        "sha256": "0b06197b19af8935bae0b44d4683ad164f4ad1da076f63604eea68ddc7d892ab",
+        "match": true
+      },
+      {
+        "path": "assets/explore.css",
+        "url": "https://13times3.com/assets/explore.css?v=9f07b2fb7b9e",
+        "query": false,
+        "status": 200,
+        "sha256": "9f07b2fb7b9e0fc84f0f0cbf14dd134ffba2314c51359a331d1a09985746c7c7",
+        "match": true
+      },
+      {
+        "path": "assets/explore/room11/room.glb",
+        "url": "https://13times3.com/assets/explore/room11/room.glb",
+        "query": false,
+        "status": 200,
+        "sha256": "8acfbe4b848a2736d2297e26d8868932d11db6b8e287d37ebd2b28697aa1413f",
+        "match": true
+      },
+      {
+        "path": "assets/explore/room11/preview.webp",
+        "url": "https://13times3.com/assets/explore/room11/preview.webp",
+        "query": false,
+        "status": 200,
+        "sha256": "a947e5f965689ad37d81888463a9a8bcaf7d0cfcf6c4b2aabf33476bbf0d96a4",
+        "match": true
+      },
+      {
+        "path": "credits/index.html",
+        "url": "https://13times3.com/credits/index.html",
+        "query": false,
+        "status": 200,
+        "sha256": "e1d04a04cc8f1ee97146111ecf62cf96e73d75aa23c43310cfd82d32b37d24db",
+        "match": true
+      }
+    ]
+  },
+  "productionSmoke": [
+    {
+      "viewport": "desktop",
+      "galleryLoaded": true,
+      "frameCount": 41,
+      "firstModelLoaded": true,
+      "webglCanvas": true,
+      "noFallback": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": "phone",
+      "galleryLoaded": true,
+      "frameCount": 41,
+      "firstModelLoaded": true,
+      "webglCanvas": true,
+      "noFallback": true,
+      "pageErrors": []
+    }
+  ],
+  "scope": "Fresh desktop and portrait-emulation production gallery loads; complete scene 11 entry, movement, contact-free containment, both portal loops, return and cleanup were reviewed locally against the identical deployed model, painting and application hashes. No physical-phone performance claim."
+}

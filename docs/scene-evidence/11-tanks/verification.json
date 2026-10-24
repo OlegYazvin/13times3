@@ -228,5 +228,9 @@
     "remaining": "The scene still juxtaposes detailed painted habitat backdrops and simpler modeled fish and people. This targeted enclosure revision does not establish final artistic acceptance for the larger gallery.",
     "physicalPhonePerformanceTested": false
   },
-  "publication": "pending"
+  "publication": {
+    "status": "verified",
+    "applicationCommit": "3988656bf14b3e5c3e7db6f5fdfc2e150037bf95",
+    "evidence": "publication.json"
+  }
 }
