@@ -280,7 +280,7 @@ function headSculpt(parent,identity,options={}) {
     soft(head,'eye catchlight',[irisX-.0016,eyeY+Math.min(.002,irisHeight*.5),eyeDepth+(anatomy?.004:.0063)],[.001,.001,anatomy?.0002:.0008],mat(0xfff6e2));
     const lid=[];for(let k=0;k<=12;k++){const a=k/12*Math.PI,x=ex+Math.cos(a)*ew,y=et*h+Math.sin(a)*eh;lid.push([x,y,front(x,y/h)+.003]);}
     if(!anatomy)shapedTube(head,'upper lid set into brow',lid,[.001,.0023,.001],mat(skin.clone().multiplyScalar(.78)));
-    const brow=[];for(let k=0;k<=8;k++){const x=ex+(k/8-.5)*ew*2,y=et*h+.019+Math.sin(k/8*Math.PI)*.003+(config.expression==='tender'?.003*(1-Math.abs(x)/(Math.abs(ex)+ew)):0);brow.push([x,y,front(x,y/h)+.002]);}
+    const brow=[];for(let k=0;k<=8;k++){const x=ex+(k/8-.5)*ew*2,y=et*h+.019+Math.sin(k/8*Math.PI)*.003+(config.expression==='tender'?.003*(1-Math.abs(x)/(Math.abs(ex)+ew)):config.expression==='angry'?.010*(Math.abs(x)-Math.abs(ex))/ew-.002:0);brow.push([x,y,front(x,y/h)+.002]);}
     shapedTube(head,'sculpted expressive eyebrow',brow,[.0007,config.expression==='tender'?.002:config.brow||.0026,.0007],mat(hair.clone().lerp(skin,.16)));
   }
   const mouthWidth=identity==='Oleg'?.061:child?.046:.052;

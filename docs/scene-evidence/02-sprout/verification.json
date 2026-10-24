@@ -1,0 +1,551 @@
+{
+  "id": "02",
+  "modelSha256": "c48503a8c2e176996d985e973fc39ddc3348caf4e8f132c246f3fefeb5b99cff",
+  "paintingSha256": "a19bb0f72fc27a00d12a1591354c116beeed2072bb9a123db3302b672b1f2ba6",
+  "appSha256": "f0ee7b911b7860d59a49619e66aa5c3cba6aeef4810c49530fa8990e0be946d9",
+  "recordedAt": "2026-10-24T05:00:02.800Z",
+  "modelBytes": 7074088,
+  "previewBytes": 26280,
+  "functional": {
+    "siteChecksPassed": true,
+    "unitTests": 27,
+    "frameCount": 41,
+    "originalAchievementUrls": 39,
+    "publishedRooms": 12,
+    "onlyChangedFrame": "02",
+    "sproutGeometry": {
+      "recordedAt": "2026-10-24T05:00:03.715Z",
+      "modelSha256": "c48503a8c2e176996d985e973fc39ddc3348caf4e8f132c246f3fefeb5b99cff",
+      "gazeAngleDeg": 0.22583897627961314,
+      "fistSizeM": [
+        0.07694697380065918,
+        0.11888015270233154,
+        0.06179642677307129
+      ],
+      "shoeBottomsM": [
+        2.6743288117359043e-7,
+        2.6743288117359043e-7
+      ],
+      "contacts": [
+        {
+          "hand": "hand-left",
+          "target": "head",
+          "minimumVertexSurfaceDistanceM": 0.14477241149644543,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "hand": "hand-left",
+          "target": "shirt",
+          "minimumVertexSurfaceDistanceM": 0.0009381367753958648,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "hand": "hand-left",
+          "target": "trousers",
+          "minimumVertexSurfaceDistanceM": 0.6544326497733047,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "hand": "hand-right",
+          "target": "head",
+          "minimumVertexSurfaceDistanceM": 0.5260354787442428,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "hand": "hand-right",
+          "target": "shirt",
+          "minimumVertexSurfaceDistanceM": 0.007236434782151642,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "hand": "hand-right",
+          "target": "trousers",
+          "minimumVertexSurfaceDistanceM": 0.05861164590192276,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        }
+      ],
+      "method": "Packed posed surfaces; full hand-vertex distances/containment against head, shirt and trousers, excluding the lower 30 mm wrist/cuff insertion measured from the actual open wrist boundary. Compact fist bounds and head attention supplement multi-angle visual inspection; these checks do not establish artistic likeness or exhaustively prove finger self-contact."
+    },
+    "preservedDeskAdvice": {
+      "modelSha256": "c48503a8c2e176996d985e973fc39ddc3348caf4e8f132c246f3fefeb5b99cff",
+      "recordedAt": "2026-10-24T04:59:29.166Z",
+      "method": "Packed posed fingertip against the real display triangles; selected full-vertex hand/clothing distances and containment supplement the multi-angle visual review. Pointing intentionally leaves air between hand and screen.",
+      "pointing": {
+        "actualFingertipErrorM": 7.333691830219734e-8,
+        "screenHit": [
+          -1.1092169795689149,
+          1.4162210427882649,
+          3.297674887959003
+        ],
+        "distanceToScreenM": 0.7356076973059715
+      },
+      "gazes": [
+        {
+          "identity": "Jane",
+          "angleDeg": 0.47532306536749086
+        },
+        {
+          "identity": "Oleg",
+          "angleDeg": 2.1246871048572507
+        }
+      ],
+      "contacts": [
+        {
+          "label": "supporting palm on the clothed shoulder",
+          "minimumVertexSurfaceDistanceM": 0.00045043215631271723,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "nearest": {
+            "source": [
+              -1.5716238021850586,
+              1.448854684829712,
+              4.378584384918213
+            ],
+            "target": [
+              -1.571779238779934,
+              1.4484583139419556,
+              4.378731417947677
+            ]
+          }
+        },
+        {
+          "label": "pointing hand clears Oleg",
+          "minimumVertexSurfaceDistanceM": 0.3899735262984745,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "nearest": {
+            "source": [
+              -1.1363390684127808,
+              1.3510935306549072,
+              4.173598766326904
+            ],
+            "target": [
+              -1.4770400524139404,
+              1.252208438978668,
+              4.3355368080542585
+            ]
+          }
+        },
+        {
+          "label": "advising sleeves and shirt clear Oleg",
+          "minimumVertexSurfaceDistanceM": 0.0418851738393426,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0,
+          "nearest": {
+            "source": [
+              -1.566742181777954,
+              1.4766615629196167,
+              4.505462169647217
+            ],
+            "target": [
+              -1.582884054538687,
+              1.441834112168159,
+              4.488703398645647
+            ]
+          }
+        }
+      ],
+      "colliders": [
+        {
+          "minX": -5.1650053488163,
+          "maxX": -4.3349946511837,
+          "minZ": 1.8899999904632567,
+          "maxZ": 2.870000009536743
+        },
+        {
+          "minX": -2.7650053488163,
+          "maxX": -1.9349946511837002,
+          "minZ": 1.8899999904632567,
+          "maxZ": 2.870000009536743
+        },
+        {
+          "minX": -5.596756458282471,
+          "maxX": -0.3993532061576843,
+          "minZ": 1.525476252140079,
+          "maxZ": 4.417857254444089
+        },
+        {
+          "minX": -3.61645123939233,
+          "maxX": -2.676438403323124,
+          "minZ": 4.85200483415033,
+          "maxZ": 5.192000568176253
+        },
+        {
+          "minX": -3.566828333724406,
+          "maxX": -2.72681772173557,
+          "minZ": 4.7276099216938015,
+          "maxZ": 5.572390098571777
+        },
+        {
+          "minX": -5.980026288056543,
+          "maxX": -4.0599737119434565,
+          "minZ": 5.799978328784814,
+          "maxZ": 5.940021671215186
+        },
+        {
+          "minX": 3.1261337647298495,
+          "maxX": 3.273866235270151,
+          "minZ": -5.3704801013453265,
+          "maxZ": -5.224996844889376
+        },
+        {
+          "minX": 2.6261337647298495,
+          "maxX": 2.773866235270151,
+          "minZ": -0.970480101345327,
+          "maxZ": -0.8249968448893761
+        },
+        {
+          "minX": 3.6261337647298495,
+          "maxX": 3.773866235270151,
+          "minZ": 3.329519898654673,
+          "maxZ": 3.475003155110624
+        },
+        {
+          "minX": -1.2246885917295662,
+          "maxX": -0.8753114082704339,
+          "minZ": 4.4654845848038605,
+          "maxZ": 4.802616537575442
+        },
+        {
+          "minX": -1.6109763860702515,
+          "maxX": -0.8515202730894089,
+          "minZ": 4.154717575424542,
+          "maxZ": 4.81404702413715
+        },
+        {
+          "minX": -1.8948259172850097,
+          "maxX": -1.5051740827149902,
+          "minZ": 4.279489855274572,
+          "maxZ": 4.560510144725428
+        },
+        {
+          "minX": -2.0046945025500613,
+          "maxX": -1.456848410767619,
+          "minZ": 4.062523879035759,
+          "maxZ": 4.572484377995681
+        },
+        {
+          "minX": -4.019903502802434,
+          "maxX": -3.580096497197566,
+          "minZ": -3.7125259977122536,
+          "maxZ": -3.2874740022877464
+        },
+        {
+          "minX": -4.0911680610216505,
+          "maxX": -3.418020335215169,
+          "minZ": -3.7714991334014014,
+          "maxZ": -3.111499390671928
+        },
+        {
+          "minX": -3.4883114788251035,
+          "maxX": -3.2716885211748963,
+          "minZ": -3.298967226784776,
+          "maxZ": -3.0210327732152242
+        },
+        {
+          "minX": -3.581137486771712,
+          "maxX": -3.2579527002443287,
+          "minZ": -3.3475165225242827,
+          "maxZ": -2.9224483271073
+        },
+        {
+          "minX": -4.3346885917295666,
+          "maxX": -3.985311408270434,
+          "minZ": -4.635149011139496,
+          "maxZ": -4.364850988860504
+        },
+        {
+          "minX": -4.386570506792462,
+          "maxX": -3.953717260260188,
+          "minZ": -4.910977334248869,
+          "maxZ": -4.353220313322694
+        },
+        {
+          "minX": 2.255282760282733,
+          "maxX": 2.6447172397172674,
+          "minZ": 1.6853438789959625,
+          "maxZ": 2.1146561210040375
+        },
+        {
+          "minX": 2.201771000224524,
+          "maxX": 2.8204511432216095,
+          "minZ": 1.4995507265247023,
+          "maxZ": 2.252944350667631
+        },
+        {
+          "minX": 3.328902665291321,
+          "maxX": 3.7710973347086787,
+          "minZ": 1.0608379712269072,
+          "maxZ": 1.539162028773093
+        },
+        {
+          "minX": 3.192819938645197,
+          "maxX": 3.838302439924438,
+          "minZ": 0.9992568258235457,
+          "maxZ": 1.694744498819268
+        },
+        {
+          "minX": 3.5853727820518833,
+          "maxX": 3.8746272179481167,
+          "minZ": 2.3163308399030527,
+          "maxZ": 2.7236691600969474
+        },
+        {
+          "minX": 3.51226923164804,
+          "maxX": 3.8893631957168555,
+          "minZ": 2.267471411537641,
+          "maxZ": 2.8326244675546937
+        },
+        {
+          "minX": -0.45468859172956616,
+          "maxX": -0.10531140827043389,
+          "minZ": -5.785149011139496,
+          "maxZ": -5.514850988860505
+        },
+        {
+          "minX": -0.5169183748960495,
+          "maxX": 0.15178310990333554,
+          "minZ": -5.796765702932543,
+          "maxZ": -5.3826103657787385
+        },
+        {
+          "minX": -0.024825917285009713,
+          "maxX": 0.36482591728500974,
+          "minZ": -6.070510144725428,
+          "maxZ": -5.789489855274572
+        },
+        {
+          "minX": -0.5387776064872741,
+          "maxX": 0.4724970591068268,
+          "minZ": -6.082393437589343,
+          "maxZ": -5.670624688898388
+        },
+        {
+          "minX": -5.594999976158142,
+          "maxX": -4.045000023841858,
+          "minZ": -5.309995260709707,
+          "maxZ": -4.730004739290292
+        },
+        {
+          "minX": 4.288335833019939,
+          "maxX": 4.611664166980061,
+          "minZ": -6.419995719688647,
+          "maxZ": -6.080004280311353
+        },
+        {
+          "minX": 4.818292834999395,
+          "maxX": 5.141621168959517,
+          "minZ": -3.9999957196886466,
+          "maxZ": -3.6600042803113535
+        },
+        {
+          "minX": 4.571861587521744,
+          "maxX": 4.895189921481866,
+          "minZ": -1.579995719688647,
+          "maxZ": -1.2400042803113533
+        },
+        {
+          "minX": 3.9100644454687536,
+          "maxX": 4.2333927794288755,
+          "minZ": 0.840004280311353,
+          "maxZ": 1.1799957196886466
+        },
+        {
+          "minX": 3.802435772373855,
+          "maxX": 4.1257641063339765,
+          "minZ": 3.260004280311353,
+          "maxZ": 3.5999957196886463
+        },
+        {
+          "minX": 4.406651826468238,
+          "maxX": 4.72998016042836,
+          "minZ": 5.680004280311353,
+          "maxZ": 6.019995719688646
+        },
+        {
+          "minX": -5.979897459596302,
+          "maxX": -5.820102543979978,
+          "minZ": -7.800000190734863,
+          "maxZ": 6.199999809265137
+        },
+        {
+          "minX": 2.743033618766194,
+          "maxX": 3.239368084826743,
+          "minZ": -3.0248543628246547,
+          "maxZ": -2.549422278641662
+        },
+        {
+          "minX": 2.6602898868711007,
+          "maxX": 2.9153524634833587,
+          "minZ": -2.870769614159231,
+          "maxZ": -2.586714481186652
+        },
+        {
+          "minX": 3.04175381143508,
+          "maxX": 3.2771479052642585,
+          "minZ": -2.886910164871499,
+          "maxZ": -2.5951992981985503
+        },
+        {
+          "minX": 2.4444710743762403,
+          "maxX": 3.411912974510555,
+          "minZ": -3.2263322401429084,
+          "maxZ": -2.4089363380718147
+        },
+        {
+          "minX": 1.9600599799173095,
+          "maxX": 2.5049313762827037,
+          "minZ": -2.4464667565691123,
+          "maxZ": -1.901595360203718
+        }
+      ]
+    },
+    "collisionFootprints": 42,
+    "maxBrowserVsFallbackCollisionDeltaM": 0,
+    "browserResults": [
+      {
+        "id": "02",
+        "name": "hall-depth-isolation",
+        "passed": true
+      },
+      {
+        "id": "02",
+        "name": "entry",
+        "x": 0,
+        "z": 8.049999999999999,
+        "yaw": 0,
+        "pitch": 0,
+        "stand": true
+      },
+      {
+        "id": "02",
+        "name": "advisor-screen",
+        "x": 0.3,
+        "z": 4.4,
+        "yaw": -1.12,
+        "pitch": -0.13,
+        "stand": true
+      },
+      {
+        "id": "02",
+        "name": "sprout-front",
+        "x": 1.4,
+        "z": -0.2,
+        "yaw": 0.55,
+        "pitch": -0.24,
+        "stand": true
+      },
+      {
+        "id": "02",
+        "name": "sprout-angle",
+        "x": 3.7,
+        "z": -0.5,
+        "yaw": -0.296,
+        "pitch": -0.2,
+        "stand": true
+      },
+      {
+        "id": "02",
+        "name": "sprout-profile",
+        "x": 4.5,
+        "z": -2.8,
+        "yaw": -1.5707963267948966,
+        "pitch": -0.22,
+        "stand": true
+      },
+      {
+        "id": "02",
+        "name": "sprout-rear",
+        "x": 3.6,
+        "z": -4.55,
+        "yaw": -2.811,
+        "pitch": -0.2,
+        "stand": true
+      },
+      {
+        "id": "02",
+        "name": "sprout-fist",
+        "x": 1.4,
+        "z": -1.65,
+        "yaw": 0.82,
+        "pitch": 0,
+        "stand": true
+      },
+      {
+        "id": "02",
+        "name": "sprout walking route and circuit",
+        "viewport": "desktop",
+        "passed": true
+      },
+      {
+        "id": "02",
+        "viewport": "desktop",
+        "entry": true,
+        "collisionSamples": 40,
+        "return": true,
+        "continuousCamera": true,
+        "controls": true,
+        "cleanup": true
+      },
+      {
+        "id": "02",
+        "name": "phone",
+        "x": 0,
+        "z": 8.049999999999999,
+        "yaw": 0,
+        "pitch": 0,
+        "stand": true
+      },
+      {
+        "id": "02",
+        "name": "sprout-phone",
+        "x": 1.4,
+        "z": -0.2,
+        "yaw": 0.55,
+        "pitch": -0.18,
+        "stand": true
+      },
+      {
+        "id": "02",
+        "name": "sprout walking route and circuit",
+        "viewport": "phone",
+        "passed": true
+      },
+      {
+        "id": "02",
+        "viewport": "phone",
+        "entry": true,
+        "collisionSamples": 40,
+        "return": true,
+        "continuousCamera": true,
+        "controls": true,
+        "cleanup": true
+      }
+    ]
+  },
+  "visual": {
+    "reviewed": [
+      "entry",
+      "phone",
+      "advisor-screen",
+      "sprout-front",
+      "sprout-angle",
+      "sprout-profile",
+      "sprout-rear",
+      "sprout-fist",
+      "sprout-phone",
+      "hallway",
+      "reveal",
+      "return"
+    ],
+    "judgment": "A third symbolic Oleg scowls down at a little potted two-leaf sprout with a raised clenched fist, in a distinct street-side vignette. The curled fingers and opposed thumb read as a fist in the inspected front, profile and rear views. Both shoes and the three-legged stool meet the ground. The plant, body and existing street furniture remain separate, with a tested walking circuit. Jane’s five acts of support and the desk arrangement remain readable.",
+    "remaining": "The larger shared-character likeness and environment art checklist remains open. This addition uses the established static tableau style. Geometry samples supplement visual inspection and do not prove every finger self-contact. Physical-phone frame rate was not measured."
+  },
+  "publication": "pending"
+}

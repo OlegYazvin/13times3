@@ -178,7 +178,7 @@ def main() -> None:
     assert job_names.count("branching tree along Jane's symbolic street") == 6, "Room 02 needs six modeled street trees"
     assert sum(node.get("name") == "solid tree trunk collision core" and bool(node.get("extras", {}).get("solidFootprint")) for node in job_json["nodes"]) == 6, "Room 02 tree trunks must collide"
     assert job_names.count("two fitted orange drawer cabinets below the curved desk") == 2, "Room 02 desk needs the fitted drawer cabinets"
-    assert sum(node.get("extras", {}).get("storyFigure", False) and node.get("extras", {}).get("identity") == "Oleg" for node in job_json["nodes"]) == 2, "Room 02 needs both dimensional Oleg figures"
+    assert sum(node.get("extras", {}).get("storyFigure", False) and node.get("extras", {}).get("identity") == "Oleg" for node in job_json["nodes"]) == 3, "Room 02 needs desk, comfort, and sprout-rejection Oleg figures"
     friendship_room = frames[2]["room"]
     assert friendship_room["title"] == "Jane made sure Zephrine has a best friend (Charlize)"
     assert friendship_room["caption"] == "A friendship Jane made room for"
@@ -431,7 +431,7 @@ def main() -> None:
     jam_people = {n.get("extras", {}).get("identity") for n in jam_json["nodes"] if n.get("extras", {}).get("storyFigure")}
     assert {"Jane", "Zephrine", "Jam child friend", "Jonas Friddle", "Oleg"} <= jam_people, "The jam lost a principal person or the children's friendship"
     assert {"guitar", "banjo", "mandolin", "fiddle", "bass", "frame drum"} <= {n.get("extras", {}).get("folkInstrument") for n in jam_json["nodes"]}, "The jam lost its varied folk instruments"
-    expected_counts = [2, 10, 4, 3, 3, 2, 4, 2, 7, 7, 4, 13]
+    expected_counts = [2, 11, 4, 3, 3, 2, 4, 2, 7, 7, 4, 13]
     for frame_id, minimum in enumerate(expected_counts, 1):
         model = (OUTPUT / f"assets/explore/room{frame_id:02d}/room.glb").read_bytes()
         json_length = int.from_bytes(model[12:16], "little")

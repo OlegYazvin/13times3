@@ -8,7 +8,8 @@ const sourceFor=(identity,child)=>sources[child?(identity==='Zephrine'?'toddler'
 function poseHand(source,style,grip,curl,thumbTurn){
  const key=source.positions,cacheKey=`${style}:${grip}:${curl}:${thumbTurn}`;let cache=posed.get(key);if(!cache){cache=new Map();posed.set(key,cache);}if(cache.has(cacheKey))return cache.get(cacheKey);
  const fingers=source.fingers.map(f=>f.map(V));
- const angles=fingers.map((f,i)=>(style==='touch'&&i===1?[0,.05,.05]:i===0&&(grip||style==='cup'||style==='touch')?[.15,.30,.20]:style==='cup'?[.13,.30,.15]:grip||style==='touch'?[.25,.55,.20]:[.03,.07,.04]).map(v=>v*(grip&&style==='normal'?curl:1)));
+ const angles=fingers.map((f,i)=>(style==='fist'?(i===0?[-.1,.25,.10]:[1.15,1.45,.45]):style==='touch'&&i===1?[0,.05,.05]:i===0&&(grip||style==='cup'||style==='touch')?[.15,.30,.20]:style==='cup'?[.13,.30,.15]:grip||style==='touch'?[.25,.55,.20]:[.03,.07,.04]).map(v=>v*(grip&&style==='normal'?curl:1)));
+ let opposition=style==='fist'?Math.sign(fingers[0][0].x)*1.3:0;
  function deform(p,finger){
    const joints=fingers[finger],original=p.clone(),q=p.clone();
    for(let k=2;k>=0;k--){
@@ -16,8 +17,24 @@ function poseHand(source,style,grip,curl,thumbTurn){
      const influence=THREE.MathUtils.smoothstep(original.clone().sub(joints[k]).dot(direction),-.035,.045);
      q.sub(joints[k]).applyAxisAngle(axis,angles[finger][k]*influence).add(joints[k]);
    }
-   if(finger===0&&(grip||style==='cup'||style==='touch'||style==='write'))q.sub(joints[0]).applyAxisAngle(new THREE.Vector3(0,1,0),joints[0].x<0?thumbTurn:-thumbTurn).add(joints[0]);
+   if(finger===0&&(grip||style==='cup'||style==='touch'||style==='write'||style==='fist'))q.sub(joints[0]).applyAxisAngle(new THREE.Vector3(0,1,0),joints[0].x<0?thumbTurn:-thumbTurn).add(joints[0]);
+   if(finger===0&&opposition)q.sub(joints[0]).applyAxisAngle(Z,opposition).add(joints[0]);
    return q;
+ }
+ if(style==='fist'){
+   // Oppose the anatomical thumb across the curled fingers, outside their
+   // pads. A fist with a sideways, unopposed thumb reads as an open claw.
+   const target=new THREE.Vector3(-Math.sign(fingers[0][0].x)*.12,.45,.24);
+   const error=()=>deform(fingers[0][3],0).distanceToSquared(target);
+   for(const step of[.25,.10,.04,.015])for(let pass=0;pass<8;pass++){
+     for(let k=0;k<5;k++){
+       const get=()=>k<3?angles[0][k]:k===3?thumbTurn:opposition;
+       const set=v=>{if(k<3)angles[0][k]=THREE.MathUtils.clamp(v,-.35,1);else if(k===3)thumbTurn=THREE.MathUtils.clamp(v,-.5,.9);else opposition=THREE.MathUtils.clamp(v,opposition<0?-1.8:.3,opposition<0?-.3:1.8);};
+       const before=get();let best=error(),chosen=before;
+       for(const delta of[-step,step]){set(before+delta);const e=error();if(e<best){best=e;chosen=get();}}
+       set(chosen);
+     }
+   }
  }
  const writing=style==='write'?fitWritingFingers(fingers,angles,deform,()=>thumbTurn,v=>{thumbTurn=v;}):null;
  const positions=[],tipCandidates=[],pinchCandidates=[[],[]];

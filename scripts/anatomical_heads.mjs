@@ -32,6 +32,12 @@ export function anatomicalHead(identity,config,h){
      const lid=Math.exp(-(((Math.abs(x)-eyeX)/.025)**4+((y-eyeT*h)/.012)**4))*forward;
      y+=(y-eyeT*h)*.10*lid;
    }
+   if(config.expression==='angry'){
+     const brow=Math.exp(-(((Math.abs(x)-eyeX*.68)/.027)**4+((y-eyeT*h-.017)/.017)**4))*forward;
+     y-=brow*.0045;z+=brow*.0015;
+     const lid=Math.exp(-(((Math.abs(x)-eyeX)/.025)**4+((y-eyeT*h-.004)/.007)**4))*forward;
+     y-=lid*.0015;
+   }
    if(identity==='Oleg'){
      x*=1+.08*(1-THREE.MathUtils.smoothstep(t,.16,.48));
      x*=1-.12*Math.exp(-((x/.045)**4+((t-.31)/.14)**2))*forward;
@@ -43,7 +49,7 @@ export function anatomicalHead(identity,config,h){
    }
    if(identity==='Jane')x*=1+.07*(1-THREE.MathUtils.smoothstep(t,.13,.36));
    const mouth=Math.exp(-(((t-mouthT)/.065)**2))*forward;
-   const smile=config.expression==='tender'?.0038:config.expression==='joy'?.010:config.expression==='proud'?.008:child?.005:.004;
+   const smile=config.expression==='angry'?-.006:config.expression==='tender'?.0038:config.expression==='joy'?.010:config.expression==='proud'?.008:child?.005:.004;
    y+=smile*mouth*THREE.MathUtils.smoothstep(Math.abs(x),.010,.032);
    positions.push(x,y,z);
    const c=skin.clone(),cheek=Math.exp(-(((Math.abs(x)-(child?.065:.055))/.033)**2+((t-.30)/.15)**2))*forward;

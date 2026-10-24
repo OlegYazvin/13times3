@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {ADVICE_LAPTOP,ADVICE_SCREEN_POINT} from './scene02_arrangement.mjs';
+import {addSproutRejection} from './scene02_sprout.mjs';
 
 // The remembered home unfolds into the street as one architectural gesture.
 // The people and their five simultaneous acts of support stay in place.
@@ -37,4 +38,5 @@ export function composeSupportWorld(root){
   // A solid cut edge explains the thickness of the lifted plaster sheet.
   const curve=new THREE.CatmullRomCurve3(Array.from({length:49},(_,i)=>{const z=-7.8+12*i/48;return new THREE.Vector3(-2.3,4.52+.12*Math.sin(z*.32),z);}));
   const edge=new THREE.Mesh(new THREE.TubeGeometry(curve,96,.035,8,false),new THREE.MeshStandardMaterial({color:0xc3b395,roughness:.9}));edge.name='joined plaster edge of the unfolding home';root.add(edge);
+  addSproutRejection(root);
 }

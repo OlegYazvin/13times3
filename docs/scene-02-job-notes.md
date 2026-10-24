@@ -116,3 +116,52 @@ All 37 browser collision footprints exactly match the revised fallback. Current-
 Evidence: [entered view](scene-evidence/02-advice/entry.webp), [desk exchange](scene-evidence/02-advice/advisor-screen.webp), [front](scene-evidence/02-advice/advisor-front.webp), [rear](scene-evidence/02-advice/advisor-rear.webp), [phone](scene-evidence/02-advice/phone.webp), [closer portrait view](scene-evidence/02-advice/advisor-phone.webp), [before painting](scene-evidence/02-advice/before-painting.webp), and [verification](scene-evidence/02-advice/verification.json).
 
 Published in `bee59da` through [the successful Pages release](https://github.com/OlegYazvin/13times3/actions/runs/40059204433). The normal live model/preview and the actual app/CSS URLs referenced by the gallery match the reviewed build. Fresh desktop and portrait-emulation production loads pass without fallback or page errors; live frame 02 data exactly matches the reviewed manifest. Full room exploration was tested locally against those identical deployed bytes. See [publication evidence](scene-evidence/02-advice/publication.json).
+
+## Shaking a fist at a sprout — October 24
+
+Oleg requests a further symbolic version of himself angrily shaking his fist
+at a sprout, referencing his rejection by Sprout Social. This revises frame 02;
+it does not reserve another room. The side vignette uses an unbranded two-leaf
+seedling on a little terracotta pot and wooden stool. The desk advisor and all
+five simultaneous acts of Jane's support stay in place. The sculpted Oleg uses
+the existing private portrait proportions, glasses, swept hair and short beard.
+Those photographs and their metadata remain private.
+
+Review checklist for the new vignette (source work is not visual acceptance):
+
+- [x] Inspect the angry expression and closed fist at normal walking distance.
+- [x] Inspect front, three-quarter, profile, rear and close hand views.
+- [x] Check gaze toward the sprout, sleeves, wrist and fingers for bad contact.
+- [x] Check the potted plant, stool and nearby street geometry from both sides.
+- [x] Confirm desk advice still passes its screen and shoulder-contact checks.
+- [x] Align revised collision and verify entry, movement and continuous return.
+- [x] Review a fresh portrait-phone load and run site/geometry checks.
+- [ ] Publish the reviewed export and verify the live bytes.
+
+Reviewed model: **7,074,088 bytes**, SHA-256
+`c48503a8c2e176996d985e973fc39ddc3348caf4e8f132c246f3fefeb5b99cff`,
+plus a 26,280-byte painting. Oleg has modeled knitted brows, a downturned
+mouth, curled anatomical fingers and an opposed thumb. His head direction
+is within 0.23° of the sprout. Selected full hand-vertex checks find no
+penetration deeper than 1 mm into his head, shirt or trousers beyond the
+intentional lower 30 mm wrist/cuff join. The check locates the actual open
+wrist boundary; compressed mesh origins are not anatomical wrist locations.
+Both shoes meet the floor. The pot meets its saucer and stool, and the leaves
+have dimensional undersides. This is a raised-fist pose in the existing static
+tableau style, with air between the fist and sprout.
+
+The vignette moved slightly inward after a walking check found a tight passage
+beside the street trees. Desktop and fresh portrait-emulation checks now walk
+from the doorway to a complete circuit around the figure and plant. All 42
+browser collision footprints match the revised fallback exactly. Entry,
+keyboard movement, sustained touch turning, continuous return, cleanup and
+the room-02 hallway-depth isolation regression pass. The desk pair retains its
+0.736 m pointing gap and 0.450 mm shoulder contact. Site checks preserve all
+39 original achievement URLs, 41 stable IDs, twelve published rooms and blank
+frames 13–41; all 27 unit tests pass. Only frame 02's manifest record changes.
+
+[Before/after views and representative evidence](scene-evidence/02-sprout/index.html)
+and [verification details](scene-evidence/02-sprout/verification.json) distinguish
+functional checks from artistic judgment. The wider character likeness and
+environment art checklist remains open. Physical-phone frame rate is unmeasured.
+Publication is pending live-file verification.

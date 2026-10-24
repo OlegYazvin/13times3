@@ -121,6 +121,7 @@ if(process.argv.includes('--global')){
     }
     if(f.id==='02')shots.push(['care',-3.3,-1.2,0],['household',-3.1,-4.6,-Math.PI/2,-.25],['contacts',2.5,4.2,0],['embrace',0,-2.7,0],['embrace-rear',-1,-7.8,2.75]);
     if(f.id==='02')shots.push(['advisor',-.15,6.0,-.62,-.13],['advisor-screen',.3,4.4,-1.12,-.13],['advisor-front',.25,3.3,-2.37,-.10],['advisor-rear',-.9,5.8,0,-.10]);
+    if(f.id==='02')shots.push(['sprout-front',1.4,-.2,.55,-.24],['sprout-angle',3.7,-.5,-.296,-.20],['sprout-profile',4.5,-2.8,-Math.PI/2,-.22],['sprout-rear',3.6,-4.55,-2.811,-.20],['sprout-fist',1.4,-1.65,.82,0]);
 
     if(f.id==='12')shots.push(['borellis',0,4.5,Math.PI,-.08],['borellis-side',-4.3,7.5,Math.PI/2,-.12],['portal-back',0,5.0,0],['children',.60,.6,0,-.40],['jonas',1.70,-.65,-.2,-.06],['beat-windows',-4,-5.8,0],
       ['beat-bar',-3.5,-5.8,Math.atan2(-2.3,1.25),-.10],['beat-bar-side',-4.1,-9.3,Math.atan2(-1.7,-2.25),-.10],
@@ -134,6 +135,7 @@ if(process.argv.includes('--global')){
     }
    }
    if(f.id==='02'&&phone&&!process.argv.includes('--checks'))shots.push(['advisor-phone',.1,6.5,-.55,-.08]);
+   if(f.id==='02'&&phone&&!process.argv.includes('--checks'))shots.push(['sprout-phone',1.4,-.2,.55,-.18]);
    if(f.id==='11'&&phone&&!process.argv.includes('--checks'))shots.push(['mermaid-phone',6.0,5.15,Math.PI/2,-.14]);
    if(f.id==='12'&&phone&&!process.argv.includes('--checks'))shots.push(['beat-bar-phone',-3.5,-5.8,Math.atan2(-2.3,1.25),-.10],['borellis-phone',0,4.5,Math.PI,-.08]);
    if(f.id==='08'&&!phone&&!returnsOnly&&!process.argv.includes('--checks'))for(const [stop,z,side]of[['pullman',7.05,-1],['avalon',5.8,1],['arts-bank',2.1,-1],['narrow-bridge',-1.65,1],['palmisano',-5.4,-1],['saint-ignatius',-9.15,1],['temple',-12.05,-1]]){
@@ -145,6 +147,7 @@ if(process.argv.includes('--global')){
     for(let i=shots.length-1;i>=0;i--)if(!keep.has(shots[i][0]))shots.splice(i,1);
    }
    if(f.id==='02'&&process.argv.includes('--advisor')){const keep=new Set(['entry','advisor','advisor-screen','advisor-front','advisor-rear','phone','advisor-phone']);for(let i=shots.length-1;i>=0;i--)if(!keep.has(shots[i][0]))shots.splice(i,1);}
+   if(f.id==='02'&&process.argv.includes('--sprout')){const keep=new Set(['entry','advisor-screen','sprout-front','sprout-angle','sprout-profile','sprout-rear','sprout-fist','phone','sprout-phone']);for(let i=shots.length-1;i>=0;i--)if(!keep.has(shots[i][0]))shots.splice(i,1);}
    if(f.id==='12'&&process.argv.includes('--venues')){const keep=new Set(['entry','phone','beat-windows','beat-bar','beat-bar-side','belmont-view','leavitt-view','borellis','borellis-side','borellis-bar','borellis-bar-side','borellis-piano','beat-bar-phone','borellis-phone','portal-back']);for(let i=shots.length-1;i>=0;i--)if(!keep.has(shots[i][0]))shots.splice(i,1);}
    if(f.id==='12'&&process.argv.includes('--subjects')){const keep=new Set(['entry','phone','front','profile-left','profile-right','left','right','rear','close','children','jonas']);for(let i=shots.length-1;i>=0;i--)if(!keep.has(shots[i][0]))shots.splice(i,1);}
    let captured=0;
@@ -163,7 +166,7 @@ if(process.argv.includes('--global')){
     if(name==='front'&&f.id==='03')pitch=-.28;
     if(name==='front'&&f.id==='04')pitch=-.22;
     if(f.id==='06'&&['front','profile-left','profile-right','left','right','rear','close'].includes(name))pitch=name==='front'||name==='close'?-.44:-.32;
-    const focal=f.id==='06'&&name.startsWith('food-')&&['nigiri','avocado','blueberries','rice','smoothie','chicken'].includes(name.slice(5))?(()=>{const i=['nigiri','avocado','blueberries','rice','smoothie','chicken'].indexOf(name.slice(5)),x=-2.25+i*.90;return[x,.10+.15*x*x];})():f.id==='02'?({care:[-3.5,-3.3],household:[-4.16,-4.50],contacts:[3.1,1.9],embrace:[-.1,-5.65],'embrace-rear':[-.1,-5.65]}[name]||[tx,tz]):f.id==='08'?({'route-pullman':[-3.8,7.05],'route-avalon':[4.25,5.8],'route-arts-bank':[-4.25,2.1],'route-narrow-bridge':[4.25,-1.65],'route-palmisano':[-4.25,-5.4],'route-saint-ignatius':[4.25,-9.15],'route-temple':[-4.25,-12.05]}[name]||[tx,tz]):[tx,tz];
+    const focal=f.id==='06'&&name.startsWith('food-')&&['nigiri','avocado','blueberries','rice','smoothie','chicken'].includes(name.slice(5))?(()=>{const i=['nigiri','avocado','blueberries','rice','smoothie','chicken'].indexOf(name.slice(5)),x=-2.25+i*.90;return[x,.10+.15*x*x];})():f.id==='02'?(name.startsWith('sprout-')?[3,-2.8]:{care:[-3.5,-3.3],household:[-4.16,-4.50],contacts:[3.1,1.9],embrace:[-.1,-5.65],'embrace-rear':[-.1,-5.65]}[name]||[tx,tz]):f.id==='08'?({'route-pullman':[-3.8,7.05],'route-avalon':[4.25,5.8],'route-arts-bank':[-4.25,2.1],'route-narrow-bridge':[4.25,-1.65],'route-palmisano':[-4.25,-5.4],'route-saint-ignatius':[4.25,-9.15],'route-temple':[-4.25,-12.05]}[name]||[tx,tz]):[tx,tz];
     let stand=await p.evaluate(([x,z])=>window.__galleryTestRoomCanStand(x,z),[x,z]);
     if(!stand){for(const [dx,dz] of [[.9,0],[-.9,0],[0,.9],[0,-.9],[1.4,0],[-1.4,0],[2.5,0],[-2.5,0]])if(await p.evaluate(([x,z])=>window.__galleryTestRoomCanStand(x,z),[x+dx,z+dz])){x+=dx;z+=dz;yaw=Math.atan2(focal[0]-x,z-focal[1]);stand=true;break;}}
     if(!stand){results.push({id:f.id,name,unreachable:true});continue;}
@@ -181,6 +184,15 @@ if(process.argv.includes('--global')){
    const interior=state.roomColliders.filter(c=>c.minX>-f.room.dimensionsM[0]/2&&c.maxX<f.room.dimensionsM[0]/2&&c.minZ>-f.room.dimensionsM[2]/2&&c.maxZ<f.room.dimensionsM[2]/2);
    const permitted=await p.evaluate(cs=>cs.map(c=>window.__galleryTestRoomCanStand((c.minX+c.maxX)/2,(c.minZ+c.maxZ)/2)),interior.slice(0,40));
    assert.ok(permitted.every(x=>x===false),`frame ${f.id}: cannot stand inside solid`);
+   if(f.id==='02'){
+    await p.evaluate(()=>window.__galleryTestRoomPose(.9,7.9,0));
+    for(const point of[[.9,4],[.9,-.2],[1.4,-.2],[3.8,-.2],[3.8,-.5],[4,-2.3],[3.9,-4.55],[1.4,-4.55],[1.4,-.2]]){
+      await p.evaluate(([x,z])=>window.__galleryTestRoomMove(x,z),point);
+      const s=await p.evaluate(()=>window.__galleryDebug());assert.equal(s.mode,'room');
+      assert.ok(Math.hypot(s.roomLocal.x-point[0],s.roomLocal.z-point[1])<.08,'frame 02: clear route to and around the sprout vignette '+JSON.stringify({intended:point,actual:s.roomLocal}));
+    }
+    results.push({id:f.id,name:'sprout walking route and circuit',viewport:phone?'phone':'desktop',passed:true});
+   }
    if(f.id==='12'&&process.argv.includes('--soak')&&!phone){
     const samples=[];
     for(let cycle=0;cycle<6;cycle++){
