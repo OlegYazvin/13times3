@@ -18,7 +18,7 @@ in the actual poses. All texture maps and eye glints are removed. Weight-bearing
 surfaces fit the posed clothing. Jane uses the existing dimensional sculpture
 system; no private photograph or metadata is embedded.
 
-Observed checklist (reviewed candidate; publication pending):
+Observed checklist:
 
 - [x] Inspect candidate cats and the first exported arrangement from front, sides and rear.
 - [x] Correct the raised-hand gap, hand/head intersection and stool contact exposed by that review.
@@ -26,7 +26,7 @@ Observed checklist (reviewed candidate; publication pending):
   shoulder, lap, hands and stool each have a sampled support gap below 2 mm.
 - [x] Inspect the final packed asset from normal distance, close, profiles and rear on desktop and fresh portrait emulation.
 - [x] Verify walking routes, build/site/model checks, and unchanged memory assets and assignments.
-- [ ] Publish and verify live bytes and fresh browser loads.
+- [x] Publish and verify live bytes and fresh browser loads.
 
 The [multi-angle review](scene-evidence/cat-whisperer/index.html) and
 [verification record](scene-evidence/cat-whisperer/verification.json) bind the
@@ -41,6 +41,12 @@ The two visible walking lanes and existing plinth collision are retained. The
 sculpture bounds stay inside that plinth. Source contact tests and functional
 checks do not establish portrait likeness or physical-phone performance. The
 wider memory-scene art backlog remains open.
+
+Published as `ecf46f85a14a73cd37ef3b88a017de367a672079` in [Pages run 40116976297](https://github.com/OlegYazvin/13times3/actions/runs/40116976297).
+The normal live route, app, sculpture and Credits match the reviewed bytes.
+Fresh desktop and portrait production loads receive the sculpture and accessible
+description without page errors or fallback. The full multi-angle sculpture
+review used these identical model and app bytes locally.
 
 ## A Fighter in Me — static entrance painting
 

@@ -204,5 +204,123 @@
     "assignedRooms": 12,
     "unitTestsPassed": 34,
     "allPublishedModelsValid": true
+  },
+  "publication": {
+    "commit": "ecf46f85a14a73cd37ef3b88a017de367a672079",
+    "workflow": "https://github.com/OlegYazvin/13times3/actions/runs/40116976297",
+    "runId": 40116976297,
+    "conclusion": "success",
+    "checkedAt": "2026-10-24T17:40:24.503Z",
+    "normalRoute": {
+      "url": "https://13times3.com/explore/",
+      "status": 200,
+      "sha256": "87b2cddd26e4c13b7c2e2c96c174848e882734da8376b5d2f9e352d080348ac4",
+      "expectedSha256": "87b2cddd26e4c13b7c2e2c96c174848e882734da8376b5d2f9e352d080348ac4",
+      "match": true,
+      "checkedAt": "2026-10-24T17:39:21.768Z"
+    },
+    "liveAssetChecks": [
+      {
+        "path": "explore/index.html",
+        "url": "https://13times3.com/explore/index.html?review=87b2cddd26e4",
+        "query": true,
+        "status": 200,
+        "sha256": "87b2cddd26e4c13b7c2e2c96c174848e882734da8376b5d2f9e352d080348ac4",
+        "match": true
+      },
+      {
+        "path": "assets/explore/app.js",
+        "url": "https://13times3.com/assets/explore/app.js?review=cf502dffc95a",
+        "query": true,
+        "status": 200,
+        "sha256": "cf502dffc95ae655b5e249d11abc6336003d57ea140aa9c6c22f4baa6a382fd8",
+        "match": true
+      },
+      {
+        "path": "assets/explore/museum/cat-whisperer.glb",
+        "url": "https://13times3.com/assets/explore/museum/cat-whisperer.glb?review=ef4573efb8a1",
+        "query": true,
+        "status": 200,
+        "sha256": "ef4573efb8a19ec61d5fb39171ca9d4c22b614dfb053ee9556111c29a151a9b6",
+        "match": true
+      },
+      {
+        "path": "credits/index.html",
+        "url": "https://13times3.com/credits/index.html?review=fc9f0cabb519",
+        "query": true,
+        "status": 200,
+        "sha256": "fc9f0cabb519df5f26d467035f7850071d32b70215715fec3c9233e337a293bc",
+        "match": true
+      },
+      {
+        "path": "explore/index.html",
+        "url": "https://13times3.com/explore/index.html",
+        "query": false,
+        "status": 200,
+        "sha256": "87b2cddd26e4c13b7c2e2c96c174848e882734da8376b5d2f9e352d080348ac4",
+        "match": true
+      },
+      {
+        "path": "assets/explore/app.js",
+        "url": "https://13times3.com/assets/explore/app.js?v=cf502dffc95a",
+        "query": false,
+        "status": 200,
+        "sha256": "cf502dffc95ae655b5e249d11abc6336003d57ea140aa9c6c22f4baa6a382fd8",
+        "match": true
+      },
+      {
+        "path": "assets/explore/museum/cat-whisperer.glb",
+        "url": "https://13times3.com/assets/explore/museum/cat-whisperer.glb",
+        "query": false,
+        "status": 200,
+        "sha256": "ef4573efb8a19ec61d5fb39171ca9d4c22b614dfb053ee9556111c29a151a9b6",
+        "match": true
+      },
+      {
+        "path": "credits/index.html",
+        "url": "https://13times3.com/credits/index.html",
+        "query": false,
+        "status": 200,
+        "sha256": "fc9f0cabb519df5f26d467035f7850071d32b70215715fec3c9233e337a293bc",
+        "match": true
+      }
+    ],
+    "freshLiveLoads": [
+      {
+        "viewport": "desktop",
+        "directEntrance": true,
+        "noControlsOverlay": true,
+        "catWhispererResponse200": true,
+        "catDescriptionPresent": true,
+        "exactAccessibleTitle": true,
+        "manifestMatches": true,
+        "frameCount": 41,
+        "exhibitedFrameCount": 13,
+        "plannedFrame": "13",
+        "assignedRooms": 12,
+        "statueResponse200": true,
+        "firstRoomResponse200": true,
+        "noFallback": true,
+        "pageErrors": []
+      },
+      {
+        "viewport": "phone",
+        "directEntrance": true,
+        "noControlsOverlay": true,
+        "catWhispererResponse200": true,
+        "catDescriptionPresent": true,
+        "exactAccessibleTitle": true,
+        "manifestMatches": true,
+        "frameCount": 41,
+        "exhibitedFrameCount": 13,
+        "plannedFrame": "13",
+        "assignedRooms": 12,
+        "statueResponse200": true,
+        "firstRoomResponse200": true,
+        "noFallback": true,
+        "pageErrors": []
+      }
+    ],
+    "visualScope": "Full sculpture multi-angle review used identical local model and app bytes. Fresh production loads verified entrance, model response, accessible title, manifest and absence of fallback/errors."
   }
 }
