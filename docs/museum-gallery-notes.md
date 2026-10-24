@@ -67,7 +67,7 @@ These checkboxes track observed exported results, not source-code intentions.
 - [x] Verify optional Help, desktop and sustained touch controls, resize and fallback.
 - [x] Recheck entry/return and stencil isolation for all twelve portal worlds.
 - [x] Run site, packed-geometry and unit checks; preserve original URLs/IDs.
-- [ ] Publish the reviewed build and verify normal live assets and fresh loads.
+- [x] Publish the reviewed build and verify normal live assets and fresh loads.
 
 ## Observed review
 
@@ -126,3 +126,8 @@ with generous depth. Confident, accomplished thick and thin visible oil brushwor
 richly colored shadows. Rectangular landscape aspect 3:2. The image is only the
 actual painting, edge to edge, straight on: no frame, no wall, no lettering,
 signature or watermark. Original composition, no named artist.
+
+
+## Published and verified
+
+Art release `74bfbf660431a8d3f59b1fcebbfb9caa5c9c189b` deployed in [successful Pages run 40069565396](https://github.com/OlegYazvin/13times3/actions/runs/40069565396). The normal live HTML and all eight checked assets match the reviewed files, including the museum sculpture, paintings, app, CSS and credits. Fresh desktop and portrait production loads show the direct entrance, current manifest and models without fallback or page errors. The complete museum and twelve portal-world walkthroughs were tested locally against these identical deployed assets. See the [publication record](scene-evidence/museum/publication.json).

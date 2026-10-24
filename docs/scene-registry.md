@@ -21,7 +21,7 @@ The gallery has 41 stable frame IDs. The 39 original achievement pages are a sep
 
 Frames `01`–`12` have published scene assignments. Frame `12`’s furnished venue revision and upstairs street views are deployed and verified against their reviewed assets; frames `13`–`41` remain unassigned blank portals.
 
-The shared museum hub is being revised as **Jane's Year Exhibit**: five broad
+The shared museum hub is published as **Jane's Year Exhibit**: five broad
 galleries with paintings, stone architecture, sculpture islands, benches and
 flame sconces with nearby crackling. **The Dishwasher Dilemma** is a standalone
 monochrome stone assemblage of Jane sweating beside an open, loaded dishwasher,

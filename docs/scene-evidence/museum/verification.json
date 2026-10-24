@@ -589,5 +589,10 @@
     "judgment": "The physical exhibit entrance is legible in desktop and portrait views. The shared world reads as broad museum galleries with framed art, stone finishes, coffered and circular ceiling lights, wayfinding, five sculpture islands, benches and warm bronze flame sconces. The Dishwasher Dilemma is a monochrome carved assemblage: sweating Jane, a supported plate, open dishwasher with loaded racks and rollers, and suspended dimensional @#$! symbols. People, props, pedestals and paths stay distinct in the inspected angles.",
     "remaining": "Phone behavior was emulated; physical-phone frame rate and listening were not measured. Fire synthesis, distance/pan, mute and scene silence were checked functionally. The larger story-scene likeness/art backlog remains open. Frames 13–41 are deliberately blank."
   },
-  "publication": "pending"
+  "publication": {
+    "status": "published",
+    "artCommit": "74bfbf660431a8d3f59b1fcebbfb9caa5c9c189b",
+    "record": "publication.json",
+    "verifiedAt": "2026-10-24T06:18:59.821Z"
+  }
 }
