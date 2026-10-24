@@ -17,6 +17,7 @@ eleventyExcludeFromCollections: true
   <body>
     <main class="experience" id="experience" data-base-path="{{ '/' | url }}" data-room-version="{{ galleryRoomVersion }}" data-music-url="{{ '/assets/explore/resolutions-scott-buckley.mp3' | url }}?v={{ exploreMusicVersion }}">
       <div class="scene" id="scene" aria-hidden="true"></div>
+      <p class="sr-only">Static museum painting: A Fighter in Me. Jane holds her ground amid dark blue and luminous gold brushstrokes.</p>
       <div class="vignette" aria-hidden="true"></div>
 
       <div class="topbar">
@@ -57,7 +58,8 @@ eleventyExcludeFromCollections: true
         <div class="fallback-card">
           <p class="eyebrow">The gallery</p>
           <h1>The gallery is waiting.</h1>
-          <p>This browser could not open the 3D exhibit. Twelve paintings are available below. The La Jolla memory is planned.</p>
+          <p>This browser could not open the 3D exhibit. Twelve memory paintings and a museum artwork are available below. The La Jolla memory is planned.</p>
+          <figure class="fallback-static-art"><img class="fallback-preview" src="{{ '/assets/explore/museum/a-fighter-in-me.webp' | url }}?v={{ galleryRoomVersion }}" alt="Jane with a hand over her heart amid dark blue, teal, orange and gold brushstrokes."><figcaption>A Fighter in Me</figcaption></figure>
           <div class="fallback-previews">
             {% for frame in gallery.frames %}{% if frame.room.modelUrl %}
               <figure><img class="fallback-preview" src="{{ frame.room.previewImage | url }}?v={{ galleryRoomVersion }}" alt="{{ frame.room.caption }}"><figcaption>{{ frame.room.caption }}</figcaption></figure>

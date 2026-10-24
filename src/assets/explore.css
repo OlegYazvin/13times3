@@ -165,6 +165,7 @@ a { color: inherit; }
   inset: 0;
   display: grid;
   place-items: center;
+  grid-template-columns: minmax(0, 1fr);
   padding: max(1.25rem, env(safe-area-inset-top)) max(1.25rem, env(safe-area-inset-right)) max(1.25rem, env(safe-area-inset-bottom)) max(1.25rem, env(safe-area-inset-left));
   overflow-y: auto;
   background: rgb(4 11 22 / 72%);
@@ -172,6 +173,7 @@ a { color: inherit; }
 }
 .welcome-card, .fallback-card {
   width: min(100%, 580px);
+  min-width: 0;
   padding: clamp(1.5rem, 5vw, 3.2rem);
   border: 1px solid rgb(185 218 226 / 28%);
   border-radius: 1.4rem;
@@ -202,10 +204,12 @@ h1 { margin: 0 0 1.2rem; font-family: Ojuju, Archivo, sans-serif; font-size: cla
 .primary-button:hover, .primary-button:focus-visible { background: #fff; }
 .back-link { display: inline-block; margin: 1rem 0 0 1.2rem; font-size: .87rem; text-underline-offset: 3px; }
 .retry-button { display: inline-block; margin: 1rem 1rem 0 0; padding: .7rem 0; border: 0; background: none; color: #e2f2ef; text-decoration: underline; }
-.frame-list { display: grid; grid-template-columns: repeat(7, 1fr); gap: .4rem; max-height: 9rem; overflow: auto; padding: 0; list-style: none; }
+.frame-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr)); gap: .4rem; max-height: 9rem; overflow: auto; padding: 0; list-style: none; }
 .frame-list li { padding: .35rem; border: 1px solid rgb(255 255 255 / 23%); border-radius: .3rem; text-align: center; font-size: .77rem; }
 .fallback-preview { display: block; width: min(100%, 10rem); max-height: 13rem; object-fit: contain; margin: .7rem auto; border: 3px solid #d9ac6c; }
 .fallback-previews { display: flex; justify-content: center; gap: 1.25rem; flex-wrap: wrap; }
+.fallback-static-art { margin: 1.5rem 0; text-align: center; }
+.fallback-static-art img { width: min(100%, 18rem); max-height: 18rem; }
 .fallback-previews figure { margin: 0; text-align: center; font-size: .8rem; color: #e5ddca; }
 .room-title { position: absolute; z-index: 5; top: calc(4.4rem + env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); width: min(28rem, 72vw); padding: .5rem .8rem; border: 1px solid rgb(236 196 128 / 55%); border-radius: .5rem; background: rgb(27 23 40 / 74%); color: #f9e9cd; text-align: center; font-size: clamp(.68rem, 1.8vw, .88rem); line-height: 1.25; pointer-events: none; }
 .room-title[hidden] { display: none; }

@@ -162,13 +162,14 @@ export function decorateMuseum(scene,layout,assetBase,assetVersion){
  const url=path=>assetBase+path+(assetVersion?'?v='+assetVersion:'');
  loader.load(url('assets/explore/museum/dishwasher.glb'),g=>{statueMount.add(g.scene);state.modelReady=true;},undefined,e=>{state.modelError=true;console.warn('The gallery sculpture could not load',e);});
  const textureLoader=new THREE.TextureLoader();
- for(const [i,path]of ['still-life.webp','shore.webp'].entries()){
+ for(const [i,{path,title}]of [{path:'a-fighter-in-me.webp',title:'A Fighter in Me'},{path:'shore.webp'}].entries()){
   const g=new THREE.Group();g.position.set((i?1:-1)*(HALL_WIDTH/2-.18),2.30,-1.65);g.rotation.y=i?-Math.PI/2:Math.PI/2;entrance.add(g);
   const w=i?2.35:1.85,h=i?1.57:1.85;
   box(g,'decorative oil painting gilded frame',[0,0,0],[w+.22,h+.22,.12],bronze,.02);
   box(g,'linen mount around the original oil painting',[0,0,.07],[w+.09,h+.09,.025],stone,.003);
   const texture=textureLoader.load(url('assets/explore/museum/'+path),()=>state.artReady++);texture.colorSpace=THREE.SRGBColorSpace;
   const art=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:texture}));art.name='original framed '+path;art.position.z=.088;g.add(art);
+  if(title){box(g,'stone title plaque beneath the painting',[0,-h/2-.27,.025],[w,.27,.055],green,.012);textPanel(g,title,[0,-h/2-.27,.056],w-.08,.19,{color:'#eee2c8',background:'#324b44'});}
  }
  batchMuseumStatics(root);
  // Every fixture has a stationary, always-on light. Only sound proximity

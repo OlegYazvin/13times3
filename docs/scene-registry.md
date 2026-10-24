@@ -37,6 +37,13 @@ remain attached to their original IDs. The stage piano has no visible provider
 overlay, and every flame fixture has steady light; only crackling follows
 distance. Current inspection and publication status are in the museum notes.
 
+The static entrance painting **A Fighter in Me** represents Jane's resilience
+through depression in the original achievement gallery's abstract expressionist
+style. It occupies the former square still-life position, with a physical title
+plaque. It assigns no portal room or frame ID; La Jolla remains unrendered.
+Implementation, image-generation prompt and inspection/publication status are
+in the [museum notes](museum-gallery-notes.md#a-fighter-in-me--static-entrance-painting).
+
 The shared museum hub is published as **Jane's Year Exhibit**. Its initial release used five broad
 galleries with paintings, stone architecture, sculpture islands, benches and
 flame sconces with nearby crackling. **The Dishwasher Dilemma** is a standalone

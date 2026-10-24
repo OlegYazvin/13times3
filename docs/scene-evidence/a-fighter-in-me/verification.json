@@ -1,0 +1,127 @@
+{
+  "build": {
+    "recordedAt": "2026-10-24T17:11:24.427Z",
+    "appSha256": "f4ae81d1c8d7bd51a64d911bbfa9d8d98353b57175a5319363b0d2458665c210",
+    "paintingSha256": "b0323853cbbc06d6b7beb85a422061933c927e4224998e2e32697c50ae91bf29",
+    "manifestSha256": "cee81a462dc78832282edaa14f8aaff63c6cf6a493e5a5fd723d02c339391d4a",
+    "styleSha256": "994ea1bae413e151042b440c058fe78c8ebf152815a553fafda2f9cb365c967d"
+  },
+  "asset": {
+    "path": "assets/explore/museum/a-fighter-in-me.webp",
+    "width": 1254,
+    "height": 1254,
+    "bytes": 628488,
+    "metadataStripped": true
+  },
+  "results": [
+    {
+      "viewport": "desktop",
+      "artReady": 2,
+      "newPaintingResponse200": true,
+      "oldStillLifeNotRequested": true,
+      "exactTitleInAccessibleDescription": true,
+      "noStartOverlay": true,
+      "staticWallBlocksCrossing": true,
+      "frameCount": 41,
+      "laJollaUnrendered": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": "portrait",
+      "artReady": 2,
+      "newPaintingResponse200": true,
+      "oldStillLifeNotRequested": true,
+      "exactTitleInAccessibleDescription": true,
+      "noStartOverlay": true,
+      "staticWallBlocksCrossing": true,
+      "frameCount": 41,
+      "laJollaUnrendered": true,
+      "pageErrors": []
+    }
+  ],
+  "captures": [
+    {
+      "name": "across-gallery",
+      "x": 0,
+      "z": -1.65,
+      "yaw": -1.5707963267948966,
+      "pitch": 0.1,
+      "viewport": "desktop"
+    },
+    {
+      "name": "normal",
+      "x": -2.1,
+      "z": -1.65,
+      "yaw": -1.5707963267948966,
+      "pitch": 0.1,
+      "viewport": "desktop"
+    },
+    {
+      "name": "left-side",
+      "x": -2.3,
+      "z": -0.6,
+      "yaw": -1.2256046030800867,
+      "pitch": 0.1,
+      "viewport": "desktop"
+    },
+    {
+      "name": "right-side",
+      "x": -2.3,
+      "z": -3.2,
+      "yaw": -2.0587963601744237,
+      "pitch": 0.1,
+      "viewport": "desktop"
+    },
+    {
+      "name": "close",
+      "x": -3.55,
+      "z": -1.65,
+      "yaw": -1.5707963267948966,
+      "pitch": 0.18,
+      "viewport": "desktop"
+    },
+    {
+      "name": "portrait-normal",
+      "x": -1.95,
+      "z": -1.65,
+      "yaw": -1.5707963267948966,
+      "pitch": 0.1,
+      "viewport": "portrait"
+    },
+    {
+      "name": "portrait-close",
+      "x": -2.7,
+      "z": -1.65,
+      "yaw": -1.5707963267948966,
+      "pitch": 0.1,
+      "viewport": "portrait"
+    }
+  ],
+  "fallback": {
+    "paintingVisible": true,
+    "exactTitle": true,
+    "memoryPreviews": 12,
+    "listedFrames": 13,
+    "fitsPortraitViewport": true
+  },
+  "functionalScope": "Targeted static-artwork loading, accessible title, fallback and existing wall collision; site and unit checks are separate. Portrait views use browser emulation.",
+  "visualJudgment": "Inspected the completed square painting, across-gallery view, normal view, both oblique sides, close view, two fresh portrait views, and portrait fallback. The bun, brows and natural face proportions remain recognizable within broad painted strokes; dark currents and warm open passages convey persistence. The exact title remains legible below the frame. The first fallback capture exposed horizontal overflow; its grid and card now fit the 390px viewport. Artwork quality is a separate visual judgment from loading and wall collision.",
+  "publication": "pending",
+  "functional": {
+    "siteChecksPassed": true,
+    "unitTests": 34,
+    "all41FrameRecordsUnchanged": true,
+    "all12RoomModelsAndPreviewsUnchanged": true,
+    "originalAchievementUrls": 39,
+    "portraitHelp": {
+      "portraitHelpFitsViewport": true,
+      "helpOpensAndCloses": true,
+      "bounds": {
+        "x": 20,
+        "y": 85,
+        "width": 350,
+        "height": 674
+      }
+    }
+  }
+}

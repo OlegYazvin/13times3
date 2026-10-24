@@ -1,6 +1,46 @@
 # Jane's Year Exhibit — museum hub revision
 
-## Current follow-up — three galleries and continuous light
+## A Fighter in Me — static entrance painting
+
+The user requested one static painting representing Jane's resilience through
+her depression, titled exactly **A Fighter in Me**, in the same style as the
+original 13times3 achievement gallery. This replaces the square still life on
+the left entrance wall. It is a static artwork, with no portal assignment or
+new stable frame ID. The lakeshore work remains opposite it.
+
+The new painting shows Jane with her hand over her chest, a raised gaze and a
+steady posture amid darker currents and warm painted light. Its cream paper,
+dark contours, broad pigment and sweeping teal, cobalt, orange and gold follow
+the original gallery's two style references, `2a0b85df0e7c8377.png` and
+`e0c9d7fcf7266eed.png`. Jane's private reference guided her face and high bun;
+the photograph and its metadata remain excluded from Git and the website.
+The artwork is symbolic; it makes no claim that depression has ended or that
+resilience depends on constant optimism.
+
+- Asset: [a-fighter-in-me.webp](../src/assets/explore/museum/a-fighter-in-me.webp),
+  generated with the built-in imagegen tool, then encoded as metadata-free WebP.
+  The original still life remains in the source archive, unhung.
+- [Complete generation prompt](a-fighter-in-me-prompt.txt).
+- The exact title is a museum plaque outside the painted pixels. The painting
+  also has an accessible description and an image in the WebGL fallback.
+- No room model, preview, manifest, sculpture, collision route or original
+  achievement page is revised.
+
+Observed review:
+
+- [x] Inspect the painting and exact title from normal distance, both sides and close up.
+- [x] Inspect fresh portrait loads and the image/text fallback.
+- [x] Complete build/site checks and verify unchanged room and frame records.
+- [ ] Publish and verify production assets and fresh loads.
+
+[Multi-angle review](scene-evidence/a-fighter-in-me/index.html) and
+[verification](scene-evidence/a-fighter-in-me/verification.json) bind the captures
+to the final image, app, stylesheet and manifest hashes. The portrait fallback
+initially overflowed horizontally; a bounded grid and responsive frame list now
+fit the viewport. Optional Help also opens, fits and closes correctly. All 34
+tests pass. The painting is 1254 × 1254, 628,488 bytes, without EXIF or XMP.
+
+## Three galleries and continuous light — preceding follow-up
 
 The October 24 follow-up curates the twelve existing memories into three
 galleries, with one labeled blank canvas reserved for La Jolla:
