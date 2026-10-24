@@ -50,7 +50,7 @@ if(process.argv.includes('--global')){
 }else if(process.argv.includes('--functional')){
   const r=await promisify(execFile)(process.execPath,['scripts/browser_check.mjs'],{env:{...process.env,GALLERY_TEST_BASE:base,GALLERY_BROWSER_EXECUTABLE:executablePath},maxBuffer:8e6});console.log(r.stdout);if(r.stderr)console.log(r.stderr.slice(-2000));
 }else{
- const targets={'01':[-.3,0],'02':[-1.0,4.8],'03':[0,5.1],'04':[0,5.5],'05':[-.2,4.9],'06':[0,3.15],'07':[-.58,5.3],'08':[0,7.6],'09':[0,3.05],'10':[-.23,4.37],'11':[-.55,6.6],'12':[0,-1.8]};
+ const targets={'01':[-.3,0],'02':[-1.0,4.8],'03':[0,5.1],'04':[0,5.5],'05':[-.2,4.9],'06':[0,3.15],'07':[-.58,5.3],'08':[0,7.6],'09':[0,3.05],'10':[-.23,4.37],'11':[-.55,6.6],'12':[.45,-1.8]};
  const selected=process.argv.filter(x=>/^\d\d$/.test(x));
  const results=[];
  for(const f of frames.filter(f=>!selected.length||selected.includes(f.id))){
@@ -60,7 +60,10 @@ if(process.argv.includes('--global')){
   assert.equal(digest(await readFile('_site/'+modelPath)),modelSha256,`frame ${f.id}: rebuild the site before inspecting changed source assets`);
   const captureBuild={id:f.id,modelSha256,paintingSha256:digest(await readFile('src/'+f.room.previewImage.replace(/^\//,''))),appSha256:digest(await readFile('_site/assets/explore/app.js')),recordedAt:new Date().toISOString()};
   browser=await chromium.launch({headless:true,executablePath,args:['--use-gl=angle','--use-angle=swiftshader','--enable-webgl']});
-  for(const phone of ((approachesOnly||profilesOnly||returnsOnly||contactsOnly)?[false]:[false,true])){
+  for(const phone of ((approachesOnly||profilesOnly||returnsOnly||contactsOnly)?[false]:f.id==='12'?[true,false]:[false,true])){
+   if(f.id==='12'&&!phone&&!approachesOnly&&!profilesOnly&&!returnsOnly&&!contactsOnly){
+    await browser.close();browser=await chromium.launch({headless:true,executablePath,args:['--use-gl=angle','--use-angle=swiftshader','--enable-webgl']});
+   }
    console.log(`Review ${f.id}: ${phone?'phone':'desktop'} load`);
    let p=await browser.newPage(phone?{viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:1}:{viewport:{width:960,height:720}});
    const errors=[];p.on('pageerror',e=>errors.push(e.message));
@@ -110,7 +113,7 @@ if(process.argv.includes('--global')){
    const shots=(returnsOnly||process.argv.includes('--checks'))?[]:profilesOnly?profiles:phone?[['phone',0,portal-.55,0]]:[['entry',0,portal-.55,0],['front',tx,Math.min(portal-.55,tz+2.5),0],...profiles,['left',tx-2,tz+1.7,Math.atan2(2,1.7)],['right',tx+2,tz+1.7,Math.atan2(-2,1.7)],['rear',tx+1.8,tz-1.8,Math.atan2(-1.8,-1.8)],['close',tx,Math.min(portal-.55,tz+1.4),0,-.28]];
    if(!phone&&!profilesOnly&&!returnsOnly&&!process.argv.includes('--checks')){
     if(f.id==='02')shots.push(['care',-3.3,-1.2,0],['household',-3.1,-4.6,-Math.PI/2,-.25],['contacts',2.5,4.2,0],['embrace',0,-2.7,0],['embrace-rear',-1,-7.8,2.75]);
-    if(f.id==='12')shots.push(['borellis',0,4.5,Math.PI,-.08],['borellis-side',-4.3,7.5,Math.PI/2,-.12],['portal-back',0,5.0,0],['children',.15,.6,0,-.40],['jonas',1.25,-.65,-.2,-.06],['beat-windows',-4,-5.8,0]);
+    if(f.id==='12')shots.push(['borellis',0,4.5,Math.PI,-.08],['borellis-side',-4.3,7.5,Math.PI/2,-.12],['portal-back',0,5.0,0],['children',.60,.6,0,-.40],['jonas',1.70,-.65,-.2,-.06],['beat-windows',-4,-5.8,0]);
     if(f.id==='11')shots.push(['portal-back',0,12.7,0],['rear-habitat',0,15.5,Math.PI]);
    }
    if(f.id==='08'&&!phone&&!returnsOnly&&!process.argv.includes('--checks'))for(const [stop,z,side]of[['pullman',7.05,-1],['avalon',5.8,1],['arts-bank',2.1,-1],['narrow-bridge',-1.65,1],['palmisano',-5.4,-1],['saint-ignatius',-9.15,1],['temple',-12.05,-1]]){

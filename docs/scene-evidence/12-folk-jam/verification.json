@@ -1,13 +1,37 @@
 {
   "build": {
     "id": "12",
-    "modelSha256": "843eb10217d0d7b201fb5c5a20e954c777a69795aa0184fc0616fdae2a6dabe3",
-    "paintingSha256": "5432d6da3d4b20fe9bd1167391012c544c43179f02922d8e7a3fa4f21efbdb02",
+    "modelSha256": "c35d978ac61b481df047a21830bc08c76b5eb3c85c56b9f50bf38097adbe9fc9",
+    "paintingSha256": "e45108d824542207722e2a0e024a90bbf1adb241507606b49a317d241875c9de",
     "appSha256": "4fd6e769d167e06c3510d99063c4d8eff483b0912fa8bd94189d52a292dd923f",
-    "recordedAt": "2026-10-23T23:44:14.457Z",
+    "recordedAt": "2026-10-24T00:10:28.452Z",
     "captured": true
   },
   "poses": [
+    {
+      "id": "12",
+      "name": "phone",
+      "x": 0,
+      "z": 2.25,
+      "yaw": 0,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "thumb-joystick-moves",
+      "passed": true
+    },
+    {
+      "id": "12",
+      "viewport": "phone",
+      "entry": true,
+      "collisionSamples": 40,
+      "return": true,
+      "continuousCamera": true,
+      "controls": true,
+      "cleanup": true
+    },
     {
       "id": "12",
       "name": "entry",
@@ -20,7 +44,7 @@
     {
       "id": "12",
       "name": "front",
-      "x": 0,
+      "x": 0.45,
       "z": 0.7,
       "yaw": 0,
       "pitch": 0,
@@ -29,7 +53,7 @@
     {
       "id": "12",
       "name": "profile-left",
-      "x": -1.1,
+      "x": -0.65,
       "z": -1.8,
       "yaw": 1.5707963267948966,
       "pitch": 0,
@@ -38,7 +62,7 @@
     {
       "id": "12",
       "name": "profile-right",
-      "x": 2,
+      "x": 2.45,
       "z": -0.9,
       "yaw": -1.1479424006619559,
       "pitch": 0,
@@ -47,7 +71,7 @@
     {
       "id": "12",
       "name": "left",
-      "x": -2.9,
+      "x": -2.45,
       "z": -0.10000000000000009,
       "yaw": 1.0405805540182667,
       "pitch": 0,
@@ -56,7 +80,7 @@
     {
       "id": "12",
       "name": "right",
-      "x": 2,
+      "x": 2.45,
       "z": -0.10000000000000009,
       "yaw": -0.866302262552679,
       "pitch": 0,
@@ -65,7 +89,7 @@
     {
       "id": "12",
       "name": "rear",
-      "x": 0.9,
+      "x": 1.35,
       "z": -3.6,
       "yaw": -2.677945044588987,
       "pitch": 0,
@@ -74,7 +98,7 @@
     {
       "id": "12",
       "name": "close",
-      "x": 0,
+      "x": 0.45,
       "z": 0.4999999999999999,
       "yaw": 0,
       "pitch": -0.28,
@@ -110,7 +134,7 @@
     {
       "id": "12",
       "name": "children",
-      "x": 0.15,
+      "x": 0.6,
       "z": 0.6,
       "yaw": 0,
       "pitch": -0.4,
@@ -119,7 +143,7 @@
     {
       "id": "12",
       "name": "jonas",
-      "x": 2.15,
+      "x": 2.6,
       "z": -0.65,
       "yaw": -1.0796327285086362,
       "pitch": -0.06,
@@ -137,30 +161,6 @@
     {
       "id": "12",
       "viewport": "desktop",
-      "entry": true,
-      "collisionSamples": 40,
-      "return": true,
-      "continuousCamera": true,
-      "controls": true,
-      "cleanup": true
-    },
-    {
-      "id": "12",
-      "name": "phone",
-      "x": 0,
-      "z": 2.25,
-      "yaw": 0,
-      "pitch": 0,
-      "stand": true
-    },
-    {
-      "id": "12",
-      "name": "thumb-joystick-moves",
-      "passed": true
-    },
-    {
-      "id": "12",
-      "viewport": "phone",
       "entry": true,
       "collisionSamples": 40,
       "return": true,
@@ -172,6 +172,30 @@
   "verification": [
     {
       "id": "12",
+      "name": "phone",
+      "x": 0,
+      "z": 2.25,
+      "yaw": 0,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "12",
+      "name": "thumb-joystick-moves",
+      "passed": true
+    },
+    {
+      "id": "12",
+      "viewport": "phone",
+      "entry": true,
+      "collisionSamples": 40,
+      "return": true,
+      "continuousCamera": true,
+      "controls": true,
+      "cleanup": true
+    },
+    {
+      "id": "12",
       "name": "entry",
       "x": 0,
       "z": 2.25,
@@ -182,7 +206,7 @@
     {
       "id": "12",
       "name": "front",
-      "x": 0,
+      "x": 0.45,
       "z": 0.7,
       "yaw": 0,
       "pitch": 0,
@@ -191,7 +215,7 @@
     {
       "id": "12",
       "name": "profile-left",
-      "x": -1.1,
+      "x": -0.65,
       "z": -1.8,
       "yaw": 1.5707963267948966,
       "pitch": 0,
@@ -200,7 +224,7 @@
     {
       "id": "12",
       "name": "profile-right",
-      "x": 2,
+      "x": 2.45,
       "z": -0.9,
       "yaw": -1.1479424006619559,
       "pitch": 0,
@@ -209,7 +233,7 @@
     {
       "id": "12",
       "name": "left",
-      "x": -2.9,
+      "x": -2.45,
       "z": -0.10000000000000009,
       "yaw": 1.0405805540182667,
       "pitch": 0,
@@ -218,7 +242,7 @@
     {
       "id": "12",
       "name": "right",
-      "x": 2,
+      "x": 2.45,
       "z": -0.10000000000000009,
       "yaw": -0.866302262552679,
       "pitch": 0,
@@ -227,7 +251,7 @@
     {
       "id": "12",
       "name": "rear",
-      "x": 0.9,
+      "x": 1.35,
       "z": -3.6,
       "yaw": -2.677945044588987,
       "pitch": 0,
@@ -236,7 +260,7 @@
     {
       "id": "12",
       "name": "close",
-      "x": 0,
+      "x": 0.45,
       "z": 0.4999999999999999,
       "yaw": 0,
       "pitch": -0.28,
@@ -272,7 +296,7 @@
     {
       "id": "12",
       "name": "children",
-      "x": 0.15,
+      "x": 0.6,
       "z": 0.6,
       "yaw": 0,
       "pitch": -0.4,
@@ -281,7 +305,7 @@
     {
       "id": "12",
       "name": "jonas",
-      "x": 2.15,
+      "x": 2.6,
       "z": -0.65,
       "yaw": -1.0796327285086362,
       "pitch": -0.06,
@@ -305,42 +329,18 @@
       "continuousCamera": true,
       "controls": true,
       "cleanup": true
-    },
-    {
-      "id": "12",
-      "name": "phone",
-      "x": 0,
-      "z": 2.25,
-      "yaw": 0,
-      "pitch": 0,
-      "stand": true
-    },
-    {
-      "id": "12",
-      "name": "thumb-joystick-moves",
-      "passed": true
-    },
-    {
-      "id": "12",
-      "viewport": "phone",
-      "entry": true,
-      "collisionSamples": 40,
-      "return": true,
-      "continuousCamera": true,
-      "controls": true,
-      "cleanup": true
     }
   ],
   "contacts": {
-    "modelSha256": "843eb10217d0d7b201fb5c5a20e954c777a69795aa0184fc0616fdae2a6dabe3",
-    "recordedAt": "2026-10-23T23:44:16.323Z",
+    "modelSha256": "c35d978ac61b481df047a21830bc08c76b5eb3c85c56b9f50bf38097adbe9fc9",
+    "recordedAt": "2026-10-24T00:10:23.305Z",
     "method": "Actual exported posed vertices against actor-specific decoded prop triangles. Distances and closed-mesh containment samples supplement visual inspection; they are not a proof of full contact coverage.",
     "rows": [
       {
         "identity": "Jonas Friddle",
         "part": "hand-left",
         "label": "fingering hand against its own instrument fingerboard",
-        "minimumSurfaceDistanceM": 0.0017011149729839919,
+        "minimumSurfaceDistanceM": 0.0017011258164157347,
         "containmentTested": true,
         "verticesDeeperThan1mm": 0,
         "maximumSampledPenetrationM": 0
@@ -358,7 +358,7 @@
         "identity": "Guitar neighbor",
         "part": "hand-left",
         "label": "fingering hand against its own instrument fingerboard",
-        "minimumSurfaceDistanceM": 0.0003528967664703883,
+        "minimumSurfaceDistanceM": 0.0003529580060042763,
         "containmentTested": true,
         "verticesDeeperThan1mm": 0,
         "maximumSampledPenetrationM": 0
@@ -367,7 +367,7 @@
         "identity": "Guitar neighbor",
         "part": "hand-right",
         "label": "strumming hand against its own sounding surface",
-        "minimumSurfaceDistanceM": 0.0032032690055046396,
+        "minimumSurfaceDistanceM": 0.003203269127268767,
         "containmentTested": false,
         "verticesDeeperThan1mm": null,
         "maximumSampledPenetrationM": null
@@ -394,7 +394,7 @@
         "identity": "Fiddle neighbor",
         "part": "hand-left",
         "label": "fingering hand against its own instrument fingerboard",
-        "minimumSurfaceDistanceM": 0.0016968056337821002,
+        "minimumSurfaceDistanceM": 0.0016966982832093687,
         "containmentTested": true,
         "verticesDeeperThan1mm": 0,
         "maximumSampledPenetrationM": 0
@@ -403,7 +403,7 @@
         "identity": "Fiddle neighbor",
         "part": "hand-right",
         "label": "strumming hand against its own sounding surface",
-        "minimumSurfaceDistanceM": 0.00029922810050393164,
+        "minimumSurfaceDistanceM": 0.000299362722977633,
         "containmentTested": false,
         "verticesDeeperThan1mm": null,
         "maximumSampledPenetrationM": null
@@ -448,7 +448,7 @@
         "identity": "Bass neighbor",
         "part": "hand-left",
         "label": "upright bass fingering hand",
-        "minimumSurfaceDistanceM": 0.0005032108693774611,
+        "minimumSurfaceDistanceM": 0.00050318019238265,
         "containmentTested": true,
         "verticesDeeperThan1mm": 0,
         "maximumSampledPenetrationM": 0
@@ -457,7 +457,7 @@
         "identity": "Bass neighbor",
         "part": "hand-right",
         "label": "upright bass plucking hand",
-        "minimumSurfaceDistanceM": 0.009177874846516809,
+        "minimumSurfaceDistanceM": 0.009177829363260564,
         "containmentTested": false,
         "verticesDeeperThan1mm": null,
         "maximumSampledPenetrationM": null
@@ -466,7 +466,7 @@
         "identity": "Guitar neighbor",
         "part": "trousers",
         "label": "guitar clearance above the seated thighs",
-        "minimumSurfaceDistanceM": 0.006577373129674872,
+        "minimumSurfaceDistanceM": 0.006577372871415605,
         "containmentTested": true,
         "verticesDeeperThan1mm": 0,
         "maximumSampledPenetrationM": 0
@@ -493,7 +493,7 @@
         "identity": "Jane",
         "part": "hand-right",
         "label": "right listening hand on its own lap",
-        "minimumSurfaceDistanceM": 0.00038847676403668707,
+        "minimumSurfaceDistanceM": 0.0003884775544271963,
         "containmentTested": true,
         "verticesDeeperThan1mm": 0,
         "maximumSampledPenetrationM": 0
@@ -659,29 +659,29 @@
     "records": [
       {
         "path": "src/assets/explore/room12/room.glb",
-        "marked": 40,
-        "beforeSha256": "650533d10ab05f6b79ea0aae5101246565e7ff61e7b3b8a96c48abd5f7107775",
-        "afterSha256": "843eb10217d0d7b201fb5c5a20e954c777a69795aa0184fc0616fdae2a6dabe3",
+        "marked": 0,
+        "beforeSha256": "c35d978ac61b481df047a21830bc08c76b5eb3c85c56b9f50bf38097adbe9fc9",
+        "afterSha256": "c35d978ac61b481df047a21830bc08c76b5eb3c85c56b9f50bf38097adbe9fc9",
         "renderDefinitionUnchanged": true,
         "binaryChunksSha256": "8ae12f2430806aef1c90f0124c15ea71109ce3a86fe678b987607b36687a53b6"
       },
       {
         "path": ".cache/room12/room-uncompressed.glb",
-        "marked": 40,
-        "beforeSha256": "c50c4c6b4ff0263856f840fe7c337ad9aad4318716f824a6bb06293056de496c",
-        "afterSha256": "c711b82baa65d5b70738116805844d927f295ee400649787a8bc549d3543ff77",
+        "marked": 0,
+        "beforeSha256": "0d8a49babfb07e87e46ca9ac112c09109e403465ac64ce5e9173ecc1170560e5",
+        "afterSha256": "0d8a49babfb07e87e46ca9ac112c09109e403465ac64ce5e9173ecc1170560e5",
         "renderDefinitionUnchanged": true,
-        "binaryChunksSha256": "a7e99b12749b44c40982fa1b0815e853a440a4ffc578abd0d98daf4fd955387e"
+        "binaryChunksSha256": "827e12d8e7b0fd36acb54f050fa237bf457d8814ff6787634c0899baa2b043e2"
       }
     ]
   },
   "soak": {
     "build": {
       "id": "12",
-      "modelSha256": "843eb10217d0d7b201fb5c5a20e954c777a69795aa0184fc0616fdae2a6dabe3",
-      "paintingSha256": "5432d6da3d4b20fe9bd1167391012c544c43179f02922d8e7a3fa4f21efbdb02",
+      "modelSha256": "c35d978ac61b481df047a21830bc08c76b5eb3c85c56b9f50bf38097adbe9fc9",
+      "paintingSha256": "e45108d824542207722e2a0e024a90bbf1adb241507606b49a317d241875c9de",
       "appSha256": "4fd6e769d167e06c3510d99063c4d8eff483b0912fa8bd94189d52a292dd923f",
-      "recordedAt": "2026-10-23T23:44:14.457Z"
+      "recordedAt": "2026-10-24T00:10:28.452Z"
     },
     "movementLoops": 6,
     "renderedFrames": 144,
@@ -689,150 +689,150 @@
     "screenshotReadback": false,
     "samples": [
       {
-        "elapsedMs": 185.9000000357628,
-        "heapBytes": 44700000,
+        "elapsedMs": 89.60000002384186,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 120.39999997615814,
-        "heapBytes": 44700000,
+        "elapsedMs": 102.89999997615814,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 1925.800000011921,
-        "heapBytes": 44700000,
+        "elapsedMs": 119.69999998807907,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 16228.200000047684,
-        "heapBytes": 44700000,
+        "elapsedMs": 7493.399999976158,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 9794.399999976158,
-        "heapBytes": 44700000,
+        "elapsedMs": 9068.199999988079,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 9221.599999964237,
-        "heapBytes": 44700000,
+        "elapsedMs": 4810.800000011921,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 9413.300000011921,
-        "heapBytes": 44700000,
+        "elapsedMs": 6424.300000011921,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 3017.100000023842,
-        "heapBytes": 44700000,
+        "elapsedMs": 2145.699999988079,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 8962.899999976158,
-        "heapBytes": 44700000,
+        "elapsedMs": 9547,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 8110.600000023842,
-        "heapBytes": 44700000,
+        "elapsedMs": 7356.100000023842,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 4670.100000023842,
-        "heapBytes": 44700000,
+        "elapsedMs": 4207.199999988079,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 2582.5,
-        "heapBytes": 44700000,
+        "elapsedMs": 2029.5,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 4183.300000011921,
-        "heapBytes": 44700000,
+        "elapsedMs": 3368.900000035763,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 4525.5,
-        "heapBytes": 44700000,
+        "elapsedMs": 5339,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 1487.6000000238419,
-        "heapBytes": 44700000,
+        "elapsedMs": 1670.0999999642372,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 938.1999999880791,
-        "heapBytes": 44700000,
+        "elapsedMs": 1656.0999999642372,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 4241,
-        "heapBytes": 44700000,
+        "elapsedMs": 4595.300000011921,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 7084,
-        "heapBytes": 44700000,
+        "elapsedMs": 5736.800000011921,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 3759.800000011921,
-        "heapBytes": 44700000,
+        "elapsedMs": 4602.299999952316,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 3152,
-        "heapBytes": 44700000,
+        "elapsedMs": 4726.800000011921,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 4258.699999988079,
-        "heapBytes": 44700000,
+        "elapsedMs": 3456.300000011921,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 5368.300000011921,
-        "heapBytes": 44700000,
+        "elapsedMs": 4809.600000023842,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 3918.100000023842,
-        "heapBytes": 44700000,
+        "elapsedMs": 4783,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       },
       {
-        "elapsedMs": 4652.5,
-        "heapBytes": 44700000,
+        "elapsedMs": 3804.5,
+        "heapBytes": 56800000,
         "state": "room",
         "worlds": 1
       }
     ]
   },
-  "downloadBytes": 8555954
+  "downloadBytes": 8555458
 }

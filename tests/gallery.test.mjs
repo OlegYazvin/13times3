@@ -184,7 +184,7 @@ test("the folk jam keeps both interiors accessible around its freestanding porta
   const group=new THREE.Group();group.position.set(frame.center.x+outward.x*frame.room.portalZ,0,frame.center.z+outward.z*frame.room.portalZ);group.rotation.y=Math.atan2(-outward.x,-outward.z);
   const manager=new RoomManager({gallery:{layout},player:{x:0,z:0}});
   manager.active={frame,group,colliders:frame.room.colliders};manager.mode='room';
-  assert.equal(manager.canStand(manager.roomToWorld({x:-.25,z:.65})),false,
+  assert.equal(manager.canStand(manager.roomToWorld({x:.20,z:.65})),false,
     'Jane’s extended shoes block the area beyond her seated torso');
   for(const x of [-3.2,3.2]){
     Object.assign(manager.player,manager.roomToWorld({x,z:1.4}));

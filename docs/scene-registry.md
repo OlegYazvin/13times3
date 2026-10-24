@@ -19,7 +19,7 @@ The gallery has 41 stable frame IDs. The 39 original achievement pages are a sep
 | `11` | Published | “We took zephrine to the Shedd aquairum with G” | Oleg, Jane, Zephrine, G (Oleg's mother) | G and Zephrine wonder together between painted saltwater and freshwater habitats holding gently drifting sculpted fish. The actual hallway portal stands freely inside the aquarium; Jane can walk around either post and behind it while remaining in the room. G is distinct from Anna, Jane's mother. | [author](../scripts/room11_author.mjs), [manifest](../src/_data/gallery.json), [live room](https://13times3.com/explore/); private [photo and design notes](scene-11-shedd-notes.md) |
 | `12` | Published | “Jane discovered her folk jam community” | Jane, Zephrine, her unnamed child friend, Oleg, Jonas Friddle and community musicians | One continuous dream interior joining Beat Kitchen upstairs and Borelli’s, with one venue behind the walk-around entry portal; hopeful, participatory acoustic circles | [author](../scripts/room12_author.mjs), [manifest](../src/_data/gallery.json), [live room](https://13times3.com/explore/); user brief, private photos and public venue references; [notes](scene-12-folk-jam-notes.md) |
 
-Frames `01`–`12` have published scene assignments. Frame `12` is deployed and verified against its reviewed asset hashes; frames `13`–`41` remain unassigned blank portals.
+Frames `01`–`12` have published scene assignments. Frame `12` is deployed; the portrait-phone composition follow-up has passed local verification; frames `13`–`41` remain unassigned blank portals.
 
 October 23 continued local revision: the seven-stop route gains deeper building
 volumes and return windows, quieter plaques and a lodge-hall temple interpretation.

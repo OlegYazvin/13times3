@@ -1,6 +1,6 @@
 # Frame 12 — A place in the circle
 
-Status: published and verified live after the local art, contact, browser and regression checks.
+Status: the portrait-phone follow-up passed local art, contact, browser and sustained-render checks and is ready for publication.
 
 Jane discovered a welcoming folk jam community meeting at Beat Kitchen upstairs
 and Borelli’s. She enjoys listening; she does not sing or play an instrument at
@@ -51,7 +51,7 @@ All boxes below mean observed exported evidence, never an intended improvement.
 - [x] Hall painting, partial reveal, entry, close views and actual return inspected.
 - [x] Fresh desktop and portrait phone loads, controls, collisions and fallbacks pass.
 - [x] 39 original achievement URLs and 41 stable IDs preserved; 13–41 stay blank.
-- [x] Publication verified against the final assets; evidence and limits recorded.
+- [ ] Publication of the phone composition follow-up verified against the final assets.
 
 
 ## Revision observations
@@ -123,7 +123,7 @@ and failed-model behavior passed with 12 previews and 41 frames. Frames 01 and
 are separate from the artistic inspection in the [evidence page](scene-evidence/12-folk-jam/index.html).
 
 
-## Publication
+## Initial publication
 
 Art release `5b21d7da156ab3c44b67a0faf2ff87aad5923dd5` deployed successfully in
 [Pages run 40042361806](https://github.com/OlegYazvin/13times3/actions/runs/40042361806).
@@ -132,4 +132,20 @@ All 26 live gallery files matched the reviewed build, including the normal
 41 frames, 12 published rooms, no fallback and no page errors. The 22 prior room
 model/painting files remain byte-for-byte unchanged. Full frame-12 inspection
 was local against those identical deployed files; physical-device frame rate is
-not claimed. See the [publication record](scene-evidence/12-folk-jam/publication.json).
+not claimed. See the [initial publication record](scene-evidence/12-folk-jam/publication-initial.json).
+
+
+## Portrait-phone composition follow-up
+
+The first live-equivalent phone image clipped Jane’s face. The complete upstairs
+gathering moves 450 mm to the right together, preserving the relative poses,
+instrument contacts, seated support, and mutual attention. The main memory must
+read on a portrait screen with Jane visibly present. This follow-up requires new
+painting, exported collision, contact, phone and doorway evidence before release.
+
+
+The follow-up’s fresh portrait-phone image now includes Jane’s full face and
+listening posture with the children and Jonas in view. The exported contact
+checks again report no sampled penetration in the 27 selected relationships;
+all 19 site/unit checks and both portal routes pass. The updated full capture
+set and six-loop sustained-render check refer to this shifted arrangement.

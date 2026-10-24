@@ -237,5 +237,5 @@ chair(root,[3.85,0,-.85],-.85);chair(root,[-4.5,0,4.6],2.0,{cafe:true});
 for(const [x,z,yaw]of[[-4.8,-4.6,.3],[4.1,9.45,-.4]]){
  const g=group('closed instrument case resting beside the circle',root,[x,.075,z],yaw);const shape=new THREE.Shape();shape.moveTo(-.2,-.45);shape.quadraticCurveTo(-.36,-.1,-.18,.18);shape.lineTo(-.09,.65);shape.quadraticCurveTo(0,.73,.09,.65);shape.lineTo(.18,.18);shape.quadraticCurveTo(.36,-.1,.2,-.45);shape.quadraticCurveTo(0,-.58,-.2,-.45);const geo=new THREE.ExtrudeGeometry(shape,{depth:.09,bevelEnabled:true,bevelSize:.035,bevelThickness:.02,bevelSegments:3,curveSegments:24});geo.rotateX(-Math.PI/2);add(g,'shaped fitted instrument case',geo,material(0x494c43));
 }
-for(const g of root.children)if(g.userData.storyIdentity&&g.position.z>-4.3&&g.position.z<1.3)g.position.y+=.002;
+for(const g of root.children)if(g.userData.storyIdentity&&g.position.z>-4.3&&g.position.z<1.3){g.position.y+=.002;g.position.x+=.45;}
 window.__authorRoom=async()=>exportRoom({batchStatic:true,afterCompose:root=>root.traverse(o=>{if(o.isMesh&&['trousers','shoe'].includes(o.userData.storyPart))o.userData.solidFootprint=true;})});
