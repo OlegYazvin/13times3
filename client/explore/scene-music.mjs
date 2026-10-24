@@ -91,7 +91,7 @@ export class SceneMusic {
       this.widget = widget;
       this.loadTimeout = window.setTimeout(() => {
         if (current()) this.unavailable();
-      }, 20000);
+      }, 60000);
       widget.bind(Widget.Events.READY, () => {
         if (!current()) return;
         window.clearTimeout(this.loadTimeout);

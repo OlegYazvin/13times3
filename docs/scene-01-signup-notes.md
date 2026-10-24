@@ -98,3 +98,11 @@ Verification checklist for this change:
 
 This is an audio revision. It does not establish further artistic acceptance
 of the scene geometry or resolve the visual weaknesses recorded above.
+
+Production follow-up: the first live check exposed the 20-second widget-ready
+deadline removing the player while SoundCloud's waveform/session requests were
+still loading. A longer diagnostic allowed the same source to initialize and
+fetch audio. Allow 60 seconds for that third-party startup, while retaining
+immediate cleanup on exit/mute and immediate handling of explicit errors. The
+initial desktop/phone captures and their recorded build hashes precede this
+timeout adjustment; final production verification is tracked separately.
