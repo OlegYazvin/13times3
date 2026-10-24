@@ -1,0 +1,198 @@
+{
+  "id": "02",
+  "modelSha256": "b7e302d40124f389932d51f728188ff05f30e87df61c288c73deb7f65f531c42",
+  "paintingSha256": "8f6175285acc434a850fd1f404edad3516e49f98ea535988921ec3bff581bc4f",
+  "appSha256": "f0ee7b911b7860d59a49619e66aa5c3cba6aeef4810c49530fa8990e0be946d9",
+  "recordedAt": "2026-10-24T03:36:51.959Z",
+  "modelBytes": 6650528,
+  "previewBytes": 25938,
+  "functional": {
+    "siteChecksPassed": true,
+    "unitTests": 27,
+    "frameCount": 41,
+    "originalAchievementUrls": 39,
+    "publishedRooms": 12,
+    "pointing": {
+      "actualFingertipErrorM": 7.333691830219734e-8,
+      "screenHit": [
+        -1.1092169795689149,
+        1.4162210427882649,
+        3.297674887959003
+      ],
+      "distanceToScreenM": 0.7356076973059715
+    },
+    "gazes": [
+      {
+        "identity": "Jane",
+        "angleDeg": 0.47532306536749086
+      },
+      {
+        "identity": "Oleg",
+        "angleDeg": 2.1246871048572507
+      }
+    ],
+    "contacts": [
+      {
+        "label": "supporting palm on the clothed shoulder",
+        "minimumVertexSurfaceDistanceM": 0.00045043215631271723,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0,
+        "nearest": {
+          "source": [
+            -1.5716238021850586,
+            1.448854684829712,
+            4.378584384918213
+          ],
+          "target": [
+            -1.571779238779934,
+            1.4484583139419556,
+            4.378731417947677
+          ]
+        }
+      },
+      {
+        "label": "pointing hand clears Oleg",
+        "minimumVertexSurfaceDistanceM": 0.3899735262984745,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0,
+        "nearest": {
+          "source": [
+            -1.1363390684127808,
+            1.3510935306549072,
+            4.173598766326904
+          ],
+          "target": [
+            -1.4770400524139404,
+            1.252208438978668,
+            4.3355368080542585
+          ]
+        }
+      },
+      {
+        "label": "advising sleeves and shirt clear Oleg",
+        "minimumVertexSurfaceDistanceM": 0.0418851738393426,
+        "verticesDeeperThan1mm": 0,
+        "maximumSampledPenetrationM": 0,
+        "nearest": {
+          "source": [
+            -1.566742181777954,
+            1.4766615629196167,
+            4.505462169647217
+          ],
+          "target": [
+            -1.582884054538687,
+            1.441834112168159,
+            4.488703398645647
+          ]
+        }
+      }
+    ],
+    "contactMethod": "Packed posed fingertip against the real display triangles; selected full-vertex hand/clothing distances and containment supplement the multi-angle visual review. Pointing intentionally leaves air between hand and screen.",
+    "collisionFootprints": 37,
+    "maxBrowserVsFallbackCollisionDeltaM": 0,
+    "browserResults": [
+      {
+        "id": "02",
+        "name": "hall-depth-isolation",
+        "passed": true
+      },
+      {
+        "id": "02",
+        "name": "entry",
+        "x": 0,
+        "z": 8.049999999999999,
+        "yaw": 0,
+        "pitch": 0,
+        "stand": true
+      },
+      {
+        "id": "02",
+        "name": "advisor",
+        "x": -0.15,
+        "z": 6,
+        "yaw": -0.62,
+        "pitch": -0.13,
+        "stand": true
+      },
+      {
+        "id": "02",
+        "name": "advisor-screen",
+        "x": 0.3,
+        "z": 4.4,
+        "yaw": -1.12,
+        "pitch": -0.13,
+        "stand": true
+      },
+      {
+        "id": "02",
+        "name": "advisor-front",
+        "x": 0.25,
+        "z": 3.3,
+        "yaw": -2.37,
+        "pitch": -0.1,
+        "stand": true
+      },
+      {
+        "id": "02",
+        "name": "advisor-rear",
+        "x": -0.9,
+        "z": 5.8,
+        "yaw": 0,
+        "pitch": -0.1,
+        "stand": true
+      },
+      {
+        "id": "02",
+        "viewport": "desktop",
+        "entry": true,
+        "collisionSamples": 37,
+        "return": true,
+        "continuousCamera": true,
+        "controls": true,
+        "cleanup": true
+      },
+      {
+        "id": "02",
+        "name": "phone",
+        "x": 0,
+        "z": 8.049999999999999,
+        "yaw": 0,
+        "pitch": 0,
+        "stand": true
+      },
+      {
+        "id": "02",
+        "name": "advisor-phone",
+        "x": 0.1,
+        "z": 6.5,
+        "yaw": -0.55,
+        "pitch": -0.08,
+        "stand": true
+      },
+      {
+        "id": "02",
+        "viewport": "phone",
+        "entry": true,
+        "collisionSamples": 37,
+        "return": true,
+        "continuousCamera": true,
+        "controls": true,
+        "cleanup": true
+      }
+    ]
+  },
+  "visual": {
+    "reviewed": [
+      "hallway painting",
+      "partial reveal",
+      "doorway/entered view",
+      "desk pair from side/front/rear",
+      "fresh portrait-phone entry",
+      "closer portrait desk view",
+      "return"
+    ],
+    "judgment": "Jane looks over Oleg’s shoulder, points at the laptop and rests her other hand on his clothed shoulder. Both attend to that display; the notebook, laptop and glass occupy clear areas on the real curved desk.",
+    "remaining": "Shared-character likeness and wider environmental finish remain on the larger art checklist. This targeted pose revision does not close those items. Physical-phone frame rate was not tested."
+  },
+  "publication": "pending"
+}

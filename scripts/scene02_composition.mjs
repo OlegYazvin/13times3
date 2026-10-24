@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import {ADVICE_LAPTOP,ADVICE_SCREEN_POINT} from './scene02_arrangement.mjs';
 
 // The remembered home unfolds into the street as one architectural gesture.
 // The people and their five simultaneous acts of support stay in place.
@@ -15,6 +16,9 @@ export function composeSupportWorld(root){
     if(/monitor|webcam|unbranded open laptop|small pile of blank job-search pages|^paper edge$/.test(o.name))o.position.y-=.09;
     if(o.name==='little drinking glass on desk')o.position.y-=.08;
   }
+  const adviceLaptop=root.children.find(o=>o.name==='unbranded open laptop'&&o.position.x>-2);
+  if(adviceLaptop){adviceLaptop.position.fromArray(ADVICE_LAPTOP.position);adviceLaptop.userData.adviceScreen=true;adviceLaptop.userData.adviceTarget=ADVICE_SCREEN_POINT;}
+  const glass=root.children.find(o=>o.name==='little drinking glass on desk');if(glass){glass.position.x=-.80;glass.position.z=4.10;}
   // An occupied home has a wall around its windows. Leave true openings,
   // so the neighborhood still continues beyond the room in the dream.
   const wallShape=new THREE.Shape();wallShape.moveTo(-6.2,0);wallShape.lineTo(7.8,0);wallShape.lineTo(7.8,3.02);wallShape.lineTo(-6.2,3.02);wallShape.closePath();

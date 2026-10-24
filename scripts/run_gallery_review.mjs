@@ -120,6 +120,8 @@ if(process.argv.includes('--global')){
       shots.push(['food-side',3.9,.1,-Math.PI/2,-.30],['food-rear',0,-1.8,Math.PI,-.34],['family-corner',-1.4,.3,-.50,-.32]);
     }
     if(f.id==='02')shots.push(['care',-3.3,-1.2,0],['household',-3.1,-4.6,-Math.PI/2,-.25],['contacts',2.5,4.2,0],['embrace',0,-2.7,0],['embrace-rear',-1,-7.8,2.75]);
+    if(f.id==='02')shots.push(['advisor',-.15,6.0,-.62,-.13],['advisor-screen',.3,4.4,-1.12,-.13],['advisor-front',.25,3.3,-2.37,-.10],['advisor-rear',-.9,5.8,0,-.10]);
+
     if(f.id==='12')shots.push(['borellis',0,4.5,Math.PI,-.08],['borellis-side',-4.3,7.5,Math.PI/2,-.12],['portal-back',0,5.0,0],['children',.60,.6,0,-.40],['jonas',1.70,-.65,-.2,-.06],['beat-windows',-4,-5.8,0]);
     if(f.id==='11'){
       shots.unshift(['mermaid-aisle',4.8,6.9,Math.atan2(3.12,2.18),-.08],
@@ -128,6 +130,7 @@ if(process.argv.includes('--global')){
       shots.push(['side-reef',6.5,3.0,Math.PI/2],['river-tank',-6.3,.1,-Math.PI/2],['far-reef',0,-8.5,0],['clear-ceiling',-.2,6.9,0,.60],['round-tank-side',4.2,6.8,-Math.PI/2,-.12],['portal-back',0,12.7,0],['rear-habitat',0,15.5,Math.PI]);
     }
    }
+   if(f.id==='02'&&phone&&!process.argv.includes('--checks'))shots.push(['advisor-phone',.1,6.5,-.55,-.08]);
    if(f.id==='11'&&phone&&!process.argv.includes('--checks'))shots.push(['mermaid-phone',6.0,5.15,Math.PI/2,-.14]);
    if(f.id==='08'&&!phone&&!returnsOnly&&!process.argv.includes('--checks'))for(const [stop,z,side]of[['pullman',7.05,-1],['avalon',5.8,1],['arts-bank',2.1,-1],['narrow-bridge',-1.65,1],['palmisano',-5.4,-1],['saint-ignatius',-9.15,1],['temple',-12.05,-1]]){
     const standZ=stop==='pullman'?9.15:stop==='avalon'?6.6:z,lookX=stop==='pullman'?-3.8:side*4.25;
@@ -137,6 +140,7 @@ if(process.argv.includes('--global')){
     const keep=new Set(['entry','mermaid-aisle','mermaid-close','mermaid-oblique','side-reef','river-tank','far-reef','clear-ceiling','round-tank-side','portal-back','rear-habitat','phone','mermaid-phone']);
     for(let i=shots.length-1;i>=0;i--)if(!keep.has(shots[i][0]))shots.splice(i,1);
    }
+   if(f.id==='02'&&process.argv.includes('--advisor')){const keep=new Set(['entry','advisor','advisor-screen','advisor-front','advisor-rear','phone','advisor-phone']);for(let i=shots.length-1;i>=0;i--)if(!keep.has(shots[i][0]))shots.splice(i,1);}
    let captured=0;
    for(let [name,x,z,yaw,pitch=0] of shots){
     // Software WebGL retains substantial snapshot memory for the large cast.

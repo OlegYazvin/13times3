@@ -244,3 +244,16 @@ For ongoing refinement of the published rooms, use the [visual quality audit](vi
   and physical collision segments that preserve its walkable concavity.
 - Move a coupled mother/child/chair arrangement together to preserve contact,
   but recheck independent nearby furniture and the rug against their new corner.
+
+
+## Over-the-shoulder screen advice
+
+- A pointing gesture should align the actual anatomical index with the real
+  screen plane. Keep its deliberate air gap distinct from failed hand contact.
+  Turn both people toward the indicated display so the exchange reads as ideas
+  and shared attention rather than a disconnected raised arm.
+- A supporting shoulder is curved. A hand placed on a horizontal plane above
+  the shirt can hover several centimeters away. Fit the hand's actual lowest
+  surface to a local garment tangent, then check the complete sleeve as well.
+- Moving a laptop toward a person can put its base through a notebook or glass.
+  Recompose the nearby work surface together and inspect it from the side.

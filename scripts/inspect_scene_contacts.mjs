@@ -30,7 +30,7 @@ const pairs=sceneId==='07'?[
  ['Jane','shirt','Zephrine','trousers','mother sleeve clears child legs'],
  ['Zephrine','trousers','Jane','shirt','reverse child leg and sleeve clearance'],
 ]:sceneId==='02'?[
- ['Jane','hand-left','Oleg','shirt','advising palm on the clothed shoulder','advising','job-search'],
+ ['Jane','hand-right','Oleg','shirt','advising palm on the clothed shoulder','advising','job-search'],
  ['Jane','hand-right','Zephrine','face-neck','caregiving hand clear of the child face','caring','with Jane'],
  ['Oleg','hand-left','Jane','shirt','comforting arm grip on the clothed shoulder','embrace','holding Oleg'],
  ['Jane','hand-right','Oleg','shirt','comforting palm on the clothed chest','holding Oleg','embrace'],

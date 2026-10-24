@@ -17,7 +17,7 @@
     "build:client": "esbuild client/explore/main.mjs --bundle --format=esm --target=es2020 --minify --outfile=src/assets/explore/app.js",
     "build": "npm run build:client && node scripts/clean_output.mjs && eleventy",
     "dev": "npm run build:client && concurrently -k \"esbuild client/explore/main.mjs --bundle --format=esm --target=es2020 --outfile=src/assets/explore/app.js --watch\" \"eleventy --serve\"",
-    "check": "python3 scripts/check_site.py && node scripts/validate_gallery_geometry.mjs --published && node scripts/check_aquarium_habitats.mjs && node scripts/check_food_memories.mjs && node --test tests/*.test.mjs",
+    "check": "python3 scripts/check_site.py && node scripts/validate_gallery_geometry.mjs --published && node scripts/check_aquarium_habitats.mjs && node scripts/check_food_memories.mjs && node scripts/check_desk_advice.mjs && node --test tests/*.test.mjs",
     "check:browser": "node scripts/verify_gallery.mjs",
     "build:room12": "node scripts/build_gallery_room.mjs 12"
   },

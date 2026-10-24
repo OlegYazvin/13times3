@@ -56,13 +56,20 @@ export function anatomicalHand(parent,{identity,child,height,side,at,elbow,mater
  if(normal){axis.addScaledVector(face,-axis.dot(face)/face.lengthSq());if(axis.lengthSq()<.001){axis.set(0,Math.abs(face.y)<.9?1:0,Math.abs(face.y)<.9?0:1);axis.addScaledVector(face,-axis.dot(face)/face.lengthSq());}axis.normalize();}
  face.addScaledVector(axis,-face.dot(axis));if(face.lengthSq()<.001)face.set(0,1,0).addScaledVector(axis,-axis.y);face.normalize();
  const cross=axis.clone().cross(face).normalize(),quaternion=new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().makeBasis(cross,axis,face));
+ // An explicit screen target rotates the actual index, rather than drawing
+ // an explanatory line beside an unrelated hand gesture.
+ if(style==='touch'&&contact?.aim){
+  const current=pose.tipDirection.clone().applyQuaternion(quaternion),desired=V(contact.aim).sub(V(contact.point||at)).normalize();
+  quaternion.premultiply(new THREE.Quaternion().setFromUnitVectors(current,desired));
+ }
  const anchor=style==='touch'?pose.tip.clone():style==='write'?pose.pinch.clone():pose.palm.clone();
  const penDirection=style==='write'?pose.penAxis.clone().applyQuaternion(quaternion):null;
- const target=style==='write'?V(contact.paper).addScaledVector(penDirection,-.045):contact?.center?V(contact.center).addScaledVector(pose.tipDirection.clone().applyQuaternion(quaternion),-(contact.radius||0)):V(contact?.plane?at:contact||at);
+ const target=style==='write'?V(contact.paper).addScaledVector(penDirection,-.045):contact?.center?V(contact.center).addScaledVector(pose.tipDirection.clone().applyQuaternion(quaternion),-(contact.radius||0)):V(contact?.point|| (contact?.plane?at:contact||at));
  const wrist=target.clone().sub(anchor.multiplyScalar(length).applyQuaternion(quaternion));
  if(contact?.plane){const n=V(contact.plane.normal).normalize(),point=V(contact.plane.point);let support=Infinity;const p=pose.geometry.attributes.position,v=new THREE.Vector3();for(let i=0;i<p.count;i++){v.fromBufferAttribute(p,i).multiplyScalar(length).applyQuaternion(quaternion);support=Math.min(support,v.dot(n));}wrist.addScaledVector(n,point.dot(n)+.0002-support-wrist.dot(n));}
  const mesh=new THREE.Mesh(pose.geometry,material);mesh.name='anatomical palm knuckles and articulated fingers';mesh.scale.setScalar(length);mesh.position.copy(wrist);mesh.quaternion.copy(quaternion);mesh.userData.preserveSculptGeometry=true;parent?.add(mesh);
  mesh.userData.storyPart=side<0?'hand-left':'hand-right';
+ if(style==='touch'&&contact?.aim)mesh.userData.pointingRay={origin:target.toArray(),direction:pose.tipDirection.clone().applyQuaternion(quaternion).toArray()};
  const pen=style==='write'?{tip:contact.paper,direction:penDirection.toArray(),radius:pose.pinchRadius*length,grip:target.toArray(),writingError:pose.writingError}:null;
  return {wrist:wrist.toArray(),mesh,pen};
 }

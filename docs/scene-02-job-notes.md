@@ -78,3 +78,39 @@ as before. None of these local studies is a new published release.
 ## Continued native sculpture review, October 23
 
 The caregiving cloth and child fingertip now share one transformed surface target. The pan is hollow, the counter meets the floor, and street contacts use differentiated adult anatomy and conversational gestures. A review still showed floating equipment on the real desk; the next source study lowers those objects to its actual beveled top and completes the home wall around true window openings. Re-export and inspect these changes before treating them as resolved.
+
+
+## Over-the-shoulder ideas — October 23
+
+Oleg clarifies Jane's particular contribution: she was always coming up with
+ideas for things he could do during the job hunt. This revises the existing
+desk advisor in frame 02. Jane stands just behind and beside Oleg, looks over
+his shoulder at the nearby laptop and points into its display with one hand.
+Her other hand rests on his clothed shoulder. Oleg turns his attention to the
+same screen while retaining his notebook and writing arrangement. The other
+Janes, their roles, the real curved desk, original achievement URL and frame
+assignment stay in place. No employer, offer or specific private advice is
+invented; the screen retains its abstract, unreadable work panes.
+
+The first arrangement read as sharing an idea but put a sleeve through Oleg's
+shoulder. The supporting arm now bends around that shoulder, and its hand is
+fitted against the curved garment surface rather than a horizontal plane above
+the entire shirt. The laptop and glass move onto separate clear areas of the
+desk, avoiding the notebook and keyboard. Private photographs stay private.
+
+Current checklist:
+
+- [x] Inspect the entered/doorway view and the desk pair from side, front and rear.
+- [x] Review a fresh portrait-phone load and a closer portrait desk view.
+- [x] Check that the actual anatomical index points inside the real display.
+- [x] Check shoulder support, sleeve clearance and both people's screen attention.
+- [x] Confirm laptop, notebook and drinking glass do not overlap.
+- [x] Align fallback collision with the packed bodies and verify movement/return.
+- [x] Run site, geometry and relevant unit checks.
+- [ ] Publish the reviewed model and verify the live files.
+
+Reviewed export: model **6,650,528 bytes**, SHA-256 `b7e302d40124f389932d51f728188ff05f30e87df61c288c73deb7f65f531c42`, plus a 25,938-byte painting. The actual index points inside the modeled laptop display from 0.736 m away. That is a deliberate pointing gap; the hand is not intended to touch the screen. The supporting hand clears the shoulder by 0.450 mm, and the selected full-vertex hand/sleeve checks find no penetration deeper than 1 mm. Both head directions attend to the same display. These geometry samples supplement the front, side and rear views, rather than proving that every mesh contact is finished.
+
+All 37 browser collision footprints exactly match the revised fallback. Current-hash desktop and fresh portrait-emulation checks pass entry, keyboard movement, sustained touch turning, continuous return and cleanup, with the room 02 portal-depth isolation regression retained. Site and packed-geometry checks pass with 39 original achievement URLs, 41 frame IDs, twelve assigned rooms and 27 unit tests. Physical-phone performance is not claimed; the shared likeness and broader environment art backlog remain open.
+
+Evidence: [entered view](scene-evidence/02-advice/entry.webp), [desk exchange](scene-evidence/02-advice/advisor-screen.webp), [front](scene-evidence/02-advice/advisor-front.webp), [rear](scene-evidence/02-advice/advisor-rear.webp), [phone](scene-evidence/02-advice/phone.webp), [closer portrait view](scene-evidence/02-advice/advisor-phone.webp), [before painting](scene-evidence/02-advice/before-painting.webp), and [verification](scene-evidence/02-advice/verification.json).

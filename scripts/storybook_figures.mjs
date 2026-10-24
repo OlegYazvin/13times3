@@ -12,7 +12,7 @@ import {BLUEBERRY_ACTORS} from './scene07_arrangement.mjs';
 import {WEANING_ACTORS} from './scene06_arrangement.mjs';
 import {friendshipGrip} from './scene03_arrangement.mjs';
 import {BLUE_CAR_ACTORS} from './scene04_arrangement.mjs';
-import {CARING_ACTORS} from './scene02_arrangement.mjs';
+import {CARING_ACTORS,DESK_ADVICE_ACTORS} from './scene02_arrangement.mjs';
 import {playgroundGrips} from './scene10_arrangement.mjs';
 import {bittenApple} from './story_apple.mjs';
 import {aquariumAttention} from './scene11_arrangement.mjs';
@@ -491,8 +491,8 @@ export function replaceStoryFigures(root,roomId) {
       else{opts={...opts,height:1.02,shirt:0xb48049,pants:0xb48049,dress:false,knees:[[-.07,.25,.02],[.16,.29,-.10]],ankles:[[-.08,.10,.03],[.16,.15,-.06]],hands:{'-1':[-.36,.91,.04],'1':[.36,.83,.10]},headTilt:-.06,expression:'joy'};}
     }
     if(roomId==='02'){
-      if(identity==='Oleg'&&/job-search desk/.test(name)){opts={...opts,hands:{'-1':[-.18,.98,.39],'1':[.18,1.0,.39]},handStyles:{'1':'write'},handNormals:{'-1':[0,-1,0],'1':[0,-1,0]},handPoints:{'-1':{plane:{point:[0,.954,0],normal:[0,1,0]}},'1':{paper:[.12,.954,.43]}},headPitch:.55,gazeY:-.002};pos=[-1.7,0,4.42];yaw=Math.PI;}
-      if(/advising/.test(name)){opts={...opts,hands:{'-1':[-.3096,1.454,.3829],'1':[.22,1.01,.24]},handAxes:{'-1':[-.98544973,0,-.16996714]},handNormals:{'-1':[0,-1,0]},handPoints:{'-1':{plane:{point:[0,1.4532,0],normal:[0,1,0]}}},elbows:{'-1':[-.30,1.32,.20]},headYaw:-.50,headPitch:.10,headOrder:'YXZ'};pos=[-1.08,0,4.67];yaw=-1.4;}
+      if(identity==='Oleg'&&/job-search desk/.test(name)){opts={...opts,hands:{'-1':[-.18,.98,.39],'1':[.18,1.0,.39]},handStyles:{'1':'write'},handNormals:{'-1':[0,-1,0],'1':[0,-1,0]},handPoints:{'-1':{plane:{point:[0,.954,0],normal:[0,1,0]}},'1':{paper:[.12,.954,.43]}},headPitch:.55,gazeY:-.002,...DESK_ADVICE_ACTORS.Oleg.options};pos=DESK_ADVICE_ACTORS.Oleg.position;yaw=DESK_ADVICE_ACTORS.Oleg.yaw;}
+      if(/advising/.test(name)){const advice=DESK_ADVICE_ACTORS.Jane;opts={...opts,...advice.options};pos=advice.position;yaw=advice.yaw;}
       if(/household/.test(name)||/keeping the household/.test(name)){opts={...opts,apron:true,refinedGarment:true,hands:{'1':[.16,1.032,.452],'-1':[-.07,.991,.43]},handGrips:{'1':true,'-1':false},handCurls:{'1':.6},thumbTurns:{'1':-.3},handAxes:{'1':[0,0,1]},handNormals:{'1':[0,-1,0],'-1':[0,-1,0]},handPoints:{'-1':{plane:{point:[0,.966,0],normal:[0,1,0]}}},headPitch:.40};pos=[-4.16,0,-4.50];yaw=Math.PI;}
       if(/caring/.test(name)||child&&/with Jane/.test(name)){const a=CARING_ACTORS[identity];opts={...opts,...a.options};pos=a.position;yaw=a.yaw;}
       if(/holding Oleg/.test(name)){opts={...opts,refinedGarment:true,hands:{'-1':[-.23,.91,.06],'1':[.46,1.10,-.13]},handNormals:{'1':[0,0,-1]},handAxes:{'1':[1,0,0]},handPoints:{'1':{plane:{point:[0,0,-.1408],normal:[0,0,1]}}},elbows:{'1':[.27,1.09,.25]},headYaw:.90,headTilt:-.14,expression:'tender'};pos=[-.28,0,-5.65];yaw=0;}
