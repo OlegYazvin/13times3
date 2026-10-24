@@ -380,18 +380,145 @@
       "Stepped stair-side wall and protected landing",
       "Second-floor view through the front bay",
       "Side-street window",
-      "Borelli\u2019s behind the portal",
-      "The shared world from Borelli\u2019s",
-      "Borelli\u2019s bar retained",
-      "Borelli\u2019s bar from behind",
-      "Piano and caf\u00e9 retained",
-      "Borelli\u2019s in portrait",
+      "Borelli’s behind the portal",
+      "The shared world from Borelli’s",
+      "Borelli’s bar retained",
+      "Borelli’s bar from behind",
+      "Piano and café retained",
+      "Borelli’s in portrait",
       "Freestanding return portal from behind",
       "Return to the museum"
     ],
-    "judgment": "The former rectangular shell is replaced by a corner bar bay, faceted music bay, projecting chimney and stepped stair side. The wrapping bar reads from both accessible guest faces; its counter does not fill the service well. Lower walls, windows, floor and roof meet the irregular plan. The front and side street views remain dimensional and the music circle remains readable. Borelli\u2019s and the walk-around return remain intact.",
+    "judgment": "The former rectangular shell is replaced by a corner bar bay, faceted music bay, projecting chimney and stepped stair side. The wrapping bar reads from both accessible guest faces; its counter does not fill the service well. Lower walls, windows, floor and roof meet the irregular plan. The front and side street views remain dimensional and the music circle remains readable. Borelli’s and the walk-around return remain intact.",
     "correctedDuringReview": "The old upstairs point light was too close to the lower roof; it was refitted above its chandelier and reduced. The stair void initially exposed the outside backdrop; it was enclosed with walls, roof and a lower landing. The right bar return was shortened and the counter brought forward to make its service entrance usable; the side stool was fitted clear of the wall. Initial diagonal test paths clipped the chimney/radiator corners; explicit waypoints follow the clear physical aisles without weakening wall collision.",
     "limits": "The room plan and streetscape are interpretations of photographs, not a measured survey. Shared character likeness and fine instrument technique remain stylized. This shape revision does not close the wider all-scene artistic checklist. Portrait testing uses browser emulation; physical-phone performance is unmeasured. Model plus painting is above the approximate 8 MB target; the target remains soft. The existing painting-to-room dissolve has a visible ceiling-tone boundary in the partial reveal."
   },
-  "publication": "pending"
+  "publication": {
+    "commit": "78fff6c9c2c297d086b555e827ddc2d90d2750eb",
+    "workflow": "https://github.com/OlegYazvin/13times3/actions/runs/40106463983",
+    "runId": 40106463983,
+    "conclusion": "success",
+    "checkedAt": "2026-10-24T15:22:43.107Z",
+    "normalRoute": {
+      "url": "https://13times3.com/explore/",
+      "status": 200,
+      "sha256": "6e4ecaf36cacd61a333df603dd037b9b045b6a2b09e570a52443b46b6303d691",
+      "expectedSha256": "6e4ecaf36cacd61a333df603dd037b9b045b6a2b09e570a52443b46b6303d691",
+      "match": true,
+      "checkedAt": "2026-10-24T15:21:45.761Z"
+    },
+    "liveAssetChecks": [
+      {
+        "path": "explore/index.html",
+        "url": "https://13times3.com/explore/index.html?review=6e4ecaf36cac",
+        "query": true,
+        "status": 200,
+        "sha256": "6e4ecaf36cacd61a333df603dd037b9b045b6a2b09e570a52443b46b6303d691",
+        "match": true
+      },
+      {
+        "path": "assets/explore/app.js",
+        "url": "https://13times3.com/assets/explore/app.js?review=4badae907d4c",
+        "query": true,
+        "status": 200,
+        "sha256": "4badae907d4c1184974cf2b2fd5b4ddb99338cce80727f537b0ad593e20129ed",
+        "match": true
+      },
+      {
+        "path": "assets/explore.css",
+        "url": "https://13times3.com/assets/explore.css?review=a1f9b52c062f",
+        "query": true,
+        "status": 200,
+        "sha256": "a1f9b52c062f594cb270904e4ac25171097ac7d803ad93737a6f1e9bf96fd30f",
+        "match": true
+      },
+      {
+        "path": "assets/explore/room12/room.glb",
+        "url": "https://13times3.com/assets/explore/room12/room.glb?review=ee600a91073b",
+        "query": true,
+        "status": 200,
+        "sha256": "ee600a91073bca27ad2b5edece83bad8effb0e3e80a77ddd7e507af6c5a9475a",
+        "match": true
+      },
+      {
+        "path": "assets/explore/room12/preview.webp",
+        "url": "https://13times3.com/assets/explore/room12/preview.webp?review=64a6df3003f8",
+        "query": true,
+        "status": 200,
+        "sha256": "64a6df3003f821472c74c0b78f082c69834867666d035332e0fe442c3eb6d0a2",
+        "match": true
+      },
+      {
+        "path": "explore/index.html",
+        "url": "https://13times3.com/explore/index.html",
+        "query": false,
+        "status": 200,
+        "sha256": "6e4ecaf36cacd61a333df603dd037b9b045b6a2b09e570a52443b46b6303d691",
+        "match": true
+      },
+      {
+        "path": "assets/explore/app.js",
+        "url": "https://13times3.com/assets/explore/app.js?v=4badae907d4c",
+        "query": false,
+        "status": 200,
+        "sha256": "4badae907d4c1184974cf2b2fd5b4ddb99338cce80727f537b0ad593e20129ed",
+        "match": true
+      },
+      {
+        "path": "assets/explore.css",
+        "url": "https://13times3.com/assets/explore.css?v=a1f9b52c062f",
+        "query": false,
+        "status": 200,
+        "sha256": "a1f9b52c062f594cb270904e4ac25171097ac7d803ad93737a6f1e9bf96fd30f",
+        "match": true
+      },
+      {
+        "path": "assets/explore/room12/room.glb",
+        "url": "https://13times3.com/assets/explore/room12/room.glb",
+        "query": false,
+        "status": 200,
+        "sha256": "ee600a91073bca27ad2b5edece83bad8effb0e3e80a77ddd7e507af6c5a9475a",
+        "match": true
+      },
+      {
+        "path": "assets/explore/room12/preview.webp",
+        "url": "https://13times3.com/assets/explore/room12/preview.webp",
+        "query": false,
+        "status": 200,
+        "sha256": "64a6df3003f821472c74c0b78f082c69834867666d035332e0fe442c3eb6d0a2",
+        "match": true
+      }
+    ],
+    "freshLiveEntranceLoads": [
+      {
+        "viewport": "desktop",
+        "directEntrance": true,
+        "noControlsOverlay": true,
+        "manifestMatches": true,
+        "frameCount": 41,
+        "exhibitedFrameCount": 13,
+        "plannedFrame": "13",
+        "assignedRooms": 12,
+        "statueResponse200": true,
+        "firstRoomResponse200": true,
+        "noFallback": true,
+        "pageErrors": []
+      },
+      {
+        "viewport": "phone",
+        "directEntrance": true,
+        "noControlsOverlay": true,
+        "manifestMatches": true,
+        "frameCount": 41,
+        "exhibitedFrameCount": 13,
+        "plannedFrame": "13",
+        "assignedRooms": 12,
+        "statueResponse200": true,
+        "firstRoomResponse200": true,
+        "noFallback": true,
+        "pageErrors": []
+      }
+    ],
+    "scope": "The fresh production loads verify the museum entrance and complete manifest; the new frame-12 model and painting are verified byte-for-byte. Multi-angle frame-12 exploration was performed locally against those exact bytes."
+  }
 }

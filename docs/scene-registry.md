@@ -22,7 +22,7 @@ The gallery has 41 stable frame IDs. The 39 original achievement pages are a sep
 
 Frames `01`–`12` have published scene assignments. Frame `13` is reserved for La Jolla and remains unrendered. Frames `14`–`41` retain their stable blank manifest records but are not hung in the current exhibit.
 
-Frame `12`'s active upstairs-shape correction replaces the rectangular Beat
+Frame `12`'s published upstairs-shape correction replaces the rectangular Beat
 Kitchen shell and bar with photo-informed faceted bays, chimney and stair
 returns, and a continuous angled wrapping counter with an open service well.
 This revises the existing folk-jam memory, with its people, instruments, joined
