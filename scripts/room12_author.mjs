@@ -3,6 +3,7 @@ import {createRoomArt} from './room_art.mjs';
 import {makeStoryPerson} from './storybook_figures.mjs';
 import {folkInstruments} from './folk_instruments.mjs';
 import {dressFolkVenues} from './scene12_venues.mjs';
+import {buildUpstairsShell,folkFloorGeometry,folkCeilingGeometry} from './scene12_upstairs.mjs';
 const width=14.8,height=5.8,depth=22.4,portalZ=2.8;
 const art=createRoomArt({index:11,title:'A place in the circle — two rooms, one community',width,height,depth,seed:12023,colors:{sky:0x807568,wood:0x9b7350,ink:0x353b3c,gold:0xbda574,fabric:0x7a9591,brick:0xb3a18b,plaster:0xd7cfb9,red:0xa13943,teal:0x456c66}});
 const {root,material,add,box,beam,curve,loft,random,exportRoom}=art;
@@ -14,30 +15,16 @@ const oak=material(0xffffff,{map:paintedMap((ctx,n)=>{
  ctx.fillStyle='#9b7957';ctx.fillRect(0,0,n,n);
  for(let col=0;col<16;col++){const x=col*n/16;ctx.fillStyle=`hsl(${31+random()*5} 27% ${42+random()*10}%)`;ctx.fillRect(x,0,n/16-1,n);ctx.strokeStyle='#765638';ctx.lineWidth=.6;for(let j=0;j<7;j++){ctx.beginPath();const ax=x+3+random()*25;ctx.moveTo(ax,0);ctx.bezierCurveTo(ax+3,160,ax-3,340,ax,n);ctx.stroke();}for(let row=0;row<3;row++){const y=(row+col%3/3)*n/3;ctx.fillStyle='#71573e';ctx.fillRect(x,y,n/16,1);}}
 })});oak.map.wrapS=oak.map.wrapT=THREE.RepeatWrapping;oak.map.repeat.set(3,5);
-box(root,'one continuous level oak floor connecting both remembered venues',0,-.08,0,width,.16,depth,oak);
+add(root,'one continuous oak floor fitted to both venue footprints',folkFloorGeometry(),oak);
 function brickMaterial(){const map=paintedMap((ctx,n)=>{ctx.fillStyle='#9d9484';ctx.fillRect(0,0,n,n);for(let r=0;r<12;r++)for(let c=-1;c<7;c++){const x=(c+(r%2)/2)*n/6,y=r*n/12;ctx.fillStyle=`hsl(${31+random()*8} ${12+random()*10}% ${52+random()*17}%)`;ctx.fillRect(x+2,y+2,n/6-4,n/12-4);for(let i=0;i<7;i++){ctx.fillStyle='rgba(223,210,182,.13)';ctx.fillRect(x+random()*80,y+random()*40,12+random()*15,2);}}});map.wrapS=map.wrapT=THREE.RepeatWrapping;map.repeat.set(2,3);return material(0xffffff,{map});}
 const brick=brickMaterial();
-const ceilingAt=(x,z)=>5.05+1.7*(1-(x/7.4)**2)+.12*Math.cos(z*.18);
-// A continuous high ceiling rises gently across the impossible shared room.
-{
- const g=new THREE.PlaneGeometry(width,depth,40,60);g.rotateX(Math.PI/2);const p=g.attributes.position,colors=[];
- for(let i=0;i<p.count;i++){const x=p.getX(i),z=p.getZ(i);p.setY(i,ceilingAt(x,z));const c=new THREE.Color(0xeee9d4).lerp(new THREE.Color(0x6d7773),THREE.MathUtils.smoothstep(z,.4,6)*.79);colors.push(c.r,c.g,c.b);}
- g.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));g.computeVertexNormals();add(root,'joined plaster and charcoal ceiling above both jam interiors',g,material(0xffffff,{vertexColors:true}));
-}
-for(const side of [-1,1])box(root,'joined wall between the two remembered interiors',side*7.25,2.55,3.35,.25,5.1,1.3,wall,true);
+const ceilingAt=(x,z)=>THREE.MathUtils.lerp(3.9,5.05+1.7*(1-(x/7.4)**2)+.12*Math.cos(z*.18),THREE.MathUtils.smoothstep(z,-4,4));
+add(root,'continuous ceiling fitted to the faceted room and dream transition',folkCeilingGeometry(ceilingAt),material(0xffffff,{vertexColors:true}));
 // Full side walls, recessed windows and actual depth behind the openings.
 for(const side of [-1,1]){
  const x=side*7.25;
- box(root,'continuous lower plaster wall beneath tall windows',x,.43,-4.1,.25,.86,13.8,wall,true);
- box(root,'plaster lintel over tall upstairs windows',x,4.65,-4.1,.25,1,13.8,wall,true);
- for(let i=0;i<5;i++){
-  const z=-9.8+i*2.6;box(root,'brick pier between tall windows',x,2.55,z,.28,3.45,.40,brick,true);
-  const win=group('Beat Kitchen tall window in deep timber reveal',root,[x,0,z+1.3],-side*Math.PI/2);
-  windowFrame(win,2.15,3.25,2.48);
-  curtain(win,-1.04,2.48,3.3,.34,gray);curtain(win,1.04,2.48,3.3,.34,gray);
- }
- box(root,'Borellis teal wall above timber wainscot',x,2.45,7.65,.25,4.9,7,teal,true);
- box(root,'Borellis timber wall dado',x,.5,7.65,.30,1,7,darkWood);
+ box(root,'Borellis teal wall above timber wainscot',x,2.45,7.5,.25,4.9,7.4,teal,true);
+ box(root,'Borellis timber wall dado',x,.5,7.5,.30,1,7.4,darkWood);
  // Original botanical wallpaper drawn from the interior’s palette, no photo pixels.
  const bot=paintedMap((ctx,n)=>{ctx.fillStyle='#35564f';ctx.fillRect(0,0,n,n);ctx.strokeStyle='#688a78';ctx.lineWidth=3;for(let r=0;r<4;r++)for(let c=0;c<5;c++){const x=c*110+(r%2)*30,y=r*145;for(let k=-4;k<=4;k++){ctx.beginPath();ctx.moveTo(x,y+100);ctx.quadraticCurveTo(x+k*13,y+45,x+k*16,y+10+Math.abs(k)*11);ctx.stroke();}}});bot.wrapS=bot.wrapT=THREE.RepeatWrapping;bot.repeat.set(2,1);
  const wallpaper=material(0xffffff,{map:bot});const panel=add(root,'painted botanical wallpaper in the Borellis alcove',new THREE.PlaneGeometry(6.8,3.3),wallpaper,x-side*.14,2.8,7.65);panel.rotation.y=-side*Math.PI/2;
@@ -55,28 +42,15 @@ function curtain(parent,cx,cy,h,w,mat){
  g.computeVertexNormals();add(parent,'soft gathered curtain attached to its rod',g,mat);
  beam(parent,'curtain rod',[cx-w*.6,cy+h/2+.06,0],[cx+w*.6,cy+h/2+.06,0],.014,.014,darkWood,12);
 }
-// The upstairs bay and exposed chimney continue around the back of the circle.
-box(root,'Beat Kitchen back wall below real window openings',0,.40,-11.08,14.6,.8,.24,wall,true);
-box(root,'Beat Kitchen back wall above real window openings',0,4.69,-11.08,14.6,.82,.24,wall);
-for(const [x,w]of[[-6.95,.7],[-2.3,1.05],[2.3,1.05],[6.95,.7]])box(root,'back wall masonry between window openings',x,2.54,-11.08,w,3.5,.24,wall);
-for(const [x,yaw] of [[-4.6,0],[0,0],[4.6,0]]){
- const bay=group('deep upstairs bay window with gray drapes',root,[x,0,-11.0],yaw);
- windowFrame(bay,3.4,3.35,2.55);curtain(bay,-1.48,2.55,3.42,.88,gray);curtain(bay,1.48,2.55,3.42,.88,gray);
-}
-box(root,'exposed brick chimney at Beat Kitchen',-2.25,2.55,-9.9,1.18,5.1,.75,brick,true);
+const upstairsShell=buildUpstairsShell(art,{group,ceilingAt,windowFrame,curtain,brick,wall,darkWood,cream,gray});
 {
- const masonry=group('individual softened brick courses on the upstairs chimney',root,[-2.25,0,-9.48]);
- const brickG=new THREE.BoxGeometry(.265,.136,.025,1,1,1),palette=Array.from({length:7},(_,i)=>material(new THREE.Color().setHSL(.09,.13,.48+i*.035)));
- for(let r=0;r<34;r++)for(let c=0;c<4;c++){
-  const x=-.43+c*.285+(r%2)*.035;
-  const b=add(masonry,'worn exposed brick with visible mortar course',brickG,palette[(r*3+c*5)%7],x,.08+r*.149,.012+random()*.007);
- }
+ const masonry=group('individual softened brick courses on the projecting chimney',root,[-1.85,0,-8.31]);
+ const brickG=new THREE.BoxGeometry(.265,.136,.025),palette=Array.from({length:7},(_,i)=>material(new THREE.Color().setHSL(.09,.13,.48+i*.035)));
+ for(let r=0;r<25;r++)for(let c=0;c<4;c++)add(masonry,'worn exposed chimney brick with visible mortar',brickG,palette[(r*3+c*5)%7],-.43+c*.285+(r%2)*.035,.08+r*.149,.012+random()*.007);
 }
-box(root,'whitewashed brick return pier upstairs',5.8,2.5,-9.65,.75,5,.9,material(0xd5d0bf),true);
-for(const z of [-8,-3.8,.5])box(root,'black timber ceiling beam upstairs',0,5.02,z,14.45,.16,.20,darkWood);
-for(const [z,mat]of[[-11.08,wall],[11.08,teal]]){
- const shape=new THREE.Shape();shape.moveTo(-7.35,4.98);shape.lineTo(7.35,4.98);for(let i=0;i<=64;i++){const x=7.35-i*14.7/64;shape.lineTo(x,ceilingAt(x,z)+.025);}shape.closePath();
- add(root,'continuous arched end wall closing the joined ceiling',new THREE.ExtrudeGeometry(shape,{depth:.18,bevelEnabled:false,curveSegments:48}),mat,0,0,z-.09);
+{
+ const z=11.08,shape=new THREE.Shape();shape.moveTo(-7.35,4.98);shape.lineTo(7.35,4.98);for(let i=0;i<=64;i++){const x=7.35-i*14.7/64;shape.lineTo(x,ceilingAt(x,z)+.025);}shape.closePath();
+ add(root,'Borellis end wall closing the vaulted ceiling',new THREE.ExtrudeGeometry(shape,{depth:.18,bevelEnabled:false}),teal,0,0,z-.09);
 }
 // Borelli’s red stage curtain, cream cross beams and compact cafe furniture.
 box(root,'Borellis rear wall behind red velvet',0,2.5,11.08,14.6,5,.24,teal,true);
@@ -85,8 +59,8 @@ for(let i=-3;i<=3;i++)curtain(back,i*1.8,2.25,3.85,2.2,red);
 for(const z of [5.3,8.25,10.2])box(root,'cream ceiling cross beam at Borellis',0,4.91,z,14.45,.20,.34,cream);
 for(const x of [-6.8,6.8])box(root,'charcoal ceiling return beam',x,4.85,7.8,.3,.24,6,darkWood);
 function chandelier(x,z,style='globe'){
- const g=group('warm globe chandelier suspended from a real ceiling mount',root,[x,0,z]);beam(g,'chandelier stem',[0,ceilingAt(x,z)-.015,0],[0,3.85,0],.013,.013,brass,12);
- for(let k=0;k<5;k++){const a=k/5*Math.PI*2,b=[Math.cos(a)*.43,3.79,Math.sin(a)*.43];beam(g,'brass chandelier arm',[0,3.88,0],b,.012,.012,brass,10);add(g,'warm opal globe',new THREE.SphereGeometry(.105,20,12),material(0xffe7bd,{emissive:0xeac288,emissiveIntensity:.65}),...b);}
+ const cy=Math.min(3.79,ceilingAt(x,z)-.48),g=group('warm globe chandelier suspended from a real ceiling mount',root,[x,0,z]);beam(g,'chandelier stem',[0,ceilingAt(x,z)-.015,0],[0,cy+.06,0],.013,.013,brass,12);
+ for(let k=0;k<5;k++){const a=k/5*Math.PI*2,b=[Math.cos(a)*.43,cy,Math.sin(a)*.43];beam(g,'brass chandelier arm',[0,cy+.09,0],b,.012,.012,brass,10);add(g,'warm opal globe',new THREE.SphereGeometry(.105,20,12),material(0xffe7bd,{emissive:0xeac288,emissiveIntensity:.65}),...b);}
 }
 chandelier(-3.4,-3.2);chandelier(3.4,7.6);chandelier(-3.6,7.6);
 {
@@ -96,7 +70,7 @@ chandelier(-3.4,-3.2);chandelier(3.4,7.6);chandelier(-3.6,7.6);
 // ribs at the portal, all attached to the walls. No floating notes or wires.
 for(const z of [1.5,4])curve(root,'joined timber rib across the two-place memory',[[-7.18,4.65,z],[-4.5,5.15,z],[0,5.52,z],[4.5,5.15,z],[7.18,4.65,z]],.065,wood,64);
 function label(parent,text,w=.9){const map=paintedMap((ctx,n)=>{ctx.fillStyle='#394740';ctx.fillRect(0,0,n,n);ctx.strokeStyle='#baa67b';ctx.strokeRect(15,180,n-30,152);ctx.fillStyle='#eddfbd';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='36px Georgia';ctx.fillText(text,n/2,n/2);});const m=add(parent,'small venue name on an architectural plaque',new THREE.PlaneGeometry(w,w*.36),material(0xffffff,{map}),0,0,.013);return m;}
-label(group('Beat Kitchen upstairs plaque',root,[-2.25,3.25,-9.48]),'BEAT KITCHEN',1.2);label(group('Borellis plaque above the curtain',root,[0,4.42,10.53],Math.PI),'BORELLI’S',1.65);
+label(group('Beat Kitchen upstairs plaque',root,upstairsShell.chimneyPlaque),'BEAT KITCHEN',1.2);label(group('Borellis plaque above the curtain',root,[0,4.42,10.53],Math.PI),'BORELLI’S',1.65);
 function chair(parent,at=[0,0,0],yaw=0,{cafe=false,seatTop=.453}={}){
  const g=group(cafe?'Borellis bentwood cafe chair':'upstairs curved wooden jam chair',parent,at,yaw);
  const seat=loft(g,'formed chair seat supporting the player',[[seatTop-.038,.23,.225,0,-.04],[seatTop-.008,.232,.226,0,-.04],[seatTop,.217,.213,0,-.04]],cafe?darkWood:wood,40,true);

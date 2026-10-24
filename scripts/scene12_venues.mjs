@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {loadAdaptedTree,plantAdaptedTree} from './adapted_tree.mjs';
+import {upstairsBarEdge,upstairsBarPosition,offsetOpenPath} from './scene12_floorplan.mjs';
 
 // Venue photographs guide the joinery, lighting and scale. All visible pixels
 // and geometry here are original; private/public reference photos stay out of
@@ -28,8 +29,8 @@ export async function dressFolkVenues(art,{group,chair,ceilingAt,paintedMap,bric
   const g=group('stemmed glass in the back bar',parent,[x,y,z]);
   loft(g,'wine glass foot',[[0,.038,.038],[.006,.038,.038]],glass,18);beam(g,'slender glass stem',[0,.006,0],[0,.093,0],.005,.004,glass,8);loft(g,'open wine glass bowl',[[.09,.009,.009],[.12,.044,.044],[.18,.047,.047],[.21,.035,.035],[.21,.031,.031],[.18,.043,.043],[.12,.039,.039]],glass,20);
  }
- function stool(parent,x,z,{back=false}={}){
-  const g=group('fitted bar stool with legs and footrests',parent,[x,0,z],Math.PI);
+ function stool(parent,x,z,{back=false,yaw=Math.PI}={}){
+  const g=group('fitted bar stool with legs and footrests',parent,[x,0,z],yaw);
   rounded(g,'padded charcoal bar stool seat',[0,.765,0],[.43,.065,.38],black,.08,true);
   for(const sx of[-1,1])for(const sz of[-1,1])beam(g,'bar stool splayed steel leg',[sx*.20,.025,sz*.18],[sx*.16,.73,sz*.14],.015,.012,black,10);
   for(const z of[-.17,.17])beam(g,'bar stool joined footrest',[-.19,.29,z],[.19,.29,z],.012,.012,steel,10);
@@ -89,16 +90,50 @@ export async function dressFolkVenues(art,{group,chair,ceilingAt,paintedMap,bric
   }
   return g;
  }
- bar('Beat Kitchen upstairs furnished private bar',[-5.82,0,-7.05],Math.PI/2,3.55,{upstairs:true});
+ function upstairsBar(){
+  const g=group('Beat Kitchen continuous angled wrapping bar',root,upstairsBarPosition);g.userData.venueBar='beat-kitchen';
+  const counter=material(0x696c69,{roughness:.46}),cabinet=material(0x454a4b),fascia=material(0x575e5e);
+  function slab(name,points,top,thickness,mat,solid=false){const shape=new THREE.Shape(points.map(p=>new THREE.Vector2(...p))),geo=new THREE.ExtrudeGeometry(shape,{depth:thickness,bevelEnabled:false});geo.rotateX(Math.PI/2);const m=add(g,name,geo,mat,0,top,0);if(solid)m.userData.solidFootprint=true;return m;}
+  const band=(outer,inner)=>[...offsetOpenPath(upstairsBarEdge,outer),...offsetOpenPath(upstairsBarEdge,inner).reverse()];
+  slab('one continuous U counter with splayed faces and an open service well',band(0,.65),1.12,.09,counter).userData.beatKitchenCounter=true;
+  slab('continuous recessed bar toe kick',band(.13,.54),.06,.06,black);
+  slab('dark counter fascia following every angled return',band(.012,.072),1.035,.065,fascia);
+  const outer=offsetOpenPath(upstairsBarEdge,.07),inner=offsetOpenPath(upstairsBarEdge,.58);
+  for(let i=0;i<outer.length-1;i++){
+   const length=Math.hypot(outer[i+1][0]-outer[i][0],outer[i+1][1]-outer[i][1]),steps=Math.ceil(length/.32);
+   for(let j=0;j<steps;j++){
+    const point=(path,t)=>path[i].map((v,k)=>THREE.MathUtils.lerp(v,path[i+1][k],t));
+    slab('fitted cabinet section following the faceted bar', [point(outer,j/steps),point(outer,(j+1)/steps),point(inner,(j+1)/steps),point(inner,j/steps)],1.03,.97,cabinet,true);
+   }
+   const a=upstairsBarEdge[i],b=upstairsBarEdge[i+1],dx=b[0]-a[0],dz=b[1]-a[1],length2=Math.hypot(dx,dz),n=[-dz/length2,dx/length2];
+   for(const t of[.05,.95]){const x=THREE.MathUtils.lerp(a[0],b[0],t)-n[0]*.064,z=THREE.MathUtils.lerp(a[1],b[1],t)-n[1]*.064;beam(g,'cabinet stile fitted under the counter overhang',[x,.11,z],[x,.99,z],.012,.012,fascia,8);}
+  }
+  // The photos show a compact back counter under the bay glazing, with open
+  // shelves on posts. A full invented brick panel would seal that window.
+  box(g,'upstairs working back-bar cabinet',-.15,.46,-1.94,2.48,.92,.38,black,true);
+  rounded(g,'upstairs working back counter',[-.15,.95,-1.94],[2.56,.06,.42],steel,.025);
+  for(const x of[-1.43,1.13])beam(g,'upright supporting the upstairs bottle shelves',[x,.98,-2.04],[x,2.61,-2.04],.025,.025,black,10);
+  for(const y of[1.38,1.94,2.51]){
+   box(g,'open bottle shelf above the upstairs service counter',-.15,y,-2.04,2.62,.05,.26,black);
+   for(let i=0;i<14;i++){if((i+Math.round(y*10))%6===0)continue;bottle(g,-1.32+i*.18,y+.025,-2.02,i+Math.round(y*10));}
+  }
+  box(g,'inset sink on the back working counter',-.45,.983,-1.93,.36,.005,.22,black);
+  curve(g,'small gooseneck faucet over the upstairs sink',[[-.45,.98,-2.03],[-.45,1.20,-2.03],[-.45,1.23,-1.91],[-.45,1.17,-1.89]],.01,steel,18);
+  box(g,'under-counter bottle refrigerator',.56,.48,-1.74,.88,.71,.025,steel);
+  box(g,'smoked glass refrigerator door',.56,.49,-1.722,.78,.61,.012,material(0x354d4a));
+  beam(g,'refrigerator pull attached to the door',[.87,.31,-1.701],[.87,.65,-1.701],.009,.009,steel,8);
+  const register=group('compact register on an angled counter',g,[-.85,1.12,.25]);beam(register,'register support',[0,0,0],[0,.08,0],.024,.022,black,10);const screen=box(register,'small service-facing register',0,.13,0,.20,.15,.027,black);screen.rotation.x=-.24;
+  for(const x of[-.45,.22,.76]){box(g,'coaster resting on the shaped counter',x,1.1215,.39,.095,.003,.095,cream);tumbler(g,x,1.123,.39);}
+  for(const [x,z,yaw]of[[-2.24,-.10,-.6],[-1.75,.95,-.65],[-.65,1.25,0],[.55,1.25,0],[1.72,.60,.85]])stool(g,x,z,{yaw});
+  const lamps=[[-1.65,-.23],[-1.22,.42],[-.30,.42],[.63,.42],[1.40,-.10]];
+  const track=lamps.map(([x,z])=>[x,ceilingAt(upstairsBarPosition[0]+x,upstairsBarPosition[2]+z)-.018,z]);
+  for(let i=1;i<track.length;i++)beam(g,'ceiling track following the upstairs counter facets',track[i-1],track[i],.017,.017,cream,10);
+  for(const [x,z]of lamps)pendant(g,x,z,ceilingAt(upstairsBarPosition[0]+x,upstairsBarPosition[2]+z)-.015);
+ }
+ upstairsBar();
  bar('Borellis long side bar and stocked back counter',[5.80,0,7.85],-Math.PI/2,5.10);
 
  // Upper-room utility details, kept on the perimeter rather than in the circle.
- for(const side of[-1,1]){
-  box(root,'dark timber skirting under the upstairs windows',side*7.08,.10,-4.1,.055,.20,13.6,black);
-  for(const z of[-3.6,-.3])box(root,'upstairs electrical outlet plate',side*7.105,.34,z,.035,.12,.09,cream);
- }
- const trackZ=-8.0;beam(root,'mounted upstairs lighting track',[-6.1,4.92,trackZ],[6.1,4.92,trackZ],.021,.021,steel,10);
- for(const x of[-4.7,-1.3,2.1,5.0]){beam(root,'track light stem',[x,4.92,trackZ],[x,4.74,trackZ],.016,.016,steel,10);const m=add(root,'fitted adjustable track light',new THREE.CylinderGeometry(.065,.065,.18,14),black,x,4.66,trackZ);m.rotation.z=.22;}
  // Borelli's piano, café seats, small table lights, framed music and stage cans.
  const piano=group('Borellis upright piano beside the red curtain',root,[-5.6,0,10.35],Math.PI);
  rounded(piano,'upright piano cabinet',[0,.69,0],[1.48,1.38,.54],black,.055,true);

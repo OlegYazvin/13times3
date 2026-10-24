@@ -107,6 +107,7 @@ export function buildLayout(manifest) {
       !record.room.caption.trim() || record.room.caption.length > 48)) {
       throw new Error(`Frame ${record.id} needs a short painting caption.`);
     }
+    if(record.room.walkablePolygon&&(!Array.isArray(record.room.walkablePolygon)||record.room.walkablePolygon.length<3||record.room.walkablePolygon.some(p=>!Array.isArray(p)||p.length!==2||!p.every(Number.isFinite))))throw new Error(`Frame ${record.id} has an invalid floor boundary.`);
     sectionCounts[record.section] += 1;
   }
   if (sectionCounts.some((count, index) => count !== manifest.sectionCounts[index])) {

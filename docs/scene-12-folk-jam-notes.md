@@ -1,6 +1,54 @@
 # Frame 12 — A place in the circle
 
-Status: the corrected portrait-phone composition is published and verified live.
+Status: the upstairs shape correction is reviewed and ready to publish.
+
+## Upstairs shape correction — October 24
+
+Oleg rejected the rectangular upstairs envelope and rectangular bar. The current
+local revision uses the five upstairs photographs in [Beat Kitchen's official
+gallery](https://beatkitchen.com/virtual-tour-and-gallery/): Upstairs, Upstairs 2,
+Upstairs 3, Upstairs Bar and Upstairs Couch. The supplied private jam photo and
+the previously inspected rental photo provide the occupied-room context.
+Reference photos remain outside Git and the published download.
+
+The photo-informed plan now has a separate corner bar bay, three angled front
+window faces, a projecting exposed-brick chimney, a whitewashed return and a
+stepped stair/alcove side. It is an interpretation of visible relationships,
+not a measured survey. The walking floor follows that irregular outline; the
+fitted roof also covers the enclosed interior stair void. The lower upstairs ceiling rises into the existing dream transition toward
+Borelli's. Light fixtures and the upstairs light are fitted to that ceiling.
+
+The bar has one continuous wrapping top, splayed guest faces, short returns and
+an open inner service well with a reachable entrance. Its shorter right return
+and position clear the chimney; its side stool clears the wall. Cabinet bodies,
+stools, back counter, shelves and pendants are fitted to that arrangement. The footprint is shared with room
+collision; the old rectangle cannot supply invisible floor in the stair recess
+or chimney notch. All people, instruments and their posed relationships remain.
+The freestanding return portal and Borelli's arrangement stay in this world.
+
+- [x] Inspect exported entry, both bar faces, bay walls and stair return.
+- [x] Verify floor/counter surfaces, ceiling joins and fixture attachment.
+- [x] Walk the revised perimeter, both portal posts and both venues.
+- [x] Verify fresh portrait loads, controls, collision, return and cleanup.
+- [x] Complete site, packed-geometry and unit checks; confirm other frames unchanged.
+- [ ] Publish the reviewed revision and verify the live assets.
+
+Review evidence: [before/after and multiple views](scene-evidence/12-upstairs-shape/index.html)
+and [verification with exact asset hashes](scene-evidence/12-upstairs-shape/verification.json).
+All 34 tests and site/packed-geometry checks pass. Seven guest/service routes,
+both portal posts, keyboard/touch controls, return and cleanup pass on desktop
+and fresh portrait loads. The 247 browser collision footprints match the fallback
+manifest exactly. All 13 figures and held instruments retain their packed
+geometry and world poses; the other 40 frame records are unchanged.
+
+Model plus painting: 8.28 MB, above the approximate 8 MB target. Physical-phone
+performance is unmeasured. The existing painting-to-room dissolve still shows
+a ceiling-tone boundary in the [partial reveal](scene-evidence/12-upstairs-shape/reveal.webp).
+This shape correction does not close the wider all-scene artistic checklist.
+
+A side-view inspection caught an open stair void that exposed the outdoor
+backdrop. It is now enclosed with outer/end walls, a lower landing and a roof.
+The earlier checked lists and evidence below describe the previous revision.
 
 Jane discovered a welcoming folk jam community meeting at Beat Kitchen upstairs
 and Borelli’s. She enjoys listening; she does not sing or play an instrument at

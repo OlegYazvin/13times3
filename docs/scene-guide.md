@@ -208,6 +208,18 @@ For ongoing refinement of the published rooms, use the [visual quality audit](vi
 
 ## Frame 12 — joined interiors and seated collisions
 
+- Read the actual room outline before furnishing it. Beat Kitchen upstairs has
+  faceted window bays, a projecting chimney and stepped stair/alcove returns;
+  its compact wrapping bar has angled faces and an inner service well. Do not
+  flatten these relationships into a rectangular room and slab counter.
+- Prove that a service well has a reachable entrance; a visible hole in the
+  countertop does not establish usable access behind its return. Keep an
+  interior stair void enclosed by the building roof and outer walls.
+- Fit floor, roof, window openings and collision to the same plan. A custom
+  outline cannot sit decoratively inside an invisible rectangular walking area.
+  Refit lights and suspended fixtures after lowering or reshaping a ceiling;
+  an old point light close to the new surface produces an exposed hot spot.
+
 - A larger vault needs end-wall infill up to its actual surface. Refit hanging
   fixtures to that roof after changing its height; an old fixed suspension
   height can leave a chandelier unsupported in the middle of the air.

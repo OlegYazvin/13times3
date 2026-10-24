@@ -15,6 +15,17 @@ export function roomIsReady(frame) {
   return Boolean(frame.room?.previewImage && frame.room?.modelUrl);
 }
 
+export function insideRoomPolygon(x,z,polygon,radius=PLAYER_RADIUS){
+  let inside=false;
+  for(let i=0,j=polygon.length-1;i<polygon.length;j=i++){
+    const [ax,az]=polygon[j],[bx,bz]=polygon[i];
+    if((az>z)!==(bz>z)&&x<(bx-ax)*(z-az)/(bz-az)+ax)inside=!inside;
+    const dx=bx-ax,dz=bz-az,t=Math.max(0,Math.min(1,((x-ax)*dx+(z-az)*dz)/(dx*dx+dz*dz)));
+    if(Math.hypot(x-ax-t*dx,z-az-t*dz)<radius)return false;
+  }
+  return inside;
+}
+
 function portalDepth(frame) {
   return frame.room.portalZ ?? frame.room.dimensionsM[2] / 2;
 }
@@ -282,6 +293,7 @@ export class RoomManager {
     if (!this.active) return false;
     const local = this.worldToRoom(position);
     const { frame, colliders } = this.active;
+    if(frame.room.walkablePolygon&&!insideRoomPolygon(local.x,local.z,frame.room.walkablePolygon))return false;
     const halfX = frame.room.dimensionsM[0] / 2;
     const halfZ = frame.room.dimensionsM[2] / 2;
     const opening = portalOpening(frame);

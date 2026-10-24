@@ -132,8 +132,8 @@ if(process.argv.includes('--global')){
     if(f.id==='02')shots.push(['advisor',-.15,6.0,-.62,-.13],['advisor-screen',.3,4.4,-1.12,-.13],['advisor-front',.25,3.3,-2.37,-.10],['advisor-rear',-.9,5.8,0,-.10]);
     if(f.id==='02')shots.push(['sprout-front',1.4,-.2,.55,-.24],['sprout-angle',3.7,-.5,-.296,-.20],['sprout-profile',4.5,-2.8,-Math.PI/2,-.22],['sprout-rear',3.6,-4.55,-2.811,-.20],['sprout-fist',1.4,-1.65,.82,0]);
 
-    if(f.id==='12')shots.push(['borellis',0,4.5,Math.PI,-.08],['borellis-side',-4.3,7.5,Math.PI/2,-.12],['portal-back',0,5.0,0],['children',.60,.6,0,-.40],['jonas',1.70,-.65,-.2,-.06],['beat-windows',-4,-5.8,0],
-      ['beat-bar',-3.5,-5.8,Math.atan2(-2.3,1.25),-.10],['beat-bar-side',-4.1,-9.3,Math.atan2(-1.7,-2.25),-.10],
+    if(f.id==='12')shots.push(['borellis',0,4.5,Math.PI,-.08],['borellis-side',-4.3,7.5,Math.PI/2,-.12],['portal-back',0,5.0,0],['children',.60,.6,0,-.40],['jonas',1.70,-.65,-.2,-.06],['beat-windows',-.2,-6.35,.325],
+      ['beat-bar',-2.3,-5.1,Math.atan2(-2.3,1.6),-.12],['beat-bar-side',-6.1,-4.5,Math.atan2(1.5,2.2),-.12],['beat-bay-side',4.9,-7.1,Math.atan2(-3.8,3.1),.02],['beat-stair-return',3.8,.8,Math.atan2(2.6,3),-.20],
       ['belmont-view',1.0,-9.7,0,-.30],['leavitt-view',-6.1,-2.5,-Math.PI/2,-.40],
       ['borellis-bar',3.4,5.45,Math.atan2(2.4,-2.4),-.08],['borellis-bar-side',3.5,10.1,Math.atan2(2.3,2.25),-.10],['borellis-piano',-3.5,9.3,Math.atan2(-2.1,-1.0),-.20]);
     if(f.id==='11'){
@@ -146,7 +146,7 @@ if(process.argv.includes('--global')){
    if(f.id==='02'&&phone&&!process.argv.includes('--checks'))shots.push(['advisor-phone',.1,6.5,-.55,-.08]);
    if(f.id==='02'&&phone&&!process.argv.includes('--checks'))shots.push(['sprout-phone',1.4,-.2,.55,-.18]);
    if(f.id==='11'&&phone&&!process.argv.includes('--checks'))shots.push(['mermaid-phone',6.0,5.15,Math.PI/2,-.14]);
-   if(f.id==='12'&&phone&&!process.argv.includes('--checks'))shots.push(['beat-bar-phone',-3.5,-5.8,Math.atan2(-2.3,1.25),-.10],['borellis-phone',0,4.5,Math.PI,-.08]);
+   if(f.id==='12'&&phone&&!process.argv.includes('--checks'))shots.push(['beat-bar-phone',-1.8,-4.85,Math.atan2(-2.8,1.85),-.12],['borellis-phone',0,4.5,Math.PI,-.08]);
    if(f.id==='08'&&!phone&&!returnsOnly&&!process.argv.includes('--checks'))for(const [stop,z,side]of[['pullman',7.05,-1],['avalon',5.8,1],['arts-bank',2.1,-1],['narrow-bridge',-1.65,1],['palmisano',-5.4,-1],['saint-ignatius',-9.15,1],['temple',-12.05,-1]]){
     const standZ=stop==='pullman'?9.15:stop==='avalon'?6.6:z,lookX=stop==='pullman'?-3.8:side*4.25;
     shots.push(['route-'+stop,0,standZ,Math.atan2(lookX,standZ-z),stop==='pullman'?.30:stop==='avalon'?.20:stop==='palmisano'?-.06:.15]);
@@ -157,7 +157,7 @@ if(process.argv.includes('--global')){
    }
    if(f.id==='02'&&process.argv.includes('--advisor')){const keep=new Set(['entry','advisor','advisor-screen','advisor-front','advisor-rear','phone','advisor-phone']);for(let i=shots.length-1;i>=0;i--)if(!keep.has(shots[i][0]))shots.splice(i,1);}
    if(f.id==='02'&&process.argv.includes('--sprout')){const keep=new Set(['entry','advisor-screen','sprout-front','sprout-angle','sprout-profile','sprout-rear','sprout-fist','phone','sprout-phone']);for(let i=shots.length-1;i>=0;i--)if(!keep.has(shots[i][0]))shots.splice(i,1);}
-   if(f.id==='12'&&process.argv.includes('--venues')){const keep=new Set(['entry','phone','beat-windows','beat-bar','beat-bar-side','belmont-view','leavitt-view','borellis','borellis-side','borellis-bar','borellis-bar-side','borellis-piano','beat-bar-phone','borellis-phone','portal-back']);for(let i=shots.length-1;i>=0;i--)if(!keep.has(shots[i][0]))shots.splice(i,1);}
+   if(f.id==='12'&&process.argv.includes('--venues')){const keep=new Set(['entry','phone','beat-windows','beat-bar','beat-bar-side','beat-bay-side','beat-stair-return','belmont-view','leavitt-view','borellis','borellis-side','borellis-bar','borellis-bar-side','borellis-piano','beat-bar-phone','borellis-phone','portal-back']);for(let i=shots.length-1;i>=0;i--)if(!keep.has(shots[i][0]))shots.splice(i,1);}
    if(f.id==='12'&&process.argv.includes('--subjects')){const keep=new Set(['entry','phone','front','profile-left','profile-right','left','right','rear','close','children','jonas']);for(let i=shots.length-1;i>=0;i--)if(!keep.has(shots[i][0]))shots.splice(i,1);}
    let captured=0;
    for(let [name,x,z,yaw,pitch=0] of shots){
@@ -228,11 +228,14 @@ if(process.argv.includes('--global')){
     await p.evaluate(()=>window.__galleryTestRoomPose(0,4.7,0));await p.evaluate(()=>window.__galleryTestRoomMove(0,1.7));assert.equal((await p.evaluate(()=>window.__galleryDebug())).mode,'room','rear crossing stays in the continuous jam world');
     // Walk the actual perimeter with the revised bars and café furniture. A
     // reachable screenshot position alone does not establish a clear route.
-    const routes=[{name:'upstairs bar',start:[-4.1,1.4],points:[[-4.1,-4.7],[-3.5,-5.8],[0,-8.7],[1,-9.7]]},
+    const routes=[{name:'upstairs bar',start:[-4.1,1.4],points:[[-4.1,-4.7],[-2.1,-4.7],[-2.1,-5.1],[0,-5.1],[0,-8.7],[1,-9.7]]},
+      {name:'bar service well',start:[0,-5.1],points:[[-2.3,-7.75],[-4.6,-7.75],[-4.6,-7.1],[-4.6,-7.75],[-2.3,-7.75],[0,-5.1]]},
+      {name:'faceted bay and stair alcove',start:[0,-8.7],points:[[3.2,-8.7],[3.2,-7.1],[4.9,-7.1]]},
+      {name:'other angled bar face',start:[-4.1,-4.7],points:[[-5.5,-4.3],[-6.1,-4.5]]},
       {name:'side street window',start:[-4.1,1.4],points:[[-4.1,-2.5],[-6.1,-2.5]]},
       {name:'Borellis bar',start:[3.2,1.4],points:[[3.2,4.7],[3.4,5.45]]},
       {name:'Borellis piano',start:[-3.6,4.7],points:[[-3.6,6.0],[-3.9,6.0],[-3.9,9.3],[-3.5,9.3]]}];
-    for(const route of routes){await p.evaluate(([x,z])=>window.__galleryTestRoomPose(x,z,0),route.start);for(const point of route.points){await p.evaluate(([x,z])=>window.__galleryTestRoomMove(x,z),point);const s=await p.evaluate(()=>window.__galleryDebug());assert.equal(s.mode,'room');assert.ok(Math.hypot(s.roomLocal.x-point[0],s.roomLocal.z-point[1])<.08,`frame 12: clear route to ${route.name}`);}results.push({id:f.id,name:route.name+' walking route',viewport:phone?'phone':'desktop',passed:true});}
+    for(const route of routes){await p.evaluate(([x,z])=>window.__galleryTestRoomPose(x,z,0),route.start);for(const point of route.points){await p.evaluate(([x,z])=>window.__galleryTestRoomMove(x,z),point);const s=await p.evaluate(()=>window.__galleryDebug());assert.equal(s.mode,'room');assert.ok(Math.hypot(s.roomLocal.x-point[0],s.roomLocal.z-point[1])<.08,`frame 12: clear route to ${route.name}: intended ${JSON.stringify(point)}, actual ${JSON.stringify(s.roomLocal)}`);}results.push({id:f.id,name:route.name+' walking route',viewport:phone?'phone':'desktop',passed:true});}
     await p.evaluate(()=>window.__galleryTestRoomPose(1,-9.7,0));await p.evaluate(()=>window.__galleryTestRoomMove(1,-13.0));assert.ok((await p.evaluate(()=>window.__galleryDebug())).roomLocal.z>-11,'frame 12: upstairs window boundary blocks walking into the street');
    }
    if(f.id==='11'){

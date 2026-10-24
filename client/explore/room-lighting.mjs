@@ -43,7 +43,7 @@ export function addRoomLighting(parent, roomId = '01') {
   const fill = new THREE.DirectionalLight(settings[1], .48);
   fill.position.set(3, 2.5, -2);
   parent.add(fill, fill.target);
-  if(roomId==='12'){for(const z of [-3,7.5]){const glow=new THREE.PointLight(0xffd3a3,14,10,2);glow.position.set(0,3.8,z);parent.add(glow);}}
+  if(roomId==='12'){for(const [x,y,z,power] of [[-3.4,3.45,-3.2,4.5],[0,3.8,7.5,14]]){const glow=new THREE.PointLight(0xffd3a3,power,10,2);glow.position.set(x,y,z);parent.add(glow);}}
   if(roomId==='05'){const focus=new THREE.SpotLight(0xffd6a2,30,12,.70,.9,2);focus.position.set(-1.5,5.4,3.6);focus.target.position.set(-.25,1.1,5.1);parent.add(focus,focus.target);}
   if(roomId==='02'){const bounce=new THREE.PointLight(0xffe5c1,12,9,2);bounce.position.set(-2.6,2.6,4.2);parent.add(bounce);}
   if(roomId==='11'){

@@ -1,0 +1,397 @@
+{
+  "id": "12",
+  "modelSha256": "ee600a91073bca27ad2b5edece83bad8effb0e3e80a77ddd7e507af6c5a9475a",
+  "paintingSha256": "64a6df3003f821472c74c0b78f082c69834867666d035332e0fe442c3eb6d0a2",
+  "appSha256": "4badae907d4c1184974cf2b2fd5b4ddb99338cce80727f537b0ad593e20129ed",
+  "recordedAt": "2026-10-24T15:11:16.167Z",
+  "captured": true,
+  "modelBytes": 8237380,
+  "paintingBytes": 38694,
+  "functional": {
+    "siteChecksPassed": true,
+    "unitTests": 34,
+    "all12PackedModelsValid": true,
+    "originalAchievementUrls": 39,
+    "frameCount": 41,
+    "publishedScenes": 12,
+    "manifestInvariance": {
+      "unchangedFrames": 40,
+      "frame12OnlyChangedMetadata": [
+        "colliders",
+        "walkablePolygon"
+      ],
+      "allOtherManifestFieldsUnchanged": true,
+      "baselineCommit": "f0982022124ee1c47d7e0b5fa7c74f0449fd7ea1"
+    },
+    "castInvariance": {
+      "all13FiguresAndHeldInstrumentsUnchanged": true,
+      "figures": {
+        "Jane": {
+          "geometrySha256": "a1fd173b80a299a0aaa109b31765416942bae2bbe10696546390f3fcc98d2d80",
+          "meshes": 18
+        },
+        "Jonas Friddle": {
+          "geometrySha256": "a1a0a945ed3a5933120d88e2b749d141e7f1e87e4e49b1c9badd08c09cf2ecb6",
+          "meshes": 22
+        },
+        "Guitar neighbor": {
+          "geometrySha256": "303c1ee70e7376f0709f62737921f57df4cf136f2ce09d26d991d82b9c2ecaa7",
+          "meshes": 24
+        },
+        "Mandolin neighbor": {
+          "geometrySha256": "9dd6f2b3fcc79dc262f13a271eed6f24f543663739b5b8bc2b992c6dfe2ba40e",
+          "meshes": 24
+        },
+        "Fiddle neighbor": {
+          "geometrySha256": "5e9c85373faca1848e995aadfd4c57604fcf90cedcb2ae89410b959667628024",
+          "meshes": 25
+        },
+        "Bass neighbor": {
+          "geometrySha256": "431f902277c11ade1b91fb62315a6310c0126ec2d364e14ee8e70904dca3181a",
+          "meshes": 23
+        },
+        "Zephrine": {
+          "geometrySha256": "adfa7b41b6bffd7465c6f48a53d735325045d068eaa2745f848e5a98672ce61f",
+          "meshes": 16
+        },
+        "Jam child friend": {
+          "geometrySha256": "99ab21182552d86bd32f697c1d0b9694ad173e9ebbf0fc9b4db3a4a68dcf2104",
+          "meshes": 24
+        },
+        "Borellis guitarist": {
+          "geometrySha256": "54b88d358ca8100969a19371040cac920088fd10223ce5e235c844a8e10c1e17",
+          "meshes": 24
+        },
+        "Borellis banjo player": {
+          "geometrySha256": "82075101c2113d310f42d73f864b428486083e28d996649ab12f03cd1daea7fe",
+          "meshes": 25
+        },
+        "Borellis drummer": {
+          "geometrySha256": "f57ef8f7f00b9d448e2c5be927847289e40ef4216c286a49aeb6c19068cb3605",
+          "meshes": 20
+        },
+        "Oleg": {
+          "geometrySha256": "0c6e1a23755ab6946754e988b10e79df0c28d6a7ca9f7876bae44636c9fcb0e6",
+          "meshes": 18
+        },
+        "Borellis listening neighbor": {
+          "geometrySha256": "4af5e97405d2a47d38ed9c4a546489ce4eb8dedff8910ce9e302ce24f8b68f76",
+          "meshes": 18
+        }
+      }
+    },
+    "global": {
+      "dragLook": true,
+      "resize": true,
+      "webglLossFallback": true,
+      "noWebglFallback": true,
+      "failedRoomStaysInHall": true,
+      "storedFrameCount": 41,
+      "exhibitedFrameCount": 13,
+      "previewCount": 12
+    },
+    "collisionFootprints": 247,
+    "maxBrowserVsFallbackCollisionDeltaM": 0,
+    "packedSurfaceChecks": {
+      "floorMatchesIrregularPlan": true,
+      "noFloorInStairRecessOrChimneyNotch": true,
+      "barServiceEntranceAndExitClear": true,
+      "barStoolsClearWalls": true,
+      "stairwellEnclosed": true,
+      "barInnerWellOpen": true,
+      "splayedCornersPresent": true
+    },
+    "browserResults": [
+      {
+        "id": "12",
+        "name": "phone",
+        "x": 0,
+        "z": 2.25,
+        "yaw": 0,
+        "pitch": 0,
+        "stand": true
+      },
+      {
+        "id": "12",
+        "name": "beat-bar-phone",
+        "x": -1.8,
+        "z": -4.85,
+        "yaw": -0.9869259311327816,
+        "pitch": -0.12,
+        "stand": true
+      },
+      {
+        "id": "12",
+        "name": "borellis-phone",
+        "x": 0,
+        "z": 4.5,
+        "yaw": 3.141592653589793,
+        "pitch": -0.08,
+        "stand": true
+      },
+      {
+        "id": "12",
+        "name": "upstairs bar walking route",
+        "viewport": "phone",
+        "passed": true
+      },
+      {
+        "id": "12",
+        "name": "bar service well walking route",
+        "viewport": "phone",
+        "passed": true
+      },
+      {
+        "id": "12",
+        "name": "faceted bay and stair alcove walking route",
+        "viewport": "phone",
+        "passed": true
+      },
+      {
+        "id": "12",
+        "name": "other angled bar face walking route",
+        "viewport": "phone",
+        "passed": true
+      },
+      {
+        "id": "12",
+        "name": "side street window walking route",
+        "viewport": "phone",
+        "passed": true
+      },
+      {
+        "id": "12",
+        "name": "Borellis bar walking route",
+        "viewport": "phone",
+        "passed": true
+      },
+      {
+        "id": "12",
+        "name": "Borellis piano walking route",
+        "viewport": "phone",
+        "passed": true
+      },
+      {
+        "id": "12",
+        "name": "thumb-joystick-moves",
+        "passed": true
+      },
+      {
+        "id": "12",
+        "viewport": "phone",
+        "entry": true,
+        "collisionSamples": 40,
+        "return": true,
+        "continuousCamera": true,
+        "controls": true,
+        "cleanup": true
+      },
+      {
+        "id": "12",
+        "name": "entry",
+        "x": 0,
+        "z": 2.25,
+        "yaw": 0,
+        "pitch": 0,
+        "stand": true
+      },
+      {
+        "id": "12",
+        "name": "borellis",
+        "x": 0,
+        "z": 4.5,
+        "yaw": 3.141592653589793,
+        "pitch": -0.08,
+        "stand": true
+      },
+      {
+        "id": "12",
+        "name": "borellis-side",
+        "x": -4.3,
+        "z": 7.5,
+        "yaw": 1.5707963267948966,
+        "pitch": -0.12,
+        "stand": true
+      },
+      {
+        "id": "12",
+        "name": "portal-back",
+        "x": 0,
+        "z": 5,
+        "yaw": 0,
+        "pitch": 0,
+        "stand": true
+      },
+      {
+        "id": "12",
+        "name": "beat-windows",
+        "x": -0.2,
+        "z": -6.35,
+        "yaw": 0.325,
+        "pitch": 0,
+        "stand": true
+      },
+      {
+        "id": "12",
+        "name": "beat-bar",
+        "x": -2.3,
+        "z": -5.1,
+        "yaw": -0.9629943306809361,
+        "pitch": -0.12,
+        "stand": true
+      },
+      {
+        "id": "12",
+        "name": "beat-bar-side",
+        "x": -6.1,
+        "z": -4.5,
+        "yaw": 0.5984188934785372,
+        "pitch": -0.12,
+        "stand": true
+      },
+      {
+        "id": "12",
+        "name": "beat-bay-side",
+        "x": 4.9,
+        "z": -7.1,
+        "yaw": -0.8865015351337467,
+        "pitch": 0.02,
+        "stand": true
+      },
+      {
+        "id": "12",
+        "name": "beat-stair-return",
+        "x": 3.8,
+        "z": 0.8,
+        "yaw": 0.714090698612158,
+        "pitch": -0.2,
+        "stand": true
+      },
+      {
+        "id": "12",
+        "name": "belmont-view",
+        "x": 1,
+        "z": -9.7,
+        "yaw": 0,
+        "pitch": -0.3,
+        "stand": true
+      },
+      {
+        "id": "12",
+        "name": "leavitt-view",
+        "x": -6.1,
+        "z": -2.5,
+        "yaw": -1.5707963267948966,
+        "pitch": -0.4,
+        "stand": true
+      },
+      {
+        "id": "12",
+        "name": "borellis-bar",
+        "x": 3.4,
+        "z": 5.45,
+        "yaw": 2.356194490192345,
+        "pitch": -0.08,
+        "stand": true
+      },
+      {
+        "id": "12",
+        "name": "borellis-bar-side",
+        "x": 3.5,
+        "z": 10.1,
+        "yaw": 0.7963867320801818,
+        "pitch": -0.1,
+        "stand": true
+      },
+      {
+        "id": "12",
+        "name": "borellis-piano",
+        "x": -3.5,
+        "z": 9.3,
+        "yaw": -2.0152155366959956,
+        "pitch": -0.2,
+        "stand": true
+      },
+      {
+        "id": "12",
+        "name": "upstairs bar walking route",
+        "viewport": "desktop",
+        "passed": true
+      },
+      {
+        "id": "12",
+        "name": "bar service well walking route",
+        "viewport": "desktop",
+        "passed": true
+      },
+      {
+        "id": "12",
+        "name": "faceted bay and stair alcove walking route",
+        "viewport": "desktop",
+        "passed": true
+      },
+      {
+        "id": "12",
+        "name": "other angled bar face walking route",
+        "viewport": "desktop",
+        "passed": true
+      },
+      {
+        "id": "12",
+        "name": "side street window walking route",
+        "viewport": "desktop",
+        "passed": true
+      },
+      {
+        "id": "12",
+        "name": "Borellis bar walking route",
+        "viewport": "desktop",
+        "passed": true
+      },
+      {
+        "id": "12",
+        "name": "Borellis piano walking route",
+        "viewport": "desktop",
+        "passed": true
+      },
+      {
+        "id": "12",
+        "viewport": "desktop",
+        "entry": true,
+        "collisionSamples": 40,
+        "return": true,
+        "continuousCamera": true,
+        "controls": true,
+        "cleanup": true
+      }
+    ]
+  },
+  "visual": {
+    "reviewed": [
+      "Museum painting",
+      "Partial reveal",
+      "The revised upstairs room on entry",
+      "Fresh portrait entry",
+      "Wrapping counter and open service well",
+      "The counter from its other face",
+      "Angled bar in portrait",
+      "Projecting chimney and faceted music bay",
+      "Music bay and whitewashed return from the side",
+      "Stepped stair-side wall and protected landing",
+      "Second-floor view through the front bay",
+      "Side-street window",
+      "Borelli\u2019s behind the portal",
+      "The shared world from Borelli\u2019s",
+      "Borelli\u2019s bar retained",
+      "Borelli\u2019s bar from behind",
+      "Piano and caf\u00e9 retained",
+      "Borelli\u2019s in portrait",
+      "Freestanding return portal from behind",
+      "Return to the museum"
+    ],
+    "judgment": "The former rectangular shell is replaced by a corner bar bay, faceted music bay, projecting chimney and stepped stair side. The wrapping bar reads from both accessible guest faces; its counter does not fill the service well. Lower walls, windows, floor and roof meet the irregular plan. The front and side street views remain dimensional and the music circle remains readable. Borelli\u2019s and the walk-around return remain intact.",
+    "correctedDuringReview": "The old upstairs point light was too close to the lower roof; it was refitted above its chandelier and reduced. The stair void initially exposed the outside backdrop; it was enclosed with walls, roof and a lower landing. The right bar return was shortened and the counter brought forward to make its service entrance usable; the side stool was fitted clear of the wall. Initial diagonal test paths clipped the chimney/radiator corners; explicit waypoints follow the clear physical aisles without weakening wall collision.",
+    "limits": "The room plan and streetscape are interpretations of photographs, not a measured survey. Shared character likeness and fine instrument technique remain stylized. This shape revision does not close the wider all-scene artistic checklist. Portrait testing uses browser emulation; physical-phone performance is unmeasured. Model plus painting is above the approximate 8 MB target; the target remains soft. The existing painting-to-room dissolve has a visible ceiling-tone boundary in the partial reveal."
+  },
+  "publication": "pending"
+}
