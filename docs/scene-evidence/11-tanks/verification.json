@@ -1,0 +1,232 @@
+{
+  "id": "11",
+  "modelSha256": "8acfbe4b848a2736d2297e26d8868932d11db6b8e287d37ebd2b28697aa1413f",
+  "paintingSha256": "a947e5f965689ad37d81888463a9a8bcaf7d0cfcf6c4b2aabf33476bbf0d96a4",
+  "appSha256": "0b06197b19af8935bae0b44d4683ad164f4ad1da076f63604eea68ddc7d892ab",
+  "recordedAt": "2026-10-24T02:39:24.193Z",
+  "modelBytes": 7789020,
+  "paintingBytes": 79448,
+  "functional": {
+    "siteChecksPassed": true,
+    "unitTests": 27,
+    "tankVolumes": 6,
+    "animalAndSchoolGroups": 95,
+    "driftVertexSamples": 13284105,
+    "allAnimalVerticesInsideWater": true,
+    "collisionFootprints": 69,
+    "maxBrowserVsFallbackCollisionDeltaM": 0,
+    "mermaidCoralClearances": [
+      {
+        "part": "connected irregular coral footing within the mermaid tank",
+        "layer": "footing",
+        "clearanceM": 0.11053649878495159
+      },
+      {
+        "part": "rooted coral colony screening the mermaid",
+        "layer": "foreground",
+        "clearanceM": 0.21495248866322925
+      },
+      {
+        "part": "rooted coral colony screening the mermaid",
+        "layer": "foreground",
+        "clearanceM": 0.222838150045769
+      },
+      {
+        "part": "rooted coral colony screening the mermaid",
+        "layer": "foreground",
+        "clearanceM": 0.2248588207093185
+      },
+      {
+        "part": "rooted coral colony screening the mermaid",
+        "layer": "foreground",
+        "clearanceM": 0.20283815004576944
+      },
+      {
+        "part": "rooted coral colony screening the mermaid",
+        "layer": "background",
+        "clearanceM": 0.35179004018193183
+      },
+      {
+        "part": "ruffled plate coral in front of the hidden tail",
+        "layer": "foreground",
+        "clearanceM": 0.18063701450321368
+      }
+    ],
+    "fishMotion": true,
+    "bothPortalPostLoops": true,
+    "desktopKeyboard": true,
+    "portraitTouchTurning": true,
+    "continuousEntryReturn": true,
+    "cleanup": true,
+    "browserResults": [
+      {
+        "id": "11",
+        "name": "mermaid-aisle",
+        "x": 4.8,
+        "z": 6.9,
+        "yaw": 0.9609313178537453,
+        "pitch": -0.08,
+        "stand": true
+      },
+      {
+        "id": "11",
+        "name": "mermaid-close",
+        "x": 6.8,
+        "z": 4.72,
+        "yaw": 1.5707963267948966,
+        "pitch": -0.2,
+        "stand": true
+      },
+      {
+        "id": "11",
+        "name": "mermaid-oblique",
+        "x": 6.4,
+        "z": 3.8,
+        "yaw": 2.1150768117408765,
+        "pitch": -0.16,
+        "stand": true
+      },
+      {
+        "id": "11",
+        "name": "entry",
+        "x": 0,
+        "z": 9.85,
+        "yaw": 0,
+        "pitch": 0,
+        "stand": true
+      },
+      {
+        "id": "11",
+        "name": "side-reef",
+        "x": 6.5,
+        "z": 3,
+        "yaw": 1.5707963267948966,
+        "pitch": 0,
+        "stand": true
+      },
+      {
+        "id": "11",
+        "name": "river-tank",
+        "x": -6.3,
+        "z": 0.1,
+        "yaw": -1.5707963267948966,
+        "pitch": 0,
+        "stand": true
+      },
+      {
+        "id": "11",
+        "name": "far-reef",
+        "x": 0,
+        "z": -8.5,
+        "yaw": 0,
+        "pitch": 0,
+        "stand": true
+      },
+      {
+        "id": "11",
+        "name": "clear-ceiling",
+        "x": -2.7,
+        "z": 6.9,
+        "yaw": 1.4321565896607382,
+        "pitch": 0.6,
+        "stand": true
+      },
+      {
+        "id": "11",
+        "name": "round-tank-side",
+        "x": 4.2,
+        "z": 6.8,
+        "yaw": -1.5707963267948966,
+        "pitch": -0.12,
+        "stand": true
+      },
+      {
+        "id": "11",
+        "name": "portal-back",
+        "x": 0,
+        "z": 12.7,
+        "yaw": 0,
+        "pitch": 0,
+        "stand": true
+      },
+      {
+        "id": "11",
+        "name": "rear-habitat",
+        "x": 0,
+        "z": 15.5,
+        "yaw": 3.141592653589793,
+        "pitch": 0,
+        "stand": true
+      },
+      {
+        "id": "11",
+        "viewport": "desktop",
+        "entry": true,
+        "collisionSamples": 40,
+        "return": true,
+        "continuousCamera": true,
+        "controls": true,
+        "cleanup": true
+      },
+      {
+        "id": "11",
+        "name": "phone",
+        "x": 0,
+        "z": 9.85,
+        "yaw": 0,
+        "pitch": 0,
+        "stand": true
+      },
+      {
+        "id": "11",
+        "name": "mermaid-phone",
+        "x": 6,
+        "z": 5.15,
+        "yaw": 1.5707963267948966,
+        "pitch": -0.14,
+        "stand": true
+      },
+      {
+        "id": "11",
+        "viewport": "phone",
+        "entry": true,
+        "collisionSamples": 40,
+        "return": true,
+        "continuousCamera": true,
+        "controls": true,
+        "cleanup": true
+      }
+    ],
+    "globalControlsAndFallback": {
+      "dragLook": true,
+      "resize": true,
+      "webglLossFallback": true,
+      "noWebglFallback": true,
+      "failedRoomStaysInHall": true,
+      "frameCount": 41,
+      "previewCount": 12
+    }
+  },
+  "visual": {
+    "reviewed": [
+      "hallway painting",
+      "partial reveal",
+      "doorway",
+      "normal-distance coral discovery",
+      "close mermaid",
+      "oblique mermaid",
+      "fresh portrait-phone",
+      "river tank",
+      "front tank",
+      "rear tank",
+      "round tank",
+      "overhead space",
+      "behind portal",
+      "return"
+    ],
+    "judgment": "Ariel is a partly screened discovery inside the right-hand reef; the tanks have readable fronts, beds, ends, caps and depth, with the previously exposed inhabitants inside exhibits.",
+    "remaining": "The scene still juxtaposes detailed painted habitat backdrops and simpler modeled fish and people. This targeted enclosure revision does not establish final artistic acceptance for the larger gallery.",
+    "physicalPhonePerformanceTested": false
+  },
+  "publication": "pending"
+}

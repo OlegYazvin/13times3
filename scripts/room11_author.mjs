@@ -2,6 +2,8 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { createRoomArt } from "./room_art.mjs";
 import { aquariumMermaid } from "./aquarium_mermaid.mjs";
+import { encloseAquarium, freezeAquariumAnimal, fitAquariumAnimals } from "./aquarium_habitats.mjs";
+import { branchingCoral, brainCoral, lettuceCoral } from "./aquarium_coral.mjs";
 import reefBackdropURL from "./assets/room11/reef-backdrop-painted-v2.webp";
 import riverBackdropURL from "./assets/room11/river-backdrop-painted-v2.webp";
 import reefVariantURL from "./assets/room11/reef-variant-painted-v2.webp";
@@ -573,6 +575,8 @@ jellyfish(8.04,3.35,4.05,.82,111);
 function ray(x,y,z,scale,yaw=0) {
   const group=new THREE.Group();
   group.name="large sculpted ray behind end-habitat glass";
+  group.userData.aquariumAnimal=true;
+  group.userData.aquariumHabitat='far-reef';
   group.position.set(x,y,z);group.rotation.y=yaw;group.scale.setScalar(scale);
   root.add(group);
   const top=[],bottom=[],uv=[],indices=[],rows=10,columns=24;
@@ -619,86 +623,12 @@ function ray(x,y,z,scale,yaw=0) {
 ray(-2.15,3.85,-12.35,.92,.14);
 ray(4.3,2.9,-12.45,.62,-.26);
 
-// A suspended, shallow water lens makes the visitor feel surrounded by
-// inhabited glass, not simply flanked by wall paintings. The fish and ray
-// occupy the water volume ABOVE its curved lower pane. This is a storybook
-// aquarium canopy rather than a literal reconstruction of a Shedd gallery.
-{
-  const cx=-.65, cz=3.9, rx=4.65, rz=3.35;
-  const ceilingAt=aquariumVaultHeight;
-  const rimAt=a=>{const x=cx+Math.cos(a)*rx,z=cz+Math.sin(a)*rz;return [x,Math.min(5.95,ceilingAt(x,z)-.10),z];};
-  const underside=new THREE.MeshPhysicalMaterial({color:0x70b7c2,
-    transparent:true,opacity:.27,roughness:.08,metalness:0,
-    depthWrite:false,side:THREE.DoubleSide});
-  const vertices=[],indices=[],rings=12,sides=64;
-  for(let ring=0;ring<=rings;ring++) {
-    const r=ring/rings;
-    for(let side=0;side<=sides;side++) {
-      const a=side*Math.PI*2/sides;
-      const ripple=.035*Math.sin(a*8+r*9)*r*r;
-      vertices.push(cx+Math.cos(a)*rx*r,
-        4.72+.34*(1-r*r)+ripple,
-        cz+Math.sin(a)*rz*r);
-      if(ring<rings&&side<sides) {
-        const n=ring*(sides+1)+side;
-        indices.push(n,n+sides+1,n+1,n+1,n+sides+1,n+sides+2);
-      }
-    }
-  }
-  const geometry=new THREE.BufferGeometry();
-  geometry.setAttribute("position",new THREE.Float32BufferAttribute(vertices,3));
-  geometry.setIndex(indices);geometry.computeVertexNormals();
-  add(root,"curved walk-under glass beneath a living water lens",
-    geometry,underside);
-  const sidePoints=[],sideIndices=[];
-  for(let level=0;level<2;level++) for(let i=0;i<=64;i++) {
-    const a=i*Math.PI*2/64;
-    const [x,top,z]=rimAt(a);
-    sidePoints.push(x,level?top:4.74+.025*Math.sin(8*a),z);
-    if(level===0&&i<64) {
-      sideIndices.push(i,i+65,i+1,i+1,i+65,i+66);
-    }
-  }
-  const sideGeometry=new THREE.BufferGeometry();
-  sideGeometry.setAttribute("position",
-    new THREE.Float32BufferAttribute(sidePoints,3));
-  sideGeometry.setIndex(sideIndices);sideGeometry.computeVertexNormals();
-  add(root,"continuous blue glass edge enclosing overhead fish habitat",
-    sideGeometry,new THREE.MeshPhysicalMaterial({color:0x72b5c0,
-      transparent:true,opacity:.34,roughness:.1,metalness:0,
-      depthWrite:false,side:THREE.DoubleSide}));
-  for(const y of [4.74,5.95]) {
-    const rim=[];
-    for(let i=0;i<=64;i++) {
-      const a=i*Math.PI*2/64;
-      const [x,top,z]=rimAt(a);
-      rim.push([x,y<5?y+.025*Math.sin(8*a):top,z]);
-    }
-    curve(root,"scalloped shell rim around the overhead aquarium",
-      rim,y<5?.058:.035,y<5?M.pearl:M.gold,65);
-  }
-  // The enclosed water lens deliberately floats in this dream. Its complete
-  // upper/lower frame replaces loose supports ending against the ceiling.
-  const overheadPigment=[
-    new THREE.MeshStandardMaterial({color:0xb9d7c2,
-      emissive:0x6b8e83,emissiveIntensity:1.1,roughness:.88,
-      side:THREE.DoubleSide}),
-    new THREE.MeshStandardMaterial({color:0xe6c595,
-      emissive:0x8e7750,emissiveIntensity:1.1,roughness:.88,
-      side:THREE.DoubleSide}),
-    new THREE.MeshStandardMaterial({color:0xcf9da1,
-      emissive:0x84566c,emissiveIntensity:1.1,roughness:.88,
-      side:THREE.DoubleSide}),
-  ];
-  for(let i=0;i<9;i++) {
-    const a=i*2.399,rad=.22+.62*Math.sqrt((i+.5)/9);
-    const x=cx+Math.cos(a)*rx*rad,
-      z=cz+Math.sin(a)*rz*rad;
-    fish(x,5.18+(i%3)*.11,z,
-      .47+(i%3)*.07,overheadPigment[i%3],
-      171+i*.57,a+Math.PI/2);
-  }
-}
+// Rehouse the former overhead school behind the far exhibit's actual glass.
+// The visitor hall is air beneath its vaulted roof, not open swimming water.
+for(let i=0;i<9;i++) fish(-5.8+(i%5)*2.55,
+  3.5+Math.floor(i/5)*.95,-13.2-(i%3)*.36,
+  .47+(i%3)*.07,i%3===0?M.pearl:i%3===1?M.gold:M.coral,
+  171+i*.57,Math.PI*(i%2));
 
 // A turtle and the upright seahorses give the glazed bays their own species
 // silhouettes. Their bodies are continuous shaped surfaces; the small eye
@@ -837,7 +767,7 @@ function sculptedSeahorse(x,y,z,scale,yaw=0) {
 sculptedTurtle(8.08,3.53,6.75,.77,Math.PI*.48);
 sculptedTurtle(-8.12,3.04,-.55,.66,-Math.PI*.55);
 sculptedTurtle(-3.35,2.7,19.15,.72,-.32);
-sculptedTurtle(2.37,2.78,3.83,.49,-.32);
+sculptedTurtle(-2.6,2.95,-13.6,.49,-.32);
 for(const [x,y,z,s,yaw] of [
   [8.08,2.37,1.4,.91,Math.PI*.47],
   [-8.08,2.45,6.4,.96,-Math.PI*.52],
@@ -901,17 +831,21 @@ function fanCoral(x,z,span,height,material,sideways=false) {
   branch(0,0,Math.PI/2,.24,5,0);
   return group;
 }
-for(const side of [-1,1]) for(let patch=0;patch<6;patch++)
+for(const side of [-1,1]) for(let patch=0;patch<6;patch++){
+  const start=root.children.length;
   coralGarden(side*8.53,-10.6+patch*5.35,side===1);
+  if(side===1&&patch===3)for(const o of root.children.slice(start))o.removeFromParent();
+}
 for(const side of [-1,1]) for(let bay=0;bay<6;bay++) {
   const z=-9.85+bay*5.12;
+  if(side===1&&bay===3)continue;
   fanCoral(side*8.18,z-.95,.58+(bay%3)*.1,
     1.16+(bay%3)*.15,side===1?M.coral:M.leaf);
 }
 fanCoral(-3.15,-12.65,1.2,2.65,M.coral);
 fanCoral(3.7,-12.68,1.12,2.48,M.gold);
-fanCoral(8.12,4.0,1.1,2.22,M.coral,true);
 for(const side of [-1,1]) for(let shelf=0;shelf<4;shelf++) {
+  if(side===1&&shelf===0)continue;
   const x=side*8.35,z=5.5-shelf*5.35;
   loft(root,"layered reef ledge behind aquarium glass",
     [[.12,.7,.57,x,z],[.25,.81,.63,x-.11,z+.08],
@@ -1091,7 +1025,8 @@ for(const side of [-1,1]) for(let i=0;i<10;i++) {
 }
 
 // Clusters of cut-paper kelp and coral rest behind the family and at edges.
-for(const side of [-1,1]) for(let patch=0;patch<10;patch++) {
+for(const side of [-1,1]) for(let patch=0;patch<9;patch++) {
+  if(side===1&&patch===5)continue;
   const x=side*(8.3+random()*.42),z=-10.9+patch*3.16;
   for(let strand=0;strand<5;strand++) {
     const dx=(random()-.5)*.6;
@@ -1212,6 +1147,28 @@ curve(root,"freestanding arched return doorway",
   fish(x+.3,2.02,z-.24,.51,M.coral,128,Math.PI+.3);
 }
 
+function mermaidCoralRefuge(){
+  const reef=new THREE.Group();reef.name='dense dimensional coral refuge partly hiding Ariel inside the side aquarium';root.add(reef);
+  const footing=loft(reef,'connected irregular coral footing within the mermaid tank',
+    [[.08,.62,1.42,8.55,5.35],[.23,.68,1.50,8.56,5.35],
+      [.36,.51,1.35,8.63,5.40],[.42,.18,.67,8.69,5.5]],M.shadow,36);
+  footing.userData.mermaidCoralPart='footing';
+  for(const [x,z,height,depth,width,style] of [
+    [8.10,4.55,1.55,.22,.68,'branch'],[8.08,5.66,1.18,.24,.92,'branch'],
+    [8.03,5.12,.61,.18,.42,'brain'],[8.10,6.28,.91,.24,.76,'branch'],
+    [9.55,5.24,1.42,.50,.82,'branch'],
+  ]){
+    const colony=new THREE.Group();colony.name='rooted coral colony screening the mermaid';
+    colony.userData.mermaidCoralPart=x<8.4?'foreground':'background';reef.add(colony);
+    const living=style==='brain'?brainCoral():branchingCoral();
+    if(style==='brain'){living.position.set(x,.44,z);living.scale.set(depth,height*.50,width);}
+    else{living.position.set(x,.24,z);living.scale.set(depth,height/1.8,width);}
+    colony.add(living);
+  }
+  const plates=new THREE.Group();plates.name='ruffled plate coral in front of the hidden tail';plates.userData.mermaidCoralPart='foreground';reef.add(plates);
+  const lettuce=lettuceCoral();lettuce.position.set(8.08,.23,5.87);lettuce.scale.set(.95,.80,1.15);plates.add(lettuce);
+}
+
 window.__authorRoom=async()=>{
   const loader=new THREE.TextureLoader();
   const [reef,river,reefVariant,riverVariant,canopy,barramundi,manta,sculptedSchool]=await Promise.all([
@@ -1275,11 +1232,13 @@ window.__authorRoom=async()=>{
     swimmer.add(new THREE.Mesh(fishType.geometry,fishType.material));
     root.add(swimmer);
   }
-  const overheadRay=new THREE.Group();
-  overheadRay.name="sculpted manta swimming above the aquarium's glass lens";
-  overheadRay.position.set(-.65,5.28,4.05);
-  overheadRay.rotation.y=.34;
-  overheadRay.scale.setScalar(.36);
+  const rearRay=new THREE.Group();
+  rearRay.name="sculpted manta swimming inside the deep rear aquarium";
+  rearRay.userData.aquariumAnimal=true;
+  rearRay.userData.aquariumHabitat="rear-reef";
+  rearRay.position.set(-3.3,3.90,18.8);
+  rearRay.rotation.y=.34;
+  rearRay.scale.setScalar(.36);
   manta.scene.traverse(object=>{
     if(!object.isMesh)return;
     object.material=object.material.clone();
@@ -1290,17 +1249,17 @@ window.__authorRoom=async()=>{
     object.material.metalness=0;
     object.material.side=THREE.DoubleSide;
   });
-  overheadRay.add(manta.scene);
-  root.add(overheadRay);
+  rearRay.add(freezeAquariumAnimal(manta.scene));
+  root.add(rearRay);
   // One CC0 sculpt carries real gills, lips, tapering fins and scales. Its
   // repaint matches the rest of the gouache aquarium; copies share the mesh
   // and texture and move only in a restrained breathing loop.
   for(const [x,y,z,scale,yaw,roll,phase] of [
     [-1.55,2.18,18.88,1.65,Math.PI/2,0,306],
     [2.25,2.35,18.75,1.53,-Math.PI/2,0,307],
-    [-2.25,5.33,3.25,1.58,.26,.86,308],
-    [1.9,5.41,4.62,1.52,-.4,-.94,309],
-    [.15,5.38,2.28,1.45,.3,1.08,310],
+    [-4.65,3.75,-13.25,1.58,Math.PI/2,0,308],
+    [4.9,4.1,-13.05,1.52,-Math.PI/2,0,309],
+    [.65,2.7,-13.5,1.45,Math.PI/2,0,310],
     // Two close, richly modeled fish give the round habitat readable life
     // where G and Zephrine actually stand, not only in the distant glass.
     [1.37,2.46,6.42,1.04,Math.PI/2,0,311],
@@ -1333,8 +1292,13 @@ window.__authorRoom=async()=>{
   // A quiet discovery beside the existing coral fan, revealed by approaching
   // the right glass. The whole sculpture stays outside the walking route.
   const hiddenMermaid=await aquariumMermaid();
-  hiddenMermaid.position.set(7.92,.33,4.72);
+  hiddenMermaid.position.set(8.72,.33,4.95);
+  hiddenMermaid.userData.aquariumAnimal=true;
+  hiddenMermaid.userData.aquariumHabitat="side-reef";
   hiddenMermaid.rotation.y=-Math.PI/2;
   root.add(hiddenMermaid);
+  mermaidCoralRefuge();
+  encloseAquarium(root,aquariumVaultHeight);
+  fitAquariumAnimals(root);
   return exportRoom({batchStatic:true});
 };

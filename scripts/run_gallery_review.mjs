@@ -118,13 +118,17 @@ if(process.argv.includes('--global')){
       shots.unshift(['mermaid-aisle',4.8,6.9,Math.atan2(3.12,2.18),-.08],
       ['mermaid-close',6.8,4.72,Math.PI/2,-.20],
       ['mermaid-oblique',6.4,3.8,Math.atan2(1.52,-.92),-.16]);
-      shots.push(['portal-back',0,12.7,0],['rear-habitat',0,15.5,Math.PI]);
+      shots.push(['side-reef',6.5,3.0,Math.PI/2],['river-tank',-6.3,.1,-Math.PI/2],['far-reef',0,-8.5,0],['clear-ceiling',-.2,6.9,0,.60],['round-tank-side',4.2,6.8,-Math.PI/2,-.12],['portal-back',0,12.7,0],['rear-habitat',0,15.5,Math.PI]);
     }
    }
    if(f.id==='11'&&phone&&!process.argv.includes('--checks'))shots.push(['mermaid-phone',6.0,5.15,Math.PI/2,-.14]);
    if(f.id==='08'&&!phone&&!returnsOnly&&!process.argv.includes('--checks'))for(const [stop,z,side]of[['pullman',7.05,-1],['avalon',5.8,1],['arts-bank',2.1,-1],['narrow-bridge',-1.65,1],['palmisano',-5.4,-1],['saint-ignatius',-9.15,1],['temple',-12.05,-1]]){
     const standZ=stop==='pullman'?9.15:stop==='avalon'?6.6:z,lookX=stop==='pullman'?-3.8:side*4.25;
     shots.push(['route-'+stop,0,standZ,Math.atan2(lookX,standZ-z),stop==='pullman'?.30:stop==='avalon'?.20:stop==='palmisano'?-.06:.15]);
+   }
+   if(f.id==='11'&&process.argv.includes('--aquarium')){
+    const keep=new Set(['entry','mermaid-aisle','mermaid-close','mermaid-oblique','side-reef','river-tank','far-reef','clear-ceiling','round-tank-side','portal-back','rear-habitat','phone','mermaid-phone']);
+    for(let i=shots.length-1;i>=0;i--)if(!keep.has(shots[i][0]))shots.splice(i,1);
    }
    let captured=0;
    for(let [name,x,z,yaw,pitch=0] of shots){

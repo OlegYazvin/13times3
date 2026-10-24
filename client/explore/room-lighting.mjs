@@ -46,6 +46,13 @@ export function addRoomLighting(parent, roomId = '01') {
   if(roomId==='12'){for(const z of [-3,7.5]){const glow=new THREE.PointLight(0xffd3a3,14,10,2);glow.position.set(0,3.8,z);parent.add(glow);}}
   if(roomId==='05'){const focus=new THREE.SpotLight(0xffd6a2,30,12,.70,.9,2);focus.position.set(-1.5,5.4,3.6);focus.target.position.set(-.25,1.1,5.1);parent.add(focus,focus.target);}
   if(roomId==='02'){const bounce=new THREE.PointLight(0xffe5c1,12,9,2);bounce.position.set(-2.6,2.6,4.2);parent.add(bounce);}
+  if(roomId==='11'){
+    // Light the actual water from the exhibit hoods. The visitor hall remains
+    // softly lit while fish and coral are readable behind the glazing.
+    for(const [x,y,z,power] of [[8.9,4.75,5.2,18],[-8.9,4.75,3.0,15],[0,4.95,-13.3,20],[0,4.95,18.6,20]]){
+      const tankLight=new THREE.PointLight(0xbde8e8,power,13,2);tankLight.position.set(x,y,z);parent.add(tankLight);
+    }
+  }
   if(roomId==='06'){const bounce=new THREE.PointLight(0xffd4b6,9,10,2);bounce.position.set(.8,2.4,3.1);parent.add(bounce);}
   if(roomId==='01'){
     for(const [at,look,power] of [[[.9,3.08,-.8],[1.05,1.05,-1.5],15],[[-.45,2.7,1.15],[-.35,.95,.52],10]]){

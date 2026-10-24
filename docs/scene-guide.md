@@ -209,3 +209,22 @@ For ongoing refinement of the published rooms, use the [visual quality audit](vi
   Working controls do not establish that the principal person is in frame.
   Reposition a complete coupled arrangement when possible, preserving its
   hands, props, furniture and shared attention together.
+
+## Aquarium enclosure follow-up
+
+- An aquarium needs continuous glass, a recessed bed, closed ends, a waterline
+  and a readable upper cabinet. Nearly invisible disconnected panes against
+  a painted wall do not establish an enclosed volume. Give glass physical
+  thickness so its exported collision footprint remains valid.
+- Assign every animal to a tank and inspect its full moving mesh, not its
+  origin. The Shedd turtle outside the round tank was a placement defect;
+  the overhead swimmers were rehoused after the lens read as open air.
+  Bake a source animal's posed skin before measuring its rendered bounds.
+- Check the full drift envelope after packing. The aquarium check samples
+  the actual renderer's yaw and vertical movement, with collision fallback
+  derived from those same exported surfaces.
+- Coral that screens a discovery needs its own convincing silhouette. Separate
+  tapered pipes read as bare sticks. Use fused rounded branches and solid
+  ruffled plates; check outward face winding so a brain coral cannot become
+  a hollow ring. Keep foreground cover physically clear of the mermaid even
+  where their silhouettes overlap from the aisle.

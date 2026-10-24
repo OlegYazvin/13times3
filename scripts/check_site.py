@@ -392,9 +392,11 @@ def main() -> None:
     assert any(node.get("extras", {}).get("identity") == "G" and node.get("extras", {}).get("storyFigure") for node in aquarium_json["nodes"]), "Room 11 needs G in the common sculpt style"
     for detail in ("G sharing wonder", "Zephrine pointing", "freestanding return-door",
                    "drifting sculpted aquarium fish", "painted saltwater reef habitat",
-                   "painted freshwater river habitat", "continuous thick aquarium viewing glass",
-                   "curved walk-under glass beneath a living water lens",
-                   "continuous blue glass edge enclosing overhead fish habitat",
+                   "painted freshwater river habitat", "sealed continuous viewing glass of river",
+                   "sealed continuous viewing glass of side-reef",
+                   "complete sealed viewing glass of far-reef",
+                   "complete sealed viewing glass of rear-reef",
+                   "enclosed aquariums with glazed fronts water surfaces and recessed beds",
                    "continuous carved stone crown of the walk-behind hallway portal",
                    "fluted carved limestone column with joined capital",
                    "carved shell fan supporting the marble crown",
@@ -405,6 +407,10 @@ def main() -> None:
                    "layered, broken-edged sculpted reef shelf in round habitat",
                    "broad curved seagrass ribbon rooted in the reef shelf"):
         assert detail in aquarium_names, f"Room 11 missing {detail}"
+    assert "curved walk-under glass beneath a living water lens" not in aquarium_names, "The overhead animals were rehoused in enclosed exhibits"
+    tank_ids = {tank["id"] for node in aquarium_json["nodes"] for tank in node.get("extras", {}).get("aquariumTanks", [])}
+    assert len(tank_ids) == 6, "Room 11 needs six explicit aquarium volumes"
+    assert all(node.get("extras", {}).get("aquariumHabitat") in tank_ids for node in aquarium_json["nodes"] if "driftPhase" in node.get("extras", {}) or node.get("extras", {}).get("aquariumAnimal")), "Every aquarium animal must belong to an enclosed exhibit"
     assert aquarium_names.count("painted sculpted barramundi behind aquarium glass") >= 9, "Room 11 needs detailed fish in the close tank and the surrounding habitats"
     assert aquarium_names.count("painted three-dimensional rear-water fish species") == 4, "Room 11 needs four separated sculpted reef-fish schools at the rear glass"
     assert aquarium_names.count("painted three-dimensional side-water fish species") == 6, "Room 11 needs sculpted fish distributed behind both long side aquariums"

@@ -212,3 +212,74 @@ The phone view includes the full tail, with a foreground reed partly screening
 the figure; the close and oblique desktop views reveal her face. The previous
 mermaid evidence stays in `11-mermaid` as a rejected comparison. This revision
 does not mark the aquarium's wider artistic backlog complete.
+
+## Enclosed tanks and a hidden coral discovery
+
+The next user revision keeps this same frame and family memory. Baseline
+doorway, side, rear and portrait views show nearly invisible glazing, rear
+panes with a central gap, and an overhead lens whose inhabitants read as
+swimming through the hall. A turtle at `(2.37, 2.78, 3.83)` is actually outside
+the round exhibit centered at `(1.6, 6)`. Ariel is too exposed against sparse
+branches. These are observed defects, rather than accepted dream distortions.
+
+Current checklist, reviewed against the packed export:
+
+- [x] Put every animal inside an explicit aquarium volume, including its drift.
+- [x] Replace open/incomplete glazing with framed, sealed viewing fronts;
+  add recessed beds, water surfaces, closed ends and tank roofs.
+- [x] Rehouse the overhead animals and misplaced turtle inside wall exhibits.
+- [x] Place Ariel deeper in the side reef, screened by dimensional coral,
+  with a discoverable face and no contact with the coral or glass.
+- [x] Inspect doorway, side tanks, round exhibits, rear habitat, ceiling,
+  mermaid close/oblique views and a fresh portrait-phone load.
+- [x] Check current geometry, aquarium containment, collision fallback,
+  moving fish, both portal loops, controls, return and cleanup.
+- [ ] Publish only the reviewed result and verify the live assets.
+
+The side and end exhibits now have continuous, physically thick glass fronts,
+beveled stone surrounds, recessed sediment beds, opaque end returns, waterlines
+and closed hoods. The rear front's old central opening is gone. The side habitat
+paintings and walls sit farther behind their glass, with exhibit lighting inside
+the water. The two round exhibits have capped water surfaces and shaped rims.
+The overhead lens is removed; its fish and manta, along with the misplaced
+turtle, have been rehoused inside the wall exhibits. The manta's posed skin is
+baked before fitting its actual rendered shape to the water.
+
+Ariel sits deeper in the right-hand reef. Fused branching colonies, a ridged
+brain coral and thick ruffled plates screen her lower body and parts of her
+silhouette. From an oblique aisle view a colony partly covers her face; moving
+along the glass reveals it. The coral is separate geometry in front of and
+behind her, with measured clearance rather than an intersection hidden by the
+camera. An early bare-branch study was replaced, and inward-facing brain-coral
+triangles were corrected after they looked like a hollow ring in close review.
+Two unit tests now check the brain and plate surfaces' outward orientation.
+
+The reviewed model is **7,789,020 bytes**, SHA-256
+`8acfbe4b848a2736d2297e26d8868932d11db6b8e287d37ebd2b28697aa1413f`,
+plus a 79,448-byte hallway painting. The packed geometry check samples
+13,284,105 vertex positions across the actual swimming motion: all 95 animal
+and school groups remain inside six defined water volumes. The seven coral
+parts clear Ariel's bounding box by at least 0.11 m. All 69 browser collision
+footprints match the revised manifest fallback within 0.002 m.
+
+The current-hash desktop and fresh portrait-emulation review passes entry,
+keyboard movement, sustained touch turning, moving fish, both routes around
+the freestanding return portal, continuous return and cleanup. Site and geometry
+checks pass with 39 achievement URLs, 41 stable frames, twelve assigned rooms
+and 27 unit tests. These checks establish function and containment separately
+from the visual judgment in the screenshots. Physical-phone frame rate is not
+claimed. The detailed painted backdrops still differ in finish from the simpler
+modeled fish and people; this targeted revision does not close the wider art
+backlog.
+
+Evidence: [coral discovery](scene-evidence/11-tanks/coral-discovery.webp),
+[close](scene-evidence/11-tanks/coral-close.webp),
+[oblique](scene-evidence/11-tanks/coral-oblique.webp),
+[front tank](scene-evidence/11-tanks/front-tank.webp),
+[rear tank](scene-evidence/11-tanks/rear-tank.webp),
+[clear ceiling](scene-evidence/11-tanks/clear-ceiling.webp),
+[round tank](scene-evidence/11-tanks/round-tank.webp),
+[behind the portal](scene-evidence/11-tanks/portal-back.webp),
+[phone](scene-evidence/11-tanks/phone.webp),
+[phone coral discovery](scene-evidence/11-tanks/coral-phone.webp), and
+[verification](scene-evidence/11-tanks/verification.json).
