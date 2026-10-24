@@ -1,0 +1,108 @@
+{
+  "artCommit": "0f67096d47fb976531998875ff573ec25a0167c1",
+  "deployment": {
+    "id": 40064809686,
+    "name": "Publish 13 Times 3",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/OlegYazvin/13times3/actions/runs/40064809686",
+    "head_sha": "0f67096d47fb976531998875ff573ec25a0167c1"
+  },
+  "observedAt": "2026-10-24T05:06:05.683Z",
+  "url": "https://13times3.com/explore/",
+  "normalUrl": {
+    "url": "https://13times3.com/explore/",
+    "status": 200,
+    "sha256": "2bb83e8a4154f8ec603021958a26a6b6c0a27aeddf97c7028c996a719a0662c0",
+    "expected": "2bb83e8a4154f8ec603021958a26a6b6c0a27aeddf97c7028c996a719a0662c0",
+    "match": true,
+    "at": "2026-10-24T05:05:30.251Z"
+  },
+  "liveAssets": [
+    {
+      "path": "assets/explore/app.js",
+      "url": "https://13times3.com/assets/explore/app.js?review=f0ee7b911b78",
+      "query": true,
+      "status": 200,
+      "sha256": "f0ee7b911b7860d59a49619e66aa5c3cba6aeef4810c49530fa8990e0be946d9",
+      "match": true
+    },
+    {
+      "path": "assets/explore.css",
+      "url": "https://13times3.com/assets/explore.css?review=9f07b2fb7b9e",
+      "query": true,
+      "status": 200,
+      "sha256": "9f07b2fb7b9e0fc84f0f0cbf14dd134ffba2314c51359a331d1a09985746c7c7",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room02/room.glb",
+      "url": "https://13times3.com/assets/explore/room02/room.glb?review=c48503a8c2e1",
+      "query": true,
+      "status": 200,
+      "sha256": "c48503a8c2e176996d985e973fc39ddc3348caf4e8f132c246f3fefeb5b99cff",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room02/preview.webp",
+      "url": "https://13times3.com/assets/explore/room02/preview.webp?review=a19bb0f72fc2",
+      "query": true,
+      "status": 200,
+      "sha256": "a19bb0f72fc27a00d12a1591354c116beeed2072bb9a123db3302b672b1f2ba6",
+      "match": true
+    },
+    {
+      "path": "assets/explore/app.js",
+      "url": "https://13times3.com/assets/explore/app.js?v=f0ee7b911b78",
+      "query": false,
+      "status": 200,
+      "sha256": "f0ee7b911b7860d59a49619e66aa5c3cba6aeef4810c49530fa8990e0be946d9",
+      "match": true
+    },
+    {
+      "path": "assets/explore.css",
+      "url": "https://13times3.com/assets/explore.css?v=9f07b2fb7b9e",
+      "query": false,
+      "status": 200,
+      "sha256": "9f07b2fb7b9e0fc84f0f0cbf14dd134ffba2314c51359a331d1a09985746c7c7",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room02/room.glb",
+      "url": "https://13times3.com/assets/explore/room02/room.glb",
+      "query": false,
+      "status": 200,
+      "sha256": "c48503a8c2e176996d985e973fc39ddc3348caf4e8f132c246f3fefeb5b99cff",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room02/preview.webp",
+      "url": "https://13times3.com/assets/explore/room02/preview.webp",
+      "query": false,
+      "status": 200,
+      "sha256": "a19bb0f72fc27a00d12a1591354c116beeed2072bb9a123db3302b672b1f2ba6",
+      "match": true
+    }
+  ],
+  "productionLoads": [
+    {
+      "viewport": "desktop",
+      "galleryLoaded": true,
+      "frameCount": 41,
+      "firstModelLoaded": true,
+      "webglCanvas": true,
+      "noFallback": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": "phone",
+      "galleryLoaded": true,
+      "frameCount": 41,
+      "firstModelLoaded": true,
+      "webglCanvas": true,
+      "noFallback": true,
+      "pageErrors": []
+    }
+  ],
+  "scope": "The normal gallery HTML, frame 02 model/painting, and app/CSS referenced by that HTML match the reviewed files. Fresh desktop and portrait production loads passed without fallback or page errors. Complete frame 02 walkthrough, circuit, pose and contact inspection was local against these identical deployed bytes. Physical-phone performance is unmeasured."
+}

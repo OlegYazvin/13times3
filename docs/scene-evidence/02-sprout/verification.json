@@ -547,5 +547,10 @@
     "judgment": "A third symbolic Oleg scowls down at a little potted two-leaf sprout with a raised clenched fist, in a distinct street-side vignette. The curled fingers and opposed thumb read as a fist in the inspected front, profile and rear views. Both shoes and the three-legged stool meet the ground. The plant, body and existing street furniture remain separate, with a tested walking circuit. Jane’s five acts of support and the desk arrangement remain readable.",
     "remaining": "The larger shared-character likeness and environment art checklist remains open. This addition uses the established static tableau style. Geometry samples supplement visual inspection and do not prove every finger self-contact. Physical-phone frame rate was not measured."
   },
-  "publication": "pending"
+  "publication": {
+    "status": "published",
+    "record": "publication.json",
+    "artCommit": "0f67096d47fb976531998875ff573ec25a0167c1",
+    "verifiedAt": "2026-10-24T05:06:05.683Z"
+  }
 }

@@ -136,7 +136,7 @@ Review checklist for the new vignette (source work is not visual acceptance):
 - [x] Confirm desk advice still passes its screen and shoulder-contact checks.
 - [x] Align revised collision and verify entry, movement and continuous return.
 - [x] Review a fresh portrait-phone load and run site/geometry checks.
-- [ ] Publish the reviewed export and verify the live bytes.
+- [x] Publish the reviewed export and verify the live bytes.
 
 Reviewed model: **7,074,088 bytes**, SHA-256
 `c48503a8c2e176996d985e973fc39ddc3348caf4e8f132c246f3fefeb5b99cff`,
@@ -164,4 +164,4 @@ frames 13–41; all 27 unit tests pass. Only frame 02's manifest record changes.
 and [verification details](scene-evidence/02-sprout/verification.json) distinguish
 functional checks from artistic judgment. The wider character likeness and
 environment art checklist remains open. Physical-phone frame rate is unmeasured.
-Publication is pending live-file verification.
+Published in `0f67096` through [successful Pages run 40064809686](https://github.com/OlegYazvin/13times3/actions/runs/40064809686). The normal gallery HTML, live model and painting, and referenced app/CSS match the reviewed build. Fresh desktop and portrait production loads pass without fallback or page errors, with exact frame-02 manifest data. Full exploration was checked locally against those identical deployed files. See the [publication record](scene-evidence/02-sprout/publication.json).
