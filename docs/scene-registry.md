@@ -22,7 +22,7 @@ The gallery has 41 stable frame IDs. The 39 original achievement pages are a sep
 
 Frames `01`–`12` have published scene assignments. Frame `13` is reserved for La Jolla and remains unrendered. Frames `14`–`41` retain their stable blank manifest records but are not hung in the current exhibit.
 
-Current museum follow-up: the exhibition order now groups the twelve published
+Published museum follow-up: the exhibition order groups the twelve published
 memories and one planned canvas across three galleries: **Growing Together**
 (`01`, `03`, `04`, `06`), **Holding Each Other** (`02`, `05`, `12`, `10`),
 and **Out in the World** (`07`, `09`, `08`, `11`, `13`). All room assignments

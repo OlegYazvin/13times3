@@ -1,0 +1,182 @@
+{
+  "observedAt": "2026-10-24T14:15:56.745Z",
+  "artCommit": "18a2fa4da35c6155187c55dc51acfe2ab484a289",
+  "deployment": {
+    "id": 40101438868,
+    "name": "Publish 13 Times 3",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/OlegYazvin/13times3/actions/runs/40101438868",
+    "head_sha": "18a2fa4da35c6155187c55dc51acfe2ab484a289"
+  },
+  "url": "https://13times3.com/explore/",
+  "normalUrl": {
+    "url": "https://13times3.com/explore/",
+    "status": 200,
+    "sha256": "fdcc26cd44cc79c92fcd8661f0fe3f41fd41909ea86ee84d1ef4375536cd306d",
+    "expectedSha256": "fdcc26cd44cc79c92fcd8661f0fe3f41fd41909ea86ee84d1ef4375536cd306d",
+    "match": true,
+    "checkedAt": "2026-10-24T14:14:14.333Z"
+  },
+  "liveAssets": [
+    {
+      "path": "assets/explore/app.js",
+      "url": "https://13times3.com/assets/explore/app.js?review=b759c51bea38",
+      "query": true,
+      "status": 200,
+      "sha256": "b759c51bea38babdd40642ac8fdd8ab929c31031793e6f7dcd3f6ddd27816cf3",
+      "match": true
+    },
+    {
+      "path": "assets/explore.css",
+      "url": "https://13times3.com/assets/explore.css?review=a1f9b52c062f",
+      "query": true,
+      "status": 200,
+      "sha256": "a1f9b52c062f594cb270904e4ac25171097ac7d803ad93737a6f1e9bf96fd30f",
+      "match": true
+    },
+    {
+      "path": "assets/explore/museum/dishwasher.glb",
+      "url": "https://13times3.com/assets/explore/museum/dishwasher.glb?review=0100869e1814",
+      "query": true,
+      "status": 200,
+      "sha256": "0100869e1814c9fe32143bec426f93a4d9cb507363bf9c505e60b5f850bf1c31",
+      "match": true
+    },
+    {
+      "path": "assets/explore/museum/still-life.webp",
+      "url": "https://13times3.com/assets/explore/museum/still-life.webp?review=595de838fe12",
+      "query": true,
+      "status": 200,
+      "sha256": "595de838fe12384177345de444e90416428a8613216b1db65e285e89c3b6e16a",
+      "match": true
+    },
+    {
+      "path": "assets/explore/museum/shore.webp",
+      "url": "https://13times3.com/assets/explore/museum/shore.webp?review=ac038eced52d",
+      "query": true,
+      "status": 200,
+      "sha256": "ac038eced52da041334e328f336dceb31bcee8cbe9d2a2e25f8c4df94eaf4196",
+      "match": true
+    },
+    {
+      "path": "assets/explore/museum/Archivo-OFL.txt",
+      "url": "https://13times3.com/assets/explore/museum/Archivo-OFL.txt?review=c3c8402eec0e",
+      "query": true,
+      "status": 200,
+      "sha256": "c3c8402eec0e31dc9a76851235b1c02a0bb821488b2db8e35bcc2ab60ca8fc2b",
+      "match": true
+    },
+    {
+      "path": "credits/index.html",
+      "url": "https://13times3.com/credits/index.html?review=4c5ea15ecd4b",
+      "query": true,
+      "status": 200,
+      "sha256": "4c5ea15ecd4b2a02c90839c720c1ccffe92d531e4c8d89597cdde770ed781339",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room01/room.glb",
+      "url": "https://13times3.com/assets/explore/room01/room.glb?review=84421a5c228a",
+      "query": true,
+      "status": 200,
+      "sha256": "84421a5c228abbe01bbfc5a79163b453ef136b6d48a1ad47cddaf7669a8946fb",
+      "match": true
+    },
+    {
+      "path": "assets/explore/app.js",
+      "url": "https://13times3.com/assets/explore/app.js?v=b759c51bea38",
+      "query": false,
+      "status": 200,
+      "sha256": "b759c51bea38babdd40642ac8fdd8ab929c31031793e6f7dcd3f6ddd27816cf3",
+      "match": true
+    },
+    {
+      "path": "assets/explore.css",
+      "url": "https://13times3.com/assets/explore.css?v=a1f9b52c062f",
+      "query": false,
+      "status": 200,
+      "sha256": "a1f9b52c062f594cb270904e4ac25171097ac7d803ad93737a6f1e9bf96fd30f",
+      "match": true
+    },
+    {
+      "path": "assets/explore/museum/dishwasher.glb",
+      "url": "https://13times3.com/assets/explore/museum/dishwasher.glb",
+      "query": false,
+      "status": 200,
+      "sha256": "0100869e1814c9fe32143bec426f93a4d9cb507363bf9c505e60b5f850bf1c31",
+      "match": true
+    },
+    {
+      "path": "assets/explore/museum/still-life.webp",
+      "url": "https://13times3.com/assets/explore/museum/still-life.webp",
+      "query": false,
+      "status": 200,
+      "sha256": "595de838fe12384177345de444e90416428a8613216b1db65e285e89c3b6e16a",
+      "match": true
+    },
+    {
+      "path": "assets/explore/museum/shore.webp",
+      "url": "https://13times3.com/assets/explore/museum/shore.webp",
+      "query": false,
+      "status": 200,
+      "sha256": "ac038eced52da041334e328f336dceb31bcee8cbe9d2a2e25f8c4df94eaf4196",
+      "match": true
+    },
+    {
+      "path": "assets/explore/museum/Archivo-OFL.txt",
+      "url": "https://13times3.com/assets/explore/museum/Archivo-OFL.txt",
+      "query": false,
+      "status": 200,
+      "sha256": "c3c8402eec0e31dc9a76851235b1c02a0bb821488b2db8e35bcc2ab60ca8fc2b",
+      "match": true
+    },
+    {
+      "path": "credits/index.html",
+      "url": "https://13times3.com/credits/index.html",
+      "query": false,
+      "status": 200,
+      "sha256": "4c5ea15ecd4b2a02c90839c720c1ccffe92d531e4c8d89597cdde770ed781339",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room01/room.glb",
+      "url": "https://13times3.com/assets/explore/room01/room.glb",
+      "query": false,
+      "status": 200,
+      "sha256": "84421a5c228abbe01bbfc5a79163b453ef136b6d48a1ad47cddaf7669a8946fb",
+      "match": true
+    }
+  ],
+  "productionLoads": [
+    {
+      "viewport": "desktop",
+      "directEntrance": true,
+      "noControlsOverlay": true,
+      "manifestMatches": true,
+      "frameCount": 41,
+      "exhibitedFrameCount": 13,
+      "plannedFrame": "13",
+      "assignedRooms": 12,
+      "statueResponse200": true,
+      "firstRoomResponse200": true,
+      "noFallback": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": "phone",
+      "directEntrance": true,
+      "noControlsOverlay": true,
+      "manifestMatches": true,
+      "frameCount": 41,
+      "exhibitedFrameCount": 13,
+      "plannedFrame": "13",
+      "assignedRooms": 12,
+      "statueResponse200": true,
+      "firstRoomResponse200": true,
+      "noFallback": true,
+      "pageErrors": []
+    }
+  ],
+  "scope": "The normal live gallery HTML and eight checked assets match the reviewed build. Fresh desktop and portrait production loads show the direct entrance with thirteen listed memory frames, the unchanged 41-record manifest, current models and no fallback or page errors. The full museum walkthrough, all twelve portal checks and real background-provider piano playback were verified locally against identical deployed bytes; physical-phone performance and listening were not measured."
+}

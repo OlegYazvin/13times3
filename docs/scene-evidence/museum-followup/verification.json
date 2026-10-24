@@ -620,5 +620,10 @@
     "judgment": "Three shorter galleries hang twelve existing memories and one labeled blank La Jolla canvas. Sconce pools are visible from the entrance and remain stationary. Stage views show the artwork without a SoundCloud overlay. The planned canvas clears the wall trim.",
     "limits": "Portrait tests use browser emulation; physical-phone performance and audio listening were not measured. Provider PLAY/progress events establish actual streaming, not subjective musical judgment. The larger character and scene-art backlog is unchanged."
   },
-  "publication": "pending"
+  "publication": {
+    "status": "published",
+    "artCommit": "18a2fa4da35c6155187c55dc51acfe2ab484a289",
+    "record": "publication.json",
+    "verifiedAt": "2026-10-24T14:15:56.745Z"
+  }
 }

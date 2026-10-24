@@ -26,7 +26,7 @@ focus instead of placing its player over the artwork. Sound remains its
 control and Credits retains the artist/source link. A genuine later movement
 or touch retries playback if a browser initially blocks it.
 
-Local checks pass; publication is pending. See the [follow-up evidence](scene-evidence/museum-followup/index.html) and [verification record](scene-evidence/museum-followup/verification.json).
+Published and verified as `18a2fa4da35c6155187c55dc51acfe2ab484a289` in [Pages run 40101438868](https://github.com/OlegYazvin/13times3/actions/runs/40101438868). The live HTML and checked assets match the reviewed build. Fresh desktop and portrait production loads pass. See the [follow-up evidence](scene-evidence/museum-followup/index.html), [verification record](scene-evidence/museum-followup/verification.json), and [publication record](scene-evidence/museum-followup/publication.json).
 
 Observed desktop and fresh portrait-emulation review confirms thirteen hung
 memory frames, three galleries, fifteen solid display footprints and nine
