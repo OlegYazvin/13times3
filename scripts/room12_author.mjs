@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import {createRoomArt} from './room_art.mjs';
 import {makeStoryPerson} from './storybook_figures.mjs';
 import {folkInstruments} from './folk_instruments.mjs';
+import {dressFolkVenues} from './scene12_venues.mjs';
 const width=14.8,height=5.8,depth=22.4,portalZ=2.8;
 const art=createRoomArt({index:11,title:'A place in the circle — two rooms, one community',width,height,depth,seed:12023,colors:{sky:0x807568,wood:0x9b7350,ink:0x353b3c,gold:0xbda574,fabric:0x7a9591,brick:0xb3a18b,plaster:0xd7cfb9,red:0xa13943,teal:0x456c66}});
 const {root,material,add,box,beam,curve,loft,random,exportRoom}=art;
@@ -43,21 +44,10 @@ for(const side of [-1,1]){
 }
 function windowFrame(parent,w,h,cy){
  const glazing=material(0xcad9d4,{transparent:true,opacity:.18,roughness:.5});
- const dawn=paintedMap((ctx,n)=>{const g=ctx.createLinearGradient(0,0,0,n);g.addColorStop(0,'#789cae');g.addColorStop(.52,'#d5cbb5');g.addColorStop(1,'#ddc59b');ctx.fillStyle=g;ctx.fillRect(0,0,n,n);for(let i=0;i<70;i++){ctx.fillStyle='rgba(239,224,194,.09)';ctx.beginPath();ctx.ellipse(random()*n,random()*n*.65,40+random()*90,5+random()*16,0,0,Math.PI*2);ctx.fill();}});
- box(parent,'painted evening sky beyond the upstairs windows',0,cy,-.75,w,h,.02,material(0xffffff,{map:dawn,emissive:0x9ab4bf,emissiveIntensity:.18}));
  box(parent,'recessed twilight window pane',0,cy,-.15,w,h,.035,glazing);
  for(const x of [-w/2,0,w/2])box(parent,'window timber upright',x,cy,0,.055,h+.14,.16,darkWood);
  for(const y of [cy-h/2,cy+.08,cy+h/2])box(parent,'window timber cross rail',0,y,0,w+.12,.055,.16,darkWood);
  box(parent,'deep painted window sill',0,cy-h/2-.025,.04,w+.22,.08,.32,cream);
- // The remembered city is quietly modeled beyond the glass rather than a blank fill.
- for(let i=0;i<4;i++){
-  const bx=(i-1.5)*w/4,bh=.7+random()*.6,by=cy-h*.50+bh/2;
-  const shade=material(i%2?0x728b92:0x8f9b9b);
-  box(parent,'distant neighborhood building with actual depth',bx,by,-.47,w*.205,bh,.22,shade);
-  box(parent,'distant stepped cornice',bx,by+bh/2+.025,-.44,w*.23,.05,.26,cream);
-  for(const sy of [-.15,.13])for(const sx of [-.04,.04])box(parent,'small warm window in a distant home',bx+sx,by+sy,-.34,.035,.075,.012,material(0xddcc9c,{emissive:0xbaa16d,emissiveIntensity:.23}));
- }
-
 }
 function curtain(parent,cx,cy,h,w,mat){
  const g=new THREE.PlaneGeometry(w,h,28,28),p=g.attributes.position;
@@ -66,9 +56,11 @@ function curtain(parent,cx,cy,h,w,mat){
  beam(parent,'curtain rod',[cx-w*.6,cy+h/2+.06,0],[cx+w*.6,cy+h/2+.06,0],.014,.014,darkWood,12);
 }
 // The upstairs bay and exposed chimney continue around the back of the circle.
-box(root,'Beat Kitchen back plaster wall',0,2.55,-11.08,14.6,5.1,.24,wall,true);
-for(const [x,yaw] of [[-4.6,-.18],[0,0],[4.6,.18]]){
- const bay=group('deep upstairs bay window with gray drapes',root,[x,0,-10.6],yaw);
+box(root,'Beat Kitchen back wall below real window openings',0,.40,-11.08,14.6,.8,.24,wall,true);
+box(root,'Beat Kitchen back wall above real window openings',0,4.69,-11.08,14.6,.82,.24,wall);
+for(const [x,w]of[[-6.95,.7],[-2.3,1.05],[2.3,1.05],[6.95,.7]])box(root,'back wall masonry between window openings',x,2.54,-11.08,w,3.5,.24,wall);
+for(const [x,yaw] of [[-4.6,0],[0,0],[4.6,0]]){
+ const bay=group('deep upstairs bay window with gray drapes',root,[x,0,-11.0],yaw);
  windowFrame(bay,3.4,3.35,2.55);curtain(bay,-1.48,2.55,3.42,.88,gray);curtain(bay,1.48,2.55,3.42,.88,gray);
 }
 box(root,'exposed brick chimney at Beat Kitchen',-2.25,2.55,-9.9,1.18,5.1,.75,brick,true);
@@ -117,20 +109,8 @@ function cafeTable(x,z){const g=group('Borellis marble cafe table with turned pe
  const marble=material(0xd5ceba);const top=loft(g,'rounded marble cafe tabletop',[[.74,.56,.44],[.78,.56,.44],[.79,.54,.42]],marble,48,true);beam(g,'cast table pedestal',[0,.05,0],[0,.74,0],.06,.035,darkWood,16);for(let k=0;k<4;k++){const a=k*Math.PI/2;curve(g,'table splayed cast foot',[[0,.19,0],[Math.cos(a)*.12,.08,Math.sin(a)*.12],[Math.cos(a)*.39,.025,Math.sin(a)*.39]],.018,darkWood,20);}for(let i=0;i<5;i++)curve(g,'quiet marble veining',[[-.4+i*.16,.793,-.30],[-.35+i*.16,.793,-.09],[-.44+i*.16,.793,.10],[-.31+i*.16,.793,.30]],.0018,material(0xa8a494),16);
  const cup=loft(g,'small water cup on table',[[.793,.035,.035,.22,.03],[.91,.044,.044,.22,.03]],material(0x8ca69d),24);return g;
 }
-for(const [x,z]of[[-5.55,6.0],[5.65,6.0],[-5.35,9.0],[5.45,9.0]])cafeTable(x,z);
-// The compact back bar has real joinery and an open undercut.
-const bar=group('Borellis side bar with fitted curved counter',root,[6.2,0,8.2],-Math.PI/2);
-loft(bar,'shaped walnut bar counter top',[[1.02,1.55,.42],[1.10,1.55,.42],[1.12,1.50,.38]],wood,44,true);
-box(bar,'recessed bar apron',0,.55,-.15,2.85,1,.12,darkWood,true);for(const x of [-1.3,0,1.3])box(bar,'fitted bar front panel',x,.55,-.22,.035,.88,.025,wood);
-{
- const g=group('Beat Kitchen compact upstairs bar by the bay',root,[-5.95,0,-6.8],Math.PI/2);
- const shape=new THREE.Shape();shape.moveTo(-1.35,-.35);shape.lineTo(1.35,-.35);shape.quadraticCurveTo(1.55,-.32,1.54,-.04);shape.lineTo(1.54,.22);shape.quadraticCurveTo(.1,.45,-1.50,.25);shape.lineTo(-1.50,-.12);shape.quadraticCurveTo(-1.5,-.35,-1.35,-.35);
- const geo=new THREE.ExtrudeGeometry(shape,{depth:.07,bevelEnabled:true,bevelSize:.02,bevelThickness:.015,bevelSegments:3,curveSegments:24});geo.rotateX(-Math.PI/2);const top=add(g,'shaped upstairs bar top with rounded front and curved return',geo,darkWood,0,1.02,0);top.userData.solidFootprint=true;
- box(g,'upstairs bar recessed walnut front',0,.52,-.09,2.78,1.0,.20,wood,true);
- for(const x of [-1.30,0,1.30])box(g,'bar front fitted wooden stile',x,.52,.025,.035,.91,.025,darkWood);
- for(const x of [-.85,.85]){loft(g,'formed upholstered bar stool seat',[[.69,.17,.17,x,.67],[.74,.18,.18,x,.67],[.76,.16,.16,x,.67]],material(0x4e6170),32,true);for(const side of [-1,1])for(const end of [-1,1])beam(g,'bar stool turned leg',[x+side*.16,.02,.67+end*.14],[x+side*.13,.69,.67+end*.10],.016,.014,darkWood,12);for(const end of [-1,1])beam(g,'bar stool joined footrest',[x-.16,.27,.67+end*.14],[x+.16,.27,.67+end*.14],.009,.009,darkWood,8);}
- for(const x of [-.7,-.32,.26])loft(g,'small glass on upstairs bar',[[1.10,.027,.027,x,0],[1.19,.035,.035,x,0]],material(0x9baea4),20);
-}
+for(const [x,z]of[[-5.55,6.0],[-5.35,8.55]])cafeTable(x,z);
+const venueReady=dressFolkVenues(art,{group,chair,ceilingAt,paintedMap,brick});
 // The actual return aperture stands within this world; both venues continue
 // around its posts. Post inner edges remain beyond the 3.35m clear opening.
 for(const sign of [-1,1]){
@@ -238,4 +218,4 @@ for(const [x,z,yaw]of[[-4.8,-4.6,.3],[4.1,9.45,-.4]]){
  const g=group('closed instrument case resting beside the circle',root,[x,.075,z],yaw);const shape=new THREE.Shape();shape.moveTo(-.2,-.45);shape.quadraticCurveTo(-.36,-.1,-.18,.18);shape.lineTo(-.09,.65);shape.quadraticCurveTo(0,.73,.09,.65);shape.lineTo(.18,.18);shape.quadraticCurveTo(.36,-.1,.2,-.45);shape.quadraticCurveTo(0,-.58,-.2,-.45);const geo=new THREE.ExtrudeGeometry(shape,{depth:.09,bevelEnabled:true,bevelSize:.035,bevelThickness:.02,bevelSegments:3,curveSegments:24});geo.rotateX(-Math.PI/2);add(g,'shaped fitted instrument case',geo,material(0x494c43));
 }
 for(const g of root.children)if(g.userData.storyIdentity&&g.position.z>-4.3&&g.position.z<1.3){g.position.y+=.002;g.position.x+=.45;}
-window.__authorRoom=async()=>exportRoom({batchStatic:true,afterCompose:root=>root.traverse(o=>{if(o.isMesh&&['trousers','shoe'].includes(o.userData.storyPart))o.userData.solidFootprint=true;})});
+window.__authorRoom=async()=>{await venueReady;return exportRoom({batchStatic:true,afterCompose:root=>root.traverse(o=>{if(o.isMesh&&['trousers','shoe'].includes(o.userData.storyPart))o.userData.solidFootprint=true;})});};

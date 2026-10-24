@@ -1,0 +1,869 @@
+{
+  "id": "12",
+  "modelSha256": "30565870849074713309faefc8527c91a6f10bc3fe883abf752a4c4aa1d80e0f",
+  "paintingSha256": "6b4643438ef135d4712a8898ce84cba93c3c1584c62cb859bc4adcf02dd20bde",
+  "appSha256": "f0ee7b911b7860d59a49619e66aa5c3cba6aeef4810c49530fa8990e0be946d9",
+  "recordedAt": "2026-10-24T04:30:22.733Z",
+  "modelBytes": 8057476,
+  "paintingBytes": 43272,
+  "functional": {
+    "siteChecksPassed": true,
+    "unitTests": 27,
+    "originalAchievementUrls": 39,
+    "frameCount": 41,
+    "publishedScenes": 12,
+    "otherFrameRecordsUnchanged": true,
+    "collisionFootprints": 127,
+    "maxBrowserVsFallbackCollisionDeltaM": 0,
+    "browserResults": [
+      {
+        "id": "12",
+        "name": "phone",
+        "x": 0,
+        "z": 2.25,
+        "yaw": 0,
+        "pitch": 0,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "beat-bar-phone",
+        "x": -3.5,
+        "z": -5.8,
+        "yaw": -1.0729739941778953,
+        "pitch": -0.1,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "borellis-phone",
+        "x": 0,
+        "z": 4.5,
+        "yaw": 3.141592653589793,
+        "pitch": -0.08,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "upstairs bar walking route",
+        "viewport": "phone",
+        "passed": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "side street window walking route",
+        "viewport": "phone",
+        "passed": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "Borellis bar walking route",
+        "viewport": "phone",
+        "passed": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "Borellis piano walking route",
+        "viewport": "phone",
+        "passed": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "thumb-joystick-moves",
+        "passed": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "viewport": "phone",
+        "entry": true,
+        "collisionSamples": 40,
+        "return": true,
+        "continuousCamera": true,
+        "controls": true,
+        "cleanup": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "entry",
+        "x": 0,
+        "z": 2.25,
+        "yaw": 0,
+        "pitch": 0,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "front",
+        "x": 0.45,
+        "z": 0.7,
+        "yaw": 0,
+        "pitch": 0,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "profile-left",
+        "x": -0.65,
+        "z": -1.8,
+        "yaw": 1.5707963267948966,
+        "pitch": 0,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "profile-right",
+        "x": 2.45,
+        "z": -0.9,
+        "yaw": -1.1479424006619559,
+        "pitch": 0,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "left",
+        "x": -2.45,
+        "z": -0.10000000000000009,
+        "yaw": 1.0405805540182667,
+        "pitch": 0,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "right",
+        "x": 2.45,
+        "z": -0.10000000000000009,
+        "yaw": -0.866302262552679,
+        "pitch": 0,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "rear",
+        "x": 1.35,
+        "z": -3.6,
+        "yaw": -2.677945044588987,
+        "pitch": 0,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "close",
+        "x": 0.45,
+        "z": 0.4999999999999999,
+        "yaw": 0,
+        "pitch": -0.28,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "borellis",
+        "x": 0,
+        "z": 4.5,
+        "yaw": 3.141592653589793,
+        "pitch": -0.08,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "borellis-side",
+        "x": -4.3,
+        "z": 7.5,
+        "yaw": 1.5707963267948966,
+        "pitch": -0.12,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "portal-back",
+        "x": 0,
+        "z": 5,
+        "yaw": 0,
+        "pitch": 0,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "children",
+        "x": 0.6,
+        "z": 0.6,
+        "yaw": 0,
+        "pitch": -0.4,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "jonas",
+        "x": 2.6,
+        "z": -0.65,
+        "yaw": -1.0796327285086362,
+        "pitch": -0.06,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "beat-windows",
+        "x": -4,
+        "z": -5.8,
+        "yaw": 0,
+        "pitch": 0,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "beat-bar",
+        "x": -3.5,
+        "z": -5.8,
+        "yaw": -1.0729739941778953,
+        "pitch": -0.1,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "beat-bar-side",
+        "x": -4.1,
+        "z": -9.3,
+        "yaw": -2.49454546036947,
+        "pitch": -0.1,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "belmont-view",
+        "x": 1,
+        "z": -9.7,
+        "yaw": 0,
+        "pitch": -0.3,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "leavitt-view",
+        "x": -6.1,
+        "z": -2.5,
+        "yaw": -1.5707963267948966,
+        "pitch": -0.4,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "borellis-bar",
+        "x": 3.4,
+        "z": 5.45,
+        "yaw": 2.356194490192345,
+        "pitch": -0.08,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "borellis-bar-side",
+        "x": 3.5,
+        "z": 10.1,
+        "yaw": 0.7963867320801818,
+        "pitch": -0.1,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "borellis-piano",
+        "x": -3.5,
+        "z": 9.3,
+        "yaw": -2.0152155366959956,
+        "pitch": -0.2,
+        "stand": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "upstairs bar walking route",
+        "viewport": "desktop",
+        "passed": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "side street window walking route",
+        "viewport": "desktop",
+        "passed": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "Borellis bar walking route",
+        "viewport": "desktop",
+        "passed": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "Borellis piano walking route",
+        "viewport": "desktop",
+        "passed": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "viewport": "desktop",
+        "entry": true,
+        "collisionSamples": 40,
+        "return": true,
+        "continuousCamera": true,
+        "controls": true,
+        "cleanup": true,
+        "pass": "walkaround"
+      },
+      {
+        "id": "12",
+        "name": "upstairs bar walking route",
+        "viewport": "phone",
+        "passed": true,
+        "pass": "checks"
+      },
+      {
+        "id": "12",
+        "name": "side street window walking route",
+        "viewport": "phone",
+        "passed": true,
+        "pass": "checks"
+      },
+      {
+        "id": "12",
+        "name": "Borellis bar walking route",
+        "viewport": "phone",
+        "passed": true,
+        "pass": "checks"
+      },
+      {
+        "id": "12",
+        "name": "Borellis piano walking route",
+        "viewport": "phone",
+        "passed": true,
+        "pass": "checks"
+      },
+      {
+        "id": "12",
+        "name": "thumb-joystick-moves",
+        "passed": true,
+        "pass": "checks"
+      },
+      {
+        "id": "12",
+        "viewport": "phone",
+        "entry": true,
+        "collisionSamples": 40,
+        "return": true,
+        "continuousCamera": true,
+        "controls": true,
+        "cleanup": true,
+        "pass": "checks"
+      },
+      {
+        "id": "12",
+        "name": "upstairs bar walking route",
+        "viewport": "desktop",
+        "passed": true,
+        "pass": "checks"
+      },
+      {
+        "id": "12",
+        "name": "side street window walking route",
+        "viewport": "desktop",
+        "passed": true,
+        "pass": "checks"
+      },
+      {
+        "id": "12",
+        "name": "Borellis bar walking route",
+        "viewport": "desktop",
+        "passed": true,
+        "pass": "checks"
+      },
+      {
+        "id": "12",
+        "name": "Borellis piano walking route",
+        "viewport": "desktop",
+        "passed": true,
+        "pass": "checks"
+      },
+      {
+        "id": "12",
+        "viewport": "desktop",
+        "entry": true,
+        "collisionSamples": 40,
+        "return": true,
+        "continuousCamera": true,
+        "controls": true,
+        "cleanup": true,
+        "pass": "checks"
+      }
+    ],
+    "contacts": {
+      "modelSha256": "30565870849074713309faefc8527c91a6f10bc3fe883abf752a4c4aa1d80e0f",
+      "recordedAt": "2026-10-24T04:23:21.037Z",
+      "method": "Actual exported posed vertices against actor-specific decoded prop triangles. Distances and closed-mesh containment samples supplement visual inspection; they are not a proof of full contact coverage.",
+      "rows": [
+        {
+          "identity": "Jonas Friddle",
+          "part": "hand-left",
+          "label": "fingering hand against its own instrument fingerboard",
+          "minimumSurfaceDistanceM": 0.0017011258164157347,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "identity": "Jonas Friddle",
+          "part": "hand-right",
+          "label": "strumming hand against its own sounding surface",
+          "minimumSurfaceDistanceM": 0.006708097896267302,
+          "containmentTested": false,
+          "verticesDeeperThan1mm": null,
+          "maximumSampledPenetrationM": null
+        },
+        {
+          "identity": "Guitar neighbor",
+          "part": "hand-left",
+          "label": "fingering hand against its own instrument fingerboard",
+          "minimumSurfaceDistanceM": 0.0003529580060042763,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "identity": "Guitar neighbor",
+          "part": "hand-right",
+          "label": "strumming hand against its own sounding surface",
+          "minimumSurfaceDistanceM": 0.003203269127268767,
+          "containmentTested": false,
+          "verticesDeeperThan1mm": null,
+          "maximumSampledPenetrationM": null
+        },
+        {
+          "identity": "Mandolin neighbor",
+          "part": "hand-left",
+          "label": "fingering hand against its own instrument fingerboard",
+          "minimumSurfaceDistanceM": 0.0016984315795696117,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "identity": "Mandolin neighbor",
+          "part": "hand-right",
+          "label": "strumming hand against its own sounding surface",
+          "minimumSurfaceDistanceM": 0.0019511551276875441,
+          "containmentTested": false,
+          "verticesDeeperThan1mm": null,
+          "maximumSampledPenetrationM": null
+        },
+        {
+          "identity": "Fiddle neighbor",
+          "part": "hand-left",
+          "label": "fingering hand against its own instrument fingerboard",
+          "minimumSurfaceDistanceM": 0.0016966982832093687,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "identity": "Fiddle neighbor",
+          "part": "hand-right",
+          "label": "strumming hand against its own sounding surface",
+          "minimumSurfaceDistanceM": 0.000299362722977633,
+          "containmentTested": false,
+          "verticesDeeperThan1mm": null,
+          "maximumSampledPenetrationM": null
+        },
+        {
+          "identity": "Borellis guitarist",
+          "part": "hand-left",
+          "label": "fingering hand against its own instrument fingerboard",
+          "minimumSurfaceDistanceM": 0.0003527576419284326,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "identity": "Borellis guitarist",
+          "part": "hand-right",
+          "label": "strumming hand against its own sounding surface",
+          "minimumSurfaceDistanceM": 0.0032031920267114634,
+          "containmentTested": false,
+          "verticesDeeperThan1mm": null,
+          "maximumSampledPenetrationM": null
+        },
+        {
+          "identity": "Borellis banjo player",
+          "part": "hand-left",
+          "label": "fingering hand against its own instrument fingerboard",
+          "minimumSurfaceDistanceM": 0.0017010399897235415,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "identity": "Borellis banjo player",
+          "part": "hand-right",
+          "label": "strumming hand against its own sounding surface",
+          "minimumSurfaceDistanceM": 0.006951950999258448,
+          "containmentTested": false,
+          "verticesDeeperThan1mm": null,
+          "maximumSampledPenetrationM": null
+        },
+        {
+          "identity": "Bass neighbor",
+          "part": "hand-left",
+          "label": "upright bass fingering hand",
+          "minimumSurfaceDistanceM": 0.00050318019238265,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "identity": "Bass neighbor",
+          "part": "hand-right",
+          "label": "upright bass plucking hand",
+          "minimumSurfaceDistanceM": 0.009177829363260564,
+          "containmentTested": false,
+          "verticesDeeperThan1mm": null,
+          "maximumSampledPenetrationM": null
+        },
+        {
+          "identity": "Guitar neighbor",
+          "part": "trousers",
+          "label": "guitar clearance above the seated thighs",
+          "minimumSurfaceDistanceM": 0.006577372871415605,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "identity": "Borellis guitarist",
+          "part": "trousers",
+          "label": "guitar clearance above the seated thighs",
+          "minimumSurfaceDistanceM": 0.006577355675546119,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "identity": "Jane",
+          "part": "hand-left",
+          "label": "left listening hand on its own lap",
+          "minimumSurfaceDistanceM": 0.00039157040144417466,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "identity": "Jane",
+          "part": "hand-right",
+          "label": "right listening hand on its own lap",
+          "minimumSurfaceDistanceM": 0.0003884775544271963,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "identity": "Jane",
+          "part": "trousers",
+          "label": "seated thigh support on own chair",
+          "minimumSurfaceDistanceM": 0.0004031360149383545,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "identity": "Oleg",
+          "part": "hand-left",
+          "label": "left listening hand on its own lap",
+          "minimumSurfaceDistanceM": 0.0003747389683102281,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "identity": "Oleg",
+          "part": "hand-right",
+          "label": "right listening hand on its own lap",
+          "minimumSurfaceDistanceM": 0.0003797775958617052,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "identity": "Oleg",
+          "part": "trousers",
+          "label": "seated thigh support on own chair",
+          "minimumSurfaceDistanceM": 0.00021219253540039062,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "identity": "Borellis listening neighbor",
+          "part": "hand-left",
+          "label": "left listening hand on its own lap",
+          "minimumSurfaceDistanceM": 0.00037383955079933577,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "identity": "Borellis listening neighbor",
+          "part": "hand-right",
+          "label": "right listening hand on its own lap",
+          "minimumSurfaceDistanceM": 0.0003790609719784907,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "identity": "Borellis listening neighbor",
+          "part": "trousers",
+          "label": "seated thigh support on own chair",
+          "minimumSurfaceDistanceM": 0.00021457672119140625,
+          "containmentTested": true,
+          "verticesDeeperThan1mm": 0,
+          "maximumSampledPenetrationM": 0
+        },
+        {
+          "identity": "Borellis drummer",
+          "part": "hand-left",
+          "label": "supporting drum hand",
+          "minimumSurfaceDistanceM": 0.0032022921077958203,
+          "containmentTested": false,
+          "verticesDeeperThan1mm": null,
+          "maximumSampledPenetrationM": null
+        },
+        {
+          "identity": "Borellis drummer",
+          "part": "hand-right",
+          "label": "tapping drum hand",
+          "minimumSurfaceDistanceM": 0.00020047245321199518,
+          "containmentTested": false,
+          "verticesDeeperThan1mm": null,
+          "maximumSampledPenetrationM": null
+        }
+      ]
+    },
+    "soak": {
+      "build": {
+        "id": "12",
+        "modelSha256": "30565870849074713309faefc8527c91a6f10bc3fe883abf752a4c4aa1d80e0f",
+        "paintingSha256": "6b4643438ef135d4712a8898ce84cba93c3c1584c62cb859bc4adcf02dd20bde",
+        "appSha256": "f0ee7b911b7860d59a49619e66aa5c3cba6aeef4810c49530fa8990e0be946d9",
+        "recordedAt": "2026-10-24T04:30:22.733Z"
+      },
+      "movementLoops": 6,
+      "renderedFrames": 144,
+      "contextSurvived": true,
+      "screenshotReadback": false,
+      "samples": [
+        {
+          "elapsedMs": 108.39999997615814,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 95.30000001192093,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 4816,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 19902.30000001192,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 14061.899999976158,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 4696,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 8351.699999988079,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 4693.100000023842,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 10355.900000035763,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 9122.699999988079,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 7653.199999988079,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 4969,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 5632.099999964237,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 10513.399999976158,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 4014.099999964237,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 3434.5,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 4815.899999976158,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 5710.100000023842,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 4539.099999964237,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 4839.800000011921,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 3399.300000011921,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 5687.400000035763,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 6407.199999988079,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        },
+        {
+          "elapsedMs": 4803.800000011921,
+          "heapBytes": 53500000,
+          "state": "room",
+          "worlds": 1
+        }
+      ]
+    }
+  },
+  "visual": {
+    "reviewed": [
+      "Hallway painting",
+      "Partial reveal",
+      "Beat Kitchen on entry",
+      "Fresh portrait entry",
+      "Beat Kitchen private bar",
+      "Upstairs bar from the other end",
+      "Upstairs bar in portrait",
+      "Open upstairs bay windows",
+      "Street below the second-floor windows",
+      "Side-street depth and branching trees",
+      "Borelli’s behind the return portal",
+      "Both interiors from the rear circle",
+      "Borelli’s long bar",
+      "Borelli’s bar from the other end",
+      "Piano, café tables and lamps",
+      "Rear circle in portrait",
+      "Walk-around portal from behind",
+      "The children remain together",
+      "Jonas and the musical circle",
+      "Left side of the principal arrangement",
+      "Right side of the principal arrangement",
+      "Rear view of principal people",
+      "Return to the hall"
+    ],
+    "judgment": "Both venues have furnished bars with cabinets, service aisles, back counters, stock, glassware, beer taps, stools and mounted lighting. Borelli’s also has café seats and table lamps, framed music prints, a piano and stage cans. Actual rear window openings reveal a connected modeled neighborhood whose pavement is below the upstairs floor. Jane remains a listener and the two children remain the center of the upstairs memory.",
+    "rejectedTrial": "Smooth clustered tree canopies and plain façade surfaces were replaced before release. An initial piano test route began inside the pre-existing vacant chair; the route now follows the clear aisle.",
+    "limits": "The street is a stylized reference-informed interpretation, not a surveyed block. Shared character likeness and fine instrument technique remain stylized, as in the preceding release. This environment revision does not close the larger all-scene artistic checklist. Portrait testing uses browser emulation; physical-phone frame rate is unmeasured."
+  },
+  "publication": "pending"
+}

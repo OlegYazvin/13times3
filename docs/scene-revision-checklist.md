@@ -264,3 +264,23 @@ correction. No new release is recorded by this source fix.
 - [x] All eleven raw and packed geometry files pass again; build/site checks and 18 tests pass. Only 03 and 08 changed after the full control suite; their current exported models have fresh functional walkthroughs.
 - [x] Manifest fallback footprints are synchronized from the current exports. Original routes, frame IDs, assignments and blank slots remain unchanged.
 - [ ] Final human likeness and artistic acceptance remain open as described in the current scene report.
+
+## Frame 12 venue detail follow-up
+
+The current environment candidate replaces the sparse counters with complete
+guest bars, working rear counters, shelves, taps, glassware and stools. Borelli’s
+gains café seating and lamps, a piano and mounted stage cans. Beat Kitchen’s
+blocked rear windows become real openings onto a modeled Chicago neighborhood,
+with the street one storey below the floor. This revises the existing jam memory;
+Jane still listens and Zephrine still connects with her child friend.
+
+- [x] Research inspected upstairs, exterior and Borelli’s interior photographs;
+  original private images stay out of the download.
+- [x] Reject smooth placeholder street-tree canopies in favor of the adapted,
+  already credited CC0 branching tree; add brickwork and distinct street entrances.
+- [x] Current exported selected-contact study covers 27 relationships with no
+  sampled penetration over 1 mm; all 27 site/unit checks pass.
+- [ ] Finish the current model’s desktop, portrait, window/perimeter, collision,
+  sustained-render and publication verification. See the
+  [scene notes](scene-12-folk-jam-notes.md) for the live checklist and evidence.
+- [ ] The larger cast-likeness and all-scene artistic acceptance remain open.

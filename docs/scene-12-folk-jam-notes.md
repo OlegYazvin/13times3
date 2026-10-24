@@ -159,3 +159,80 @@ All 26 live gallery files and the normal gallery URL matched the corrected build
 Fresh desktop and emulated-phone production loads passed without fallback or
 page errors. The [latest publication record](scene-evidence/12-folk-jam/publication.json)
 supersedes the initial release for the current composition.
+
+## Venue detail revision — October 23
+
+The current request revises this existing memory. Baseline images show a nearly
+bare upstairs counter, no working back bar, shallow miniature buildings at the
+glass, and a solid plaster wall behind the rear window panes. Borelli’s has a
+small empty counter and a broad empty perimeter around its red-curtain circle.
+
+Reference observations: the saved upstairs rental photograph shows a dark,
+compact bar with a rounded counter, bottle shelves on exposed brick, pendant
+lights, upholstered stools, tall gray curtains and a red-brick neighbor outside.
+Beat Kitchen’s [official upstairs tour and gallery](https://beatkitchen.com/virtual-tour-and-gallery/)
+and [private room description](https://beatkitchen.com/private-parties/)
+confirm the upstairs room and its private bar. The
+[venue exterior photograph from Jam Productions](https://www.jamusa.com/venues)
+shows the second-floor bays, black/gold trim, corner sidewalk and street trees.
+The supplied Borelli’s jam photos and the public interior photo linked above
+show the long dark side counter, framed music memorabilia, globe lights,
+marble tables, piano beside the red curtains, botanical wallpaper and mounted
+stage cans. Unrelated restaurant images returned by search are excluded.
+
+The streetscape is a modeled interpretation of those neighborhood references,
+not a surveyed reproduction of every neighboring property. No reference photo
+pixels or private metadata are included in the room.
+
+The initial smooth-canopy trial was rejected in the window review. The final
+candidate reuses the gallery’s [Quaternius CC0 tree](https://poly.pizza/m/qZtx0AHhcy),
+with complete branching geometry, palette adaptation and shared 256-pixel
+textures suitable for its distance beyond the glass. Its normal maps are
+omitted. This asset is credited on the public credits page. Street façades use
+original brick textures, deep bay volumes, entrance surrounds, cornices and
+small shop awnings; all new bar and instrument-print details are project-authored.
+
+Verification checklist for the venue revision:
+
+- [x] Inspect furnished upstairs bar, shelves, sink, taps, cooler, stools and mounts.
+- [x] Inspect Borelli’s long bar, café seating, piano and stage fittings from both sides.
+- [x] Confirm real openings replace the blocked rear windows; inspect street,
+  cars, trees and neighboring volumes from normal and close window distances.
+- [x] Preserve Jane listening, children’s friendship, thirteen people and six
+  instrument types; recheck the exported contact study after the rebuild.
+- [x] Synchronize physical and fallback collision; walk both portal-post routes,
+  reach both bars and the windows, enter and return on desktop and portrait emulation.
+- [x] Inspect hallway painting, reveal, full figures, sides and rear; wait for completed renders.
+- [ ] Run site checks and sustained exploration; publish only the reviewed asset,
+  then verify deployed hashes and fresh desktop/portrait loads.
+
+
+## Venue revision — local acceptance completed
+
+Both bars now have complete cabinets, working rear counters, stocked shelves,
+beer taps, glassware, fitted stools and lighting. Borelli’s has café seats facing
+their tables, table lamps, music prints, a piano and stage cans. The rear upstairs
+wall has actual window openings; dimensional buildings, bay windows, shop fronts,
+parked cars, branching street trees and a wall-supported fire escape continue
+outside. Pavement is 3.55 m below the jam floor. The existing people, their poses,
+the children’s friendship and the walk-around portal remain intact.
+
+The [before/after review](scene-evidence/12-venues/index.html) contains fresh
+painting, reveal, doorway, bar, window, people/profile/rear, portrait and return
+images. The [verification record](scene-evidence/12-venues/verification.json)
+keys the completed visual and functional passes to model `30565870849074713309faefc8527c91a6f10bc3fe883abf752a4c4aa1d80e0f`.
+All 27 unit tests and site checks pass; selected contacts again show no sampled
+penetration over 1 mm. Both desktop and fresh portrait emulation walk the two
+post routes, both bars, the side window and the piano aisle; the upstairs window
+boundary blocks street entry. All 127 browser/fallback footprints match within
+0.000000 mm. Six continuous-render exploration loops survive 144 frames.
+
+The downloaded model and painting total 8.10 MB, below the preceding 8.56 MB
+version. Repeated bar stock is batched by material: the final room has 734 mesh
+primitives compared with 696 previously, retaining the added dimensional detail.
+
+Artistic limits: this is an interpreted neighborhood and sculpted memory. The
+shared cast’s likeness and fine playing technique remain stylized; the broader
+all-scene character acceptance is still open. Portrait checks use browser
+emulation, and physical-phone frame rate remains unmeasured. Publication is
+pending live-file verification.

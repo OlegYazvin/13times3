@@ -209,6 +209,14 @@ For ongoing refinement of the published rooms, use the [visual quality audit](vi
   Working controls do not establish that the principal person is in frame.
   Reposition a complete coupled arrangement when possible, preserving its
   hands, props, furniture and shared attention together.
+- A transparent window in front of a full opaque wall is still a blocked
+  window. Build the actual masonry opening and give the outside one continuous
+  three-dimensional setting. For an upstairs room, put pavement, cars and tree
+  roots below the interior floor; check both level and downward views through
+  the glass. Tiny buildings immediately behind each pane read as display models.
+- Furnished bars need working depth: guest counter, cabinet, service aisle,
+  rear counter and mounted shelves. Fit stools, footrails and pendant mounts
+  to those surfaces. Keep the room’s circle and both portal-post routes clear.
 
 ## Aquarium enclosure follow-up
 
