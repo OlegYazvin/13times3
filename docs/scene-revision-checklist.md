@@ -280,7 +280,12 @@ Jane still listens and Zephrine still connects with her child friend.
   already credited CC0 branching tree; add brickwork and distinct street entrances.
 - [x] Current exported selected-contact study covers 27 relationships with no
   sampled penetration over 1 mm; all 27 site/unit checks pass.
-- [ ] Finish the current model’s desktop, portrait, window/perimeter, collision,
+- [x] Finish the current model’s desktop, portrait, window/perimeter, collision,
   sustained-render and publication verification. See the
   [scene notes](scene-12-folk-jam-notes.md) for the live checklist and evidence.
 - [ ] The larger cast-likeness and all-scene artistic acceptance remain open.
+
+Frame 12’s venue revision is published and byte-verified: [before/after images
+and completed checks](scene-evidence/12-venues/index.html),
+[release record](scene-evidence/12-venues/publication.json). The broader character
+acceptance above remains open.

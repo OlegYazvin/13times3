@@ -1,0 +1,138 @@
+{
+  "normalUrl": {
+    "url": "https://13times3.com/explore/",
+    "status": 200,
+    "sha256": "6d258c561f4d3d12aa1997ae4901e2dfcf20c056f87e326c756ccb00e33cf53d",
+    "match": true,
+    "observedAt": "2026-10-24T04:39:15.105Z"
+  },
+  "artCommit": "7b84b364f0f67a06e5a95efcdcf6c091e58ee727",
+  "deployment": {
+    "id": 40062960444,
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/OlegYazvin/13times3/actions/runs/40062960444",
+    "name": "Publish 13 Times 3"
+  },
+  "observedAt": "2026-10-24T04:39:41.491Z",
+  "url": "https://13times3.com/explore/",
+  "liveAssets": [
+    {
+      "path": "explore/index.html",
+      "url": "https://13times3.com/explore/index.html?review=6d258c561f4d",
+      "query": true,
+      "status": 200,
+      "sha256": "6d258c561f4d3d12aa1997ae4901e2dfcf20c056f87e326c756ccb00e33cf53d",
+      "match": true
+    },
+    {
+      "path": "assets/explore/app.js",
+      "url": "https://13times3.com/assets/explore/app.js?review=f0ee7b911b78",
+      "query": true,
+      "status": 200,
+      "sha256": "f0ee7b911b7860d59a49619e66aa5c3cba6aeef4810c49530fa8990e0be946d9",
+      "match": true
+    },
+    {
+      "path": "assets/explore.css",
+      "url": "https://13times3.com/assets/explore.css?review=9f07b2fb7b9e",
+      "query": true,
+      "status": 200,
+      "sha256": "9f07b2fb7b9e0fc84f0f0cbf14dd134ffba2314c51359a331d1a09985746c7c7",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room12/room.glb",
+      "url": "https://13times3.com/assets/explore/room12/room.glb?review=305658708490",
+      "query": true,
+      "status": 200,
+      "sha256": "30565870849074713309faefc8527c91a6f10bc3fe883abf752a4c4aa1d80e0f",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room12/preview.webp",
+      "url": "https://13times3.com/assets/explore/room12/preview.webp?review=6b4643438ef1",
+      "query": true,
+      "status": 200,
+      "sha256": "6b4643438ef135d4712a8898ce84cba93c3c1584c62cb859bc4adcf02dd20bde",
+      "match": true
+    },
+    {
+      "path": "credits/index.html",
+      "url": "https://13times3.com/credits/index.html?review=704b92017ac7",
+      "query": true,
+      "status": 200,
+      "sha256": "704b92017ac7c824f962943636bb79233c99ab00d6412e5cf4b47f21a182fce0",
+      "match": true
+    },
+    {
+      "path": "explore/index.html",
+      "url": "https://13times3.com/explore/index.html",
+      "query": false,
+      "status": 200,
+      "sha256": "6d258c561f4d3d12aa1997ae4901e2dfcf20c056f87e326c756ccb00e33cf53d",
+      "match": true
+    },
+    {
+      "path": "assets/explore/app.js",
+      "url": "https://13times3.com/assets/explore/app.js?v=f0ee7b911b78",
+      "query": false,
+      "status": 200,
+      "sha256": "f0ee7b911b7860d59a49619e66aa5c3cba6aeef4810c49530fa8990e0be946d9",
+      "match": true
+    },
+    {
+      "path": "assets/explore.css",
+      "url": "https://13times3.com/assets/explore.css?v=9f07b2fb7b9e",
+      "query": false,
+      "status": 200,
+      "sha256": "9f07b2fb7b9e0fc84f0f0cbf14dd134ffba2314c51359a331d1a09985746c7c7",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room12/room.glb",
+      "url": "https://13times3.com/assets/explore/room12/room.glb",
+      "query": false,
+      "status": 200,
+      "sha256": "30565870849074713309faefc8527c91a6f10bc3fe883abf752a4c4aa1d80e0f",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room12/preview.webp",
+      "url": "https://13times3.com/assets/explore/room12/preview.webp",
+      "query": false,
+      "status": 200,
+      "sha256": "6b4643438ef135d4712a8898ce84cba93c3c1584c62cb859bc4adcf02dd20bde",
+      "match": true
+    },
+    {
+      "path": "credits/index.html",
+      "url": "https://13times3.com/credits/index.html",
+      "query": false,
+      "status": 200,
+      "sha256": "704b92017ac7c824f962943636bb79233c99ab00d6412e5cf4b47f21a182fce0",
+      "match": true
+    }
+  ],
+  "productionLoads": [
+    {
+      "viewport": "desktop",
+      "galleryLoaded": true,
+      "frameCount": 41,
+      "firstModelLoaded": true,
+      "webglCanvas": true,
+      "noFallback": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": "phone",
+      "galleryLoaded": true,
+      "frameCount": 41,
+      "firstModelLoaded": true,
+      "webglCanvas": true,
+      "noFallback": true,
+      "pageErrors": []
+    }
+  ],
+  "scope": "Current frame 12 model, painting, gallery manifest, client, CSS and credits matched the reviewed build. Fresh production desktop/portrait loads passed. Complete frame 12 walking, contact, artistic and sustained-render review was local against these identical deployed files. Physical-phone frame rate is unmeasured."
+}

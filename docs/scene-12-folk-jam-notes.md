@@ -203,7 +203,7 @@ Verification checklist for the venue revision:
 - [x] Synchronize physical and fallback collision; walk both portal-post routes,
   reach both bars and the windows, enter and return on desktop and portrait emulation.
 - [x] Inspect hallway painting, reveal, full figures, sides and rear; wait for completed renders.
-- [ ] Run site checks and sustained exploration; publish only the reviewed asset,
+- [x] Run site checks and sustained exploration; publish only the reviewed asset,
   then verify deployed hashes and fresh desktop/portrait loads.
 
 
@@ -234,5 +234,16 @@ primitives compared with 696 previously, retaining the added dimensional detail.
 Artistic limits: this is an interpreted neighborhood and sculpted memory. The
 shared cast’s likeness and fine playing technique remain stylized; the broader
 all-scene character acceptance is still open. Portrait checks use browser
-emulation, and physical-phone frame rate remains unmeasured. Publication is
-pending live-file verification.
+emulation, and physical-phone frame rate remains unmeasured. Publication and live-file verification are complete.
+
+
+## Venue revision published and verified
+
+Art release `7b84b364f0f67a06e5a95efcdcf6c091e58ee727` deployed successfully in
+[Pages run 40062960444](https://github.com/OlegYazvin/13times3/actions/runs/40062960444).
+The normal gallery HTML and all six checked gallery/credits assets match the
+reviewed build with both ordinary and review-versioned requests. Fresh desktop
+and emulated-phone production loads show the current manifest without fallback
+or page errors. See the [publication record](scene-evidence/12-venues/publication.json).
+The 39 original achievement URLs, 41 stable IDs, scene assignments and blank
+frames 13–41 are preserved. All frame records except frame 12 are unchanged.

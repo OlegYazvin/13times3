@@ -865,5 +865,10 @@
     "rejectedTrial": "Smooth clustered tree canopies and plain façade surfaces were replaced before release. An initial piano test route began inside the pre-existing vacant chair; the route now follows the clear aisle.",
     "limits": "The street is a stylized reference-informed interpretation, not a surveyed block. Shared character likeness and fine instrument technique remain stylized, as in the preceding release. This environment revision does not close the larger all-scene artistic checklist. Portrait testing uses browser emulation; physical-phone frame rate is unmeasured."
   },
-  "publication": "pending"
+  "publication": {
+    "status": "published",
+    "record": "publication.json",
+    "artCommit": "7b84b364f0f67a06e5a95efcdcf6c091e58ee727",
+    "verifiedAt": "2026-10-24T04:39:41.491Z"
+  }
 }
