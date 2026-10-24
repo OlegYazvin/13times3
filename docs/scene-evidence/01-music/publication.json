@@ -1,0 +1,85 @@
+{
+  "verifiedAt": "2026-10-24T02:00:08.793Z",
+  "applicationCommit": "5481f4bb1a8a1ae48dfa06d2f89048c9ee050372",
+  "deployment": {
+    "id": 40052095423,
+    "url": "https://github.com/OlegYazvin/13times3/actions/runs/40052095423",
+    "conclusion": "success"
+  },
+  "runtimeOverrides": false,
+  "instrumentation": "Observe public SoundCloud playback messages; ordinary keyboard/joystick entry and Sound control. No autoplay-policy override.",
+  "files": [
+    {
+      "path": "explore/index.html",
+      "url": "https://13times3.com/explore/index.html",
+      "query": false,
+      "status": 200,
+      "sha256": "86c143f1b3d4ad37e8b1f8d4baf3d9d1e43012674bf2c252e06aa42c795baa2f",
+      "match": true
+    },
+    {
+      "path": "assets/explore/app.js",
+      "url": "https://13times3.com/assets/explore/app.js?v=30921fab4077",
+      "query": false,
+      "status": 200,
+      "sha256": "30921fab407789039b75afd2a0458cb792a87f9bccf8e59eb63f4ff0dfdf0d1c",
+      "match": true
+    },
+    {
+      "path": "assets/explore.css",
+      "url": "https://13times3.com/assets/explore.css?v=9f07b2fb7b9e",
+      "query": false,
+      "status": 200,
+      "sha256": "9f07b2fb7b9e0fc84f0f0cbf14dd134ffba2314c51359a331d1a09985746c7c7",
+      "match": true
+    },
+    {
+      "path": "credits/index.html",
+      "url": "https://13times3.com/credits/index.html",
+      "query": false,
+      "status": 200,
+      "sha256": "ce536864a81c14a37d86fa0c9e28be73091778ef154073a1ed7043516aea9dcc",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room01/room.glb",
+      "url": "https://13times3.com/assets/explore/room01/room.glb",
+      "query": false,
+      "status": 200,
+      "sha256": "84421a5c228abbe01bbfc5a79163b453ef136b6d48a1ad47cddaf7669a8946fb",
+      "match": true
+    }
+  ],
+  "results": [
+    {
+      "viewport": "desktop",
+      "realMovementEntry": true,
+      "phoneJoystickEntry": false,
+      "music": {
+        "position": 3661.323000023842,
+        "playing": true,
+        "ready": true
+      },
+      "loopVerified": true,
+      "mutedReturn": true,
+      "errors": [],
+      "loopTestRan": true
+    },
+    {
+      "viewport": "portrait phone emulation",
+      "realMovementEntry": true,
+      "phoneJoystickEntry": true,
+      "music": {
+        "position": 1115.8579999761582,
+        "playing": true,
+        "ready": true
+      },
+      "loopVerified": null,
+      "mutedReturn": true,
+      "errors": [],
+      "loopTestRan": false
+    }
+  ],
+  "loopMethod": "Desktop seeks to 205 seconds, then observes playback wrap to the first five seconds.",
+  "scope": "Functional playback and UI verification. Original scene screenshots precede the timeout adjustment. No new geometry acceptance or physical iOS test."
+}

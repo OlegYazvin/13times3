@@ -66,8 +66,8 @@ own account, linked to [his professional site](https://bennymartin.com.au/).
 The artist describes his work as background instrumental piano. The recording
 and composition are not claimed to be Creative Commons or public domain: use
 the provider’s public embedded player, with the artist link and standard
-playback controls. No audio file is copied, re-encoded or included in the room
-download. The Disney Peaceful Piano uploads tested during sourcing returned
+playback controls. No audio file is copied, re-encoded or bundled in the site's
+static assets; SoundCloud streams additional data on entry. The Disney Peaceful Piano uploads tested during sourcing returned
 embedded-player error 150 and were not adopted.
 
 `client/explore/scene-music.mjs` loads the provider only on entered-room `01`
@@ -94,7 +94,13 @@ Verification checklist for this change:
 - [x] `npm run build` and `npm run check` pass, including 25 unit tests and the
   existing 39 achievement URL / 41 frame checks. Autoplay-blocked state, page
   hiding, fallback and independent hallway-audio failure have unit coverage.
-- [ ] Production bytes and playback are verified after release.
+- [x] Published application commit `5481f4b` through successful [Pages run
+  40052095423](https://github.com/OlegYazvin/13times3/actions/runs/40052095423).
+  The normal live gallery HTML, its versioned script and stylesheet, credits
+  and room 01 model match the reviewed files. Fresh live desktop keyboard entry
+  and portrait-emulation joystick entry both start actual playback; Sound off
+  and return work. Seeking near the track's end verifies the desktop loop.
+  See [the production record](scene-evidence/01-music/publication.json).
 
 This is an audio revision. It does not establish further artistic acceptance
 of the scene geometry or resolve the visual weaknesses recorded above.
@@ -105,4 +111,8 @@ still loading. A longer diagnostic allowed the same source to initialize and
 fetch audio. Allow 60 seconds for that third-party startup, while retaining
 immediate cleanup on exit/mute and immediate handling of explicit errors. The
 initial desktop/phone captures and their recorded build hashes precede this
-timeout adjustment; final production verification is tracked separately.
+timeout adjustment; final production verification is tracked separately. The
+final live checks use the deployed 60-second deadline without runtime overrides.
+An aborted SoundCloud session request when muting is expected iframe cleanup,
+not a playback failure. These transport checks do not claim a listening-based
+artistic acceptance or physical-device iOS autoplay verification.
