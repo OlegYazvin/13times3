@@ -172,5 +172,132 @@
       }
     ],
     "draft": false
+  },
+  "publication": {
+    "commit": "70de0e589df8c9f95933c0670f97f005151bcf55",
+    "workflow": "https://github.com/OlegYazvin/13times3/actions/runs/40128422023",
+    "runId": 40128422023,
+    "conclusion": "success",
+    "checkedAt": "2026-10-24T20:12:20.865Z",
+    "normalRoute": {
+      "url": "https://13times3.com/explore/",
+      "status": 200,
+      "sha256": "83a38da39309c8fb1b70b714846740674d0a7abfe82ba2d7dfebb239e026af6c",
+      "expectedSha256": "83a38da39309c8fb1b70b714846740674d0a7abfe82ba2d7dfebb239e026af6c",
+      "match": true,
+      "checkedAt": "2026-10-24T20:09:43.650Z"
+    },
+    "liveAssetChecks": [
+      {
+        "path": "explore/index.html",
+        "url": "https://13times3.com/explore/index.html?review=83a38da39309",
+        "query": true,
+        "status": 200,
+        "sha256": "83a38da39309c8fb1b70b714846740674d0a7abfe82ba2d7dfebb239e026af6c",
+        "match": true
+      },
+      {
+        "path": "assets/explore/app.js",
+        "url": "https://13times3.com/assets/explore/app.js?review=253dcfd06f02",
+        "query": true,
+        "status": 200,
+        "sha256": "253dcfd06f02ffda7481c4c4a25974ba195102f7d7cb7f65c094ba656e2c84bb",
+        "match": true
+      },
+      {
+        "path": "assets/explore/museum/emotionally-mature-engagement.webp",
+        "url": "https://13times3.com/assets/explore/museum/emotionally-mature-engagement.webp?review=0aeb44e4cf9a",
+        "query": true,
+        "status": 200,
+        "sha256": "0aeb44e4cf9a9289a0c561ca2458da222ca0d14f9118997a47f10b50e88ab57b",
+        "match": true
+      },
+      {
+        "path": "credits/index.html",
+        "url": "https://13times3.com/credits/index.html?review=5f039143411f",
+        "query": true,
+        "status": 200,
+        "sha256": "5f039143411f1f9d3f1a5df5480a14e2db8e049d2111efcca44f0e308552aae9",
+        "match": true
+      },
+      {
+        "path": "explore/index.html",
+        "url": "https://13times3.com/explore/index.html",
+        "query": false,
+        "status": 200,
+        "sha256": "83a38da39309c8fb1b70b714846740674d0a7abfe82ba2d7dfebb239e026af6c",
+        "match": true
+      },
+      {
+        "path": "assets/explore/app.js",
+        "url": "https://13times3.com/assets/explore/app.js?v=253dcfd06f02",
+        "query": false,
+        "status": 200,
+        "sha256": "253dcfd06f02ffda7481c4c4a25974ba195102f7d7cb7f65c094ba656e2c84bb",
+        "match": true
+      },
+      {
+        "path": "assets/explore/museum/emotionally-mature-engagement.webp",
+        "url": "https://13times3.com/assets/explore/museum/emotionally-mature-engagement.webp",
+        "query": false,
+        "status": 200,
+        "sha256": "0aeb44e4cf9a9289a0c561ca2458da222ca0d14f9118997a47f10b50e88ab57b",
+        "match": true
+      },
+      {
+        "path": "credits/index.html",
+        "url": "https://13times3.com/credits/index.html",
+        "query": false,
+        "status": 200,
+        "sha256": "5f039143411f1f9d3f1a5df5480a14e2db8e049d2111efcca44f0e308552aae9",
+        "match": true
+      }
+    ],
+    "freshLiveLoads": [
+      {
+        "viewport": "desktop",
+        "directEntrance": true,
+        "noControlsOverlay": true,
+        "newPaintingResponse200": true,
+        "exactPaintingTitle": true,
+        "lightingDescriptionPresent": true,
+        "completedCanvasReadback": true,
+        "catWhispererResponse200": true,
+        "catDescriptionPresent": true,
+        "exactAccessibleTitle": true,
+        "manifestMatches": true,
+        "frameCount": 41,
+        "exhibitedFrameCount": 13,
+        "plannedFrame": "13",
+        "assignedRooms": 12,
+        "statueResponse200": true,
+        "firstRoomResponse200": true,
+        "noFallback": true,
+        "pageErrors": []
+      },
+      {
+        "viewport": "phone",
+        "directEntrance": true,
+        "noControlsOverlay": true,
+        "newPaintingResponse200": true,
+        "exactPaintingTitle": true,
+        "lightingDescriptionPresent": true,
+        "completedCanvasReadback": true,
+        "catWhispererResponse200": true,
+        "catDescriptionPresent": true,
+        "exactAccessibleTitle": true,
+        "manifestMatches": true,
+        "frameCount": 41,
+        "exhibitedFrameCount": 13,
+        "plannedFrame": "13",
+        "assignedRooms": 12,
+        "statueResponse200": true,
+        "firstRoomResponse200": true,
+        "noFallback": true,
+        "pageErrors": []
+      }
+    ],
+    "captureMethod": "Completed in-frame canvas readback after gl.finish, following ordinary keyboard and mouse navigation to face the entrance back wall.",
+    "visualScope": "Production navigation stopped close to the artwork. These close views confirm live image/title rendering; complete normal-distance, side and portrait views above use identical app/image bytes locally."
   }
 }

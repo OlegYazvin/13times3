@@ -32,7 +32,7 @@ Observed checklist:
 - [x] Inspect the hung painting and title from normal distance, close, and both sides.
 - [x] Inspect fresh portrait loads and the text/image fallback.
 - [x] Complete appropriate site/browser checks and confirm unchanged memory assignments and assets.
-- [ ] Publish and verify production bytes and fresh loads.
+- [x] Publish and verify production bytes and fresh loads.
 
 The first generated arrangement put Jane beside Zephrine, within the device's
 possible view, and was rejected. The selected edit places Jane behind the tablet
@@ -49,6 +49,12 @@ including movement, fixed lighting, sound and controls. The full manifest,
 existing memory models/previews and earlier paintings/sculptures are unchanged.
 No physical-phone performance measurement or wider character-art acceptance
 is claimed by this static-art revision.
+
+Published as `70de0e589df8c9f95933c0670f97f005151bcf55` in [Pages run 40128422023](https://github.com/OlegYazvin/13times3/actions/runs/40128422023).
+The normal live route, app, selected painting and Credits match the reviewed
+bytes. Fresh desktop and portrait production loads receive the artwork and
+exact title without page errors or fallback. The complete local multi-angle
+review used identical image and app bytes.
 
 ## Lighting fixtures — Jane’s reference collection
 
