@@ -340,5 +340,9 @@
     "judgment": "Six separately posed toddler food memories share a curving table; the narrower arrangement brings all six into the portrait doorway. Hands hold their carried food, rice has a fitted spoon, and both hands support the smoothie cup. The original fully clothed embrace remains in its own corner.",
     "remaining": "The shared stylized cast and fabric room retain the wider gallery art backlog; this revision does not claim final likeness acceptance or physical-phone frame-rate testing."
   },
-  "publication": "pending"
+  "publication": {
+    "status": "verified",
+    "applicationCommit": "f92f415fb60dfd2f6b85617330a6f7538bc030a5",
+    "evidence": "publication.json"
+  }
 }

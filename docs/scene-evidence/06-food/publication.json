@@ -1,0 +1,103 @@
+{
+  "verifiedAt": "2026-10-24T03:15:21.587Z",
+  "url": "https://13times3.com/explore/",
+  "applicationCommit": "f92f415fb60dfd2f6b85617330a6f7538bc030a5",
+  "workflow": {
+    "id": 40057332136,
+    "url": "https://github.com/OlegYazvin/13times3/actions/runs/40057332136",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "liveHashes": {
+    "at": "2026-10-24T03:14:21.936Z",
+    "results": [
+      {
+        "path": "assets/explore/app.js",
+        "url": "https://13times3.com/assets/explore/app.js?review=f0ee7b911b78",
+        "query": true,
+        "status": 200,
+        "sha256": "f0ee7b911b7860d59a49619e66aa5c3cba6aeef4810c49530fa8990e0be946d9",
+        "match": true
+      },
+      {
+        "path": "assets/explore.css",
+        "url": "https://13times3.com/assets/explore.css?review=9f07b2fb7b9e",
+        "query": true,
+        "status": 200,
+        "sha256": "9f07b2fb7b9e0fc84f0f0cbf14dd134ffba2314c51359a331d1a09985746c7c7",
+        "match": true
+      },
+      {
+        "path": "assets/explore/room06/room.glb",
+        "url": "https://13times3.com/assets/explore/room06/room.glb?review=5c201d26ae8f",
+        "query": true,
+        "status": 200,
+        "sha256": "5c201d26ae8fabfdfb893a445204e6f68bf15be248ad8cfac1e1e7812b8e0d5c",
+        "match": true
+      },
+      {
+        "path": "assets/explore/room06/preview.webp",
+        "url": "https://13times3.com/assets/explore/room06/preview.webp?review=1015f094eada",
+        "query": true,
+        "status": 200,
+        "sha256": "1015f094eada4dbeef8515cc4f7b721ed3e4e5b1c36abaf966267e650fa1ee0a",
+        "match": true
+      },
+      {
+        "path": "assets/explore/app.js",
+        "url": "https://13times3.com/assets/explore/app.js?v=f0ee7b911b78",
+        "query": false,
+        "status": 200,
+        "sha256": "f0ee7b911b7860d59a49619e66aa5c3cba6aeef4810c49530fa8990e0be946d9",
+        "match": true
+      },
+      {
+        "path": "assets/explore.css",
+        "url": "https://13times3.com/assets/explore.css?v=9f07b2fb7b9e",
+        "query": false,
+        "status": 200,
+        "sha256": "9f07b2fb7b9e0fc84f0f0cbf14dd134ffba2314c51359a331d1a09985746c7c7",
+        "match": true
+      },
+      {
+        "path": "assets/explore/room06/room.glb",
+        "url": "https://13times3.com/assets/explore/room06/room.glb",
+        "query": false,
+        "status": 200,
+        "sha256": "5c201d26ae8fabfdfb893a445204e6f68bf15be248ad8cfac1e1e7812b8e0d5c",
+        "match": true
+      },
+      {
+        "path": "assets/explore/room06/preview.webp",
+        "url": "https://13times3.com/assets/explore/room06/preview.webp",
+        "query": false,
+        "status": 200,
+        "sha256": "1015f094eada4dbeef8515cc4f7b721ed3e4e5b1c36abaf966267e650fa1ee0a",
+        "match": true
+      }
+    ]
+  },
+  "productionSmoke": [
+    {
+      "viewport": "desktop",
+      "galleryLoaded": true,
+      "frameCount": 41,
+      "firstModelLoaded": true,
+      "webglCanvas": true,
+      "noFallback": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": "phone",
+      "galleryLoaded": true,
+      "frameCount": 41,
+      "firstModelLoaded": true,
+      "webglCanvas": true,
+      "noFallback": true,
+      "pageErrors": []
+    }
+  ],
+  "liveCaption": "Zephrine eats all the food",
+  "oldCaptionAbsent": true,
+  "scope": "Fresh desktop and portrait-emulation production gallery loads; the complete frame 06 traversal, six close eating views, side/rear inspection, contacts, collision, return and cleanup were reviewed locally against the identical deployed model, preview and application hashes. Physical-phone performance is not claimed."
+}
