@@ -1,0 +1,193 @@
+{
+  "build": {
+    "id": "11",
+    "modelSha256": "c501394ceb80421645690a87dfedcdad1da85ca695bb166b6d47178beccefcb8",
+    "paintingSha256": "bfcd20f323b0be25ad91c8850c0950d20e2ec7b4936b42851cf53dd1c44e7d4b",
+    "appSha256": "4fd6e769d167e06c3510d99063c4d8eff483b0912fa8bd94189d52a292dd923f",
+    "recordedAt": "2026-10-24T01:21:22.038Z",
+    "captured": true
+  },
+  "source": {
+    "modelSha256": "39d1132129711b74d93bcf58a244e64716c58e19a36fbc9e072d43b39a2ce5a1",
+    "base": "Blender Studio Rain v3.3, CC BY 4.0",
+    "reference": "User requested Ariel from the original 1989 Disney film"
+  },
+  "checks": [
+    {
+      "id": "11",
+      "name": "mermaid-aisle",
+      "x": 4.8,
+      "z": 6.9,
+      "yaw": 0.9609313178537453,
+      "pitch": -0.08,
+      "stand": true
+    },
+    {
+      "id": "11",
+      "name": "mermaid-close",
+      "x": 6.8,
+      "z": 4.72,
+      "yaw": 1.5707963267948966,
+      "pitch": -0.2,
+      "stand": true
+    },
+    {
+      "id": "11",
+      "name": "mermaid-oblique",
+      "x": 6.4,
+      "z": 3.8,
+      "yaw": 2.1150768117408765,
+      "pitch": -0.16,
+      "stand": true
+    },
+    {
+      "id": "11",
+      "name": "entry",
+      "x": 0,
+      "z": 9.85,
+      "yaw": 0,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "11",
+      "name": "front",
+      "x": -0.55,
+      "z": 9.1,
+      "yaw": 0,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "11",
+      "name": "profile-left",
+      "x": -2.55,
+      "z": 6.6,
+      "yaw": 1.5707963267948966,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "11",
+      "name": "profile-right",
+      "x": 3.95,
+      "z": 6.6,
+      "yaw": -1.5707963267948966,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "11",
+      "name": "left",
+      "x": -2.55,
+      "z": 8.299999999999999,
+      "yaw": 0.866302262552679,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "11",
+      "name": "right",
+      "x": 1.45,
+      "z": 8.299999999999999,
+      "yaw": -0.866302262552679,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "11",
+      "name": "rear",
+      "x": 1.25,
+      "z": 3.9,
+      "yaw": -2.5535900500422257,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "11",
+      "name": "close",
+      "x": -0.55,
+      "z": 8,
+      "yaw": 0,
+      "pitch": -0.28,
+      "stand": true
+    },
+    {
+      "id": "11",
+      "name": "portal-back",
+      "x": 0,
+      "z": 12.7,
+      "yaw": 0,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "11",
+      "name": "rear-habitat",
+      "x": 0,
+      "z": 15.5,
+      "yaw": 3.141592653589793,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "11",
+      "viewport": "desktop",
+      "entry": true,
+      "collisionSamples": 40,
+      "return": true,
+      "continuousCamera": true,
+      "controls": true,
+      "cleanup": true
+    },
+    {
+      "id": "11",
+      "name": "phone",
+      "x": 0,
+      "z": 9.85,
+      "yaw": 0,
+      "pitch": 0,
+      "stand": true
+    },
+    {
+      "id": "11",
+      "name": "mermaid-phone",
+      "x": 6,
+      "z": 5.15,
+      "yaw": 1.5707963267948966,
+      "pitch": -0.14,
+      "stand": true
+    },
+    {
+      "id": "11",
+      "viewport": "phone",
+      "entry": true,
+      "collisionSamples": 40,
+      "return": true,
+      "continuousCamera": true,
+      "controls": true,
+      "cleanup": true
+    }
+  ],
+  "collision": {
+    "count": 65,
+    "changed": false,
+    "fallbackExactlyMatchesExport": true
+  },
+  "siteChecks": {
+    "detailPages": 39,
+    "frameIds": 41,
+    "publishedRooms": 12,
+    "unitTestsPassed": 19,
+    "geometryValid": true
+  },
+  "visualObservations": [
+    "The generic sweater figure is replaced with a dimensional cartoon face, swept red hair, purple shells and green tail.",
+    "Both hands are complete; the source builder rejects poses whose hands cross the torso crop.",
+    "The scalp and long hair form one volume; the tail cross-section covers the waist join.",
+    "The figure remains partly screened by the coral from the aisle.",
+    "The fresh phone image shows the full tail with one reed in front; close and oblique desktop views reveal the face.",
+    "The unchanged hallway painting and doorway keep the family as the main subject."
+  ],
+  "scope": "Local current-export visual review and portrait-phone emulation. Wider aquarium artistic acceptance and physical-device frame rate are not claimed."
+}

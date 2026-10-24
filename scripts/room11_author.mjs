@@ -911,13 +911,6 @@ for(const side of [-1,1]) for(let bay=0;bay<6;bay++) {
 fanCoral(-3.15,-12.65,1.2,2.65,M.coral);
 fanCoral(3.7,-12.68,1.12,2.48,M.gold);
 fanCoral(8.12,4.0,1.1,2.22,M.coral,true);
-// A quiet discovery beside the existing coral fan. Her lower tail is partly
-// concealed from the central aisle; approaching the right glass reveals the
-// complete dimensional figure. Nothing enters the visitor's walking route.
-const hiddenMermaid=aquariumMermaid();
-hiddenMermaid.position.set(7.92,.33,4.72);
-hiddenMermaid.rotation.y=-Math.PI/2;
-root.add(hiddenMermaid);
 for(const side of [-1,1]) for(let shelf=0;shelf<4;shelf++) {
   const x=side*8.35,z=5.5-shelf*5.35;
   loft(root,"layered reef ledge behind aquarium glass",
@@ -1337,5 +1330,11 @@ window.__authorRoom=async()=>{
   canopy.userData.mimeType="image/webp";
   canopyMaterial.map=canopy;
   canopyMaterial.needsUpdate=true;
+  // A quiet discovery beside the existing coral fan, revealed by approaching
+  // the right glass. The whole sculpture stays outside the walking route.
+  const hiddenMermaid=await aquariumMermaid();
+  hiddenMermaid.position.set(7.92,.33,4.72);
+  hiddenMermaid.rotation.y=-Math.PI/2;
+  root.add(hiddenMermaid);
   return exportRoom({batchStatic:true});
 };

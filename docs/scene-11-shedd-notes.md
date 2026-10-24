@@ -154,5 +154,61 @@ See [doorway](scene-evidence/11-mermaid/doorway.webp),
 [oblique](scene-evidence/11-mermaid/oblique.webp),
 [phone](scene-evidence/11-mermaid/phone.webp) and the
 [current-hash verification](scene-evidence/11-mermaid/verification.json).
-This completes the requested mermaid addition; the wider artistic backlog
-remains separate.
+Oleg subsequently rejected this mermaid's appearance as creepy. The functional
+passes above did not establish artistic acceptance; these images record the
+rejected `40b3c01` version.
+
+## Original animated Ariel revision
+
+Oleg specified Ariel from Disney's original 1989 *The Little Mermaid*. The
+replacement removes the generic sweater figure and its blank expression,
+using a sculpted face with blue eyes, swept red hair, a fitted purple shell
+top and a continuous green tail with flowing pale fins. The fantasy discovery
+stays in the same right-hand tank; no family member, memory, portal or frame
+assignment changes.
+
+The upper anatomy and hands adapt Blender Studio's CC-BY Rain v3.3 rig. The
+body, face, eye whites, blue irises, pupils, lids, mouth and hands are actual
+geometry. The upper body's pose is frozen from the current weighted body,
+with newly assigned materials and vertex pigment. Project-authored hair is
+fused into one closed volume; shells are fitted to the chest surface and the
+tail cross-section is aligned with the waist. Source attribution, archive
+and adaptation details are in
+[the asset license](../scripts/assets/room11/ariel-upper.LICENSE.md), and the
+public credits page carries the required Blender Foundation credit.
+
+Rebuild the upper source with Blender 4.5.9, `--background --disable-autoexec
+--python-exit-code 1`, the downloaded `rain_v3.2.blend`, and
+`--python scripts/build_ariel_base.py`; then run `npm run build:room11`.
+Embedded scripts in the source blend are not run.
+
+Local review checklist:
+
+- [x] Inspect the source sculpture from front, three-quarter, profile and rear.
+- [x] Remove the backup-body export that failed to carry the arm pose; retain
+  both complete hands above the torso's crop plane.
+- [x] Preserve eye material indices when replacing source materials; the first
+  trial incorrectly exported only white eyes.
+- [x] Refit the shell band to the torso and remove a floating waist collar.
+- [x] Inspect the packed model in aquarium light, including aisle, close,
+  oblique and fresh portrait-phone views.
+- [x] Verify the unchanged collision, moving fish and both portal loops.
+
+The final room model is 7,103,920 bytes plus its unchanged 80,628-byte painting.
+All 65 collision footprints exactly match the existing fallback. The full
+desktop and fresh portrait-emulation run checks entry, keyboard movement,
+sustained touch turning, both portal-post loops, moving fish, camera continuity,
+return and cleanup. Site checks pass with 39 achievement pages, 41 stable IDs
+and all 19 unit tests. These functional results remain separate from the
+visual judgment recorded in the images; physical-device frame rate is not claimed.
+
+Current evidence: [close](scene-evidence/11-ariel/close.webp),
+[aisle](scene-evidence/11-ariel/aisle.webp),
+[oblique](scene-evidence/11-ariel/oblique.webp),
+[phone](scene-evidence/11-ariel/phone.webp),
+[doorway](scene-evidence/11-ariel/doorway.webp), and
+[verification](scene-evidence/11-ariel/verification.json).
+The phone view includes the full tail, with a foreground reed partly screening
+the figure; the close and oblique desktop views reveal her face. The previous
+mermaid evidence stays in `11-mermaid` as a rejected comparison. This revision
+does not mark the aquarium's wider artistic backlog complete.

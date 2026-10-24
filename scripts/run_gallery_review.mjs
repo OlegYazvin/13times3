@@ -114,12 +114,14 @@ if(process.argv.includes('--global')){
    if(!phone&&!profilesOnly&&!returnsOnly&&!process.argv.includes('--checks')){
     if(f.id==='02')shots.push(['care',-3.3,-1.2,0],['household',-3.1,-4.6,-Math.PI/2,-.25],['contacts',2.5,4.2,0],['embrace',0,-2.7,0],['embrace-rear',-1,-7.8,2.75]);
     if(f.id==='12')shots.push(['borellis',0,4.5,Math.PI,-.08],['borellis-side',-4.3,7.5,Math.PI/2,-.12],['portal-back',0,5.0,0],['children',.60,.6,0,-.40],['jonas',1.70,-.65,-.2,-.06],['beat-windows',-4,-5.8,0]);
-    if(f.id==='11')shots.push(['portal-back',0,12.7,0],['rear-habitat',0,15.5,Math.PI],
-      ['mermaid-aisle',4.8,6.9,Math.atan2(3.12,2.18),-.08],
+    if(f.id==='11'){
+      shots.unshift(['mermaid-aisle',4.8,6.9,Math.atan2(3.12,2.18),-.08],
       ['mermaid-close',6.8,4.72,Math.PI/2,-.20],
       ['mermaid-oblique',6.4,3.8,Math.atan2(1.52,-.92),-.16]);
+      shots.push(['portal-back',0,12.7,0],['rear-habitat',0,15.5,Math.PI]);
+    }
    }
-   if(f.id==='11'&&phone&&!process.argv.includes('--checks'))shots.push(['mermaid-phone',6.8,4.72,Math.PI/2,-.20]);
+   if(f.id==='11'&&phone&&!process.argv.includes('--checks'))shots.push(['mermaid-phone',6.0,5.15,Math.PI/2,-.14]);
    if(f.id==='08'&&!phone&&!returnsOnly&&!process.argv.includes('--checks'))for(const [stop,z,side]of[['pullman',7.05,-1],['avalon',5.8,1],['arts-bank',2.1,-1],['narrow-bridge',-1.65,1],['palmisano',-5.4,-1],['saint-ignatius',-9.15,1],['temple',-12.05,-1]]){
     const standZ=stop==='pullman'?9.15:stop==='avalon'?6.6:z,lookX=stop==='pullman'?-3.8:side*4.25;
     shots.push(['route-'+stop,0,standZ,Math.atan2(lookX,standZ-z),stop==='pullman'?.30:stop==='avalon'?.20:stop==='palmisano'?-.06:.15]);
