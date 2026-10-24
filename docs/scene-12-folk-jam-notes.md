@@ -1,6 +1,6 @@
 # Frame 12 — A place in the circle
 
-Status: local art, exported contacts, desktop/phone controls, route, sustained-render and regression checks complete; publication verification follows deployment.
+Status: published and verified live after the local art, contact, browser and regression checks.
 
 Jane discovered a welcoming folk jam community meeting at Beat Kitchen upstairs
 and Borelli’s. She enjoys listening; she does not sing or play an instrument at
@@ -51,7 +51,7 @@ All boxes below mean observed exported evidence, never an intended improvement.
 - [x] Hall painting, partial reveal, entry, close views and actual return inspected.
 - [x] Fresh desktop and portrait phone loads, controls, collisions and fallbacks pass.
 - [x] 39 original achievement URLs and 41 stable IDs preserved; 13–41 stay blank.
-- [ ] Publication verified against the final assets; evidence and limits recorded.
+- [x] Publication verified against the final assets; evidence and limits recorded.
 
 
 ## Revision observations
@@ -121,3 +121,15 @@ achievement routes. Global drag, resize, WebGL-loss fallback, no-WebGL fallback
 and failed-model behavior passed with 12 previews and 41 frames. Frames 01 and
 11 also passed fresh desktop/phone regression checks. These functional results
 are separate from the artistic inspection in the [evidence page](scene-evidence/12-folk-jam/index.html).
+
+
+## Publication
+
+Art release `5b21d7da156ab3c44b67a0faf2ff87aad5923dd5` deployed successfully in
+[Pages run 40042361806](https://github.com/OlegYazvin/13times3/actions/runs/40042361806).
+All 26 live gallery files matched the reviewed build, including the normal
+`/explore/` URL. Fresh desktop and emulated-phone production loads passed with
+41 frames, 12 published rooms, no fallback and no page errors. The 22 prior room
+model/painting files remain byte-for-byte unchanged. Full frame-12 inspection
+was local against those identical deployed files; physical-device frame rate is
+not claimed. See the [publication record](scene-evidence/12-folk-jam/publication.json).
