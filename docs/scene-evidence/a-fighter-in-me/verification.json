@@ -106,7 +106,137 @@
   },
   "functionalScope": "Targeted static-artwork loading, accessible title, fallback and existing wall collision; site and unit checks are separate. Portrait views use browser emulation.",
   "visualJudgment": "Inspected the completed square painting, across-gallery view, normal view, both oblique sides, close view, two fresh portrait views, and portrait fallback. The bun, brows and natural face proportions remain recognizable within broad painted strokes; dark currents and warm open passages convey persistence. The exact title remains legible below the frame. The first fallback capture exposed horizontal overflow; its grid and card now fit the 390px viewport. Artwork quality is a separate visual judgment from loading and wall collision.",
-  "publication": "pending",
+  "publication": {
+    "commit": "bc1dd8d10ad68fcc54e3d7e86648ea4aef7f1090",
+    "workflow": "https://github.com/OlegYazvin/13times3/actions/runs/40115350782",
+    "runId": 40115350782,
+    "conclusion": "success",
+    "checkedAt": "2026-10-24T17:19:57.064Z",
+    "normalRoute": {
+      "url": "https://13times3.com/explore/",
+      "status": 200,
+      "sha256": "1a1aeff5a8ca71233579ad735841b3228ba7710603177490b789671679f3663b",
+      "expectedSha256": "1a1aeff5a8ca71233579ad735841b3228ba7710603177490b789671679f3663b",
+      "match": true,
+      "checkedAt": "2026-10-24T17:18:28.482Z"
+    },
+    "liveAssetChecks": [
+      {
+        "path": "explore/index.html",
+        "url": "https://13times3.com/explore/index.html?review=1a1aeff5a8ca",
+        "query": true,
+        "status": 200,
+        "sha256": "1a1aeff5a8ca71233579ad735841b3228ba7710603177490b789671679f3663b",
+        "match": true
+      },
+      {
+        "path": "assets/explore/app.js",
+        "url": "https://13times3.com/assets/explore/app.js?review=f4ae81d1c8d7",
+        "query": true,
+        "status": 200,
+        "sha256": "f4ae81d1c8d7bd51a64d911bbfa9d8d98353b57175a5319363b0d2458665c210",
+        "match": true
+      },
+      {
+        "path": "assets/explore.css",
+        "url": "https://13times3.com/assets/explore.css?review=994ea1bae413",
+        "query": true,
+        "status": 200,
+        "sha256": "994ea1bae413e151042b440c058fe78c8ebf152815a553fafda2f9cb365c967d",
+        "match": true
+      },
+      {
+        "path": "assets/explore/museum/a-fighter-in-me.webp",
+        "url": "https://13times3.com/assets/explore/museum/a-fighter-in-me.webp?review=b0323853cbbc",
+        "query": true,
+        "status": 200,
+        "sha256": "b0323853cbbc06d6b7beb85a422061933c927e4224998e2e32697c50ae91bf29",
+        "match": true
+      },
+      {
+        "path": "credits/index.html",
+        "url": "https://13times3.com/credits/index.html?review=0ef3e526e500",
+        "query": true,
+        "status": 200,
+        "sha256": "0ef3e526e5006a7e35b4ba20f618a2477b0dd08987fec79aaa59d04c76ef4380",
+        "match": true
+      },
+      {
+        "path": "explore/index.html",
+        "url": "https://13times3.com/explore/index.html",
+        "query": false,
+        "status": 200,
+        "sha256": "1a1aeff5a8ca71233579ad735841b3228ba7710603177490b789671679f3663b",
+        "match": true
+      },
+      {
+        "path": "assets/explore/app.js",
+        "url": "https://13times3.com/assets/explore/app.js?v=f4ae81d1c8d7",
+        "query": false,
+        "status": 200,
+        "sha256": "f4ae81d1c8d7bd51a64d911bbfa9d8d98353b57175a5319363b0d2458665c210",
+        "match": true
+      },
+      {
+        "path": "assets/explore.css",
+        "url": "https://13times3.com/assets/explore.css?v=994ea1bae413",
+        "query": false,
+        "status": 200,
+        "sha256": "994ea1bae413e151042b440c058fe78c8ebf152815a553fafda2f9cb365c967d",
+        "match": true
+      },
+      {
+        "path": "assets/explore/museum/a-fighter-in-me.webp",
+        "url": "https://13times3.com/assets/explore/museum/a-fighter-in-me.webp",
+        "query": false,
+        "status": 200,
+        "sha256": "b0323853cbbc06d6b7beb85a422061933c927e4224998e2e32697c50ae91bf29",
+        "match": true
+      },
+      {
+        "path": "credits/index.html",
+        "url": "https://13times3.com/credits/index.html",
+        "query": false,
+        "status": 200,
+        "sha256": "0ef3e526e5006a7e35b4ba20f618a2477b0dd08987fec79aaa59d04c76ef4380",
+        "match": true
+      }
+    ],
+    "freshLiveLoads": [
+      {
+        "viewport": "desktop",
+        "directEntrance": true,
+        "noControlsOverlay": true,
+        "newPaintingResponse200": true,
+        "exactAccessibleTitle": true,
+        "manifestMatches": true,
+        "frameCount": 41,
+        "exhibitedFrameCount": 13,
+        "plannedFrame": "13",
+        "assignedRooms": 12,
+        "statueResponse200": true,
+        "firstRoomResponse200": true,
+        "noFallback": true,
+        "pageErrors": []
+      },
+      {
+        "viewport": "phone",
+        "directEntrance": true,
+        "noControlsOverlay": true,
+        "newPaintingResponse200": true,
+        "exactAccessibleTitle": true,
+        "manifestMatches": true,
+        "frameCount": 41,
+        "exhibitedFrameCount": 13,
+        "plannedFrame": "13",
+        "assignedRooms": 12,
+        "statueResponse200": true,
+        "firstRoomResponse200": true,
+        "noFallback": true,
+        "pageErrors": []
+      }
+    ]
+  },
   "functional": {
     "siteChecksPassed": true,
     "unitTests": 34,

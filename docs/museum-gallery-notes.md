@@ -31,7 +31,7 @@ Observed review:
 - [x] Inspect the painting and exact title from normal distance, both sides and close up.
 - [x] Inspect fresh portrait loads and the image/text fallback.
 - [x] Complete build/site checks and verify unchanged room and frame records.
-- [ ] Publish and verify production assets and fresh loads.
+- [x] Publish and verify production assets and fresh loads.
 
 [Multi-angle review](scene-evidence/a-fighter-in-me/index.html) and
 [verification](scene-evidence/a-fighter-in-me/verification.json) bind the captures
@@ -39,6 +39,10 @@ to the final image, app, stylesheet and manifest hashes. The portrait fallback
 initially overflowed horizontally; a bounded grid and responsive frame list now
 fit the viewport. Optional Help also opens, fits and closes correctly. All 34
 tests pass. The painting is 1254 × 1254, 628,488 bytes, without EXIF or XMP.
+
+Published as `bc1dd8d10ad68fcc54e3d7e86648ea4aef7f1090` in [Pages run 40115350782](https://github.com/OlegYazvin/13times3/actions/runs/40115350782).
+Production HTML, app, stylesheet, painting and Credits match the reviewed
+bytes. Fresh desktop and portrait production loads display the new painting.
 
 ## Three galleries and continuous light — preceding follow-up
 
