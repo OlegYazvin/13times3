@@ -81,6 +81,24 @@ a { color: inherit; }
   white-space: nowrap;
 }
 .music-button:hover, .music-button:focus-visible { background: #d9f0f2; color: #0d2332; }
+.scene-music {
+  position: absolute;
+  z-index: 3;
+  right: max(1.1rem, env(safe-area-inset-right));
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+  width: 250px;
+  overflow: hidden;
+  border: 1px solid rgb(235 246 250 / 35%);
+  border-radius: .8rem;
+  background: #142636;
+  box-shadow: 0 8px 25px rgb(0 0 0 / 16%);
+}
+.scene-music-credit { display: block; padding: .55rem .7rem; font-size: .68rem; text-decoration: none; color: #e2edf0; }
+.scene-music-credit:hover, .scene-music-credit:focus-visible { text-decoration: underline; }
+.scene-music-player iframe { display: block; width: 100%; height: 166px; border: 0; }
+.scene-music-status { margin: 0; padding: 0 .7rem .6rem; font-size: .7rem; line-height: 1.4; }
+.scene-music-status:empty { display: none; }
+.scene-music:not([hidden]) ~ .look-hint { display: none; }
 .icon-button {
   width: 2.3rem;
   height: 2.3rem;
@@ -209,5 +227,11 @@ h1 { margin: 0 0 1.2rem; font-family: Ojuju, Archivo, sans-serif; font-size: cla
   .section-status { font-size: .68rem; }
   .topbar-right { gap: .4rem; }
   .music-button { padding: .3rem .5rem; font-size: .67rem; }
+  .scene-music { width: 210px; right: max(.75rem, env(safe-area-inset-right)); }
   .look-hint { bottom: max(2rem, env(safe-area-inset-bottom)); }
+}
+
+@media (max-width: 360px) {
+  .scene-music { width: 200px; right: max(.5rem, env(safe-area-inset-right)); }
+  .scene-music:not([hidden]) ~ .joystick { left: .25rem; width: 100px; }
 }

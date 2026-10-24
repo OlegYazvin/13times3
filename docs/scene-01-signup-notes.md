@@ -56,3 +56,45 @@ and the pinched pencil follows the lowered paper. These source changes require
 the next packed prop and browser checks; the earlier paper-plane test did not
 establish support for every desktop object. Zephrine's stage smile uses the
 same sculpted joy expression already inspected in the car and playground.
+
+### Scene piano, October 23
+
+The user requested a slow, mellow instrumental of “Part of Your World” inside
+this existing scene. The selected source is [Benny Martin’s solo-piano cover](https://soundcloud.com/bennymartinpianist/disney-the-little-mermaid-part-of-your-world-piano-instrumental-cover),
+SoundCloud track `231167340`, duration 208.529 seconds. It is on the pianist’s
+own account, linked to [his professional site](https://bennymartin.com.au/).
+The artist describes his work as background instrumental piano. The recording
+and composition are not claimed to be Creative Commons or public domain: use
+the provider’s public embedded player, with the artist link and standard
+playback controls. No audio file is copied, re-encoded or included in the room
+download. The Disney Peaceful Piano uploads tested during sourcing returned
+embedded-player error 150 and were not adopted.
+
+`client/explore/scene-music.mjs` loads the provider only on entered-room `01`
+with Sound enabled. The hallway track fades to silence; the piano starts at
+35% player volume and loops while the visitor remains in this scene. Exit,
+Sound off, page hiding and gallery fallback remove the iframe, including a
+player still loading. Other rooms do not load this recording. A browser that
+blocks automatic playback retains an accessible Play button; network/provider
+failure keeps exploration usable and exposes the source link. Playback depends
+on SoundCloud availability and may inherit the provider’s playback policies.
+
+Verification checklist for this change:
+- [x] Real SoundCloud playback advances after entry in desktop and fresh 390×844
+  portrait emulation. See [desktop](scene-evidence/01-music/desktop.webp),
+  [phone](scene-evidence/01-music/phone.webp) and [the browser record](scene-evidence/01-music/verification.json).
+- [x] Exit restores hallway music; entered room 02 has no piano. Unit checks
+  exercise the same exclusive selection for rooms 02–12.
+- [x] Sound off persists across real entry/return. Unit checks cover rapid exit
+  while the API is pending and stale READY/FINISH events after removal.
+- [x] Reviewed player bounds clear the joystick and Sound/help controls in the
+  portrait capture. This is phone emulation, not physical iOS verification.
+- [x] Blocking the provider in a real browser leaves movement and return usable;
+  the source-link message appears and hallway music resumes.
+- [x] `npm run build` and `npm run check` pass, including 25 unit tests and the
+  existing 39 achievement URL / 41 frame checks. Autoplay-blocked state, page
+  hiding, fallback and independent hallway-audio failure have unit coverage.
+- [ ] Production bytes and playback are verified after release.
+
+This is an audio revision. It does not establish further artistic acceptance
+of the scene geometry or resolve the visual weaknesses recorded above.

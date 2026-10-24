@@ -41,12 +41,17 @@ module.exports = function (eleventyConfig) {
     "exploreScriptVersion",
     createHash("sha256").update(readFileSync("src/assets/explore/app.js")).digest("hex").slice(0, 12),
   );
+  eleventyConfig.addGlobalData(
+    "exploreStyleVersion",
+    createHash("sha256").update(readFileSync("src/assets/explore.css")).digest("hex").slice(0, 12),
+  );
   eleventyConfig.addGlobalData("galleryRoomVersion", roomAssetVersion());
   eleventyConfig.addGlobalData(
     "exploreMusicVersion",
     createHash("sha256").update(readFileSync("src/assets/explore/resolutions-scott-buckley.mp3")).digest("hex").slice(0, 12),
   );
   eleventyConfig.addWatchTarget("src/assets/explore/app.js");
+  eleventyConfig.addWatchTarget("src/assets/explore.css");
   eleventyConfig.addWatchTarget("src/assets/explore/resolutions-scott-buckley.mp3");
   for (const id of ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11"]) eleventyConfig.addWatchTarget(`src/assets/explore/room${id}`);
   eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });

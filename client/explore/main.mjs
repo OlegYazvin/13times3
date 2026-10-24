@@ -3,6 +3,7 @@ import * as THREE from "three";
 import { GalleryControls } from "./controls.mjs";
 import { createGalleryScene } from "./gallery-scene.mjs";
 import { GalleryMusic } from "./music.mjs";
+import { SceneMusic } from "./scene-music.mjs";
 import {
   EYE_HEIGHT, nearestSection,
 } from "./layout.mjs";
@@ -32,7 +33,10 @@ function showFallback(message) {
 }
 
 try {
-  galleryMusic = new GalleryMusic(musicButton, experience.dataset.musicUrl);
+  const sceneMusic = new SceneMusic(document.getElementById("scene-music"));
+  galleryMusic = new GalleryMusic(musicButton, experience.dataset.musicUrl, sceneMusic);
+  document.addEventListener("visibilitychange", () => galleryMusic.setPageVisible(!document.hidden));
+  window.addEventListener("pagehide", () => galleryMusic.stop());
   const manifest = JSON.parse(document.getElementById("gallery-data").textContent);
   const gallery = createGalleryScene(manifest, experience.dataset.basePath, experience.dataset.roomVersion);
   const renderer = new THREE.WebGLRenderer({ antialias: true, stencil: true,
@@ -58,7 +62,7 @@ try {
     assetVersion: experience.dataset.roomVersion,
     announce(message) { announcement.textContent = message; },
     onModeChange(mode, frame) {
-      galleryMusic.setInHall(mode === "hall");
+      galleryMusic.setLocation(mode, frame?.id);
       roomTitle.hidden = mode !== "room";
       roomTitle.textContent = mode === "room" ? frame.room.title || `Room ${frame.label}` : "";
       status.textContent = mode === "room"
@@ -92,6 +96,11 @@ try {
         playing: !galleryMusic.audio.paused,
         time: galleryMusic.audio.currentTime,
         level: galleryMusic.gain?.gain.value ?? galleryMusic.audio.volume,
+        sceneId: galleryMusic.sceneId,
+        sceneActive: sceneMusic.active,
+        sceneReady: sceneMusic.ready,
+        scenePlaying: sceneMusic.playing,
+        sceneTime: sceneMusic.position,
       },
     });
     window.__galleryTestPose = (x, z, yaw) => {

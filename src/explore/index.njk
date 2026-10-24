@@ -12,7 +12,7 @@ eleventyExcludeFromCollections: true
     <meta name="description" content="A winding gallery of 41 frames for Jane.">
     {% if isStaging %}<meta name="robots" content="noindex, nofollow">{% endif %}
     <link rel="canonical" href="{{ site.canonicalOrigin }}/explore/">
-    <link rel="stylesheet" href="{{ '/assets/explore.css' | url }}">
+    <link rel="stylesheet" href="{{ '/assets/explore.css' | url }}?v={{ exploreStyleVersion }}">
   </head>
   <body>
     <main class="experience" id="experience" data-base-path="{{ '/' | url }}" data-room-version="{{ galleryRoomVersion }}" data-music-url="{{ '/assets/explore/resolutions-scott-buckley.mp3' | url }}?v={{ exploreMusicVersion }}">
@@ -28,6 +28,12 @@ eleventyExcludeFromCollections: true
         </div>
       </div>
       <div class="room-title" id="room-title" hidden></div>
+
+      <aside class="scene-music" id="scene-music" aria-label="Music in Zephrine's first stage" data-track-url="https://api.soundcloud.com/tracks/231167340" hidden>
+        <a class="scene-music-credit" href="https://soundcloud.com/bennymartinpianist/disney-the-little-mermaid-part-of-your-world-piano-instrumental-cover" target="_blank" rel="noopener">Piano by Benny Martin <span aria-hidden="true">↗</span></a>
+        <div class="scene-music-player"></div>
+        <p class="scene-music-status" role="status"></p>
+      </aside>
 
       <div class="reticle" aria-hidden="true"></div>
       <div class="look-hint" id="look-hint" aria-hidden="true">Drag and hold to turn</div>

@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-24T01:43:23.466Z",
+  "results": [
+    {
+      "viewport": "1280×800 desktop",
+      "realProviderPlayback": true,
+      "sceneTime": 10.680498999964236,
+      "track": 231167340,
+      "lazyBeforeEntry": true,
+      "hallSilentInRoom": true,
+      "mutePersistsAcrossPortals": true,
+      "returnRestoresHall": true,
+      "otherRoomSilent": true,
+      "controlsClear": true,
+      "errors": []
+    },
+    {
+      "viewport": "390×844 portrait emulation",
+      "realProviderPlayback": true,
+      "sceneTime": 8.808483,
+      "track": 231167340,
+      "lazyBeforeEntry": true,
+      "hallSilentInRoom": true,
+      "mutePersistsAcrossPortals": true,
+      "returnRestoresHall": true,
+      "otherRoomSilent": true,
+      "controlsClear": true,
+      "errors": []
+    },
+    {
+      "providerFailure": true,
+      "returnUsable": true,
+      "hallMusicResumes": true,
+      "errors": []
+    }
+  ],
+  "source": {
+    "url": "https://soundcloud.com/bennymartinpianist/disney-the-little-mermaid-part-of-your-world-piano-instrumental-cover",
+    "track": 231167340,
+    "durationSeconds": 208.529,
+    "delivery": "public SoundCloud embedded player"
+  },
+  "build": [
+    {
+      "path": "explore/index.html",
+      "sha256": "cf6bf83eacfd02589669901e2955e35667f81d460bd2897f974e47c65e49c299"
+    },
+    {
+      "path": "assets/explore/app.js",
+      "sha256": "44ed4fad96cd7a4da989de2e260c9d4f49f2226ad639eef7b1467e75d6fabd0b"
+    },
+    {
+      "path": "assets/explore.css",
+      "sha256": "9f07b2fb7b9e0fc84f0f0cbf14dd134ffba2314c51359a331d1a09985746c7c7"
+    },
+    {
+      "path": "credits/index.html",
+      "sha256": "ce536864a81c14a37d86fa0c9e28be73091778ef154073a1ed7043516aea9dcc"
+    },
+    {
+      "path": "assets/explore/room01/room.glb",
+      "sha256": "84421a5c228abbe01bbfc5a79163b453ef136b6d48a1ad47cddaf7669a8946fb"
+    }
+  ],
+  "siteChecks": {
+    "achievementPages": 39,
+    "frameIds": 41,
+    "publishedRooms": 12,
+    "unitTests": 25,
+    "allPass": true
+  },
+  "globalBrowserChecks": {
+    "controls": true,
+    "resize": true,
+    "fallback": true
+  }
+}

@@ -1,7 +1,7 @@
 const HALL_VOLUME = 0.42;
 
 export class GalleryMusic {
-  constructor(button, url) {
+  constructor(button, url, sceneMusic = null) {
     this.button = button;
     this.audio = new Audio();
     this.audio.preload = "none";
@@ -12,6 +12,9 @@ export class GalleryMusic {
     this.started = false;
     this.enabled = false;
     this.inHall = true;
+    this.sceneId = null;
+    this.sceneMusic = sceneMusic;
+    this.pageVisible = !document.hidden;
     this.fallbackFade = 0;
     this.button.addEventListener("click", () => this.toggle());
     this.audio.addEventListener("error", () => this.unavailable());
@@ -19,7 +22,7 @@ export class GalleryMusic {
   }
 
   updateButton() {
-    const on = this.enabled && !this.audio.paused;
+    const on = this.enabled;
     this.button.textContent = on ? "Sound on" : "Sound off";
     this.button.setAttribute("aria-pressed", String(on));
     this.button.setAttribute("aria-label", on ? "Turn music off" : "Turn music on");
@@ -70,7 +73,7 @@ export class GalleryMusic {
       const playing = this.audio.play();
       await Promise.all([resumed, playing]);
       if (!this.enabled) return;
-      this.fadeTo(this.inHall ? HALL_VOLUME : 0, seconds);
+      this.fadeTo(this.inHall && this.pageVisible ? HALL_VOLUME : 0, seconds);
       this.updateButton();
     } catch (error) {
       console.warn("Gallery music could not start", error);
@@ -82,6 +85,7 @@ export class GalleryMusic {
     if (this.started) return;
     this.started = true;
     this.enabled = true;
+    this.syncScene();
     void this.playWithFade(4);
   }
 
@@ -89,9 +93,11 @@ export class GalleryMusic {
     if (!this.started || !this.enabled) {
       this.started = true;
       this.enabled = true;
+      this.syncScene();
       void this.playWithFade(1.8);
     } else {
       this.enabled = false;
+      this.syncScene();
       this.fadeTo(0, .45);
       this.updateButton();
       window.setTimeout(() => {
@@ -100,19 +106,37 @@ export class GalleryMusic {
     }
   }
 
-  setInHall(inHall) {
-    this.inHall = inHall;
-    if (this.enabled && !this.audio.paused) this.fadeTo(inHall ? HALL_VOLUME : 0, 1.25);
+  syncScene() {
+    this.sceneMusic?.setActive(this.enabled && this.pageVisible && this.sceneId === "01");
+  }
+
+  setLocation(mode, frameId) {
+    this.inHall = mode === "hall";
+    this.sceneId = this.inHall ? null : frameId;
+    this.syncScene();
+    if (this.enabled && !this.audio.paused) {
+      this.fadeTo(this.inHall && this.pageVisible ? HALL_VOLUME : 0, 1.25);
+    }
+  }
+
+  setPageVisible(visible) {
+    this.pageVisible = visible;
+    this.syncScene();
+    if (!visible) {
+      this.fadeTo(0, .1);
+      this.audio.pause();
+    } else if (this.enabled) void this.playWithFade(1.25);
   }
 
   unavailable() {
-    this.enabled = false;
+    // A failed hallway MP3 must not disable the independent scene recording.
     this.audio.pause();
     this.updateButton();
   }
 
   stop() {
     this.enabled = false;
+    this.syncScene();
     this.audio.pause();
     if (this.gain) this.gain.gain.value = 0;
     this.updateButton();

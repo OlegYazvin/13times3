@@ -460,7 +460,8 @@ def main() -> None:
     assert len(explore.select(".frame-list li")) == 41
     script_version = hashlib.sha256((OUTPUT / "assets/explore/app.js").read_bytes()).hexdigest()[:12]
     assert explore.select_one("script[src]").get("src") == expected_href("/assets/explore/app.js") + f"?v={script_version}"
-    assert explore.select_one('link[rel="stylesheet"]').get("href") == expected_href("/assets/explore.css")
+    style_version = hashlib.sha256((OUTPUT / "assets/explore.css").read_bytes()).hexdigest()[:12]
+    assert explore.select_one('link[rel="stylesheet"]').get("href") == expected_href("/assets/explore.css") + f"?v={style_version}"
     assert explore.select_one("link[rel=canonical]").get("href") == DATA["canonicalOrigin"] + "/explore/"
     for asset in ("assets/explore/app.js", "assets/explore.css"):
         assert (OUTPUT / asset).is_file() and (OUTPUT / asset).stat().st_size > 0
