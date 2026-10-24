@@ -1,0 +1,764 @@
+{
+  "recordedAt": "2026-10-24T19:16:10.558Z",
+  "appSha256": "5829aa25b914bc9c4cb9a7b9857aaaaf1799f734cdf7025c5d9952b62b903398",
+  "manifestSha256": "cee81a462dc78832282edaa14f8aaff63c6cf6a493e5a5fd723d02c339391d4a",
+  "results": [
+    {
+      "viewport": "desktop",
+      "fixtures": [
+        {
+          "id": "pendant-1",
+          "kind": "crystal",
+          "section": 0,
+          "along": 7.5,
+          "x": 0,
+          "z": -7.5,
+          "yaw": 0,
+          "min": [
+            -1.1339999437332153,
+            4.145999908447266,
+            -8.631999969482422
+          ],
+          "max": [
+            1.1339999437332153,
+            6.489999771118164,
+            -6.368000030517578
+          ]
+        },
+        {
+          "id": "pendant-2",
+          "kind": "botanical",
+          "section": 0,
+          "along": 14.4,
+          "x": 0,
+          "z": -14.4,
+          "yaw": 0,
+          "min": [
+            -1.8084368118653351,
+            4.280661140959493,
+            -16.17265350218477
+          ],
+          "max": [
+            1.7984560059954977,
+            6.489999771118164,
+            -12.657890748679096
+          ]
+        },
+        {
+          "id": "pendant-3",
+          "kind": "alabaster",
+          "section": 0,
+          "along": 26,
+          "x": 0,
+          "z": -26,
+          "yaw": 0,
+          "min": [
+            -1.5140980578667529,
+            4.039999995827674,
+            -26.976901622498076
+          ],
+          "max": [
+            1.560808370705712,
+            6.489999771118164,
+            -24.811116595326254
+          ]
+        },
+        {
+          "id": "pendant-4",
+          "kind": "glass",
+          "section": 1,
+          "along": 10.5,
+          "x": 10.5,
+          "z": -26,
+          "yaw": 1.5707963267948966,
+          "min": [
+            9.880017400979996,
+            4.270934221722528,
+            -26.949984633922575
+          ],
+          "max": [
+            11.269988733530045,
+            6.489999771118164,
+            -25.030016398429872
+          ]
+        },
+        {
+          "id": "pendant-5",
+          "kind": "edison",
+          "section": 1,
+          "along": 20,
+          "x": 20,
+          "z": -26,
+          "yaw": 1.5707963267948966,
+          "min": [
+            19.82999999821186,
+            3.8264892966483353,
+            -27.830000042915344
+          ],
+          "max": [
+            20.17000000178814,
+            6.489999771118164,
+            -24.169999957084656
+          ]
+        },
+        {
+          "id": "pendant-6",
+          "kind": "crystal",
+          "section": 1,
+          "along": 28,
+          "x": 28,
+          "z": -26,
+          "yaw": 1.5707963267948966,
+          "min": [
+            26.868000030517578,
+            4.145999908447266,
+            -27.133999943733215
+          ],
+          "max": [
+            29.131999969482422,
+            6.489999771118164,
+            -24.866000056266785
+          ]
+        },
+        {
+          "id": "pendant-7",
+          "kind": "glass",
+          "section": 2,
+          "along": 7.5,
+          "x": 28,
+          "z": -18.5,
+          "yaw": 3.141592653589793,
+          "min": [
+            27.030016398429872,
+            4.270934221722528,
+            -19.119982599020005
+          ],
+          "max": [
+            28.949984633922575,
+            6.489999771118164,
+            -17.730011266469955
+          ]
+        },
+        {
+          "id": "pendant-8",
+          "kind": "alabaster",
+          "section": 2,
+          "along": 15.6,
+          "x": 28,
+          "z": -10.4,
+          "yaw": 3.141592653589793,
+          "min": [
+            26.43919162929429,
+            4.039999995827674,
+            -11.588883404673746
+          ],
+          "max": [
+            29.514098057866754,
+            6.489999771118164,
+            -9.423098377501923
+          ]
+        },
+        {
+          "id": "pendant-9",
+          "kind": "botanical",
+          "section": 2,
+          "along": 24,
+          "x": 28,
+          "z": -2,
+          "yaw": 3.141592653589793,
+          "min": [
+            26.201543994004503,
+            4.280661140959493,
+            -3.742109251320905
+          ],
+          "max": [
+            29.808436811865334,
+            6.489999771118164,
+            -0.2273464978152333
+          ]
+        }
+      ],
+      "fixtureLights": [
+        {
+          "name": "steady crystal pendant light",
+          "position": [
+            0,
+            5.2,
+            -7.5
+          ],
+          "intensity": 12
+        },
+        {
+          "name": "steady botanical pendant light",
+          "position": [
+            0,
+            4.85,
+            -14.4
+          ],
+          "intensity": 16
+        },
+        {
+          "name": "steady alabaster pendant light",
+          "position": [
+            0,
+            4.9,
+            -26
+          ],
+          "intensity": 18
+        },
+        {
+          "name": "steady glass pendant light",
+          "position": [
+            10.5,
+            4.65,
+            -26
+          ],
+          "intensity": 16
+        },
+        {
+          "name": "steady edison pendant light",
+          "position": [
+            20,
+            4.9,
+            -26
+          ],
+          "intensity": 16
+        },
+        {
+          "name": "steady crystal pendant light",
+          "position": [
+            28,
+            5.2,
+            -26
+          ],
+          "intensity": 12
+        },
+        {
+          "name": "steady glass pendant light",
+          "position": [
+            28,
+            4.65,
+            -18.5
+          ],
+          "intensity": 16
+        },
+        {
+          "name": "steady alabaster pendant light",
+          "position": [
+            28,
+            4.9,
+            -10.4
+          ],
+          "intensity": 18
+        },
+        {
+          "name": "steady botanical pendant light",
+          "position": [
+            28,
+            4.85,
+            -2
+          ],
+          "intensity": 16
+        }
+      ],
+      "stationaryLighting": true,
+      "sconceLights": 9,
+      "drawCalls": 72,
+      "noFallback": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": "portrait-phone",
+      "fixtures": [
+        {
+          "id": "pendant-1",
+          "kind": "crystal",
+          "section": 0,
+          "along": 7.5,
+          "x": 0,
+          "z": -7.5,
+          "yaw": 0,
+          "min": [
+            -1.1339999437332153,
+            4.145999908447266,
+            -8.631999969482422
+          ],
+          "max": [
+            1.1339999437332153,
+            6.489999771118164,
+            -6.368000030517578
+          ]
+        },
+        {
+          "id": "pendant-2",
+          "kind": "botanical",
+          "section": 0,
+          "along": 14.4,
+          "x": 0,
+          "z": -14.4,
+          "yaw": 0,
+          "min": [
+            -1.8084368118653351,
+            4.280661140959493,
+            -16.17265350218477
+          ],
+          "max": [
+            1.7984560059954977,
+            6.489999771118164,
+            -12.657890748679096
+          ]
+        },
+        {
+          "id": "pendant-3",
+          "kind": "alabaster",
+          "section": 0,
+          "along": 26,
+          "x": 0,
+          "z": -26,
+          "yaw": 0,
+          "min": [
+            -1.5140980578667529,
+            4.039999995827674,
+            -26.976901622498076
+          ],
+          "max": [
+            1.560808370705712,
+            6.489999771118164,
+            -24.811116595326254
+          ]
+        },
+        {
+          "id": "pendant-4",
+          "kind": "glass",
+          "section": 1,
+          "along": 10.5,
+          "x": 10.5,
+          "z": -26,
+          "yaw": 1.5707963267948966,
+          "min": [
+            9.880017400979996,
+            4.270934221722528,
+            -26.949984633922575
+          ],
+          "max": [
+            11.269988733530045,
+            6.489999771118164,
+            -25.030016398429872
+          ]
+        },
+        {
+          "id": "pendant-5",
+          "kind": "edison",
+          "section": 1,
+          "along": 20,
+          "x": 20,
+          "z": -26,
+          "yaw": 1.5707963267948966,
+          "min": [
+            19.82999999821186,
+            3.8264892966483353,
+            -27.830000042915344
+          ],
+          "max": [
+            20.17000000178814,
+            6.489999771118164,
+            -24.169999957084656
+          ]
+        },
+        {
+          "id": "pendant-6",
+          "kind": "crystal",
+          "section": 1,
+          "along": 28,
+          "x": 28,
+          "z": -26,
+          "yaw": 1.5707963267948966,
+          "min": [
+            26.868000030517578,
+            4.145999908447266,
+            -27.133999943733215
+          ],
+          "max": [
+            29.131999969482422,
+            6.489999771118164,
+            -24.866000056266785
+          ]
+        },
+        {
+          "id": "pendant-7",
+          "kind": "glass",
+          "section": 2,
+          "along": 7.5,
+          "x": 28,
+          "z": -18.5,
+          "yaw": 3.141592653589793,
+          "min": [
+            27.030016398429872,
+            4.270934221722528,
+            -19.119982599020005
+          ],
+          "max": [
+            28.949984633922575,
+            6.489999771118164,
+            -17.730011266469955
+          ]
+        },
+        {
+          "id": "pendant-8",
+          "kind": "alabaster",
+          "section": 2,
+          "along": 15.6,
+          "x": 28,
+          "z": -10.4,
+          "yaw": 3.141592653589793,
+          "min": [
+            26.43919162929429,
+            4.039999995827674,
+            -11.588883404673746
+          ],
+          "max": [
+            29.514098057866754,
+            6.489999771118164,
+            -9.423098377501923
+          ]
+        },
+        {
+          "id": "pendant-9",
+          "kind": "botanical",
+          "section": 2,
+          "along": 24,
+          "x": 28,
+          "z": -2,
+          "yaw": 3.141592653589793,
+          "min": [
+            26.201543994004503,
+            4.280661140959493,
+            -3.742109251320905
+          ],
+          "max": [
+            29.808436811865334,
+            6.489999771118164,
+            -0.2273464978152333
+          ]
+        }
+      ],
+      "fixtureLights": [
+        {
+          "name": "steady crystal pendant light",
+          "position": [
+            0,
+            5.2,
+            -7.5
+          ],
+          "intensity": 12
+        },
+        {
+          "name": "steady botanical pendant light",
+          "position": [
+            0,
+            4.85,
+            -14.4
+          ],
+          "intensity": 16
+        },
+        {
+          "name": "steady alabaster pendant light",
+          "position": [
+            0,
+            4.9,
+            -26
+          ],
+          "intensity": 18
+        },
+        {
+          "name": "steady glass pendant light",
+          "position": [
+            10.5,
+            4.65,
+            -26
+          ],
+          "intensity": 16
+        },
+        {
+          "name": "steady edison pendant light",
+          "position": [
+            20,
+            4.9,
+            -26
+          ],
+          "intensity": 16
+        },
+        {
+          "name": "steady crystal pendant light",
+          "position": [
+            28,
+            5.2,
+            -26
+          ],
+          "intensity": 12
+        },
+        {
+          "name": "steady glass pendant light",
+          "position": [
+            28,
+            4.65,
+            -18.5
+          ],
+          "intensity": 16
+        },
+        {
+          "name": "steady alabaster pendant light",
+          "position": [
+            28,
+            4.9,
+            -10.4
+          ],
+          "intensity": 18
+        },
+        {
+          "name": "steady botanical pendant light",
+          "position": [
+            28,
+            4.85,
+            -2
+          ],
+          "intensity": 16
+        }
+      ],
+      "stationaryLighting": true,
+      "sconceLights": 9,
+      "drawCalls": 42,
+      "noFallback": true,
+      "pageErrors": []
+    }
+  ],
+  "precedingCommit": "9b0519753cb14622a04f4b3571ddf1d1e94ddc09",
+  "unchanged": {
+    "manifest": true,
+    "allMemoryAndMuseumAssets": true,
+    "originalAchievements": true
+  },
+  "artReview": {
+    "allFiveReferenceFamilies": true,
+    "allThreeGalleries": true,
+    "frontAndReverseWalkingViews": true,
+    "undersideDetails": true,
+    "artAndPlaquesReadable": true,
+    "stationaryLightAtAllDistances": true,
+    "privateReferencePixelsPublished": false,
+    "physicalPhonePerformanceNotMeasured": true,
+    "limitations": "Thin glass shells and a local filament glow approximate glass and bloom without a transmission or postprocessing pass. Functional checks do not establish portrait likeness or close the wider memory-scene art backlog."
+  },
+  "museumChecks": {
+    "build": {
+      "recordedAt": "2026-10-24T19:18:56.586Z",
+      "appSha256": "5829aa25b914bc9c4cb9a7b9857aaaaf1799f734cdf7025c5d9952b62b903398",
+      "manifestSha256": "cee81a462dc78832282edaa14f8aaff63c6cf6a493e5a5fd723d02c339391d4a",
+      "statueSha256": "0100869e1814c9fe32143bec426f93a4d9cb507363bf9c505e60b5f850bf1c31"
+    },
+    "results": [
+      {
+        "viewport": "desktop",
+        "storedFrameCount": 41,
+        "exhibitedFrames": [
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "galleries": [
+          "Growing Together",
+          "Holding Each Other",
+          "Out in the World"
+        ],
+        "alwaysOnSconceLights": 9,
+        "alwaysOnPendantLights": 9,
+        "stationaryLightingAcrossWalkingRoute": true,
+        "noStartOverlay": true,
+        "immediateKeyboardMovement": true,
+        "optionalHelp": true,
+        "modelReady": true,
+        "catWhispererReady": true,
+        "originalPaintings": 2,
+        "flameCount": 9,
+        "colliders": 15,
+        "allGalleryRoutes": true,
+        "bothSidesOfEverySculpture": true,
+        "fireAudio": {
+          "voices": 2,
+          "nearLevels": [
+            0.16808526948039235,
+            0
+          ],
+          "silentAway": true,
+          "mutePersists": true,
+          "silentInRooms": true
+        },
+        "pageErrors": []
+      },
+      {
+        "viewport": "phone",
+        "storedFrameCount": 41,
+        "exhibitedFrames": [
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "galleries": [
+          "Growing Together",
+          "Holding Each Other",
+          "Out in the World"
+        ],
+        "alwaysOnSconceLights": 9,
+        "alwaysOnPendantLights": 9,
+        "stationaryLightingAcrossWalkingRoute": true,
+        "noStartOverlay": true,
+        "immediateKeyboardMovement": true,
+        "optionalHelp": true,
+        "modelReady": true,
+        "catWhispererReady": true,
+        "originalPaintings": 2,
+        "flameCount": 9,
+        "colliders": 15,
+        "allGalleryRoutes": true,
+        "bothSidesOfEverySculpture": true,
+        "fireAudio": {
+          "voices": 2,
+          "nearLevels": [
+            0.16808526948039235,
+            0
+          ],
+          "silentAway": true,
+          "mutePersists": true,
+          "silentInRooms": true
+        },
+        "pageErrors": []
+      }
+    ],
+    "draft": false
+  },
+  "globalChecks": {
+    "dragLook": true,
+    "resize": true,
+    "webglLossFallback": true,
+    "noWebglFallback": true,
+    "failedRoomStaysInHall": true,
+    "storedFrameCount": 41,
+    "exhibitedFrameCount": 13,
+    "previewCount": 12
+  },
+  "siteChecks": {
+    "originalAchievementPages": 39,
+    "canonicalFrames": 41,
+    "assignedRooms": 12,
+    "unitTestsPassed": 34,
+    "allPublishedModelsAndStatuesValid": true
+  },
+  "appSize": {
+    "bytes": 752906,
+    "precedingBytes": 738854,
+    "downloadedFixtureImages": 0,
+    "precedingSha256": "cf502dffc95ae655b5e249d11abc6336003d57ea140aa9c6c22f4baa6a382fd8",
+    "growthBytes": 14052
+  },
+  "portalChecks": {
+    "11": {
+      "build": {
+        "id": "11",
+        "modelSha256": "8acfbe4b848a2736d2297e26d8868932d11db6b8e287d37ebd2b28697aa1413f",
+        "paintingSha256": "a947e5f965689ad37d81888463a9a8bcaf7d0cfcf6c4b2aabf33476bbf0d96a4",
+        "appSha256": "5829aa25b914bc9c4cb9a7b9857aaaaf1799f734cdf7025c5d9952b62b903398",
+        "recordedAt": "2026-10-24T19:24:27.306Z"
+      },
+      "results": [
+        {
+          "id": "11",
+          "viewport": "desktop",
+          "entry": true,
+          "collisionSamples": 40,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        },
+        {
+          "id": "11",
+          "viewport": "phone",
+          "entry": true,
+          "collisionSamples": 40,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        }
+      ]
+    },
+    "02": {
+      "build": {
+        "id": "02",
+        "modelSha256": "c48503a8c2e176996d985e973fc39ddc3348caf4e8f132c246f3fefeb5b99cff",
+        "paintingSha256": "a19bb0f72fc27a00d12a1591354c116beeed2072bb9a123db3302b672b1f2ba6",
+        "appSha256": "5829aa25b914bc9c4cb9a7b9857aaaaf1799f734cdf7025c5d9952b62b903398",
+        "recordedAt": "2026-10-24T19:22:18.213Z"
+      },
+      "results": [
+        {
+          "id": "02",
+          "name": "hall-depth-isolation",
+          "passed": true
+        },
+        {
+          "id": "02",
+          "name": "sprout walking route and circuit",
+          "viewport": "desktop",
+          "passed": true
+        },
+        {
+          "id": "02",
+          "viewport": "desktop",
+          "entry": true,
+          "collisionSamples": 40,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        },
+        {
+          "id": "02",
+          "name": "sprout walking route and circuit",
+          "viewport": "phone",
+          "passed": true
+        },
+        {
+          "id": "02",
+          "viewport": "phone",
+          "entry": true,
+          "collisionSamples": 40,
+          "return": true,
+          "continuousCamera": true,
+          "controls": true,
+          "cleanup": true
+        }
+      ]
+    }
+  }
+}

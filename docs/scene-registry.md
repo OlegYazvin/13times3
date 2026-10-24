@@ -37,6 +37,14 @@ remain attached to their original IDs. The stage piano has no visible provider
 overlay, and every flame fixture has steady light; only crackling follows
 distance. Current inspection and publication status are in the museum notes.
 
+The shared museum’s lighting revision uses Jane’s five reference fixture
+families across all three galleries: botanical copper rings, alabaster globe
+mobiles, open glass pendants, teal-cord Edison rails and orbital crystal
+chandeliers. These revise the gallery atmosphere without assigning a memory or
+frame ID. Fixed warm light replaces the earlier luminous ceiling panels;
+existing flame sconces retain their steady light and proximity crackle.
+Inspection and publication status: [museum notes](museum-gallery-notes.md).
+
 The static entrance painting **A Fighter in Me** represents Jane's resilience
 through depression in the original achievement gallery's abstract expressionist
 style. It occupies the former square still-life position, with a physical title

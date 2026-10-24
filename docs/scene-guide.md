@@ -23,6 +23,13 @@ Scene piano plays without a visible provider overlay and uses the global Sound
 control; attribution remains on Credits. See [museum notes](museum-gallery-notes.md)
 for sources, observed review, art prompts and release status.
 
+Jane's lighting-reference collection guides suspended botanical copper rings,
+alabaster mobiles, glass pendants, teal-cord Edison rails and crystal chandeliers.
+Their light stays on at every distance. Keep their mounting hardware connected,
+heads and art sightlines clear, and the plaster ceiling subordinate to the
+fixtures. Preserve vertex colors when batching luminous diffuser materials.
+Filament glow belongs to the hall's stencil just like every other material.
+
 These are decisions and corrections from developing frame `01`. Read them with the [scene registry](scene-registry.md) before building another room. Apply the interaction lessons to every room; choose each new room's own visual theme from its memory.
 
 ## Active character policy — October 22 geometry revision

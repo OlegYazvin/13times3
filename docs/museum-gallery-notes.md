@@ -1,5 +1,67 @@
 # Jane's Year Exhibit — museum hub revision
 
+## Lighting fixtures — Jane’s reference collection
+
+The user supplied five lighting photographs: a copper ring with branching opal
+leaves; irregular warm alabaster globes on dark articulated arms; handblown glass
+pendants with visible Edison filaments; teal cords wrapped around a suspended
+rail; and a forged orbital chandelier with candles and cut-crystal drops.
+These guide original dimensional fixtures throughout the shared museum. The
+photos remain under ignored `.secrets/lighting-references/`; their pixels,
+restaurant patrons, phone UI and metadata are not published or used as textures.
+
+The [fixture author](../client/explore/museum-fixtures.mjs) and
+[placement plan](../client/explore/museum-layout.mjs) create nine fixed displays:
+
+| Location | Fixture |
+| --- | --- |
+| Growing Together, first paintings | Iron orbital chandelier with candle bulbs, swags and crystal drops |
+| Above The Dishwasher Dilemma | Copper ring with branching, glowing opal leaves |
+| First gallery turn | Asymmetric veined alabaster-globe mobile |
+| Holding Each Other, approaching Cat Whisperer | Cluster of five open-bottom glass globes with Edison bulbs |
+| Above the second gallery bench | Brass rail, coiled teal cords and nine hanging Edison bulbs |
+| Second gallery turn | A second orbital crystal chandelier |
+| Out in the World, fruit-picking paintings | Glass-globe cluster |
+| Above the stone abstract study | Alabaster-globe mobile |
+| Near the final paintings | Botanical copper-ring chandelier |
+
+The earlier luminous ceiling panels become recessed plaster, with lower ambient
+fill and warmer local light. All nine new fixture lights remain stationary and
+on at every distance, alongside the nine steady flame-sconce lights. The flames’
+crackle remains proximity based. No room world, frame assignment or gallery
+collision boundary changes. Every fixture has a ceiling rose, suspension,
+connected hardware and clearance above visitor heads. Glass uses modeled shells,
+rolled opening lips, sockets and visible filaments. Alabaster has an original
+small procedural cloudy material. Filament glow uses one depth-tested point
+batch, with no full-screen bloom or transmission render pass.
+
+Observed checklist (local candidate):
+
+- [x] Inspect all five fixture families and all three galleries from walking height.
+- [x] Refine the first pass’s dim filaments, excessive ceiling hotspots and hard light bands on alabaster.
+- [x] Review final front/reverse views, art readability, sculpture lighting and close undersides.
+- [x] Inspect fresh portrait loads and verify fixed light levels across the walking route.
+- [x] Complete movement, portal, fallback, site and model checks; verify unchanged memory assets.
+- [ ] Publish and verify the live build.
+
+[Thirty final views](scene-evidence/museum-lighting/index.html) show all three
+galleries from both directions, each fixture type from below, the entrance
+painting and both Jane sculptures. Desktop and fresh portrait emulation confirm
+fixed pendant levels and clear art/labels. The first diffuser-material trial
+exposed a batching bug that removed vertex colors and rendered the globes black;
+the corrected batch retains those colors. Only final captures are presented as
+the current result. Source photographs are not textures or public assets.
+
+All 34 unit tests, site/model checks, museum movement and sound, resize and
+fallback checks pass. Frames 02 and 11 also pass fresh desktop/portrait entry,
+continuous return, controls and cleanup; frame 02 passes the hall-color isolation
+probe, and frame 11 keeps both routes around its freestanding portal. The full
+manifest and all twelve room models/previews remain unchanged. The app grows by
+14,052 bytes; no fixture images or additional models need downloading.
+
+The wider memory-scene character/art backlog remains open. Physical-phone
+performance and listening need hardware; emulation is recorded separately.
+
 ## Cat Whisperer — second gallery sculpture
 
 The requested **Cat Whisperer** replaces the abstract stone study in the

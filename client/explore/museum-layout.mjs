@@ -8,6 +8,16 @@ function footprint(section,x,along,width,depth){
 export function museumExhibits(layout){
  return layout.sections.map((section,i)=>({id:['dishwasher','cat-whisperer','embrace'][i],section,along:i===0?14.4:section.length*.52,width:i===0?3.1:2.45,depth:i===0?2.5:2.1}));
 }
+// Suspended fixtures stay above the visitor and every artwork sightline.
+// Positions belong to the shared museum, independently of memory worlds.
+export function museumFixtureSites(layout){
+ const plan=[
+  [0,7.5,'crystal'],[0,14.4,'botanical'],[0,26,'alabaster'],
+  [1,10.5,'glass'],[1,20,'edison'],[1,28,'crystal'],
+  [2,7.5,'glass'],[2,15.6,'alabaster'],[2,24,'botanical'],
+ ];
+ return plan.map(([index,along,kind],i)=>({id:'pendant-'+(i+1),kind,section:index,along,...museumPoint(layout.sections[index],0,along),yaw:layout.sections[index].yaw}));
+}
 export function museumColliders(layout){
  const colliders=[];
  for(const e of museumExhibits(layout)){

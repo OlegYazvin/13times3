@@ -5,6 +5,7 @@ import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 import {mergeGeometries} from 'three/addons/utils/BufferGeometryUtils.js';
 import {HALL_WIDTH,corridorOutline,portalOpening} from './layout.mjs';
 import {museumExhibits,museumSconceSites,museumColliders} from './museum-layout.mjs';
+import {addMuseumFixtures} from './museum-fixtures.mjs';
 
 const stone=new THREE.MeshStandardMaterial({color:0xe0d7c2,roughness:.84});
 const edge=new THREE.MeshStandardMaterial({color:0xb9b29f,roughness:.81});
@@ -12,7 +13,7 @@ const bronze=new THREE.MeshStandardMaterial({color:0x887047,metalness:.66,roughn
 const inlayBronze=bronze.clone();inlayBronze.polygonOffset=true;inlayBronze.polygonOffsetFactor=-1;inlayBronze.polygonOffsetUnits=-1;
 const green=new THREE.MeshStandardMaterial({color:0x324b44,roughness:.78});
 const blackStone=new THREE.MeshStandardMaterial({color:0x3e4945,roughness:.62});
-const glow=new THREE.MeshBasicMaterial({color:0xffeed2});
+const ceilingPanel=new THREE.MeshStandardMaterial({color:0xcec4af,roughness:.94});
 function box(parent,name,pos,size,material=stone,r=.025){const m=new THREE.Mesh(new RoundedBoxGeometry(...size,2,Math.min(r,...size.map(n=>n/3))),material);m.name=name;m.position.fromArray(pos);parent.add(m);return m;}
 function tube(parent,name,points,radius,material=bronze){const path=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)));const m=new THREE.Mesh(new THREE.TubeGeometry(path,32,radius,10,false),material);m.name=name;parent.add(m);return m;}
 function lathe(parent,name,profile,material=stone){const m=new THREE.Mesh(new THREE.LatheGeometry(profile.map(p=>new THREE.Vector2(...p)),32),material);m.name=name;parent.add(m);return m;}
@@ -42,7 +43,7 @@ export function museumFloorMaterial(){return new THREE.MeshStandardMaterial({map
 // inexpensive to draw. Animated flames, paintings and loaded sculpture stay separate.
 export function batchMuseumStatics(root,filter=()=>true){
  root.updateWorldMatrix(true,true);const groups=new Map(),remove=[];
- root.traverse(o=>{if(!o.isMesh||o.userData.museumDynamic||!filter(o)||Array.isArray(o.material))return;const g=o.geometry.clone();for(const name of Object.keys(g.attributes))if(!['position','normal','uv'].includes(name))g.deleteAttribute(name);if(!g.attributes.uv)g.setAttribute('uv',new THREE.Float32BufferAttribute(new Float32Array(g.attributes.position.count*2),2));g.applyMatrix4(o.matrixWorld);const geometry=g.index?g.toNonIndexed():g;const list=groups.get(o.material)||[];list.push(geometry);groups.set(o.material,list);remove.push(o);});
+ root.traverse(o=>{if(!o.isMesh||o.userData.museumDynamic||!filter(o)||Array.isArray(o.material))return;const g=o.geometry.clone();for(const name of Object.keys(g.attributes))if(!['position','normal','uv'].includes(name)&&!(name==='color'&&o.material.vertexColors))g.deleteAttribute(name);if(!g.attributes.uv)g.setAttribute('uv',new THREE.Float32BufferAttribute(new Float32Array(g.attributes.position.count*2),2));g.applyMatrix4(o.matrixWorld);const geometry=g.index?g.toNonIndexed():g;const list=groups.get(o.material)||[];list.push(geometry);groups.set(o.material,list);remove.push(o);});
  for(const o of remove)o.removeFromParent();
  for(const [material,geometries]of groups){const m=new THREE.Mesh(mergeGeometries(geometries),material);m.name='batched museum architecture';root.add(m);}
 }
@@ -117,11 +118,11 @@ export function decorateMuseum(scene,layout,assetBase,assetVersion){
   const bays=Math.ceil((ceilingEnd-ceilingStart)/4.6),bayLength=(ceilingEnd-ceilingStart)/bays;
   for(let b=0;b<=bays;b++){
    const a=ceilingStart+b*bayLength;box(group,'coffered ceiling transverse rib',[0,6.40,-a],[HALL_WIDTH,.20,.16]);
-   if(b<bays)for(const sign of[-1,1])box(group,'recessed luminous ceiling panel',[sign*2.60,6.53,-a-bayLength/2],[4.55,.035,bayLength-.38],glow,.06);
+   if(b<bays)for(const sign of[-1,1])box(group,'recessed plaster ceiling panel',[sign*2.60,6.53,-a-bayLength/2],[4.55,.035,bayLength-.38],ceilingPanel,.06);
   }
   box(group,'central coffered ceiling spine',[0,6.40,-(ceilingStart+ceilingEnd)/2],[.18,.20,ceilingEnd-ceilingStart]);
   if(section.index<layout.sections.length-1){
-   const medallion=new THREE.Mesh(new THREE.CircleGeometry(2.85,64),glow);medallion.rotation.x=Math.PI/2;medallion.position.set(section.end.x,6.49,section.end.z);root.add(medallion);
+   const medallion=new THREE.Mesh(new THREE.CircleGeometry(2.85,64),ceilingPanel);medallion.rotation.x=Math.PI/2;medallion.position.set(section.end.x,6.49,section.end.z);root.add(medallion);
    const molding=new THREE.Mesh(new THREE.TorusGeometry(2.92,.085,12,80),stone);molding.rotation.x=Math.PI/2;molding.position.set(section.end.x,6.46,section.end.z);root.add(molding);
    const next=layout.sections[section.index+1],right=next.forward.x*section.right.x+next.forward.z*section.right.z>0;
    box(group,'gallery wayfinding stone backing',[0,2.70,-section.length-HALL_WIDTH/2+.16],[3.8,1.05,.08],green,.035);
@@ -172,11 +173,13 @@ export function decorateMuseum(scene,layout,assetBase,assetVersion){
   const art=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:texture}));art.name='original framed '+path;art.position.z=.088;g.add(art);
   if(title){box(g,'stone title plaque beneath the painting',[0,-h/2-.27,.025],[w,.27,.055],green,.012);textPanel(g,title,[0,-h/2-.27,.056],w-.08,.19,{color:'#eee2c8',background:'#324b44'});}
  }
+ const pendants=addMuseumFixtures(root,layout);
  batchMuseumStatics(root);
  // Every fixture has a stationary, always-on light. Only sound proximity
  // follows the visitor; lighting never jumps between fixtures or switches on.
  const lights=sites.map(p=>{const l=new THREE.PointLight(0xffc578,2.3,5,2);l.name='steady sconce light';l.position.set(p.x,p.y+.15,p.z);scene.add(l);return l;});
- return {sites,lights,colliders:museumColliders(layout),state,animate(time,reduceMotion){
+ for(const light of pendants.lights)scene.add(light);
+ return {sites,lights,fixtureLights:pendants.lights,fixtures:pendants.fixtures,colliders:museumColliders(layout),state,animate(time,reduceMotion){
   for(const f of flames){const flicker=reduceMotion?1:1+.08*Math.sin(time*3.7+f.phase)+.035*Math.sin(time*7.3+f.phase);f.mesh.scale.set(f.scale*(2-flicker),f.scale*flicker,f.scale);}
  }};
 }

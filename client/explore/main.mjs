@@ -96,7 +96,7 @@ try {
       frameCount: gallery.layout.frames.length,
       storedFrameCount: gallery.layout.storedFrameCount,
       exhibitedFrames: gallery.layout.frames.map(f=>f.id),
-      museum:{...gallery.museum.state,flameCount:gallery.museum.sites.length,lights:gallery.museum.lights.map(l=>({position:l.position.toArray(),intensity:l.intensity})),colliders:gallery.colliders,audioLevels:flameAudio.levels,audioVoices:flameAudio.voices.length,drawCalls:renderer.info.render.calls},
+      museum:{...gallery.museum.state,flameCount:gallery.museum.sites.length,lights:gallery.museum.lights.map(l=>({position:l.position.toArray(),intensity:l.intensity})),fixtureLights:gallery.museum.fixtureLights.map(l=>({name:l.name,position:l.position.toArray(),intensity:l.intensity})),fixtures:gallery.museum.fixtures,colliders:gallery.colliders,audioLevels:flameAudio.levels,audioVoices:flameAudio.voices.length,drawCalls:renderer.info.render.calls},
       music: {
         started: galleryMusic.started,
         enabled: galleryMusic.enabled,

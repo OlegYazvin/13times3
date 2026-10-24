@@ -238,8 +238,8 @@ export function createGalleryScene(manifest, assetBase = "/", assetVersion = "")
   // erase the other world during the second portal pass.
   scene.background = null;
   scene.fog = new THREE.FogExp2(0xd9d3c3, .0035);
-  scene.add(new THREE.HemisphereLight(0xfff3dc,0x78847a,1.65));
-  const daylight=new THREE.DirectionalLight(0xfff0d7,2.0);daylight.position.set(-8,15,7);scene.add(daylight);
+  scene.add(new THREE.HemisphereLight(0xffeed5,0x626d67,.65));
+  const daylight=new THREE.DirectionalLight(0xffefd9,.70);daylight.position.set(-8,15,7);scene.add(daylight);
 
   const outline = [...layout.outline.left, ...layout.outline.right.slice().reverse()];
   scene.add(flatPolygon(outline, museumFloorMaterial(), 0));
@@ -247,7 +247,7 @@ export function createGalleryScene(manifest, assetBase = "/", assetVersion = "")
   ceilingWash.wrapS = THREE.RepeatWrapping;
   ceilingWash.wrapT = THREE.RepeatWrapping;
   ceilingWash.repeat.set(.06, .06);
-  scene.add(flatPolygon(outline, new THREE.MeshBasicMaterial({ map: ceilingWash, side: THREE.DoubleSide }), HALL_HEIGHT));
+  scene.add(flatPolygon(outline, new THREE.MeshStandardMaterial({ map: ceilingWash, roughness:.94, side: THREE.DoubleSide }), HALL_HEIGHT));
 
   const wallMaterials = palettes.map((palette) => new THREE.MeshStandardMaterial({ map: plasterTexture(palette.wall, palette.wash),roughness:.95 }));
   for (const [sideIndex, side] of [layout.outline.left, layout.outline.right].entries()) {
