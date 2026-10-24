@@ -117,3 +117,42 @@ move back and toward the doorway center so the portrait view can include both
 people and their shared fish. The same four people, moving inhabitants and
 freestanding return portal remain. Re-export and inspect this study before
 calling the canopy or phone staging resolved.
+
+## Slightly hidden mermaid, October 23
+
+At Oleg's request, a small dimensional mermaid is tucked into the right-hand
+saltwater habitat beside its existing coral fan. She is a fantasy discovery,
+not a claim about an actual Shedd exhibit. G and Zephrine retain their shared
+fish attention and doorway composition. The same frame, memory, family,
+moving fish, portal and walking routes remain.
+
+The clothed upper body uses the existing CC0 anatomical base and connected
+storybook garments, with an original curled, finely scaled tail, forked fin
+and broad flowing copper hair. There is no portrait panel or new photographic
+texture. The entire sculpture stays behind the existing tank collision; its
+figure-only collision tags are removed rather than adding blockers in the
+visitor aisle. Source: [aquarium_mermaid.mjs](../scripts/aquarium_mermaid.mjs).
+
+The first exported close view exposed inherited glasses and a real tail/reed
+intersection. The final study explicitly removes the glasses, relaxes both arms
+and moves the whole mermaid forward of the reeds. The existing coral partly
+screens her from the aisle; approaching the glass reveals her face and curled
+tail. Oblique inspection distinguishes the background plants' projected overlap
+from an actual mesh intersection.
+
+Final-export review passes doorway, aisle, close, oblique and portrait-phone
+inspection, plus desktop/phone entry, movement, return, fish drift, both portal
+loops and cleanup checks. All 65 exported collision footprints exactly match
+the existing manifest fallback. No trouser or shoe inserts survive inside the
+tail. Site checks retain 39 achievement pages and 41 frame IDs; all 19 unit
+tests and geometry checks pass. The model is 6,466,364 bytes, with its unchanged
+80,628-byte hallway painting. Physical-phone frame rate is not claimed.
+
+See [doorway](scene-evidence/11-mermaid/doorway.webp),
+[aisle](scene-evidence/11-mermaid/aisle.webp),
+[close](scene-evidence/11-mermaid/close.webp),
+[oblique](scene-evidence/11-mermaid/oblique.webp),
+[phone](scene-evidence/11-mermaid/phone.webp) and the
+[current-hash verification](scene-evidence/11-mermaid/verification.json).
+This completes the requested mermaid addition; the wider artistic backlog
+remains separate.

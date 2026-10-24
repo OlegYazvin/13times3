@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { createRoomArt } from "./room_art.mjs";
+import { aquariumMermaid } from "./aquarium_mermaid.mjs";
 import reefBackdropURL from "./assets/room11/reef-backdrop-painted-v2.webp";
 import riverBackdropURL from "./assets/room11/river-backdrop-painted-v2.webp";
 import reefVariantURL from "./assets/room11/reef-variant-painted-v2.webp";
@@ -910,6 +911,13 @@ for(const side of [-1,1]) for(let bay=0;bay<6;bay++) {
 fanCoral(-3.15,-12.65,1.2,2.65,M.coral);
 fanCoral(3.7,-12.68,1.12,2.48,M.gold);
 fanCoral(8.12,4.0,1.1,2.22,M.coral,true);
+// A quiet discovery beside the existing coral fan. Her lower tail is partly
+// concealed from the central aisle; approaching the right glass reveals the
+// complete dimensional figure. Nothing enters the visitor's walking route.
+const hiddenMermaid=aquariumMermaid();
+hiddenMermaid.position.set(7.92,.33,4.72);
+hiddenMermaid.rotation.y=-Math.PI/2;
+root.add(hiddenMermaid);
 for(const side of [-1,1]) for(let shelf=0;shelf<4;shelf++) {
   const x=side*8.35,z=5.5-shelf*5.35;
   loft(root,"layered reef ledge behind aquarium glass",
