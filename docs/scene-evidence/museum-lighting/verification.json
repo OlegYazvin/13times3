@@ -760,5 +760,112 @@
         }
       ]
     }
+  },
+  "publication": {
+    "commit": "ab447b01071058dc77a23d960a4e5e2bbdff18e0",
+    "workflow": "https://github.com/OlegYazvin/13times3/actions/runs/40125333712",
+    "runId": 40125333712,
+    "conclusion": "success",
+    "checkedAt": "2026-10-24T19:33:12.232Z",
+    "normalRoute": {
+      "url": "https://13times3.com/explore/",
+      "status": 200,
+      "sha256": "63b08bf908a509c757a5de9de52e95f75063d70dff0dbeeb620ea4ab1aecdf19",
+      "expectedSha256": "63b08bf908a509c757a5de9de52e95f75063d70dff0dbeeb620ea4ab1aecdf19",
+      "match": true,
+      "checkedAt": "2026-10-24T19:28:42.348Z"
+    },
+    "liveAssetChecks": [
+      {
+        "path": "explore/index.html",
+        "url": "https://13times3.com/explore/index.html?review=63b08bf908a5",
+        "query": true,
+        "status": 200,
+        "sha256": "63b08bf908a509c757a5de9de52e95f75063d70dff0dbeeb620ea4ab1aecdf19",
+        "match": true
+      },
+      {
+        "path": "assets/explore/app.js",
+        "url": "https://13times3.com/assets/explore/app.js?review=5829aa25b914",
+        "query": true,
+        "status": 200,
+        "sha256": "5829aa25b914bc9c4cb9a7b9857aaaaf1799f734cdf7025c5d9952b62b903398",
+        "match": true
+      },
+      {
+        "path": "credits/index.html",
+        "url": "https://13times3.com/credits/index.html?review=cf787fabe632",
+        "query": true,
+        "status": 200,
+        "sha256": "cf787fabe6323347bd3504caddac280c0e03518ea3c02f86d50e9af43a8e8f4f",
+        "match": true
+      },
+      {
+        "path": "explore/index.html",
+        "url": "https://13times3.com/explore/index.html",
+        "query": false,
+        "status": 200,
+        "sha256": "63b08bf908a509c757a5de9de52e95f75063d70dff0dbeeb620ea4ab1aecdf19",
+        "match": true
+      },
+      {
+        "path": "assets/explore/app.js",
+        "url": "https://13times3.com/assets/explore/app.js?v=5829aa25b914",
+        "query": false,
+        "status": 200,
+        "sha256": "5829aa25b914bc9c4cb9a7b9857aaaaf1799f734cdf7025c5d9952b62b903398",
+        "match": true
+      },
+      {
+        "path": "credits/index.html",
+        "url": "https://13times3.com/credits/index.html",
+        "query": false,
+        "status": 200,
+        "sha256": "cf787fabe6323347bd3504caddac280c0e03518ea3c02f86d50e9af43a8e8f4f",
+        "match": true
+      }
+    ],
+    "freshLiveLoads": [
+      {
+        "viewport": "desktop",
+        "directEntrance": true,
+        "noControlsOverlay": true,
+        "lightingDescriptionPresent": true,
+        "completedCanvasReadback": true,
+        "catWhispererResponse200": true,
+        "catDescriptionPresent": true,
+        "exactAccessibleTitle": true,
+        "manifestMatches": true,
+        "frameCount": 41,
+        "exhibitedFrameCount": 13,
+        "plannedFrame": "13",
+        "assignedRooms": 12,
+        "statueResponse200": true,
+        "firstRoomResponse200": true,
+        "noFallback": true,
+        "pageErrors": []
+      },
+      {
+        "viewport": "phone",
+        "directEntrance": true,
+        "noControlsOverlay": true,
+        "lightingDescriptionPresent": true,
+        "completedCanvasReadback": true,
+        "catWhispererResponse200": true,
+        "catDescriptionPresent": true,
+        "exactAccessibleTitle": true,
+        "manifestMatches": true,
+        "frameCount": 41,
+        "exhibitedFrameCount": 13,
+        "plannedFrame": "13",
+        "assignedRooms": 12,
+        "statueResponse200": true,
+        "firstRoomResponse200": true,
+        "noFallback": true,
+        "pageErrors": []
+      }
+    ],
+    "visualScope": "Full lighting review used identical app/model bytes locally; fresh production entrance loads show the new atmosphere.",
+    "captureNotes": "The first compositor screenshot timed out after fonts loaded. Fresh desktop and phone retries used an in-frame canvas readback after gl.finish; both completed and were visually inspected. This capture issue is not recorded as a product rendering defect."
   }
 }

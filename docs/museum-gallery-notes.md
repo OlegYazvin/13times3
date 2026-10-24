@@ -35,14 +35,14 @@ rolled opening lips, sockets and visible filaments. Alabaster has an original
 small procedural cloudy material. Filament glow uses one depth-tested point
 batch, with no full-screen bloom or transmission render pass.
 
-Observed checklist (local candidate):
+Observed checklist:
 
 - [x] Inspect all five fixture families and all three galleries from walking height.
 - [x] Refine the first pass’s dim filaments, excessive ceiling hotspots and hard light bands on alabaster.
 - [x] Review final front/reverse views, art readability, sculpture lighting and close undersides.
 - [x] Inspect fresh portrait loads and verify fixed light levels across the walking route.
 - [x] Complete movement, portal, fallback, site and model checks; verify unchanged memory assets.
-- [ ] Publish and verify the live build.
+- [x] Publish and verify the live build.
 
 [Thirty final views](scene-evidence/museum-lighting/index.html) show all three
 galleries from both directions, each fixture type from below, the entrance
@@ -61,6 +61,12 @@ manifest and all twelve room models/previews remain unchanged. The app grows by
 
 The wider memory-scene character/art backlog remains open. Physical-phone
 performance and listening need hardware; emulation is recorded separately.
+
+Published as `ab447b01071058dc77a23d960a4e5e2bbdff18e0` in [Pages run 40125333712](https://github.com/OlegYazvin/13times3/actions/runs/40125333712).
+The normal live route, app and Credits match the reviewed build. Fresh desktop
+and portrait production loads show the revised atmosphere without fallback or
+page errors. The thirty-view local review used the identical app and unchanged
+model bytes.
 
 ## Cat Whisperer — second gallery sculpture
 
