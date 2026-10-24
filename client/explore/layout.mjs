@@ -1,6 +1,7 @@
-// All dimensions are meters. The route is deliberately fixed so frame IDs stay put.
-export const HALL_WIDTH = 6.4;
-export const HALL_HEIGHT = 4.8;
+// Five broad museum salons. Frame identities and their assignments stay stable
+// while the architecture gives paintings and sculpture room to breathe.
+export const HALL_WIDTH = 10.8;
+export const HALL_HEIGHT = 6.6;
 export const FRAME_WIDTH = 3.35;
 export const FRAME_HEIGHT = 4.1;
 export const EYE_HEIGHT = 1.65;
@@ -26,11 +27,11 @@ export function portalCanvas(room) {
 
 export const PATH = Object.freeze([
   { x: 0, z: 0 },
-  { x: 0, z: -27 },
-  { x: 28, z: -27 },
-  { x: 28, z: -5 },
-  { x: 50, z: -5 },
-  { x: 50, z: -31 },
+  { x: 0, z: -36 },
+  { x: 40, z: -36 },
+  { x: 40, z: 2 },
+  { x: 78, z: 2 },
+  { x: 78, z: -38 },
 ]);
 
 const dot = (a, b) => a.x * b.x + a.z * b.z;

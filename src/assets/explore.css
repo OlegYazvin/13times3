@@ -23,7 +23,7 @@
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html, body { margin: 0; width: 100%; height: 100%; }
-body { background: #101c2a; color: #f4f1e9; font-family: Archivo, Arial, sans-serif; }
+body { background: #34463e; color: #f4f1e9; font-family: Archivo, Arial, sans-serif; }
 button, a { font: inherit; }
 button { cursor: pointer; }
 a { color: inherit; }
@@ -75,7 +75,7 @@ a { color: inherit; }
   padding: .35rem .65rem;
   border: 1px solid rgb(255 255 255 / 48%);
   border-radius: 999px;
-  background: rgb(7 18 31 / 58%);
+  background: rgb(33 48 40 / 72%);
   color: #fff;
   font-size: .72rem;
   white-space: nowrap;
@@ -104,7 +104,7 @@ a { color: inherit; }
   height: 2.3rem;
   border: 1px solid rgb(255 255 255 / 48%);
   border-radius: 50%;
-  background: rgb(7 18 31 / 58%);
+  background: rgb(33 48 40 / 72%);
   color: #fff;
   font-weight: 700;
 }
@@ -119,7 +119,7 @@ a { color: inherit; }
   margin: -3.5px;
   border: 1px solid rgb(255 255 255 / 65%);
   border-radius: 50%;
-  opacity: .5;
+  opacity: 0;
   pointer-events: none;
 }
 .look-hint {
@@ -154,16 +154,16 @@ a { color: inherit; }
   height: 108px;
   border: 1.5px solid rgb(235 246 250 / 62%);
   border-radius: 50%;
-  background: rgb(8 24 41 / 44%);
+  background: rgb(33 48 40 / 54%);
   box-shadow: inset 0 0 22px rgb(255 255 255 / 8%);
 }
 .joystick-knob {
   width: 43px;
   height: 43px;
   border-radius: 50%;
-  border: 1px solid #e3f4f5;
-  background: rgb(191 231 236 / 55%);
-  box-shadow: 0 0 18px rgb(118 223 228 / 24%);
+  border: 1px solid #eee3cc;
+  background: rgb(211 190 148 / 62%);
+  box-shadow: 0 0 18px rgb(226 211 178 / 16%);
 }
 .joystick span { font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; }
 
@@ -183,7 +183,7 @@ a { color: inherit; }
   padding: clamp(1.5rem, 5vw, 3.2rem);
   border: 1px solid rgb(185 218 226 / 28%);
   border-radius: 1.4rem;
-  background: linear-gradient(145deg, rgb(34 55 75 / 97%), rgb(13 26 44 / 97%));
+  background: linear-gradient(145deg, rgb(51 70 61 / 97%), rgb(28 42 34 / 97%));
   box-shadow: 0 24px 80px rgb(0 0 0 / 30%);
 }
 .eyebrow { margin: 0 0 1.1rem; color: #b8dfe2; font-size: .76rem; font-weight: 700; letter-spacing: .17em; text-transform: uppercase; }

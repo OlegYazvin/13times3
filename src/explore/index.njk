@@ -7,9 +7,9 @@ eleventyExcludeFromCollections: true
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#101c2a">
-    <title>The Gallery — {{ site.title }}</title>
-    <meta name="description" content="A winding gallery of 41 frames for Jane.">
+    <meta name="theme-color" content="#34463e">
+    <title>Jane's Year Exhibit — {{ site.title }}</title>
+    <meta name="description" content="Jane's Year Exhibit: paintings, sculpture, and memories you can step into.">
     {% if isStaging %}<meta name="robots" content="noindex, nofollow">{% endif %}
     <link rel="canonical" href="{{ site.canonicalOrigin }}/explore/">
     <link rel="stylesheet" href="{{ '/assets/explore.css' | url }}?v={{ exploreStyleVersion }}">
@@ -23,7 +23,7 @@ eleventyExcludeFromCollections: true
         <a class="site-link" href="{{ '/' | url }}" aria-label="Return to 13 Times 3">13 Times 3</a>
         <div class="topbar-right">
           <span class="section-status" id="section-status" aria-live="polite">Gallery 1 / 5</span>
-          <button class="music-button" id="music-button" type="button" aria-label="Turn music on" aria-pressed="false">Sound off</button>
+          <button class="music-button" id="music-button" type="button" aria-label="Turn sound on" aria-pressed="false">Sound off</button>
           <button class="icon-button" id="help-button" type="button" aria-label="Show instructions">?</button>
         </div>
       </div>
@@ -36,20 +36,20 @@ eleventyExcludeFromCollections: true
       </aside>
 
       <div class="reticle" aria-hidden="true"></div>
-      <div class="look-hint" id="look-hint" aria-hidden="true">Drag and hold to turn</div>
+      <div class="look-hint" id="look-hint" aria-hidden="true" hidden></div>
       <div class="joystick" id="joystick" aria-label="Move through the gallery">
         <div class="joystick-ring"><div class="joystick-knob" id="joystick-knob"></div></div>
         <span>Move</span>
       </div>
-      <div class="overlay" id="welcome" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+      <div class="overlay" id="welcome" role="dialog" aria-modal="true" aria-labelledby="welcome-title" hidden>
         <div class="welcome-card">
-          <p class="eyebrow">For Jane · forty-one frames</p>
-          <h1 id="welcome-title">Step into the in-between.</h1>
-          <p>A winding hallway holds forty-one frames. Frames 01–12 open into memories of Zephrine's first stage, Jane's support during Oleg's job search, friendship, a blue-car walk, Jane's office move, Zephrine eating all the food, blueberries with G, Jane's chosen Chicago route, first apples with friends, shared play, wonder at the fish with G, and the folk jam community. The other frames are still waiting.</p>
+          <p class="eyebrow">Visiting the exhibit</p>
+          <h1 id="welcome-title">Jane's Year Exhibit</h1>
+          <p>Explore the paintings and sculptures across five museum galleries. Twelve paintings open into memories; the numbered canvases leave room for more.</p>
           <p>Walk through a finished painting to explore its frozen scene, then turn around and walk through the gold-edged doorway to return to the gallery.</p>
           <p class="control-note"><strong>On your phone:</strong> move with the joystick. Drag anywhere else on the scene and hold left or right to keep turning; lift to stop. Drag up or down to look. <strong>On a computer:</strong> use W A S D or arrow keys and drag to look.</p>
-          <p class="music-note">Music fades in when you begin. Use Sound to turn it off or on.</p>
-          <button class="primary-button" id="begin-button" type="button">Begin walking <span aria-hidden="true">→</span></button>
+          <p class="music-note">Sound begins with your first movement or touch. Approach a flame to hear its gentle crackle. Use Sound to turn all audio off or on.</p>
+          <button class="primary-button" id="begin-button" type="button">Return to exhibit <span aria-hidden="true">→</span></button>
           <a class="back-link" href="{{ '/' | url }}">Back to the site</a>
         </div>
       </div>
@@ -58,7 +58,7 @@ eleventyExcludeFromCollections: true
         <div class="fallback-card">
           <p class="eyebrow">The gallery</p>
           <h1>The gallery is waiting.</h1>
-          <p>This browser could not open the 3D hallway. Frames 01–11 are finished paintings; the other frames are waiting.</p>
+          <p>This browser could not open the 3D exhibit. Twelve paintings are available below; the other numbered frames leave room for more.</p>
           <div class="fallback-previews">
             {% for frame in gallery.frames %}{% if frame.room.modelUrl %}
               <figure><img class="fallback-preview" src="{{ frame.room.previewImage | url }}?v={{ galleryRoomVersion }}" alt="{{ frame.room.caption }}"><figcaption>{{ frame.room.caption }}</figcaption></figure>

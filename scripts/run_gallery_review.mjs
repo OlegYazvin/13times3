@@ -7,7 +7,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {chromium} from 'playwright';
 import {buildLayout} from '../client/explore/layout.mjs';
-import {galleryBrowserExecutable} from './gallery_browser.mjs';
+import {galleryBrowserExecutable,enterExhibit} from './gallery_browser.mjs';
 // Finish the actual GPU render before PNG readback. This is local review
 // instrumentation; the public renderer and its movement path are unchanged.
 const finishedSnapshot=page=>page.evaluate(()=>{
@@ -33,7 +33,7 @@ try{
 if(process.argv.includes('--global')){
  browser=await chromium.launch({headless:true,executablePath,args:['--use-gl=angle','--use-angle=swiftshader','--enable-webgl']});
  const p=await browser.newPage({viewport:{width:1280,height:800}});
- await p.goto(base+'/explore/',{waitUntil:'networkidle'});await p.getByRole('button',{name:/begin walking/i}).click();
+ await p.goto(base+'/explore/',{waitUntil:'networkidle'});await enterExhibit(p);
  await p.waitForFunction(()=>window.__galleryDebug().activeRoom==='01');
  const yaw=(await p.evaluate(()=>window.__galleryDebug())).yaw;
  await p.mouse.move(700,350);await p.mouse.down();await p.mouse.move(760,350);await p.mouse.up();
@@ -44,7 +44,7 @@ if(process.argv.includes('--global')){
  await p.locator('#fallback').waitFor({state:'visible'});assert.equal(await p.locator('.frame-list li').count(),41);await p.close();
  const fallback=await browser.newContext();await fallback.addInitScript(()=>{const get=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(kind,...args){return kind==='webgl2'?null:get.call(this,kind,...args);};});
  const f=await fallback.newPage();await f.goto(base+'/explore/');await f.locator('#fallback').waitFor({state:'visible'});assert.equal(await f.locator('.frame-list li').count(),41);assert.equal(await f.locator('.fallback-previews img').count(),frames.length);await fallback.close();
- const failed=await browser.newPage();await failed.route('**/assets/explore/room01/room.glb*',r=>r.abort());await failed.goto(base+'/explore/');await failed.getByRole('button',{name:/begin walking/i}).click();await failed.waitForTimeout(500);assert.equal((await failed.evaluate(()=>window.__galleryDebug())).mode,'hall');await failed.close();
+ const failed=await browser.newPage();await failed.route('**/assets/explore/room01/room.glb*',r=>r.abort());await failed.goto(base+'/explore/');await enterExhibit(failed);await failed.waitForTimeout(500);assert.equal((await failed.evaluate(()=>window.__galleryDebug())).mode,'hall');await failed.close();
  await writeFile(output+'/global-verification.json',JSON.stringify({dragLook:true,resize:true,webglLossFallback:true,noWebglFallback:true,failedRoomStaysInHall:true,frameCount:41,previewCount:frames.length},null,2));
  console.log('Global controls, resize and fallback checks passed');
 }else if(process.argv.includes('--functional')){
@@ -67,14 +67,23 @@ if(process.argv.includes('--global')){
    console.log(`Review ${f.id}: ${phone?'phone':'desktop'} load`);
    let p=await browser.newPage(phone?{viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:1}:{viewport:{width:960,height:720}});
    const errors=[];p.on('pageerror',e=>errors.push(e.message));
-   await p.goto(base+'/explore/',{waitUntil:'networkidle'});await p.getByRole('button',{name:/begin walking/i}).click();
+   await p.goto(base+'/explore/',{waitUntil:'networkidle'});await enterExhibit(p);
    const o={x:f.sectionData.right.x*f.sideSign,z:f.sectionData.right.z*f.sideSign},baseYaw=Math.atan2(o.x,-o.z);
+   const approach=async distance=>{
+    const x=f.center.x-o.x*distance,z=f.center.z-o.z*distance;
+    let pose=[x,z,baseYaw];
+    if(!await p.evaluate(([x,z])=>window.__galleryTestHallCanStand(x,z),[x,z])){
+     let found=false;for(const shift of[.8,-.8,1.6,-1.6,2.4,-2.4]){const sx=x+f.sectionData.forward.x*shift,sz=z+f.sectionData.forward.z*shift;if(await p.evaluate(([x,z])=>window.__galleryTestHallCanStand(x,z),[sx,sz])){pose=[sx,sz,Math.atan2(f.center.x-sx,sz-f.center.z)];found=true;break;}}
+     assert.ok(found,'An accessible painting approach is required for '+f.id);
+    }
+    await p.evaluate(([x,z,y])=>window.__galleryTestPose(x,z,y),pose);
+   };
    if(!phone&&!profilesOnly&&!returnsOnly&&!contactsOnly&&!process.argv.includes('--checks')){
-    await p.evaluate(([x,z,y])=>window.__galleryTestPose(x,z,y),[f.center.x-o.x*4.2,f.center.z-o.z*4.2,baseYaw]);
+    await approach(4.2);
     const pixels=await finishedSnapshot(p);
     await writeFile(`${output}/${f.id}-hallway.png`,Buffer.from(pixels.split(',')[1],'base64'));
    }
-   await p.evaluate(([x,z,y])=>window.__galleryTestPose(x,z,y),[f.center.x-o.x*2.8,f.center.z-o.z*2.8,baseYaw]);
+   await approach(2.8);
    await p.waitForFunction(id=>window.__galleryDebug().activeRoom===id,f.id,{timeout:45000});
    console.log(`Review ${f.id}: ${phone?'phone':'desktop'} model loaded`);
    if(!phone&&!profilesOnly&&!returnsOnly&&!contactsOnly&&(!process.argv.includes('--checks')||f.id==='02')){
@@ -158,7 +167,7 @@ if(process.argv.includes('--global')){
       await p.close();await browser.close();
       browser=await chromium.launch({headless:true,executablePath,args:['--use-gl=angle','--use-angle=swiftshader','--enable-webgl']});
       p=await browser.newPage(phone?{viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:1}:{viewport:{width:960,height:720}});p.on('pageerror',e=>errors.push(e.message));
-      await p.goto(base+'/explore/',{waitUntil:'networkidle'});await p.getByRole('button',{name:/begin walking/i}).click();
+      await p.goto(base+'/explore/',{waitUntil:'networkidle'});await enterExhibit(p);
       await p.evaluate(([x,z,y])=>window.__galleryTestPose(x,z,y),[f.center.x-o.x*2.8,f.center.z-o.z*2.8,baseYaw]);
       await p.waitForFunction(id=>window.__galleryDebug().activeRoom===id,f.id,{timeout:45000});
       await p.evaluate(([x,z])=>window.__galleryTestWorldMove(x,z),[f.center.x+o.x*.55,f.center.z+o.z*.55]);

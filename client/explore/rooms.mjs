@@ -268,6 +268,7 @@ export class RoomManager {
 
   canStand(position, region = this.mode) {
     if (region === "hall") {
+      if(hitsObstacle(position.x,position.z,this.gallery.colliders))return false;
       if (isWalkable(position, this.gallery.layout)) return true;
       if (!this.active) return false;
       // The player's radius may straddle the wall as the camera center reaches

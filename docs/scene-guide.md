@@ -7,6 +7,16 @@ out of public assets. Earlier portrait-panel/curved-painting paragraphs below
 record rejected experiments; they are not an authoring workflow and do not
 supersede the current character acceptance requirements.
 
+Current shared-hub standard, October 24: **Jane's Year Exhibit** replaces the
+plain hallway with five broad museum salons. Keep the physical exhibit entrance
+and direct start; instructions are optional Help, rather than an initial modal.
+Stone architecture, paintings, sculpture islands, benches and flame sconces
+belong to this shared world. Central sculptures do not consume memory-frame IDs.
+Keep their actual footprints, including wall-pilaster feet, in hall collision;
+room collision remains independent. Nearby flame crackle shares Sound, stays
+silent inside memories and releases on exit. See [museum notes](museum-gallery-notes.md)
+for sources, observed review, art prompts and release status.
+
 These are decisions and corrections from developing frame `01`. Read them with the [scene registry](scene-registry.md) before building another room. Apply the interaction lessons to every room; choose each new room's own visual theme from its memory.
 
 ## Active character policy — October 22 geometry revision

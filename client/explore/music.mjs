@@ -25,7 +25,7 @@ export class GalleryMusic {
     const on = this.enabled;
     this.button.textContent = on ? "Sound on" : "Sound off";
     this.button.setAttribute("aria-pressed", String(on));
-    this.button.setAttribute("aria-label", on ? "Turn music off" : "Turn music on");
+    this.button.setAttribute("aria-label", on ? "Turn sound off" : "Turn sound on");
   }
 
   prepareOutput() {

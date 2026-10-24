@@ -3,6 +3,12 @@ import {join} from 'node:path';
 import {homedir} from 'node:os';
 import {chromium} from 'playwright';
 
+export async function enterExhibit(page){
+ await page.waitForFunction(()=>Boolean(window.__galleryDebug));
+ if(await page.locator('#welcome').isVisible())throw Error('The exhibit must open directly, without an instructions overlay');
+ await page.locator('#scene canvas').click({position:{x:35,y:220}});
+}
+
 export async function galleryBrowserExecutable(){
   if(process.env.GALLERY_BROWSER_EXECUTABLE){await access(process.env.GALLERY_BROWSER_EXECUTABLE);return process.env.GALLERY_BROWSER_EXECUTABLE;}
   const expected=chromium.executablePath();

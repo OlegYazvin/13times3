@@ -21,6 +21,15 @@ The gallery has 41 stable frame IDs. The 39 original achievement pages are a sep
 
 Frames `01`–`12` have published scene assignments. Frame `12`’s furnished venue revision and upstairs street views are deployed and verified against their reviewed assets; frames `13`–`41` remain unassigned blank portals.
 
+The shared museum hub is being revised as **Jane's Year Exhibit**: five broad
+galleries with paintings, stone architecture, sculpture islands, benches and
+flame sconces with nearby crackling. **The Dishwasher Dilemma** is a standalone
+monochrome stone assemblage of Jane sweating beside an open, loaded dishwasher,
+with suspended `@#$!` symbols. It does not consume a frame or replace frame 02's
+household-support vignette. Abstract stone studies occupy the other gallery
+islands, ready for later sculpture ideas. Current inspection and release status:
+[museum notes](museum-gallery-notes.md).
+
 October 23 continued local revision: the seven-stop route gains deeper building
 volumes and return windows, quieter plaques and a lodge-hall temple interpretation.
 The orchard gains an actual concave bitten apple and fitted cupped palms; the

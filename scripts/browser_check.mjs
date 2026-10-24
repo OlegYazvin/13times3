@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { mkdir } from "node:fs/promises";
 import { chromium } from "playwright";
+import {enterExhibit} from "./gallery_browser.mjs";
 import { HALL_WIDTH, PLAYER_RADIUS } from "../client/explore/layout.mjs";
 
 const base = process.env.GALLERY_TEST_BASE || "http://127.0.0.1:8080";
@@ -57,17 +58,17 @@ async function checkViewport(name, options) {
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   await page.goto(`${base}/explore/`, { waitUntil: "networkidle" });
-  if (name === "mobile") await page.screenshot({ path: ".cache/gallery-mobile-welcome.png" });
-  await page.getByRole("button", { name: /begin walking/i }).click();
+  if (name === "mobile") await page.screenshot({ path: ".cache/gallery-mobile-entrance.png" });
+  await enterExhibit(page);
   await page.waitForFunction(() => Boolean(window.__galleryDebug));
   await page.waitForFunction(() => window.__galleryDebug().music.playing && window.__galleryDebug().music.level > .02);
   const fadeStart = await page.evaluate(() => window.__galleryDebug().music.level);
   await page.waitForTimeout(650);
   const fadeLater = await page.evaluate(() => window.__galleryDebug().music.level);
   assert.ok(fadeLater > fadeStart && fadeLater < .42, `${name}: music should fade in gradually`);
-  await page.getByRole("button", { name: "Turn music off" }).click();
+  await page.getByRole("button", { name: "Turn sound off" }).click();
   await page.waitForFunction(() => !window.__galleryDebug().music.playing);
-  await page.getByRole("button", { name: "Turn music on" }).click();
+  await page.getByRole("button", { name: "Turn sound on" }).click();
   await page.waitForFunction(() => window.__galleryDebug().music.playing && window.__galleryDebug().music.level > .02);
   assert.equal(await page.locator("#fallback").isVisible(), false);
   assert.equal(await page.locator("#scene canvas").isVisible(), true);
@@ -150,7 +151,7 @@ async function checkViewport(name, options) {
     await page.evaluate(() => window.__galleryTestPose(0, -18, 0));
     await page.waitForTimeout(150);
     await page.screenshot({path:".cache/gallery-first-turn.png"});
-    for (const [section, x, z] of [[1, 0, -11], [2, 11, -22], [3, 22, -11], [4, 33, 0], [5, 44, -13]]) {
+    for (const [section, x, z] of [[1, 0, -10], [2, 15, -36], [3, 40, -10], [4, 55, 2], [5, 78, -15]]) {
       await page.evaluate(([px, pz]) => window.__galleryTestPose(px, pz, 0), [x, z]);
       await page.waitForFunction((number) => document.querySelector("#section-status").textContent === `Gallery ${number} / 5`, section);
       assert.match(await statusText(page), new RegExp(`Gallery ${section} / 5`));
@@ -202,22 +203,22 @@ try {
   const roomErrors = [];
   roomPage.on("pageerror", (error) => roomErrors.push(error.message));
   await roomPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
-  await roomPage.getByRole("button", { name: /begin walking/i }).click();
+  await enterExhibit(roomPage);
   await roomPage.waitForFunction(() => window.__galleryDebug().activeRoom === "01", null, { timeout: 12000 });
   await roomPage.evaluate(() => window.__galleryTestPose(0, -1.1, -.67));
   await roomPage.waitForFunction(() => window.__galleryDebug().paintingOpacity === 1);
   await roomPage.screenshot({ path: ".cache/room01-painting-far.png" });
-  await roomPage.evaluate(() => window.__galleryTestPose(-.2, -4.975, -Math.PI / 2));
+  await roomPage.evaluate(() => window.__galleryTestPose(-.2, -7.475, -Math.PI / 2));
   await roomPage.waitForFunction(() => window.__galleryDebug().paintingOpacity < 1);
   const midway = await roomPage.evaluate(() => window.__galleryDebug());
   assert.ok(midway.paintingOpacity > .45 && midway.paintingOpacity < 1);
   await roomPage.screenshot({ path: ".cache/room01-painting-reveal.png" });
-  await roomPage.evaluate((x) => window.__galleryTestPose(x, -4.975, -Math.PI / 2), leftWall + 1);
+  await roomPage.evaluate((x) => window.__galleryTestPose(x, -7.475, -Math.PI / 2), leftWall + 1);
   await roomPage.waitForFunction(() => window.__galleryDebug().paintingOpacity <= .45);
   await roomPage.screenshot({ path: ".cache/room01-open-doorway.png" });
-  await roomPage.evaluate((x) => window.__galleryTestPose(x, -3.9, -Math.PI / 2), leftWall + 1);
+  await roomPage.evaluate((x) => window.__galleryTestPose(x, -6.1, -Math.PI / 2), leftWall + 1);
   await roomPage.screenshot({ path: ".cache/room01-open-doorway-angled.png" });
-  await roomPage.evaluate((x) => window.__galleryTestPose(x, -4.975, -Math.PI / 2), leftWall + .55);
+  await roomPage.evaluate((x) => window.__galleryTestPose(x, -7.475, -Math.PI / 2), leftWall + .55);
   const beforeEntry = await roomPage.evaluate(() => window.__galleryDebug());
   await roomPage.keyboard.down("w");
   await roomPage.waitForFunction(() => window.__galleryDebug().mode === "room", null, { timeout: 12000 });
@@ -252,7 +253,7 @@ try {
   assert.equal(exited.cameraFov, beforeExit.cameraFov);
   assert.equal(exited.activeRoom, "01", "room stays visible nearby after exit");
   await roomPage.screenshot({ path: ".cache/room01-returned-continuous.png" });
-  await roomPage.evaluate(() => window.__galleryTestPose(14.9083333333, -24.35, Math.PI));
+  await roomPage.evaluate(() => window.__galleryTestPose(18.175, -31.15, Math.PI));
   await roomPage.keyboard.down("w");
   await roomPage.waitForTimeout(400);
   await roomPage.keyboard.up("w");
@@ -270,16 +271,16 @@ try {
   const jobErrors = [];
   jobPage.on("pageerror", error => jobErrors.push(error.message));
   await jobPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
-  await jobPage.getByRole("button", { name: /begin walking/i }).click();
+  await enterExhibit(jobPage);
   await jobPage.evaluate(() => window.__galleryTestPose(.5, -1, .56));
   await jobPage.waitForFunction(() => window.__galleryDebug().activeRoom === "02", null, { timeout: 15000 });
   assert.equal((await jobPage.evaluate(() => window.__galleryDebug())).activeRoomIsolated, true,
     "room 02 must live behind a masked portal in its own render space");
   await jobPage.screenshot({ path: ".cache/room02-painting-far.png" });
-  await jobPage.evaluate(() => window.__galleryTestPose(1.2, -5.275, Math.PI / 2));
+  await jobPage.evaluate(() => window.__galleryTestPose(1.2, -7.475, Math.PI / 2));
   await jobPage.screenshot({ path: ".cache/room02-open-doorway.png" });
   const jobBefore = await jobPage.evaluate(() => window.__galleryDebug());
-  await jobPage.evaluate(() => window.__galleryTestWorldMove(3.3, -5.275));
+  await jobPage.evaluate(() => window.__galleryTestWorldMove(5.5, -7.475));
   const jobEntered = await jobPage.evaluate(() => window.__galleryDebug());
   assert.equal(jobEntered.mode, "room");
   assert.equal(jobEntered.yaw, jobBefore.yaw);
@@ -312,11 +313,11 @@ try {
   const friendshipErrors = [];
   friendshipPage.on("pageerror", error => friendshipErrors.push(error.message));
   await friendshipPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
-  await friendshipPage.getByRole("button", { name: /begin walking/i }).click();
-  await friendshipPage.evaluate(() => window.__galleryTestPose(0, -9.0916666667, -Math.PI / 2));
+  await enterExhibit(friendshipPage);
+  await friendshipPage.evaluate(() => window.__galleryTestPose(0, -12.825, -Math.PI / 2));
   await friendshipPage.waitForFunction(() => window.__galleryDebug().activeRoom === "03", null, { timeout: 15000 });
   await friendshipPage.screenshot({ path: ".cache/room03-painting-far.png" });
-  await friendshipPage.evaluate((x) => window.__galleryTestPose(x, -9.0916666667, -Math.PI / 2), leftWall + .55);
+  await friendshipPage.evaluate((x) => window.__galleryTestPose(x, -12.825, -Math.PI / 2), leftWall + .55);
   await friendshipPage.screenshot({ path: ".cache/room03-open-doorway.png" });
   const friendshipBefore = await friendshipPage.evaluate(() => window.__galleryDebug());
   await friendshipPage.keyboard.down("w");
@@ -349,11 +350,11 @@ try {
   const carErrors = [];
   carPage.on("pageerror", error => carErrors.push(error.message));
   await carPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
-  await carPage.getByRole("button", { name: /begin walking/i }).click();
-  await carPage.evaluate(() => window.__galleryTestPose(1.2, -9.0916666667, Math.PI / 2));
+  await enterExhibit(carPage);
+  await carPage.evaluate(() => window.__galleryTestPose(1.2, -12.825, Math.PI / 2));
   await carPage.waitForFunction(() => window.__galleryDebug().activeRoom === "04", null, { timeout: 15000 });
   await carPage.screenshot({ path: ".cache/room04-painting-far.png" });
-  await carPage.evaluate((x) => window.__galleryTestPose(x, -9.0916666667, Math.PI / 2), rightWall - .55);
+  await carPage.evaluate((x) => window.__galleryTestPose(x, -12.825, Math.PI / 2), rightWall - .55);
   await carPage.screenshot({ path: ".cache/room04-open-doorway.png" });
   const carBefore = await carPage.evaluate(() => window.__galleryDebug());
   await carPage.keyboard.down("w");
@@ -387,11 +388,11 @@ try {
   const officeErrors = [];
   officePage.on("pageerror", error => officeErrors.push(error.message));
   await officePage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
-  await officePage.getByRole("button", { name: /begin walking/i }).click();
-  await officePage.evaluate(() => window.__galleryTestPose(-1.2, -12.9083333333, -Math.PI / 2));
+  await enterExhibit(officePage);
+  await officePage.evaluate(() => window.__galleryTestPose(-1.2, -18.175, -Math.PI / 2));
   await officePage.waitForFunction(() => window.__galleryDebug().activeRoom === "05", null, { timeout: 15000 });
   await officePage.screenshot({ path: ".cache/room05-painting-far.png" });
-  await officePage.evaluate((x) => window.__galleryTestPose(x, -12.9083333333, -Math.PI / 2), leftWall + .55);
+  await officePage.evaluate((x) => window.__galleryTestPose(x, -18.175, -Math.PI / 2), leftWall + .55);
   await officePage.screenshot({ path: ".cache/room05-open-doorway.png" });
   const officeBefore = await officePage.evaluate(() => window.__galleryDebug());
   await officePage.keyboard.down("w");
@@ -424,11 +425,11 @@ try {
   const weaningErrors = [];
   weaningPage.on("pageerror", error => weaningErrors.push(error.message));
   await weaningPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
-  await weaningPage.getByRole("button", { name: /begin walking/i }).click();
-  await weaningPage.evaluate(() => window.__galleryTestPose(1.2, -12.9083333333, Math.PI / 2));
+  await enterExhibit(weaningPage);
+  await weaningPage.evaluate(() => window.__galleryTestPose(1.2, -18.175, Math.PI / 2));
   await weaningPage.waitForFunction(() => window.__galleryDebug().activeRoom === "06", null, { timeout: 15000 });
   await weaningPage.screenshot({ path: ".cache/room06-painting-far.png" });
-  await weaningPage.evaluate((x) => window.__galleryTestPose(x, -12.9083333333, Math.PI / 2), rightWall - .55);
+  await weaningPage.evaluate((x) => window.__galleryTestPose(x, -18.175, Math.PI / 2), rightWall - .55);
   await weaningPage.screenshot({ path: ".cache/room06-open-doorway.png" });
   const weaningBefore = await weaningPage.evaluate(() => window.__galleryDebug());
   await weaningPage.keyboard.down("w");
@@ -462,11 +463,11 @@ try {
   const berryErrors = [];
   berryPage.on("pageerror", error => berryErrors.push(error.message));
   await berryPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
-  await berryPage.getByRole("button", { name: /begin walking/i }).click();
-  await berryPage.evaluate(() => window.__galleryTestPose(-1.2, -16.725, -Math.PI / 2));
+  await enterExhibit(berryPage);
+  await berryPage.evaluate(() => window.__galleryTestPose(-1.2, -23.525, -Math.PI / 2));
   await berryPage.waitForFunction(() => window.__galleryDebug().activeRoom === "07", null, { timeout: 15000 });
   await berryPage.screenshot({ path: ".cache/room07-painting-far.png" });
-  await berryPage.evaluate((x) => window.__galleryTestPose(x, -16.725, -Math.PI / 2), leftWall + .55);
+  await berryPage.evaluate((x) => window.__galleryTestPose(x, -23.525, -Math.PI / 2), leftWall + .55);
   await berryPage.screenshot({ path: ".cache/room07-open-doorway.png" });
   const berryBefore = await berryPage.evaluate(() => window.__galleryDebug());
   await berryPage.keyboard.down("w");
@@ -499,11 +500,11 @@ try {
   const routeErrors = [];
   routePage.on("pageerror", error => routeErrors.push(error.message));
   await routePage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
-  await routePage.getByRole("button", { name: /begin walking/i }).click();
-  await routePage.evaluate(() => window.__galleryTestPose(1.2, -16.725, Math.PI / 2));
+  await enterExhibit(routePage);
+  await routePage.evaluate(() => window.__galleryTestPose(1.2, -23.525, Math.PI / 2));
   await routePage.waitForFunction(() => window.__galleryDebug().activeRoom === "08", null, { timeout: 15000 });
   await routePage.screenshot({ path: ".cache/room08-painting-far.png" });
-  await routePage.evaluate((x) => window.__galleryTestPose(x, -16.725, Math.PI / 2), rightWall - .55);
+  await routePage.evaluate((x) => window.__galleryTestPose(x, -23.525, Math.PI / 2), rightWall - .55);
   await routePage.screenshot({ path: ".cache/room08-open-doorway.png" });
   const routeBefore = await routePage.evaluate(() => window.__galleryDebug());
   await routePage.keyboard.down("w");
@@ -539,12 +540,12 @@ try {
   const orchardErrors = [];
   orchardPage.on("pageerror", error => orchardErrors.push(error.message));
   await orchardPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
-  await orchardPage.getByRole("button", { name: /begin walking/i }).click();
-  await orchardPage.evaluate(() => window.__galleryTestPose(11, -28.0, 0));
+  await enterExhibit(orchardPage);
+  await orchardPage.evaluate(() => window.__galleryTestPose(11, -39.2, 0));
   await orchardPage.waitForFunction(() => window.__galleryDebug().activeRoom === "09", null, { timeout: 15000 });
   assert.equal(await orchardPage.locator("#fallback").isVisible(), false);
   await orchardPage.screenshot({ path: ".cache/room09-painting-far.png" });
-  await orchardPage.evaluate(() => window.__galleryTestPose(11, -28.8, 0));
+  await orchardPage.evaluate(() => window.__galleryTestPose(11, -40.0, 0));
   await orchardPage.waitForTimeout(200);
   await orchardPage.screenshot({ path: ".cache/room09-open-doorway.png" });
   const orchardBefore = await orchardPage.evaluate(() => window.__galleryDebug());
@@ -580,20 +581,20 @@ try {
   const playErrors = [];
   playPage.on("pageerror", error => playErrors.push(error.message));
   await playPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
-  await playPage.getByRole("button", { name: /begin walking/i }).click();
+  await enterExhibit(playPage);
   // Frames 09 and 10 are opposite each other; their large outdoor sky domes
   // occupy overlapping world coordinates if treated as one physical building.
   // Moving between the paintings must replace the isolated world, never stack
   // the two scenes behind both openings.
-  await playPage.evaluate(() => window.__galleryTestPose(11, -28.2, 0));
+  await playPage.evaluate(() => window.__galleryTestPose(11, -37.2, 0));
   await playPage.waitForFunction(() => window.__galleryDebug().activeRoom === "09", null, { timeout: 15000 });
   assert.equal((await playPage.evaluate(() => window.__galleryDebug())).loadedWorldCount, 1);
-  await playPage.evaluate(() => window.__galleryTestPose(11, -25.8, Math.PI));
+  await playPage.evaluate(() => window.__galleryTestPose(11, -32.6, Math.PI));
   await playPage.waitForFunction(() => window.__galleryDebug().activeRoom === "10", null, { timeout: 15000 });
   assert.equal((await playPage.evaluate(() => window.__galleryDebug())).loadedWorldCount, 1,
     "adjacent portal worlds must never occupy the same render scene");
   await playPage.screenshot({ path: ".cache/room10-painting-far.png" });
-  await playPage.evaluate(() => window.__galleryTestPose(11, -24.35, Math.PI));
+  await playPage.evaluate(() => window.__galleryTestPose(11, -31.15, Math.PI));
   await playPage.screenshot({ path: ".cache/room10-open-doorway.png" });
   const playBefore = await playPage.evaluate(() => window.__galleryDebug());
   await playPage.keyboard.down("w");
@@ -628,11 +629,11 @@ try {
   const aquariumErrors = [];
   aquariumPage.on("pageerror", error => aquariumErrors.push(error.message));
   await aquariumPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
-  await aquariumPage.getByRole("button", { name: /begin walking/i }).click();
-  await aquariumPage.evaluate(() => window.__galleryTestPose(14.9083333333, -27, 0));
+  await enterExhibit(aquariumPage);
+  await aquariumPage.evaluate(() => window.__galleryTestPose(18.175, -36, 0));
   await aquariumPage.waitForFunction(() => window.__galleryDebug().activeRoom === "11", null, { timeout: 15000 });
   await aquariumPage.screenshot({ path: ".cache/room11-painting-far.png" });
-  await aquariumPage.evaluate(() => window.__galleryTestPose(14.9083333333, -28.8, 0));
+  await aquariumPage.evaluate(() => window.__galleryTestPose(18.175, -40.0, 0));
   await aquariumPage.screenshot({ path: ".cache/room11-open-doorway.png" });
   const aquariumBefore = await aquariumPage.evaluate(() => window.__galleryDebug());
   await aquariumPage.keyboard.down("w");
@@ -705,9 +706,9 @@ try {
   const phoneErrors = [];
   phonePage.on("pageerror", error => phoneErrors.push(error.message));
   await phonePage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
-  await phonePage.getByRole("button", { name: /begin walking/i }).click();
+  await enterExhibit(phonePage);
   await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "01", null, { timeout: 12000 });
-  await phonePage.evaluate((x) => window.__galleryTestPose(x, -4.975, -Math.PI / 2), leftWall + .55);
+  await phonePage.evaluate((x) => window.__galleryTestPose(x, -7.475, -Math.PI / 2), leftWall + .55);
   await phonePage.screenshot({ path: ".cache/room01-mobile-doorway.png" });
   const ring = await phonePage.locator(".joystick-ring").boundingBox();
   const touch = await phoneContext.newCDPSession(phonePage);
@@ -726,7 +727,7 @@ try {
   await phonePage.waitForFunction(() => window.__galleryDebug().mode === "hall", null, { timeout: 12000 });
   await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
-  await phonePage.evaluate(() => window.__galleryTestPose(11, -28.8, 0));
+  await phonePage.evaluate(() => window.__galleryTestPose(11, -40.0, 0));
   await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "09", null, { timeout: 15000 });
   await phonePage.screenshot({ path: ".cache/room09-mobile-doorway.png" });
   await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
@@ -735,7 +736,7 @@ try {
   await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
   await phonePage.screenshot({ path: ".cache/room09-mobile-entered-continuous.png" });
-  await phonePage.evaluate(() => window.__galleryTestPose(1.2, -5.275, Math.PI / 2));
+  await phonePage.evaluate(() => window.__galleryTestPose(1.2, -7.475, Math.PI / 2));
   await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "02", null, { timeout: 15000 });
   await phonePage.screenshot({ path: ".cache/room02-mobile-doorway.png" });
   await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
@@ -744,7 +745,7 @@ try {
   await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
   await phonePage.screenshot({ path: ".cache/room02-mobile-entered-continuous.png" });
-  await phonePage.evaluate((x) => window.__galleryTestPose(x, -9.0916666667, -Math.PI / 2), leftWall + .55);
+  await phonePage.evaluate((x) => window.__galleryTestPose(x, -12.825, -Math.PI / 2), leftWall + .55);
   await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "03", null, { timeout: 15000 });
   await phonePage.screenshot({ path: ".cache/room03-mobile-doorway.png" });
   await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
@@ -753,7 +754,7 @@ try {
   await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
   await phonePage.screenshot({ path: ".cache/room03-mobile-entered-continuous.png" });
-  await phonePage.evaluate((x) => window.__galleryTestPose(x, -9.0916666667, Math.PI / 2), rightWall - .55);
+  await phonePage.evaluate((x) => window.__galleryTestPose(x, -12.825, Math.PI / 2), rightWall - .55);
   await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "04", null, { timeout: 15000 });
   await phonePage.screenshot({ path: ".cache/room04-mobile-doorway.png" });
   await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
@@ -762,7 +763,7 @@ try {
   await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
   await phonePage.screenshot({ path: ".cache/room04-mobile-entered-continuous.png" });
-  await phonePage.evaluate((x) => window.__galleryTestPose(x, -12.9083333333, -Math.PI / 2), leftWall + .55);
+  await phonePage.evaluate((x) => window.__galleryTestPose(x, -18.175, -Math.PI / 2), leftWall + .55);
   await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "05", null, { timeout: 15000 });
   await phonePage.screenshot({ path: ".cache/room05-mobile-doorway.png" });
   await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
@@ -771,7 +772,7 @@ try {
   await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
   await phonePage.screenshot({ path: ".cache/room05-mobile-entered-continuous.png" });
-  await phonePage.evaluate((x) => window.__galleryTestPose(x, -12.9083333333, Math.PI / 2), rightWall - .55);
+  await phonePage.evaluate((x) => window.__galleryTestPose(x, -18.175, Math.PI / 2), rightWall - .55);
   await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "06", null, { timeout: 15000 });
   await phonePage.screenshot({ path: ".cache/room06-mobile-doorway.png" });
   await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
@@ -780,7 +781,7 @@ try {
   await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
   await phonePage.screenshot({ path: ".cache/room06-mobile-entered-continuous.png" });
-  await phonePage.evaluate((x) => window.__galleryTestPose(x, -16.725, -Math.PI / 2), leftWall + .55);
+  await phonePage.evaluate((x) => window.__galleryTestPose(x, -23.525, -Math.PI / 2), leftWall + .55);
   await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "07", null, { timeout: 15000 });
   await phonePage.screenshot({ path: ".cache/room07-mobile-doorway.png" });
   await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
@@ -789,7 +790,7 @@ try {
   await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   assert.equal((await phonePage.evaluate(() => window.__galleryDebug())).cameraFov, phoneFov);
   await phonePage.screenshot({ path: ".cache/room07-mobile-entered-continuous.png" });
-  await phonePage.evaluate((x) => window.__galleryTestPose(x, -16.725, Math.PI / 2), rightWall - .55);
+  await phonePage.evaluate((x) => window.__galleryTestPose(x, -23.525, Math.PI / 2), rightWall - .55);
   await phonePage.waitForFunction(() => window.__galleryDebug().activeRoom === "08", null, { timeout: 15000 });
   await phonePage.screenshot({ path: ".cache/room08-mobile-doorway.png" });
   await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
@@ -804,8 +805,8 @@ try {
   await restartBrowser();
   }
 
-  for (const [id, x, z, yaw] of [["10", 11, -24.35, Math.PI],
-    ["11", 14.9083333333, -28.8, 0]]) {
+  for (const [id, x, z, yaw] of [["10", 11, -31.15, Math.PI],
+    ["11", 18.175, -40.0, 0]]) {
     const context = await newTestContext({ viewport: { width: 390, height: 844 },
       deviceScaleFactor: 3, isMobile: true, hasTouch: true });
     const page = await context.newPage();
@@ -814,7 +815,7 @@ try {
     const errors = [];
     page.on("pageerror", error => errors.push(error.message));
     await page.goto(`${base}/explore/`, { waitUntil: "networkidle" });
-    await page.getByRole("button", { name: /begin walking/i }).click();
+    await enterExhibit(page);
     await page.evaluate(([px,pz,direction]) => window.__galleryTestPose(px,pz,direction), [x,z,yaw]);
     await page.waitForFunction(frameId => window.__galleryDebug().activeRoom === frameId,
       id, { timeout: 20000 });
@@ -839,10 +840,10 @@ try {
   const failedPage = await failedContext.newPage();
   await failedPage.route("**/assets/explore/room01/room.glb*", (route) => route.abort());
   await failedPage.goto(`${base}/explore/`, { waitUntil: "networkidle" });
-  await failedPage.getByRole("button", { name: /begin walking/i }).click();
+  await enterExhibit(failedPage);
   await failedPage.waitForFunction(() => document.querySelector("#announcement").textContent.includes("could not be loaded"),
     null, { timeout: 12000 });
-  await failedPage.evaluate((x) => window.__galleryTestPose(x, -4.975, -Math.PI / 2), leftWall + .55);
+  await failedPage.evaluate((x) => window.__galleryTestPose(x, -7.475, -Math.PI / 2), leftWall + .55);
   await failedPage.keyboard.down("w");
   await failedPage.waitForTimeout(450);
   await failedPage.keyboard.up("w");

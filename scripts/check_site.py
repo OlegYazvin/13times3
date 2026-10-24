@@ -444,6 +444,10 @@ def main() -> None:
     assert not (OUTPUT / "room_assets").exists(), "Reference artwork should not be published separately"
     explore = parse(source_path("/explore"))
     assert explore.select_one("#welcome-title") is not None
+    assert explore.select_one("#welcome").has_attr("hidden"), "The museum opens directly without a controls overlay"
+    assert explore.select_one("#welcome-title").get_text(strip=True) == "Jane's Year Exhibit"
+    for name in ["dishwasher.glb", "still-life.webp", "shore.webp", "Archivo-OFL.txt"]:
+        assert (OUTPUT / "assets/explore/museum" / name).exists(), f"Museum asset missing: {name}"
     assert explore.select_one("#joystick") is not None
     assert explore.select_one("#fallback") is not None
     assert explore.select_one("#room-title") is not None

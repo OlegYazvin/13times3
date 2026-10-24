@@ -4,6 +4,7 @@ import { GalleryControls } from "./controls.mjs";
 import { createGalleryScene } from "./gallery-scene.mjs";
 import { GalleryMusic } from "./music.mjs";
 import { SceneMusic } from "./scene-music.mjs";
+import {FlameAudio} from './flame-audio.mjs';
 import {
   EYE_HEIGHT, nearestSection,
 } from "./layout.mjs";
@@ -21,9 +22,11 @@ const announcement = document.getElementById("announcement");
 const experience = document.getElementById("experience");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 let galleryMusic;
+let flameAudio;
 
 function showFallback(message) {
   galleryMusic?.stop();
+  flameAudio?.stop();
   fallback.hidden = false;
   welcome.hidden = true;
   musicButton.hidden = true;
@@ -35,10 +38,9 @@ function showFallback(message) {
 try {
   const sceneMusic = new SceneMusic(document.getElementById("scene-music"));
   galleryMusic = new GalleryMusic(musicButton, experience.dataset.musicUrl, sceneMusic);
-  document.addEventListener("visibilitychange", () => galleryMusic.setPageVisible(!document.hidden));
-  window.addEventListener("pagehide", () => galleryMusic.stop());
+  document.addEventListener("visibilitychange", () => {galleryMusic.setPageVisible(!document.hidden);if(document.hidden)flameAudio?.silence();});
+  window.addEventListener("pagehide", () => {galleryMusic.stop();flameAudio?.stop();});
   const manifest = JSON.parse(document.getElementById("gallery-data").textContent);
-  const gallery = createGalleryScene(manifest, experience.dataset.basePath, experience.dataset.roomVersion);
   const renderer = new THREE.WebGLRenderer({ antialias: true, stencil: true,
     powerPreference: "high-performance" });
   let pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -46,16 +48,18 @@ try {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.setSize(sceneHost.clientWidth, sceneHost.clientHeight);
   sceneHost.append(renderer.domElement);
+  const gallery = createGalleryScene(manifest, experience.dataset.basePath, experience.dataset.roomVersion);
+  flameAudio=new FlameAudio(galleryMusic,gallery.museum.sites);
+  window.addEventListener('pageshow',event=>{if(event.persisted)flameAudio=new FlameAudio(galleryMusic,gallery.museum.sites);});
 
   const camera = new THREE.PerspectiveCamera(75, 1, .05, 120);
-  const player = { x: 0, y: EYE_HEIGHT, z: -1.1 };
+  const player = { x: 0, y: EYE_HEIGHT, z: -.8 };
   const controls = new GalleryControls(
     renderer.domElement,
     document.getElementById("joystick"),
     document.getElementById("joystick-knob"),
   );
-  // Frame 01 should greet Jane immediately, including on a narrow phone view.
-  controls.yaw = -.67;
+  controls.yaw = 0;
   const rooms = new RoomManager({
     gallery, player,
     assetBase: experience.dataset.basePath,
@@ -90,6 +94,7 @@ try {
       roomColliders: rooms.active?.colliders ?? [],
       frame01Painting: Boolean(gallery.frameMeshes.get("01").surface.material.map?.image?.width),
       frameCount: gallery.layout.frames.length,
+      museum:{...gallery.museum.state,flameCount:gallery.museum.sites.length,colliders:gallery.colliders,audioLevels:flameAudio.levels,audioVoices:flameAudio.voices.length,drawCalls:renderer.info.render.calls},
       music: {
         started: galleryMusic.started,
         enabled: galleryMusic.enabled,
@@ -103,9 +108,10 @@ try {
         sceneTime: sceneMusic.position,
       },
     });
-    window.__galleryTestPose = (x, z, yaw) => {
+    window.__galleryTestPose = (x, z, yaw,pitch=0) => {
       Object.assign(player, { x, z });
       controls.yaw = yaw;
+      controls.pitch=pitch;
       rooms.setMode("hall");
     };
     window.__galleryTestRoomPose = (x, z, yaw, pitch = 0) => {
@@ -119,6 +125,7 @@ try {
       rooms.canStand(rooms.roomToWorld({ x, z }), "room");
     window.__galleryTestWorldMove = (x, z) =>
       rooms.move({ x, z });
+    window.__galleryTestHallCanStand=(x,z)=>rooms.canStand({x,z},'hall');
     window.__galleryTestRoomMove = (x, z) =>
       rooms.move(rooms.roomToWorld({ x, z }));
     // A synchronous render/readback avoids judging a stale compositor buffer
@@ -210,7 +217,8 @@ try {
     camera.rotation.order = "YXZ";
     camera.rotation.y = -controls.yaw;
     camera.rotation.x = controls.pitch;
-    gallery.animate(now / 1000, reducedMotion.matches);
+    gallery.animate(now / 1000, reducedMotion.matches,player);
+    flameAudio.update(player,controls.yaw,rooms.mode==='hall',!document.hidden,now/1000);
     rooms.animate(now / 1000, reducedMotion.matches);
     roomTitle.hidden = rooms.mode !== "room";
     if (rooms.mode === "room") {
@@ -234,10 +242,16 @@ try {
   beginButton.addEventListener("click", closeHelp);
   helpButton.addEventListener("click", openHelp);
   window.addEventListener("keydown", (event) => {
-    if (event.code === "Escape" && welcome.hidden && fallback.hidden) openHelp();
+    if(event.code==='Escape'&&fallback.hidden){if(welcome.hidden)openHelp();else closeHelp();}
   });
   renderer.domElement.tabIndex = 0;
-  renderer.domElement.setAttribute("aria-label", "First-person gallery view. Use W A S D or arrow keys to move and drag to look.");
+  renderer.domElement.setAttribute("aria-label", "Jane's Year Exhibit. Use W A S D or arrow keys to move and drag to look. Help has full instructions.");
+  // The exhibit opens directly in the architectural entrance. Audio unlocks
+  // on the first genuine movement/look interaction, without a start overlay.
+  renderer.domElement.addEventListener('pointerdown',()=>galleryMusic.begin(),{once:true,capture:true});
+  document.getElementById('joystick').addEventListener('pointerdown',()=>galleryMusic.begin(),{once:true,capture:true});
+  window.addEventListener('keydown',event=>{if(/^(Key[WASD]|Arrow(Up|Down|Left|Right))$/.test(event.code))galleryMusic.begin();});
+  controls.setEnabled(true);
   renderer.domElement.addEventListener("webglcontextlost", (event) => {
     event.preventDefault();
     running = false;

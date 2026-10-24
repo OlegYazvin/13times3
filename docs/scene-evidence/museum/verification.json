@@ -1,0 +1,593 @@
+{
+  "recordedAt": "2026-10-24T06:13:30.083Z",
+  "appSha256": "f4e347996132ee2efa0e87bb0893e11ffc23108463c0300cb8105d22600c7184",
+  "statueSha256": "0100869e1814c9fe32143bec426f93a4d9cb507363bf9c505e60b5f850bf1c31",
+  "statueBytes": 652404,
+  "functional": {
+    "museum": [
+      {
+        "viewport": "desktop",
+        "noStartOverlay": true,
+        "immediateKeyboardMovement": true,
+        "optionalHelp": true,
+        "modelReady": true,
+        "originalPaintings": 2,
+        "flameCount": 22,
+        "colliders": 43,
+        "allGalleryRoutes": true,
+        "bothSidesOfEverySculpture": true,
+        "fireAudio": {
+          "voices": 2,
+          "nearLevels": [
+            0.16808526948039235,
+            0
+          ],
+          "silentAway": true,
+          "mutePersists": true,
+          "silentInRooms": true
+        },
+        "pageErrors": []
+      },
+      {
+        "viewport": "phone",
+        "noStartOverlay": true,
+        "immediateKeyboardMovement": true,
+        "optionalHelp": true,
+        "modelReady": true,
+        "originalPaintings": 2,
+        "flameCount": 22,
+        "colliders": 43,
+        "allGalleryRoutes": true,
+        "bothSidesOfEverySculpture": true,
+        "fireAudio": {
+          "voices": 2,
+          "nearLevels": [
+            0.16808526948039235,
+            0
+          ],
+          "silentAway": true,
+          "mutePersists": true,
+          "silentInRooms": true
+        },
+        "pageErrors": []
+      }
+    ],
+    "portalWorlds": [
+      {
+        "id": "01",
+        "build": {
+          "id": "01",
+          "modelSha256": "84421a5c228abbe01bbfc5a79163b453ef136b6d48a1ad47cddaf7669a8946fb",
+          "paintingSha256": "21dcfa8e7f529e325348ea529e55f5fa52bc3d5c98776efb694592926a178b51",
+          "appSha256": "f4e347996132ee2efa0e87bb0893e11ffc23108463c0300cb8105d22600c7184",
+          "recordedAt": "2026-10-24T06:02:20.000Z"
+        },
+        "results": [
+          {
+            "id": "01",
+            "viewport": "desktop",
+            "entry": true,
+            "collisionSamples": 7,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          },
+          {
+            "id": "01",
+            "viewport": "phone",
+            "entry": true,
+            "collisionSamples": 7,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          }
+        ]
+      },
+      {
+        "id": "02",
+        "build": {
+          "id": "02",
+          "modelSha256": "c48503a8c2e176996d985e973fc39ddc3348caf4e8f132c246f3fefeb5b99cff",
+          "paintingSha256": "a19bb0f72fc27a00d12a1591354c116beeed2072bb9a123db3302b672b1f2ba6",
+          "appSha256": "f4e347996132ee2efa0e87bb0893e11ffc23108463c0300cb8105d22600c7184",
+          "recordedAt": "2026-10-24T06:02:52.664Z"
+        },
+        "results": [
+          {
+            "id": "02",
+            "name": "hall-depth-isolation",
+            "passed": true
+          },
+          {
+            "id": "02",
+            "name": "sprout walking route and circuit",
+            "viewport": "desktop",
+            "passed": true
+          },
+          {
+            "id": "02",
+            "viewport": "desktop",
+            "entry": true,
+            "collisionSamples": 40,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          },
+          {
+            "id": "02",
+            "name": "sprout walking route and circuit",
+            "viewport": "phone",
+            "passed": true
+          },
+          {
+            "id": "02",
+            "viewport": "phone",
+            "entry": true,
+            "collisionSamples": 40,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          }
+        ]
+      },
+      {
+        "id": "03",
+        "build": {
+          "id": "03",
+          "modelSha256": "41aa0f96a91e678cc1e2b4ce9b92d5ade1917bb31068499a7e491fb1f20b5a46",
+          "paintingSha256": "49ecbe0e4878f6a491f09771ecc4604ab4ded266bcf170ab7a0488139d323da4",
+          "appSha256": "f4e347996132ee2efa0e87bb0893e11ffc23108463c0300cb8105d22600c7184",
+          "recordedAt": "2026-10-24T06:04:12.575Z"
+        },
+        "results": [
+          {
+            "id": "03",
+            "viewport": "desktop",
+            "entry": true,
+            "collisionSamples": 29,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          },
+          {
+            "id": "03",
+            "viewport": "phone",
+            "entry": true,
+            "collisionSamples": 29,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          }
+        ]
+      },
+      {
+        "id": "04",
+        "build": {
+          "id": "04",
+          "modelSha256": "1948243b2b4b1f6eec5041b1404bcb9f75936828f13a927236d157701ae86c9a",
+          "paintingSha256": "5a761e242f18fd90dd50fc84d75a5f22dabc45d5a95bc473bc8314a5f2a4e4e2",
+          "appSha256": "f4e347996132ee2efa0e87bb0893e11ffc23108463c0300cb8105d22600c7184",
+          "recordedAt": "2026-10-24T06:04:51.019Z"
+        },
+        "results": [
+          {
+            "id": "04",
+            "viewport": "desktop",
+            "entry": true,
+            "collisionSamples": 24,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          },
+          {
+            "id": "04",
+            "viewport": "phone",
+            "entry": true,
+            "collisionSamples": 24,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          }
+        ]
+      },
+      {
+        "id": "05",
+        "build": {
+          "id": "05",
+          "modelSha256": "5c0e9d8f8030f023fc0f53f6ec53f16a63d1a5a2f6ea579db838cca7a2809bd4",
+          "paintingSha256": "eaf2d8d3a14d1c7dda2ba92b0049d71303b02430d3dfdfb3684238010e06eeb8",
+          "appSha256": "f4e347996132ee2efa0e87bb0893e11ffc23108463c0300cb8105d22600c7184",
+          "recordedAt": "2026-10-24T06:05:34.549Z"
+        },
+        "results": [
+          {
+            "id": "05",
+            "viewport": "desktop",
+            "entry": true,
+            "collisionSamples": 40,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          },
+          {
+            "id": "05",
+            "viewport": "phone",
+            "entry": true,
+            "collisionSamples": 40,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          }
+        ]
+      },
+      {
+        "id": "06",
+        "build": {
+          "id": "06",
+          "modelSha256": "5c201d26ae8fabfdfb893a445204e6f68bf15be248ad8cfac1e1e7812b8e0d5c",
+          "paintingSha256": "1015f094eada4dbeef8515cc4f7b721ed3e4e5b1c36abaf966267e650fa1ee0a",
+          "appSha256": "f4e347996132ee2efa0e87bb0893e11ffc23108463c0300cb8105d22600c7184",
+          "recordedAt": "2026-10-24T06:06:06.213Z"
+        },
+        "results": [
+          {
+            "id": "06",
+            "viewport": "desktop",
+            "entry": true,
+            "collisionSamples": 40,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          },
+          {
+            "id": "06",
+            "viewport": "phone",
+            "entry": true,
+            "collisionSamples": 40,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          }
+        ]
+      },
+      {
+        "id": "07",
+        "build": {
+          "id": "07",
+          "modelSha256": "20eecb83e707ec8739ab6b170e1b6793c859d23c1d7daeac020ff0398fea7854",
+          "paintingSha256": "29f6ede97c2dba8bca5df4ac74348af75b307f3b5b2b8e27cb9f9a4c04e2e0f8",
+          "appSha256": "f4e347996132ee2efa0e87bb0893e11ffc23108463c0300cb8105d22600c7184",
+          "recordedAt": "2026-10-24T06:06:54.471Z"
+        },
+        "results": [
+          {
+            "id": "07",
+            "viewport": "desktop",
+            "entry": true,
+            "collisionSamples": 31,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          },
+          {
+            "id": "07",
+            "viewport": "phone",
+            "entry": true,
+            "collisionSamples": 31,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          }
+        ]
+      },
+      {
+        "id": "08",
+        "build": {
+          "id": "08",
+          "modelSha256": "dac4ce805c7da8fb135c570ac796659f16ecfca26994d3b9d1f1ab71f705f94a",
+          "paintingSha256": "1497a18579e80901ca118e093091aeb5b94ff74b513d31c56bf406b7f4bc7b7d",
+          "appSha256": "f4e347996132ee2efa0e87bb0893e11ffc23108463c0300cb8105d22600c7184",
+          "recordedAt": "2026-10-24T06:07:38.065Z"
+        },
+        "results": [
+          {
+            "id": "08",
+            "viewport": "desktop",
+            "entry": true,
+            "collisionSamples": 20,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          },
+          {
+            "id": "08",
+            "viewport": "phone",
+            "entry": true,
+            "collisionSamples": 20,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          }
+        ]
+      },
+      {
+        "id": "09",
+        "build": {
+          "id": "09",
+          "modelSha256": "465e8211c11903fec753f17dc422de53a573c44c1d063ba14fd57e4c8e222c0d",
+          "paintingSha256": "e0610862470aa92972e8772d7ace8b4f4aa1575947004aa597cd703e4f48b95d",
+          "appSha256": "f4e347996132ee2efa0e87bb0893e11ffc23108463c0300cb8105d22600c7184",
+          "recordedAt": "2026-10-24T06:08:10.486Z"
+        },
+        "results": [
+          {
+            "id": "09",
+            "viewport": "desktop",
+            "entry": true,
+            "collisionSamples": 29,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          },
+          {
+            "id": "09",
+            "viewport": "phone",
+            "entry": true,
+            "collisionSamples": 29,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          }
+        ]
+      },
+      {
+        "id": "10",
+        "build": {
+          "id": "10",
+          "modelSha256": "1cd5f9908da889f2002b650b5396076fba87950612301e3732a0120c2a0df1e2",
+          "paintingSha256": "4968840eab22e4876951717c7e333e10a46a362143bf64c84d3a02e99f50302f",
+          "appSha256": "f4e347996132ee2efa0e87bb0893e11ffc23108463c0300cb8105d22600c7184",
+          "recordedAt": "2026-10-24T06:08:57.407Z"
+        },
+        "results": [
+          {
+            "id": "10",
+            "viewport": "desktop",
+            "entry": true,
+            "collisionSamples": 26,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          },
+          {
+            "id": "10",
+            "viewport": "phone",
+            "entry": true,
+            "collisionSamples": 26,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          }
+        ]
+      },
+      {
+        "id": "11",
+        "build": {
+          "id": "11",
+          "modelSha256": "8acfbe4b848a2736d2297e26d8868932d11db6b8e287d37ebd2b28697aa1413f",
+          "paintingSha256": "a947e5f965689ad37d81888463a9a8bcaf7d0cfcf6c4b2aabf33476bbf0d96a4",
+          "appSha256": "f4e347996132ee2efa0e87bb0893e11ffc23108463c0300cb8105d22600c7184",
+          "recordedAt": "2026-10-24T06:09:36.984Z"
+        },
+        "results": [
+          {
+            "id": "11",
+            "viewport": "desktop",
+            "entry": true,
+            "collisionSamples": 40,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          },
+          {
+            "id": "11",
+            "viewport": "phone",
+            "entry": true,
+            "collisionSamples": 40,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          }
+        ]
+      },
+      {
+        "id": "12",
+        "build": {
+          "id": "12",
+          "modelSha256": "30565870849074713309faefc8527c91a6f10bc3fe883abf752a4c4aa1d80e0f",
+          "paintingSha256": "6b4643438ef135d4712a8898ce84cba93c3c1584c62cb859bc4adcf02dd20bde",
+          "appSha256": "f4e347996132ee2efa0e87bb0893e11ffc23108463c0300cb8105d22600c7184",
+          "recordedAt": "2026-10-24T06:10:24.483Z"
+        },
+        "results": [
+          {
+            "id": "12",
+            "name": "upstairs bar walking route",
+            "viewport": "phone",
+            "passed": true
+          },
+          {
+            "id": "12",
+            "name": "side street window walking route",
+            "viewport": "phone",
+            "passed": true
+          },
+          {
+            "id": "12",
+            "name": "Borellis bar walking route",
+            "viewport": "phone",
+            "passed": true
+          },
+          {
+            "id": "12",
+            "name": "Borellis piano walking route",
+            "viewport": "phone",
+            "passed": true
+          },
+          {
+            "id": "12",
+            "name": "thumb-joystick-moves",
+            "passed": true
+          },
+          {
+            "id": "12",
+            "viewport": "phone",
+            "entry": true,
+            "collisionSamples": 40,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          },
+          {
+            "id": "12",
+            "name": "upstairs bar walking route",
+            "viewport": "desktop",
+            "passed": true
+          },
+          {
+            "id": "12",
+            "name": "side street window walking route",
+            "viewport": "desktop",
+            "passed": true
+          },
+          {
+            "id": "12",
+            "name": "Borellis bar walking route",
+            "viewport": "desktop",
+            "passed": true
+          },
+          {
+            "id": "12",
+            "name": "Borellis piano walking route",
+            "viewport": "desktop",
+            "passed": true
+          },
+          {
+            "id": "12",
+            "viewport": "desktop",
+            "entry": true,
+            "collisionSamples": 40,
+            "return": true,
+            "continuousCamera": true,
+            "controls": true,
+            "cleanup": true
+          }
+        ]
+      }
+    ],
+    "global": {
+      "dragLook": true,
+      "resize": true,
+      "webglLossFallback": true,
+      "noWebglFallback": true,
+      "failedRoomStaysInHall": true,
+      "frameCount": 41,
+      "previewCount": 12
+    },
+    "unitTests": 31,
+    "originalAchievementUrls": 39,
+    "frameCount": 41,
+    "assignedRooms": 12,
+    "unassignedFrames": "13–41",
+    "manifestUnchanged": true,
+    "sourceStatueContacts": {
+      "bounds": [
+        1.9598802328109741,
+        2.3473007179272827,
+        1.3899999856948853
+      ],
+      "contacts": [
+        {
+          "part": "shoe",
+          "plateGapM": 0.9565085426425364,
+          "verticesInsidePlateOver1mm": 0,
+          "penetrationM": 0,
+          "minY": -1.3313679325666072e-10
+        },
+        {
+          "part": "shoe",
+          "plateGapM": 0.9690637164482366,
+          "verticesInsidePlateOver1mm": 0,
+          "penetrationM": 0,
+          "minY": -1.3313679325666072e-10
+        },
+        {
+          "part": "hand-right",
+          "plateGapM": 0.0006000399589538574,
+          "verticesInsidePlateOver1mm": 0,
+          "penetrationM": 0,
+          "minY": 0.8837233185768127
+        },
+        {
+          "part": "shirt",
+          "plateGapM": 0.026828728780188944,
+          "verticesInsidePlateOver1mm": 0,
+          "penetrationM": 0,
+          "minY": 0.8389999866485596
+        }
+      ]
+    },
+    "contactMethod": "Actual posed author surfaces, before Meshopt packing; hand/plate gap and shirt containment are sampled over all selected vertices. The packed sculpture is separately checked for finite geometry and inspected visually."
+  },
+  "visual": {
+    "reviewed": [
+      "entrance-ui",
+      "entrance-ui-phone",
+      "entrance",
+      "sculpture-front",
+      "sculpture-left",
+      "sculpture-right",
+      "sculpture-rear",
+      "sculpture-label",
+      "sculpture-phone",
+      "sconce",
+      "sconce-phone",
+      "still-life",
+      "shore",
+      "ceiling",
+      "gallery-2",
+      "gallery-3",
+      "gallery-4",
+      "gallery-5",
+      "return-01",
+      "return-11",
+      "return-12"
+    ],
+    "judgment": "The physical exhibit entrance is legible in desktop and portrait views. The shared world reads as broad museum galleries with framed art, stone finishes, coffered and circular ceiling lights, wayfinding, five sculpture islands, benches and warm bronze flame sconces. The Dishwasher Dilemma is a monochrome carved assemblage: sweating Jane, a supported plate, open dishwasher with loaded racks and rollers, and suspended dimensional @#$! symbols. People, props, pedestals and paths stay distinct in the inspected angles.",
+    "remaining": "Phone behavior was emulated; physical-phone frame rate and listening were not measured. Fire synthesis, distance/pan, mute and scene silence were checked functionally. The larger story-scene likeness/art backlog remains open. Frames 13–41 are deliberately blank."
+  },
+  "publication": "pending"
+}

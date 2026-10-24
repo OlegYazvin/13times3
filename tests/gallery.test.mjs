@@ -42,7 +42,8 @@ test("movement stays inside the hallway and slides along its walls", () => {
   const destination = moveWithCollision(start, { x: HALL_WIDTH / 2, z: -8 }, layout);
   assert.equal(destination.x, 0);
   assert.equal(destination.z, -8);
-  assert.equal(nearestSection({ x: 18, z: -10 }, layout.sections).section.index, 2);
+  const section=layout.sections[2];
+  assert.equal(nearestSection({x:section.start.x+section.forward.x*12,z:section.start.z+section.forward.z*12},layout.sections).section.index,2);
 });
 
 test("frames 01–12 have room-sized openings and the other frames stay solid", () => {
