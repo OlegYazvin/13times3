@@ -204,3 +204,8 @@ For ongoing refinement of the published rooms, use the [visual quality audit](vi
 - Wait for GPU completion before screenshot readback. Separate screenshot-tool
   failures from ordinary exploration with a continuous-render test. A stable
   software-browser run is not a physical-phone frame-rate measurement.
+
+- Inspect the actual portrait-phone image before accepting its composition.
+  Working controls do not establish that the principal person is in frame.
+  Reposition a complete coupled arrangement when possible, preserving its
+  hands, props, furniture and shared attention together.

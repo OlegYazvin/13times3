@@ -1,6 +1,6 @@
 # Frame 12 — A place in the circle
 
-Status: the portrait-phone follow-up passed local art, contact, browser and sustained-render checks and is ready for publication.
+Status: the corrected portrait-phone composition is published and verified live.
 
 Jane discovered a welcoming folk jam community meeting at Beat Kitchen upstairs
 and Borelli’s. She enjoys listening; she does not sing or play an instrument at
@@ -51,7 +51,7 @@ All boxes below mean observed exported evidence, never an intended improvement.
 - [x] Hall painting, partial reveal, entry, close views and actual return inspected.
 - [x] Fresh desktop and portrait phone loads, controls, collisions and fallbacks pass.
 - [x] 39 original achievement URLs and 41 stable IDs preserved; 13–41 stay blank.
-- [ ] Publication of the phone composition follow-up verified against the final assets.
+- [x] Publication of the phone composition follow-up verified against the final assets.
 
 
 ## Revision observations
@@ -149,3 +149,13 @@ listening posture with the children and Jonas in view. The exported contact
 checks again report no sampled penetration in the 27 selected relationships;
 all 19 site/unit checks and both portal routes pass. The updated full capture
 set and six-loop sustained-render check refer to this shifted arrangement.
+
+
+## Corrected phone composition published
+
+Art release `8df6af4b149eb0b1ce0a85a2e91137236ac2e621` deployed successfully in
+[Pages run 40044523857](https://github.com/OlegYazvin/13times3/actions/runs/40044523857).
+All 26 live gallery files and the normal gallery URL matched the corrected build.
+Fresh desktop and emulated-phone production loads passed without fallback or
+page errors. The [latest publication record](scene-evidence/12-folk-jam/publication.json)
+supersedes the initial release for the current composition.

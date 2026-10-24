@@ -1,0 +1,197 @@
+{
+  "artCommit": "8df6af4b149eb0b1ce0a85a2e91137236ac2e621",
+  "deployment": {
+    "id": 40044523857,
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/OlegYazvin/13times3/actions/runs/40044523857",
+    "name": "Publish 13 Times 3"
+  },
+  "observedAt": "2026-10-24T00:23:13.598Z",
+  "normalUrl": {
+    "url": "https://13times3.com/explore/",
+    "status": 200,
+    "sha256": "33ff56d357886cd51b893d15c34b78fea705b8110d9917cf26ae1c89d496fae6",
+    "match": true,
+    "observedAt": "2026-10-24T00:23:13.598Z"
+  },
+  "liveAssets": [
+    {
+      "path": "explore/index.html",
+      "sha256": "33ff56d357886cd51b893d15c34b78fea705b8110d9917cf26ae1c89d496fae6",
+      "actual": "33ff56d357886cd51b893d15c34b78fea705b8110d9917cf26ae1c89d496fae6",
+      "match": true
+    },
+    {
+      "path": "assets/explore/app.js",
+      "sha256": "4fd6e769d167e06c3510d99063c4d8eff483b0912fa8bd94189d52a292dd923f",
+      "actual": "4fd6e769d167e06c3510d99063c4d8eff483b0912fa8bd94189d52a292dd923f",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room01/room.glb",
+      "sha256": "84421a5c228abbe01bbfc5a79163b453ef136b6d48a1ad47cddaf7669a8946fb",
+      "actual": "84421a5c228abbe01bbfc5a79163b453ef136b6d48a1ad47cddaf7669a8946fb",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room01/preview.webp",
+      "sha256": "21dcfa8e7f529e325348ea529e55f5fa52bc3d5c98776efb694592926a178b51",
+      "actual": "21dcfa8e7f529e325348ea529e55f5fa52bc3d5c98776efb694592926a178b51",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room02/room.glb",
+      "sha256": "59c21d9a5656427729bf643c13c00df91c570462c714cd07e10f9331e4574845",
+      "actual": "59c21d9a5656427729bf643c13c00df91c570462c714cd07e10f9331e4574845",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room02/preview.webp",
+      "sha256": "82b35e4e25354748ef7118b055660741ffbe5f2e17feb7f9ba2549af6c3ea7f5",
+      "actual": "82b35e4e25354748ef7118b055660741ffbe5f2e17feb7f9ba2549af6c3ea7f5",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room03/room.glb",
+      "sha256": "41aa0f96a91e678cc1e2b4ce9b92d5ade1917bb31068499a7e491fb1f20b5a46",
+      "actual": "41aa0f96a91e678cc1e2b4ce9b92d5ade1917bb31068499a7e491fb1f20b5a46",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room03/preview.webp",
+      "sha256": "49ecbe0e4878f6a491f09771ecc4604ab4ded266bcf170ab7a0488139d323da4",
+      "actual": "49ecbe0e4878f6a491f09771ecc4604ab4ded266bcf170ab7a0488139d323da4",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room04/room.glb",
+      "sha256": "1948243b2b4b1f6eec5041b1404bcb9f75936828f13a927236d157701ae86c9a",
+      "actual": "1948243b2b4b1f6eec5041b1404bcb9f75936828f13a927236d157701ae86c9a",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room04/preview.webp",
+      "sha256": "5a761e242f18fd90dd50fc84d75a5f22dabc45d5a95bc473bc8314a5f2a4e4e2",
+      "actual": "5a761e242f18fd90dd50fc84d75a5f22dabc45d5a95bc473bc8314a5f2a4e4e2",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room05/room.glb",
+      "sha256": "5c0e9d8f8030f023fc0f53f6ec53f16a63d1a5a2f6ea579db838cca7a2809bd4",
+      "actual": "5c0e9d8f8030f023fc0f53f6ec53f16a63d1a5a2f6ea579db838cca7a2809bd4",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room05/preview.webp",
+      "sha256": "eaf2d8d3a14d1c7dda2ba92b0049d71303b02430d3dfdfb3684238010e06eeb8",
+      "actual": "eaf2d8d3a14d1c7dda2ba92b0049d71303b02430d3dfdfb3684238010e06eeb8",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room06/room.glb",
+      "sha256": "94a250030d5d52e0dc16554581a9500aed4cd0d0d78906811235b9f357c620d8",
+      "actual": "94a250030d5d52e0dc16554581a9500aed4cd0d0d78906811235b9f357c620d8",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room06/preview.webp",
+      "sha256": "0a975c50514d748fe3ee489eb07271c6e6e40c34fc0eb0eafe1bed6f716ce7a3",
+      "actual": "0a975c50514d748fe3ee489eb07271c6e6e40c34fc0eb0eafe1bed6f716ce7a3",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room07/room.glb",
+      "sha256": "20eecb83e707ec8739ab6b170e1b6793c859d23c1d7daeac020ff0398fea7854",
+      "actual": "20eecb83e707ec8739ab6b170e1b6793c859d23c1d7daeac020ff0398fea7854",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room07/preview.webp",
+      "sha256": "29f6ede97c2dba8bca5df4ac74348af75b307f3b5b2b8e27cb9f9a4c04e2e0f8",
+      "actual": "29f6ede97c2dba8bca5df4ac74348af75b307f3b5b2b8e27cb9f9a4c04e2e0f8",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room08/room.glb",
+      "sha256": "dac4ce805c7da8fb135c570ac796659f16ecfca26994d3b9d1f1ab71f705f94a",
+      "actual": "dac4ce805c7da8fb135c570ac796659f16ecfca26994d3b9d1f1ab71f705f94a",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room08/preview.webp",
+      "sha256": "1497a18579e80901ca118e093091aeb5b94ff74b513d31c56bf406b7f4bc7b7d",
+      "actual": "1497a18579e80901ca118e093091aeb5b94ff74b513d31c56bf406b7f4bc7b7d",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room09/room.glb",
+      "sha256": "465e8211c11903fec753f17dc422de53a573c44c1d063ba14fd57e4c8e222c0d",
+      "actual": "465e8211c11903fec753f17dc422de53a573c44c1d063ba14fd57e4c8e222c0d",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room09/preview.webp",
+      "sha256": "e0610862470aa92972e8772d7ace8b4f4aa1575947004aa597cd703e4f48b95d",
+      "actual": "e0610862470aa92972e8772d7ace8b4f4aa1575947004aa597cd703e4f48b95d",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room10/room.glb",
+      "sha256": "1cd5f9908da889f2002b650b5396076fba87950612301e3732a0120c2a0df1e2",
+      "actual": "1cd5f9908da889f2002b650b5396076fba87950612301e3732a0120c2a0df1e2",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room10/preview.webp",
+      "sha256": "4968840eab22e4876951717c7e333e10a46a362143bf64c84d3a02e99f50302f",
+      "actual": "4968840eab22e4876951717c7e333e10a46a362143bf64c84d3a02e99f50302f",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room11/room.glb",
+      "sha256": "41205df490b1cee7b867b97073c409603c81c1ab8eb454417fcf848b2d449cba",
+      "actual": "41205df490b1cee7b867b97073c409603c81c1ab8eb454417fcf848b2d449cba",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room11/preview.webp",
+      "sha256": "bfcd20f323b0be25ad91c8850c0950d20e2ec7b4936b42851cf53dd1c44e7d4b",
+      "actual": "bfcd20f323b0be25ad91c8850c0950d20e2ec7b4936b42851cf53dd1c44e7d4b",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room12/room.glb",
+      "sha256": "c35d978ac61b481df047a21830bc08c76b5eb3c85c56b9f50bf38097adbe9fc9",
+      "actual": "c35d978ac61b481df047a21830bc08c76b5eb3c85c56b9f50bf38097adbe9fc9",
+      "match": true
+    },
+    {
+      "path": "assets/explore/room12/preview.webp",
+      "sha256": "e45108d824542207722e2a0e024a90bbf1adb241507606b49a317d241875c9de",
+      "actual": "e45108d824542207722e2a0e024a90bbf1adb241507606b49a317d241875c9de",
+      "match": true
+    }
+  ],
+  "liveSmoke": [
+    {
+      "viewport": "desktop",
+      "galleryLoaded": true,
+      "frameCount": 41,
+      "firstModelLoaded": true,
+      "webglCanvas": true,
+      "noFallback": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": "phone",
+      "galleryLoaded": true,
+      "frameCount": 41,
+      "firstModelLoaded": true,
+      "webglCanvas": true,
+      "noFallback": true,
+      "pageErrors": []
+    }
+  ],
+  "scope": "Live production file hashes and fresh gallery loads. Full frame-12 walkaround, contact and control inspection used the byte-identical local build; this is not a claim of physical-device frame rate."
+}
