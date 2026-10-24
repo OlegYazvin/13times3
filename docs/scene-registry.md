@@ -52,6 +52,14 @@ plaque. It assigns no portal room or frame ID; La Jolla remains unrendered.
 Implementation, image-generation prompt and inspection/publication status are
 in the [museum notes](museum-gallery-notes.md#a-fighter-in-me--static-entrance-painting).
 
+The static painting **Emotionally Mature Engagement** depicts Jane directing a
+video call toward Zephrine while her parents, Anna and Igor, focus on their
+granddaughter. Jane stays outside the camera's view. This represents a calm,
+child-focused way to maintain contact; it makes no claim that the adults'
+difficulties have disappeared. The painting is added to the entrance's back
+wall, with its exact title on a plaque. It consumes no memory frame ID and
+leaves all portal assignments intact. See [museum notes](museum-gallery-notes.md).
+
 The shared museum hub is published as **Jane's Year Exhibit**. Its initial release used five broad
 galleries with paintings, stone architecture, sculpture islands, benches and
 flame sconces with nearby crackling. **The Dishwasher Dilemma** is a standalone

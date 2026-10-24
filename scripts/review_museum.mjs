@@ -14,7 +14,7 @@ const snapshot=page=>page.evaluate(()=>{const canvas=document.querySelector('#sc
 try{
  for(const phone of draft?[false]:[false,true]){
   const page=await browser.newPage(phone?{viewport:{width:390,height:844},isMobile:true,hasTouch:true,deviceScaleFactor:1}:{viewport:{width:1100,height:800}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.goto(base+'/explore/',{waitUntil:'networkidle'});await page.waitForFunction(()=>window.__galleryDebug?.().museum.modelReady&&window.__galleryDebug().museum.catWhispererReady&&window.__galleryDebug().museum.artReady===2,null,{timeout:60000});
+  await page.goto(base+'/explore/',{waitUntil:'networkidle'});await page.waitForFunction(()=>window.__galleryDebug?.().museum.modelReady&&window.__galleryDebug().museum.catWhispererReady&&window.__galleryDebug().museum.artReady===window.__galleryDebug().museum.artExpected,null,{timeout:60000});
   assert.equal(await page.locator('#welcome').isVisible(),false);assert.equal(await page.locator('#fallback').isVisible(),false);
   const initial=await page.evaluate(()=>window.__galleryDebug());
   assert.equal(initial.storedFrameCount,41);assert.equal(initial.frameCount,13);

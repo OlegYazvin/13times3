@@ -1,0 +1,176 @@
+{
+  "recordedAt": "2026-10-24T20:03:50.374Z",
+  "paintingSha256": "0aeb44e4cf9a9289a0c561ca2458da222ca0d14f9118997a47f10b50e88ab57b",
+  "appSha256": "253dcfd06f02ffda7481c4c4a25974ba195102f7d7cb7f65c094ba656e2c84bb",
+  "manifestSha256": "cee81a462dc78832282edaa14f8aaff63c6cf6a493e5a5fd723d02c339391d4a",
+  "results": [
+    {
+      "viewport": "desktop",
+      "staticArtworks": 3,
+      "storedFrames": 41,
+      "exhibitedFrames": 13,
+      "exactTitleInAccessibleDescription": true,
+      "noFallback": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": "portrait-phone",
+      "staticArtworks": 3,
+      "storedFrames": 41,
+      "exhibitedFrames": 13,
+      "exactTitleInAccessibleDescription": true,
+      "noFallback": true,
+      "pageErrors": []
+    }
+  ],
+  "fallback": {
+    "portrait": true,
+    "paintingAndExactTitle": true,
+    "staticMuseumArtworks": 2,
+    "memoryPreviews": 12,
+    "noHorizontalOverflow": true
+  },
+  "asset": {
+    "source": "Built-in imagegen; second composition selected",
+    "width": 1536,
+    "height": 1024,
+    "bytes": 679582,
+    "sha256": "0aeb44e4cf9a9289a0c561ca2458da222ca0d14f9118997a47f10b50e88ab57b",
+    "hasExif": false,
+    "hasXmp": false
+  },
+  "precedingCommit": "adafa7b5c15664d45c124e5a6bb41cf40f28de76",
+  "unchanged": {
+    "manifest": true,
+    "allMemoryAssets": true,
+    "existingSculpturesAndPaintings": true,
+    "originalAchievements": true
+  },
+  "siteChecks": {
+    "achievementPages": 39,
+    "canonicalFrames": 41,
+    "assignedRooms": 12,
+    "unitTestsPassed": 34,
+    "allPublishedModelsValid": true
+  },
+  "artReview": {
+    "likenessReferencesInspected": true,
+    "zephrineFullCurls": true,
+    "janeBehindDevice": true,
+    "parentsTogetherOnScreen": true,
+    "styleMatchesFighter": true,
+    "firstCompositionRejectedForCameraPlacement": true,
+    "normalCloseSidesAndPortrait": true,
+    "exactPlaqueTitleReadable": true,
+    "privatePhotosAndMetadataPublished": false,
+    "physicalPhoneNotMeasured": true,
+    "scope": "Static artwork only; a symbolic interpretation of the requested interaction, not a claim that adult family difficulties are resolved."
+  },
+  "museumChecks": {
+    "build": {
+      "recordedAt": "2026-10-24T20:06:06.241Z",
+      "appSha256": "253dcfd06f02ffda7481c4c4a25974ba195102f7d7cb7f65c094ba656e2c84bb",
+      "manifestSha256": "cee81a462dc78832282edaa14f8aaff63c6cf6a493e5a5fd723d02c339391d4a",
+      "statueSha256": "0100869e1814c9fe32143bec426f93a4d9cb507363bf9c505e60b5f850bf1c31"
+    },
+    "results": [
+      {
+        "viewport": "desktop",
+        "storedFrameCount": 41,
+        "exhibitedFrames": [
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "galleries": [
+          "Growing Together",
+          "Holding Each Other",
+          "Out in the World"
+        ],
+        "alwaysOnSconceLights": 9,
+        "alwaysOnPendantLights": 9,
+        "stationaryLightingAcrossWalkingRoute": true,
+        "noStartOverlay": true,
+        "immediateKeyboardMovement": true,
+        "optionalHelp": true,
+        "modelReady": true,
+        "catWhispererReady": true,
+        "originalPaintings": 3,
+        "flameCount": 9,
+        "colliders": 15,
+        "allGalleryRoutes": true,
+        "bothSidesOfEverySculpture": true,
+        "fireAudio": {
+          "voices": 2,
+          "nearLevels": [
+            0.16808526948039235,
+            0
+          ],
+          "silentAway": true,
+          "mutePersists": true,
+          "silentInRooms": true
+        },
+        "pageErrors": []
+      },
+      {
+        "viewport": "phone",
+        "storedFrameCount": 41,
+        "exhibitedFrames": [
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "galleries": [
+          "Growing Together",
+          "Holding Each Other",
+          "Out in the World"
+        ],
+        "alwaysOnSconceLights": 9,
+        "alwaysOnPendantLights": 9,
+        "stationaryLightingAcrossWalkingRoute": true,
+        "noStartOverlay": true,
+        "immediateKeyboardMovement": true,
+        "optionalHelp": true,
+        "modelReady": true,
+        "catWhispererReady": true,
+        "originalPaintings": 3,
+        "flameCount": 9,
+        "colliders": 15,
+        "allGalleryRoutes": true,
+        "bothSidesOfEverySculpture": true,
+        "fireAudio": {
+          "voices": 2,
+          "nearLevels": [
+            0.16808526948039235,
+            0
+          ],
+          "silentAway": true,
+          "mutePersists": true,
+          "silentInRooms": true
+        },
+        "pageErrors": []
+      }
+    ],
+    "draft": false
+  }
+}

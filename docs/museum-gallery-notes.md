@@ -1,5 +1,55 @@
 # Jane's Year Exhibit — museum hub revision
 
+## Emotionally Mature Engagement — static family painting
+
+The user requested a painting of Jane finding a way to interact with her parents
+by showing them Zephrine and focusing on Zephrine. This is a new static artwork,
+separate from the twelve portal memories. It hangs on the entrance back wall,
+visible by turning around after arrival, without replacing A Fighter in Me or
+the lakeshore painting. Its exact title is **Emotionally Mature Engagement**.
+
+The composition interprets the brief as a video call, supported by the private
+call reference: Jane stays outside the camera's view and calmly guides its angle
+toward her daughter. Zephrine is the visual focus; Anna and Igor appear together
+on the tablet screen. It depicts a bounded way to stay connected, rather than
+claiming the family relationship has been resolved. The figurative painting
+uses the cream, teal/cobalt, charcoal and orange-gold visual language of
+A Fighter in Me and the original achievement paintings.
+
+The built-in imagegen tool uses the existing painting as a style reference and
+private Jane, Zephrine, Anna and Igor photographs for likeness. Their photos,
+backgrounds and metadata remain private. The generated artwork is encoded as
+metadata-free WebP; the title is a real plaque rather than text in its pixels.
+The accessible description and WebGL fallback include the new artwork. No
+canonical frame record, memory asset, sculpture, fixture or collision changes.
+
+- [Generation prompt](emotionally-mature-engagement-prompt.txt).
+- Asset: `src/assets/explore/museum/emotionally-mature-engagement.webp`.
+
+Observed checklist:
+
+- [x] Inspect the generated artwork for likeness, emphasis on Zephrine, camera geometry and style.
+- [x] Inspect the hung painting and title from normal distance, close, and both sides.
+- [x] Inspect fresh portrait loads and the text/image fallback.
+- [x] Complete appropriate site/browser checks and confirm unchanged memory assignments and assets.
+- [ ] Publish and verify production bytes and fresh loads.
+
+The first generated arrangement put Jane beside Zephrine, within the device's
+possible view, and was rejected. The selected edit places Jane behind the tablet
+and keeps Zephrine in front of its camera. Her abundant curls, Anna's burgundy
+glasses, Igor's dark frames and Jane's high bun follow their references.
+
+[Nine gallery/fallback views](scene-evidence/emotionally-mature-engagement/index.html)
+and [verification](scene-evidence/emotionally-mature-engagement/verification.json)
+bind the selected image and app hashes to the observed result. The image is
+1536 × 1024, 679,582 bytes, without EXIF or XMP. The plaque is readable in
+desktop and portrait views, and the fallback fits without horizontal overflow.
+All 34 unit tests, site/model checks and the desktop/portrait museum suite pass,
+including movement, fixed lighting, sound and controls. The full manifest,
+existing memory models/previews and earlier paintings/sculptures are unchanged.
+No physical-phone performance measurement or wider character-art acceptance
+is claimed by this static-art revision.
+
 ## Lighting fixtures — Jane’s reference collection
 
 The user supplied five lighting photographs: a copper ring with branching opal

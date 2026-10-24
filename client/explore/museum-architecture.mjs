@@ -164,9 +164,14 @@ export function decorateMuseum(scene,layout,assetBase,assetVersion){
  loader.load(url('assets/explore/museum/dishwasher.glb'),g=>{statueMount.add(g.scene);state.modelReady=true;},undefined,e=>{state.modelError=true;console.warn('The gallery sculpture could not load',e);});
  loader.load(url('assets/explore/museum/cat-whisperer.glb'),g=>{catMount.add(g.scene);state.catWhispererReady=true;},undefined,e=>{state.catWhispererError=true;console.warn('Cat Whisperer could not load',e);});
  const textureLoader=new THREE.TextureLoader();
- for(const [i,{path,title}]of [{path:'a-fighter-in-me.webp',title:'A Fighter in Me'},{path:'shore.webp'}].entries()){
-  const g=new THREE.Group();g.position.set((i?1:-1)*(HALL_WIDTH/2-.18),2.30,-1.65);g.rotation.y=i?-Math.PI/2:Math.PI/2;entrance.add(g);
-  const w=i?2.35:1.85,h=i?1.57:1.85;
+ const artworks=[
+  {path:'a-fighter-in-me.webp',title:'A Fighter in Me',position:[-HALL_WIDTH/2+.18,2.30,-1.65],yaw:Math.PI/2,w:1.85,h:1.85},
+  {path:'shore.webp',position:[HALL_WIDTH/2-.18,2.30,-1.65],yaw:-Math.PI/2,w:2.35,h:1.57},
+  {path:'emotionally-mature-engagement.webp',title:'Emotionally Mature Engagement',position:[0,2.44,-.16],yaw:Math.PI,w:2.95,h:1.97},
+ ];
+ state.artExpected=artworks.length;
+ for(const {path,title,position,yaw,w,h}of artworks){
+  const g=new THREE.Group();g.position.fromArray(position);g.rotation.y=yaw;entrance.add(g);
   box(g,'decorative oil painting gilded frame',[0,0,0],[w+.22,h+.22,.12],bronze,.02);
   box(g,'linen mount around the original oil painting',[0,0,.07],[w+.09,h+.09,.025],stone,.003);
   const texture=textureLoader.load(url('assets/explore/museum/'+path),()=>state.artReady++);texture.colorSpace=THREE.SRGBColorSpace;

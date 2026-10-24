@@ -18,6 +18,7 @@ eleventyExcludeFromCollections: true
     <main class="experience" id="experience" data-base-path="{{ '/' | url }}" data-room-version="{{ galleryRoomVersion }}" data-music-url="{{ '/assets/explore/resolutions-scott-buckley.mp3' | url }}?v={{ exploreMusicVersion }}">
       <div class="scene" id="scene" aria-hidden="true"></div>
       <p class="sr-only">Static museum painting: A Fighter in Me. Jane holds her ground amid dark blue and luminous gold brushstrokes.</p>
+      <p class="sr-only">Static museum painting: Emotionally Mature Engagement. Jane calmly guides a video call so her parents, Anna and Igor, can focus on Zephrine.</p>
       <p class="sr-only">Museum sculpture: Cat Whisperer. A seated stone Jane with four cats: one on her shoulder, one on her lap, and two beside her stool.</p>
       <p class="sr-only">Warm lighting throughout the museum includes glowing leaf chandeliers, alabaster globes, glass pendants, hanging Edison bulbs and crystal chandeliers.</p>
       <div class="vignette" aria-hidden="true"></div>
@@ -60,8 +61,9 @@ eleventyExcludeFromCollections: true
         <div class="fallback-card">
           <p class="eyebrow">The gallery</p>
           <h1>The gallery is waiting.</h1>
-          <p>This browser could not open the 3D exhibit. Twelve memory paintings and a museum artwork are available below. The La Jolla memory is planned.</p>
+          <p>This browser could not open the 3D exhibit. Twelve memory paintings and two museum artworks are available below. The La Jolla memory is planned.</p>
           <figure class="fallback-static-art"><img class="fallback-preview" src="{{ '/assets/explore/museum/a-fighter-in-me.webp' | url }}?v={{ galleryRoomVersion }}" alt="Jane with a hand over her heart amid dark blue, teal, orange and gold brushstrokes."><figcaption>A Fighter in Me</figcaption></figure>
+          <figure class="fallback-static-art"><img class="fallback-preview" src="{{ '/assets/explore/museum/emotionally-mature-engagement.webp' | url }}?v={{ galleryRoomVersion }}" alt="Jane calmly directs a video call toward curly-haired Zephrine while Anna and Igor look at their granddaughter from the tablet screen."><figcaption>Emotionally Mature Engagement</figcaption></figure>
           <div class="fallback-previews">
             {% for frame in gallery.frames %}{% if frame.room.modelUrl %}
               <figure><img class="fallback-preview" src="{{ frame.room.previewImage | url }}?v={{ galleryRoomVersion }}" alt="{{ frame.room.caption }}"><figcaption>{{ frame.room.caption }}</figcaption></figure>
