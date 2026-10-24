@@ -145,22 +145,23 @@ export function decorateMuseum(scene,layout,assetBase,assetVersion){
  arch(entrance,6.9,1.5,3.80,-4);
  box(entrance,'suspended stone exhibit title backing',[0,3.36,-3.80],[4.05,.91,.16],green,.065);
  textPanel(entrance,"Jane's Year Exhibit",[0,3.36,-3.708],3.78,.80,{lines:["Jane's Year",'Exhibit']});
- const statueMount=new THREE.Group();
+ const statueMount=new THREE.Group(),catMount=new THREE.Group();
  for(const [i,e]of museumExhibits(layout).entries()){
   const group=sections[e.section.index],plinth=new THREE.Group();plinth.position.z=-e.along;group.add(plinth);
   box(plinth,'stepped stone sculpture footing',[0,.075,0],[e.width,.15,e.depth],edge,.045);
   box(plinth,'green marble sculpture plinth',[0,.30,0],[e.width-.16,.34,e.depth-.16],blackStone,.045);
   box(plinth,'beveled limestone sculpture cap',[0,.51,0],[e.width-.06,.09,e.depth-.06],stone,.035);
   const ring=new THREE.Mesh(new THREE.RingGeometry(2.0,2.025,80),inlayBronze);ring.rotation.x=-Math.PI/2;ring.position.y=.001;plinth.add(ring);
-  const title=i===0?'The Dishwasher Dilemma':`${e.id==='spiral'?'Bronze':'Stone'} Study ${['','I','II','III','IV'][i]}`;
+  const title=i===0?'The Dishwasher Dilemma':e.id==='cat-whisperer'?'Cat Whisperer':`${e.id==='spiral'?'Bronze':'Stone'} Study ${['','I','II','III','IV'][i]}`;
   textPanel(plinth,title,[0,.31,e.depth/2-.066],i===0?2.75:1.95,.20,{color:'#e8deca',background:'#3e4945'});
-  if(i===0){statueMount.position.set(0,.555,0);plinth.add(statueMount);}else{const stand=new THREE.Group();stand.position.y=.555;plinth.add(stand);addAbstract(stand,e.id);}
+  if(i===0){statueMount.position.set(0,.555,0);plinth.add(statueMount);}else if(e.id==='cat-whisperer'){catMount.position.set(0,.555,0);plinth.add(catMount);}else{const stand=new THREE.Group();stand.position.y=.555;plinth.add(stand);addAbstract(stand,e.id);}
   addBench(group,e.along+5.4);
  }
  const loader=new GLTFLoader();loader.setMeshoptDecoder(MeshoptDecoder);
- const state={modelReady:false,artReady:0,modelError:false};
+ const state={modelReady:false,catWhispererReady:false,artReady:0,modelError:false,catWhispererError:false};
  const url=path=>assetBase+path+(assetVersion?'?v='+assetVersion:'');
  loader.load(url('assets/explore/museum/dishwasher.glb'),g=>{statueMount.add(g.scene);state.modelReady=true;},undefined,e=>{state.modelError=true;console.warn('The gallery sculpture could not load',e);});
+ loader.load(url('assets/explore/museum/cat-whisperer.glb'),g=>{catMount.add(g.scene);state.catWhispererReady=true;},undefined,e=>{state.catWhispererError=true;console.warn('Cat Whisperer could not load',e);});
  const textureLoader=new THREE.TextureLoader();
  for(const [i,{path,title}]of [{path:'a-fighter-in-me.webp',title:'A Fighter in Me'},{path:'shore.webp'}].entries()){
   const g=new THREE.Group();g.position.set((i?1:-1)*(HALL_WIDTH/2-.18),2.30,-1.65);g.rotation.y=i?-Math.PI/2:Math.PI/2;entrance.add(g);

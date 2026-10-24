@@ -1,0 +1,208 @@
+{
+  "recordedAt": "2026-10-24T17:33:49.008Z",
+  "statueSha256": "ef4573efb8a19ec61d5fb39171ca9d4c22b614dfb053ee9556111c29a151a9b6",
+  "appSha256": "cf502dffc95ae655b5e249d11abc6336003d57ea140aa9c6c22f4baa6a382fd8",
+  "manifestSha256": "cee81a462dc78832282edaa14f8aaff63c6cf6a493e5a5fd723d02c339391d4a",
+  "results": [
+    {
+      "viewport": "desktop",
+      "catsLoaded": true,
+      "bothWalkingRoutes": true,
+      "storedFrames": 41,
+      "exhibitedFrames": 13,
+      "pageErrors": []
+    },
+    {
+      "viewport": "portrait-phone",
+      "catsLoaded": true,
+      "bothWalkingRoutes": true,
+      "storedFrames": 41,
+      "exhibitedFrames": 13,
+      "pageErrors": []
+    }
+  ],
+  "sourceContacts": {
+    "contacts": {
+      "shoulderFit": {
+        "fittedVertices": 5608,
+        "maxDeformM": 0.07293612716894854
+      },
+      "lapFit": {
+        "fittedVertices": 4073,
+        "maxDeformM": 0.07317674195090759
+      },
+      "shoulderToShirtM": 7.331648657092283e-9,
+      "lapToTrousersM": 0.0013662168134195153,
+      "leftHandToShoulderCatM": 0.00004132820242910145,
+      "rightHandToLapCatM": 0.0013397852555172866,
+      "stoolToTrousersM": 0.0002829174934942678,
+      "leftHandPenetration": {
+        "verticesInsideOver1mm": 0,
+        "maxDepthM": 0
+      },
+      "rightHandPenetration": {
+        "verticesInsideOver1mm": 0,
+        "maxDepthM": 0
+      }
+    },
+    "bounds": {
+      "min": [
+        -0.8124073147773743,
+        -0.00245885387994349,
+        -0.333703875541687
+      ],
+      "max": [
+        0.8195429444313049,
+        1.4538036584854126,
+        0.6472536325454712
+      ]
+    }
+  },
+  "precedingCommit": "ef215adb93e87c470fe00934d0681df37b3fee38",
+  "unchanged": {
+    "manifest": true,
+    "memoryAssets": true,
+    "originalAchievementPages": true
+  },
+  "asset": {
+    "bytes": 963748,
+    "images": 0,
+    "textures": 0,
+    "sha256": "ef4573efb8a19ec61d5fb39171ca9d4c22b614dfb053ee9556111c29a151a9b6",
+    "bounds": {
+      "min": [
+        -0.8124073147773743,
+        -0.00245885387994349,
+        -0.333703875541687
+      ],
+      "max": [
+        0.8195429444313049,
+        1.4538036584854126,
+        0.6472536325454712
+      ]
+    },
+    "containedInsidePlinth": true
+  },
+  "artReview": {
+    "multiAngleDesktop": true,
+    "freshPortraitEmulation": true,
+    "labelReadable": true,
+    "shoulderCatVisible": true,
+    "seatedCatVisible": true,
+    "allCatsDimensional": true,
+    "physicalPhoneNotMeasured": true,
+    "scope": "This sculpture; wider memory-scene artistic acceptance remains open."
+  },
+  "museumChecks": {
+    "build": {
+      "recordedAt": "2026-10-24T17:35:50.953Z",
+      "appSha256": "cf502dffc95ae655b5e249d11abc6336003d57ea140aa9c6c22f4baa6a382fd8",
+      "manifestSha256": "cee81a462dc78832282edaa14f8aaff63c6cf6a493e5a5fd723d02c339391d4a",
+      "statueSha256": "0100869e1814c9fe32143bec426f93a4d9cb507363bf9c505e60b5f850bf1c31"
+    },
+    "results": [
+      {
+        "viewport": "desktop",
+        "storedFrameCount": 41,
+        "exhibitedFrames": [
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "galleries": [
+          "Growing Together",
+          "Holding Each Other",
+          "Out in the World"
+        ],
+        "alwaysOnSconceLights": 9,
+        "stationaryLightingAcrossWalkingRoute": true,
+        "noStartOverlay": true,
+        "immediateKeyboardMovement": true,
+        "optionalHelp": true,
+        "modelReady": true,
+        "catWhispererReady": true,
+        "originalPaintings": 2,
+        "flameCount": 9,
+        "colliders": 15,
+        "allGalleryRoutes": true,
+        "bothSidesOfEverySculpture": true,
+        "fireAudio": {
+          "voices": 2,
+          "nearLevels": [
+            0.16808526948039235,
+            0
+          ],
+          "silentAway": true,
+          "mutePersists": true,
+          "silentInRooms": true
+        },
+        "pageErrors": []
+      },
+      {
+        "viewport": "phone",
+        "storedFrameCount": 41,
+        "exhibitedFrames": [
+          "01",
+          "02",
+          "03",
+          "04",
+          "05",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "11",
+          "12",
+          "13"
+        ],
+        "galleries": [
+          "Growing Together",
+          "Holding Each Other",
+          "Out in the World"
+        ],
+        "alwaysOnSconceLights": 9,
+        "stationaryLightingAcrossWalkingRoute": true,
+        "noStartOverlay": true,
+        "immediateKeyboardMovement": true,
+        "optionalHelp": true,
+        "modelReady": true,
+        "catWhispererReady": true,
+        "originalPaintings": 2,
+        "flameCount": 9,
+        "colliders": 15,
+        "allGalleryRoutes": true,
+        "bothSidesOfEverySculpture": true,
+        "fireAudio": {
+          "voices": 2,
+          "nearLevels": [
+            0.16808526948039235,
+            0
+          ],
+          "silentAway": true,
+          "mutePersists": true,
+          "silentInRooms": true
+        },
+        "pageErrors": []
+      }
+    ],
+    "draft": false
+  },
+  "siteChecks": {
+    "originalAchievementPages": 39,
+    "canonicalFrames": 41,
+    "assignedRooms": 12,
+    "unitTestsPassed": 34,
+    "allPublishedModelsValid": true
+  }
+}

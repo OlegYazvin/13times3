@@ -1,5 +1,47 @@
 # Jane's Year Exhibit — museum hub revision
 
+## Cat Whisperer — second gallery sculpture
+
+The requested **Cat Whisperer** replaces the abstract stone study in the
+second gallery, Holding Each Other. Jane sits on a carved stool with four cats:
+a smaller one on her shoulder, another on her lap, a seated cat by her left foot
+and a walking cat circling the stool. Her head turns toward the shoulder cat;
+one hand cups beside it while the other touches the lap cat's back. Warm ivory
+and pale grey stone unify Jane, the cats and furniture with the museum collection.
+The exact title is on the existing plinth. No memory room or frame is assigned.
+
+[Author](../scripts/cat_whisperer_author.mjs),
+[build script](../scripts/build_cat_whisperer.mjs), and
+[source and license notes](../scripts/assets/museum/cat-sources.md).
+Innerscene's CC0 sitting and walking cats were inspected, adapted and composed
+in the actual poses. All texture maps and eye glints are removed. Weight-bearing
+surfaces fit the posed clothing. Jane uses the existing dimensional sculpture
+system; no private photograph or metadata is embedded.
+
+Observed checklist (reviewed candidate; publication pending):
+
+- [x] Inspect candidate cats and the first exported arrangement from front, sides and rear.
+- [x] Correct the raised-hand gap, hand/head intersection and stool contact exposed by that review.
+- [x] Source contact checks: both hands clear cat skin by the 1 mm penetration test;
+  shoulder, lap, hands and stool each have a sampled support gap below 2 mm.
+- [x] Inspect the final packed asset from normal distance, close, profiles and rear on desktop and fresh portrait emulation.
+- [x] Verify walking routes, build/site/model checks, and unchanged memory assets and assignments.
+- [ ] Publish and verify live bytes and fresh browser loads.
+
+The [multi-angle review](scene-evidence/cat-whisperer/index.html) and
+[verification record](scene-evidence/cat-whisperer/verification.json) bind the
+final captures to model and app hashes. Desktop and fresh portrait loads show
+the shoulder perch, lap seating, dimensional cats and title. Both sculpture
+walking routes, museum controls, steady lights, sound, room entry and return
+pass. Site/model checks and all 34 unit tests pass. The packed model is 963,748
+bytes with no textures or images. All twelve memory assets and the full
+manifest remain unchanged.
+
+The two visible walking lanes and existing plinth collision are retained. The
+sculpture bounds stay inside that plinth. Source contact tests and functional
+checks do not establish portrait likeness or physical-phone performance. The
+wider memory-scene art backlog remains open.
+
 ## A Fighter in Me — static entrance painting
 
 The user requested one static painting representing Jane's resilience through

@@ -50,7 +50,10 @@ flame sconces with nearby crackling. **The Dishwasher Dilemma** is a standalone
 monochrome stone assemblage of Jane sweating beside an open, loaded dishwasher,
 with suspended `@#$!` symbols. It does not consume a frame or replace frame 02's
 household-support vignette. Abstract stone studies occupy the other gallery
-islands, ready for later sculpture ideas. Current inspection and release status:
+islands in the initial release. **Cat Whisperer** now replaces the second
+gallery's abstract study: a seated stone Jane with four cats, including one on
+her shoulder and one on her lap. This is a shared-gallery sculpture, with no
+new memory assignment or frame ID. Current inspection and release status:
 [museum notes](museum-gallery-notes.md).
 
 October 23 continued local revision: the seven-stop route gains deeper building

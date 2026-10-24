@@ -6,7 +6,7 @@ function footprint(section,x,along,width,depth){
  return {minX:Math.min(...points.map(p=>p.x)),maxX:Math.max(...points.map(p=>p.x)),minZ:Math.min(...points.map(p=>p.z)),maxZ:Math.max(...points.map(p=>p.z))};
 }
 export function museumExhibits(layout){
- return layout.sections.map((section,i)=>({id:['dishwasher','ribbon','embrace'][i],section,along:i===0?14.4:section.length*.52,width:i===0?3.1:2.45,depth:i===0?2.5:2.1}));
+ return layout.sections.map((section,i)=>({id:['dishwasher','cat-whisperer','embrace'][i],section,along:i===0?14.4:section.length*.52,width:i===0?3.1:2.45,depth:i===0?2.5:2.1}));
 }
 export function museumColliders(layout){
  const colliders=[];
