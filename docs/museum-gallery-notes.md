@@ -1,5 +1,53 @@
 # Jane's Year Exhibit — museum hub revision
 
+## Current follow-up — three galleries and continuous light
+
+The October 24 follow-up curates the twelve existing memories into three
+galleries, with one labeled blank canvas reserved for La Jolla:
+
+| Gallery | Frames in walking order |
+| --- | --- |
+| Growing Together | `01`, `03`, `04`, `06` |
+| Holding Each Other | `02`, `05`, `12`, `10` |
+| Out in the World | `07`, `09`, `08`, `11`, `13` (La Jolla, planned) |
+
+The full manifest still stores all 41 canonical IDs and their original room
+assignments. `exhibit.sections` controls the hung selection and order; the old
+section/side/bay fields remain storage slots for compatibility. IDs `14`–`41`
+are outside the current exhibition. La Jolla has no authored scene or preview.
+The shorter route has three sculpture islands and benches, retaining the
+Dishwasher Dilemma and two original abstract studies.
+
+Every sconce has a stationary, always-on point light. The initial release's
+two nearest lights caused the visible switching reported by Oleg; that policy
+is removed. Only the gentle crackling depends on visitor distance. The scene
+piano remains the same provider stream, clipped off-screen and excluded from
+focus instead of placing its player over the artwork. Sound remains its
+control and Credits retains the artist/source link. A genuine later movement
+or touch retries playback if a browser initially blocks it.
+
+Local checks pass; publication is pending. See the [follow-up evidence](scene-evidence/museum-followup/index.html) and [verification record](scene-evidence/museum-followup/verification.json).
+
+Observed desktop and fresh portrait-emulation review confirms thirteen hung
+memory frames, three galleries, fifteen solid display footprints and nine
+stationary lights. The warm pools are visible from the entrance, before any
+approach. The La Jolla canvas clears the wall trim. Real provider PLAY and
+progress events confirm piano streaming on desktop and portrait touch, with
+no visible player or keyboard focus target. Mute, return, other-room silence
+and provider failure recovery pass.
+
+All twelve memories pass entry, return, collision, controls and cleanup at their
+new placements. An old cleanup probe initially landed near frame 07 in the
+shortened layout; it now probes beyond every exhibited frame and passes the
+same disposal assertions. Application cleanup logic is unchanged. Global
+resize/fallback checks, site and packed-geometry checks, and all 31 unit tests
+pass. Every room's metadata and all room model/preview assets remain unchanged.
+All 39 original achievement URLs and 41 canonical frame IDs remain. La Jolla
+has null model and preview URLs; no scene is authored. Physical-phone performance
+and listening were not measured. The wider character/art backlog remains open.
+
+## Initial five-gallery release
+
 The user replaces the plain central hallway with an art museum. This changes
 the shared gallery architecture, entrance and sound; it assigns no new memory
 room. The 41 frame IDs, existing twelve room assignments, blank frames 13–41,

@@ -71,7 +71,7 @@ try {
       roomTitle.textContent = mode === "room" ? frame.room.title || `Room ${frame.label}` : "";
       status.textContent = mode === "room"
         ? `Room ${frame.label}`
-        : `Gallery ${nearestSection(player, gallery.layout.sections).section.index + 1} / 5`;
+        : `Gallery ${nearestSection(player, gallery.layout.sections).section.index + 1} / ${gallery.layout.sections.length}`;
     },
   });
   if (["localhost", "127.0.0.1"].includes(window.location.hostname)) {
@@ -94,7 +94,9 @@ try {
       roomColliders: rooms.active?.colliders ?? [],
       frame01Painting: Boolean(gallery.frameMeshes.get("01").surface.material.map?.image?.width),
       frameCount: gallery.layout.frames.length,
-      museum:{...gallery.museum.state,flameCount:gallery.museum.sites.length,colliders:gallery.colliders,audioLevels:flameAudio.levels,audioVoices:flameAudio.voices.length,drawCalls:renderer.info.render.calls},
+      storedFrameCount: gallery.layout.storedFrameCount,
+      exhibitedFrames: gallery.layout.frames.map(f=>f.id),
+      museum:{...gallery.museum.state,flameCount:gallery.museum.sites.length,lights:gallery.museum.lights.map(l=>({position:l.position.toArray(),intensity:l.intensity})),colliders:gallery.colliders,audioLevels:flameAudio.levels,audioVoices:flameAudio.voices.length,drawCalls:renderer.info.render.calls},
       music: {
         started: galleryMusic.started,
         enabled: galleryMusic.enabled,
@@ -208,8 +210,8 @@ try {
       const current = nearestSection(player, gallery.layout.sections).section.index + 1;
       if (current !== sectionNumber) {
         sectionNumber = current;
-        status.textContent = `Gallery ${current} / 5`;
-        announcement.textContent = `Gallery section ${current} of 5.`;
+        status.textContent = `Gallery ${current} / ${gallery.layout.sections.length}`;
+        announcement.textContent = `Gallery section ${current} of ${gallery.layout.sections.length}: ${gallery.layout.sections[current-1].title}.`;
       }
     }
 
@@ -248,9 +250,10 @@ try {
   renderer.domElement.setAttribute("aria-label", "Jane's Year Exhibit. Use W A S D or arrow keys to move and drag to look. Help has full instructions.");
   // The exhibit opens directly in the architectural entrance. Audio unlocks
   // on the first genuine movement/look interaction, without a start overlay.
-  renderer.domElement.addEventListener('pointerdown',()=>galleryMusic.begin(),{once:true,capture:true});
-  document.getElementById('joystick').addEventListener('pointerdown',()=>galleryMusic.begin(),{once:true,capture:true});
-  window.addEventListener('keydown',event=>{if(/^(Key[WASD]|Arrow(Up|Down|Left|Right))$/.test(event.code))galleryMusic.begin();});
+  const soundGesture=()=>{galleryMusic.begin();sceneMusic.resumeFromGesture();};
+  renderer.domElement.addEventListener('pointerdown',soundGesture,{capture:true});
+  document.getElementById('joystick').addEventListener('pointerdown',soundGesture,{capture:true});
+  window.addEventListener('keydown',event=>{if(/^(Key[WASD]|Arrow(Up|Down|Left|Right))$/.test(event.code))soundGesture();});
   controls.setEnabled(true);
   renderer.domElement.addEventListener("webglcontextlost", (event) => {
     event.preventDefault();

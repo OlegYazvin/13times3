@@ -9,3 +9,9 @@ The hallway uses **“Resolutions” by Scott Buckley**, selected by Oleg on 202
 - Change: the original 320 kbps MP3 was re-encoded to 128 kbps stereo MP3 for smaller web delivery. No musical edit was made.
 
 Keep the track title, artist, source link, license link, and change notice on the public `/credits/` page, linked from the site's navigation. Do not upload the music to a streaming service or audio fingerprinting system. The track starts on the visitor's first movement/look interaction, fades in, and has a Sound control. It fades out in an entered room and back in on return to the museum gallery. The same Sound preference controls the museum's original procedural, distance-based flame crackle; see [museum notes](museum-gallery-notes.md).
+
+Frame 01's existing Benny Martin piano stream now uses an off-screen provider
+player, with no overlay on the scene. The artist/source link stays on Credits.
+The global Sound control, room entry/exit and background-tab silence apply as
+before. If autoplay is blocked, the next genuine movement or touch retries the
+ready player. No recording is copied or rehosted.

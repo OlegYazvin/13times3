@@ -19,7 +19,7 @@ const finishedSnapshot=page=>page.evaluate(()=>{
 });
 const executablePath=await galleryBrowserExecutable();
 const manifest=JSON.parse(await readFile('src/_data/gallery.json','utf8'));
-const frames=buildLayout(manifest).frames.filter(f=>f.room.modelUrl);
+const exhibitLayout=buildLayout(manifest),frames=exhibitLayout.frames.filter(f=>f.room.modelUrl);
 const output='.cache/art-review';await mkdir(output,{recursive:true});
 const approachesOnly=process.argv.includes('--approaches');
 const profilesOnly=process.argv.includes('--profiles');
@@ -41,11 +41,11 @@ if(process.argv.includes('--global')){
  await p.setViewportSize({width:390,height:844});await p.waitForFunction(()=>window.__galleryDebug().cameraFov===100);
  const size=await p.locator('#scene canvas').boundingBox();assert.ok(size.width>=380&&size.height>700);
  await p.evaluate(()=>document.querySelector('#scene canvas').getContext('webgl2').getExtension('WEBGL_lose_context').loseContext());
- await p.locator('#fallback').waitFor({state:'visible'});assert.equal(await p.locator('.frame-list li').count(),41);await p.close();
+ await p.locator('#fallback').waitFor({state:'visible'});assert.equal(await p.locator('.frame-list li').count(),exhibitLayout.frames.length);await p.close();
  const fallback=await browser.newContext();await fallback.addInitScript(()=>{const get=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(kind,...args){return kind==='webgl2'?null:get.call(this,kind,...args);};});
- const f=await fallback.newPage();await f.goto(base+'/explore/');await f.locator('#fallback').waitFor({state:'visible'});assert.equal(await f.locator('.frame-list li').count(),41);assert.equal(await f.locator('.fallback-previews img').count(),frames.length);await fallback.close();
+ const f=await fallback.newPage();await f.goto(base+'/explore/');await f.locator('#fallback').waitFor({state:'visible'});assert.equal(await f.locator('.frame-list li').count(),exhibitLayout.frames.length);assert.equal(await f.locator('.fallback-previews img').count(),frames.length);await fallback.close();
  const failed=await browser.newPage();await failed.route('**/assets/explore/room01/room.glb*',r=>r.abort());await failed.goto(base+'/explore/');await enterExhibit(failed);await failed.waitForTimeout(500);assert.equal((await failed.evaluate(()=>window.__galleryDebug())).mode,'hall');await failed.close();
- await writeFile(output+'/global-verification.json',JSON.stringify({dragLook:true,resize:true,webglLossFallback:true,noWebglFallback:true,failedRoomStaysInHall:true,frameCount:41,previewCount:frames.length},null,2));
+ await writeFile(output+'/global-verification.json',JSON.stringify({dragLook:true,resize:true,webglLossFallback:true,noWebglFallback:true,failedRoomStaysInHall:true,storedFrameCount:41,exhibitedFrameCount:exhibitLayout.frames.length,previewCount:frames.length},null,2));
  console.log('Global controls, resize and fallback checks passed');
 }else if(process.argv.includes('--functional')){
   const r=await promisify(execFile)(process.execPath,['scripts/browser_check.mjs'],{env:{...process.env,GALLERY_TEST_BASE:base,GALLERY_BROWSER_EXECUTABLE:executablePath},maxBuffer:8e6});console.log(r.stdout);if(r.stderr)console.log(r.stderr.slice(-2000));
@@ -277,7 +277,10 @@ if(process.argv.includes('--global')){
    assert.equal(afterExit.yaw,beforeExit.yaw,`frame ${f.id}: no heading jump`);
    assert.equal(afterExit.cameraFov,beforeExit.cameraFov,`frame ${f.id}: no FOV jump`);
    if(!phone&&!process.argv.includes('--checks')){const pixels=await finishedSnapshot(p);await writeFile(`${output}/${f.id}-return.png`,Buffer.from(pixels.split(',')[1],'base64'));}
-   await p.evaluate(()=>window.__galleryTestPose(45,-20,0));
+   // The compact exhibition has no empty wing. Probe distance-based disposal
+   // beyond every frame instead of reusing an old hallway coordinate near 07.
+   const cleanup={x:Math.max(...frames.map(f=>f.center.x))+30,z:Math.max(...frames.map(f=>f.center.z))+30};
+   await p.evaluate(([x,z])=>window.__galleryTestPose(x,z,0),[cleanup.x,cleanup.z]);
    await p.waitForFunction(()=>window.__galleryDebug().activeRoom===null);
    assert.equal((await p.evaluate(()=>window.__galleryDebug())).loadedWorldCount,0,`frame ${f.id}: cleanup`);
    results.push({id:f.id,viewport:phone?'phone':'desktop',entry:true,collisionSamples:interior.slice(0,40).length,return:true,continuousCamera:true,controls:true,cleanup:true});
@@ -291,4 +294,4 @@ if(process.argv.includes('--global')){
   else {await writeFile(`${output}/${f.id}-verification.json`,JSON.stringify(results.filter(r=>r.id===f.id),null,2));await writeFile(`${output}/${f.id}-verification-build.json`,JSON.stringify(captureBuild,null,2));if(!process.argv.includes('--checks')){await writeFile(`${output}/${f.id}-capture-poses.json`,JSON.stringify(results.filter(r=>r.id===f.id),null,2));await writeFile(`${output}/${f.id}-capture-build.json`,JSON.stringify({...captureBuild,captured:true},null,2));await writeFile(`${output}/${f.id}-return-build.json`,JSON.stringify(captureBuild,null,2));}console.log(`Frame ${f.id}: desktop and fresh phone checks passed${process.argv.includes('--checks')?'':' with walkaround captures'}`);}
  }
 }
-}finally{await browser?.close();await new Promise(r=>server.close(r));}
+}finally{await browser?.close();server.closeAllConnections();await new Promise(r=>server.close(r));}

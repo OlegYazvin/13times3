@@ -81,7 +81,7 @@ async function checkViewport(name, options) {
   const after = await page.evaluate(() => window.__galleryDebug());
   assert.ok(after.z < before.z - .1, `${name}: forward movement failed`);
   assert.equal(after.section, 1);
-  assert.equal(after.frameCount, 41);
+  assert.equal(after.frameCount, 13);
 
   await page.setViewportSize({ width: options.viewport.width - 30, height: options.viewport.height - 50 });
   const canvasSize = await page.locator("#scene canvas").boundingBox();
@@ -151,10 +151,10 @@ async function checkViewport(name, options) {
     await page.evaluate(() => window.__galleryTestPose(0, -18, 0));
     await page.waitForTimeout(150);
     await page.screenshot({path:".cache/gallery-first-turn.png"});
-    for (const [section, x, z] of [[1, 0, -10], [2, 15, -36], [3, 40, -10], [4, 55, 2], [5, 78, -15]]) {
+    for (const [section, x, z] of [[1, 2.4, -10], [2, 15, -23.6], [3, 30.4, -10]]) {
       await page.evaluate(([px, pz]) => window.__galleryTestPose(px, pz, 0), [x, z]);
-      await page.waitForFunction((number) => document.querySelector("#section-status").textContent === `Gallery ${number} / 5`, section);
-      assert.match(await statusText(page), new RegExp(`Gallery ${section} / 5`));
+      await page.waitForFunction((number) => document.querySelector("#section-status").textContent === `Gallery ${number} / 3`, section);
+      assert.match(await statusText(page), new RegExp(`Gallery ${section} / 3`));
     }
     assert.equal((await page.evaluate(() => window.__galleryDebug())).frame01Painting, true,
       "desktop: frame 01 painting must remain visible from the far hall");
@@ -190,11 +190,11 @@ try {
   const fallbackPage = await context.newPage();
   await fallbackPage.goto(`${base}/explore/`, { waitUntil: "domcontentloaded" });
   await fallbackPage.locator("#fallback").waitFor({ state: "visible" });
-  assert.equal(await fallbackPage.locator(".frame-list li").count(), 41);
+  assert.equal(await fallbackPage.locator(".frame-list li").count(), 13);
   assert.equal(await fallbackPage.locator(".fallback-previews img").count(), 12);
   assert.equal(await fallbackPage.locator(".frame-list li").first().textContent(), "Zephrine's first stage");
   await context.close();
-  console.log("WebGL fallback: 41 frames listed with the completed painting caption");
+  console.log("WebGL fallback: thirteen exhibited frames listed, including planned La Jolla");
   await restartBrowser();
 
   // The painting opens onto the same world; crossing never replaces the camera pose.

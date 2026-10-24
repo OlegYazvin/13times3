@@ -11,7 +11,8 @@ test('museum paintings have clear wall space and the sculpture islands leave two
  }
  const colliders=museumColliders(layout),player={x:0,z:-.8},manager=new RoomManager({gallery:{layout,colliders},player});
  assert.equal(manager.canStand({x:3.45,z:-4}),false);assert.equal(manager.canStand({x:0,z:-4}),true);
- assert.equal(manager.canStand({x:4.65,z:-10.15}),false,'Stone pilaster feet block walking beside the wall');
+ const column=layout.frames.filter(f=>f.section===0&&f.sideSign===1).reduce((s,f)=>s+f.along,0)/2;
+ assert.equal(manager.canStand({x:4.65,z:-column}),false,'Stone pilaster feet block walking beside the wall');
  for(const e of museumExhibits(layout)){
   assert.equal(manager.canStand(museumPoint(e.section,0,e.along)),false,'Sculpture plinth is solid');
   for(const sign of[-1,1]){Object.assign(player,museumPoint(e.section,sign*2.7,e.along-3));const end=museumPoint(e.section,sign*2.7,e.along+7.3);manager.move(end);assert.ok(Math.hypot(player.x-end.x,player.z-end.z)<.02,'A real movement crosses the entire island beside its bench');}

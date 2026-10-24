@@ -131,7 +131,7 @@ test("backgrounding and fallback stop the piano; hallway audio failure does not 
   assert.equal(music.enabled, false);
 });
 
-test("a provider failure removes its media and retains a usable source-link message", async t => {
+test("a provider failure removes its media and records the credits source", async t => {
   const { music, widgets, mount, status } = environment(t);
   music.begin(); music.setLocation("room", "01");
   await Promise.resolve();
@@ -144,7 +144,7 @@ test("a provider failure removes its media and retains a usable source-link mess
   assert.equal(music.enabled, true);
 });
 
-test("a ready player blocked from autoplay offers its native Play control instead of claiming playback", async t => {
+test("a blocked background player retries on a genuine gesture without claiming playback", async t => {
   const { music, scene, widgets, timers, status, mount } = environment(t);
   music.begin(); music.setLocation("room", "01");
   await Promise.resolve();
@@ -152,7 +152,10 @@ test("a ready player blocked from autoplay offers its native Play control instea
   timers.at(-1)();
   assert.equal(scene.playing, false);
   assert.equal(mount.children.length, 1);
-  assert.match(status.textContent, /Tap Play/);
+  assert.match(status.textContent, /next movement or touch/);
+  const plays=widgets[0].plays;
+  scene.resumeFromGesture();assert.equal(widgets[0].plays,plays+1);
+  assert.equal(mount.children[0].tabIndex,-1,'The background provider cannot steal keyboard focus');
   widgets[0].handlers.PLAY();
   assert.equal(scene.playing, true);
   assert.equal(status.textContent, "");

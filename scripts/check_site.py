@@ -97,6 +97,10 @@ def main() -> None:
     assert [frame["id"] for frame in frames] == [f"{index:02d}" for index in range(1, 42)]
     assert [frame["label"] for frame in frames] == [frame["id"] for frame in frames]
     assert [sum(frame["section"] == section for frame in frames) for section in range(5)] == GALLERY["sectionCounts"]
+    exhibited = [frame_id for section in GALLERY["exhibit"]["sections"] for frame_id in section["frames"]]
+    assert len(exhibited) == 13 and len(set(exhibited)) == 13
+    assert set(exhibited) == {f"{index:02d}" for index in range(1, 14)}
+    assert frames[12]["planned"]["title"] == "La Jolla" and not frames[12]["room"]["modelUrl"]
     registry = (ROOT / "docs" / "scene-registry.md").read_text(encoding="utf-8")
     registry_rows = re.findall(r"^\| `([0-9]{2})` \| (Planned|Published|Retired) \|([^\n]+)$", registry, re.MULTILINE)
     registry_ids = [frame_id for frame_id, _, _ in registry_rows]
@@ -471,7 +475,9 @@ def main() -> None:
     assert explore.select_one("script#gallery-data") is not None
     assert len(explore.select_one("#experience").get("data-room-version")) == 12
     assert explore.select_one(".fallback-preview").get("src").endswith("?v=" + explore.select_one("#experience").get("data-room-version"))
-    assert len(explore.select(".frame-list li")) == 41
+    assert len(explore.select(".frame-list li")) == 13
+    assert explore.select_one("#scene-music").get("aria-hidden") == "true"
+    assert explore.select_one(".scene-music-credit") is None, "Music credits must not overlay the scene"
     script_version = hashlib.sha256((OUTPUT / "assets/explore/app.js").read_bytes()).hexdigest()[:12]
     assert explore.select_one("script[src]").get("src") == expected_href("/assets/explore/app.js") + f"?v={script_version}"
     style_version = hashlib.sha256((OUTPUT / "assets/explore.css").read_bytes()).hexdigest()[:12]

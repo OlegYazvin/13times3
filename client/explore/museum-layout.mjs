@@ -6,7 +6,7 @@ function footprint(section,x,along,width,depth){
  return {minX:Math.min(...points.map(p=>p.x)),maxX:Math.max(...points.map(p=>p.x)),minZ:Math.min(...points.map(p=>p.z)),maxZ:Math.max(...points.map(p=>p.z))};
 }
 export function museumExhibits(layout){
- return layout.sections.map((section,i)=>({id:i===0?'dishwasher':['ribbon','arches','spiral','embrace'][i-1],section,along:i===0?14.4:section.length*.52,width:i===0?3.1:2.45,depth:i===0?2.5:2.1}));
+ return layout.sections.map((section,i)=>({id:['dishwasher','ribbon','embrace'][i],section,along:i===0?14.4:section.length*.52,width:i===0?3.1:2.45,depth:i===0?2.5:2.1}));
 }
 export function museumColliders(layout){
  const colliders=[];
@@ -25,7 +25,7 @@ export function museumSconceSites(layout){
  const sites=[];
  for(const section of layout.sections)for(const sign of[-1,1]){
   const centers=layout.frames.filter(f=>f.section===section.index&&f.sideSign===sign).map(f=>f.along).sort((a,b)=>a-b);
-  const locations=[(centers[0]+centers[1])/2,(centers.at(-2)+centers.at(-1))/2];
+  const locations=[...new Set(centers.slice(1).map((c,i)=>(centers[i]+c)/2))];
   if(section.index===0)locations.unshift(3.8);
   for(const along of locations){const onColumn=!(section.index===0&&along===3.8),mountX=HALL_WIDTH/2-(onColumn?.37:.08);const p=museumPoint(section,sign*(mountX-.43),along);sites.push({...p,y:2.80,section:section.index,sign,along,mountX});}
  }

@@ -113,19 +113,19 @@ export function decorateMuseum(scene,layout,assetBase,assetVersion){
    box(group,'bronze cornice shadow line',[sign*(HALL_WIDTH/2-.22),6.06,-(start+end)/2],[.04,.034,end-start],bronze);
    for(let i=1;i<frames.length;i++)addColumn(group,sign*(HALL_WIDTH/2-.18),(frames[i-1].along+frames[i].along)/2);
   }
-  const ceilingStart=section.index===0?0:HALL_WIDTH/2,ceilingEnd=section.index===4?section.length:section.length-HALL_WIDTH/2;
+  const ceilingStart=section.index===0?0:HALL_WIDTH/2,ceilingEnd=section.index===layout.sections.length-1?section.length:section.length-HALL_WIDTH/2;
   const bays=Math.ceil((ceilingEnd-ceilingStart)/4.6),bayLength=(ceilingEnd-ceilingStart)/bays;
   for(let b=0;b<=bays;b++){
    const a=ceilingStart+b*bayLength;box(group,'coffered ceiling transverse rib',[0,6.40,-a],[HALL_WIDTH,.20,.16]);
    if(b<bays)for(const sign of[-1,1])box(group,'recessed luminous ceiling panel',[sign*2.60,6.53,-a-bayLength/2],[4.55,.035,bayLength-.38],glow,.06);
   }
   box(group,'central coffered ceiling spine',[0,6.40,-(ceilingStart+ceilingEnd)/2],[.18,.20,ceilingEnd-ceilingStart]);
-  if(section.index<4){
+  if(section.index<layout.sections.length-1){
    const medallion=new THREE.Mesh(new THREE.CircleGeometry(2.85,64),glow);medallion.rotation.x=Math.PI/2;medallion.position.set(section.end.x,6.49,section.end.z);root.add(medallion);
    const molding=new THREE.Mesh(new THREE.TorusGeometry(2.92,.085,12,80),stone);molding.rotation.x=Math.PI/2;molding.position.set(section.end.x,6.46,section.end.z);root.add(molding);
    const next=layout.sections[section.index+1],right=next.forward.x*section.right.x+next.forward.z*section.right.z>0;
-   box(group,'gallery wayfinding stone backing',[0,2.70,-section.length-HALL_WIDTH/2+.16],[3.4,.75,.08],green,.035);
-   textPanel(group,`Gallery ${section.index+2} ${right?'→':'←'}`,[0,2.70,-section.length-HALL_WIDTH/2+.211],3.15,.56);
+   box(group,'gallery wayfinding stone backing',[0,2.70,-section.length-HALL_WIDTH/2+.16],[3.8,1.05,.08],green,.035);
+   textPanel(group,next.title,[0,2.70,-section.length-HALL_WIDTH/2+.211],3.55,.88,{lines:[`Gallery ${section.index+2} ${right?'→':'←'}`,next.title]});
   }
   for(const site of sites.filter(p=>p.section===section.index))addSconce(group,site,flames,fireGeo,fireMaterial,washMaterial);
  }
@@ -134,10 +134,10 @@ export function decorateMuseum(scene,layout,assetBase,assetVersion){
   const a=side[i-1],b=side[i],dx=b.x-a.x,dz=b.z-a.z;
   const inlay=box(root,'continuous mitered brass floor border',[(a.x+b.x)/2,-.001,(a.z+b.z)/2],[Math.hypot(dx,dz),.004,.022],inlayBronze,.001);inlay.rotation.y=Math.atan2(-dz,dx);
  }
- for(const [section,along]of[[layout.sections[0],0],[layout.sections[4],layout.sections[4].length]]){
+ for(const [section,along]of[[layout.sections[0],0],[layout.sections.at(-1),layout.sections.at(-1).length]]){
   const group=sections[section.index],z=-along+(along?.07:-.07);box(group,'museum end-wall dado',[0,.40,z],[HALL_WIDTH,.8,.11],green);box(group,'museum end-wall dado cap',[0,.83,z],[HALL_WIDTH,.10,.20]);box(group,'museum end-wall cornice',[0,6.27,z],[HALL_WIDTH,.28,.38]);
  }
- textPanel(sections[4],'For Jane.',[0,2.8,-layout.sections[4].length+.14],3.1,.72,{color:'#e8deca',background:'#34463e'});
+ textPanel(sections.at(-1),'For Jane.',[0,2.8,-layout.sections.at(-1).length+.14],3.1,.72,{color:'#e8deca',background:'#34463e'});
  const entrance=sections[0];
  for(const sign of[-1,1]){
   const column=lathe(entrance,'exhibit entrance stone pier',[[0,0],[.31,0],[.31,.18],[.25,.27],[.24,3.65],[.29,3.72],[.31,3.86]],stone);column.position.set(sign*3.45,0,-4);
@@ -171,10 +171,10 @@ export function decorateMuseum(scene,layout,assetBase,assetVersion){
   const art=new THREE.Mesh(new THREE.PlaneGeometry(w,h),new THREE.MeshBasicMaterial({map:texture}));art.name='original framed '+path;art.position.z=.088;g.add(art);
  }
  batchMuseumStatics(root);
- const lights=Array.from({length:2},()=>{const l=new THREE.PointLight(0xffc578,0,5,2);scene.add(l);return l;});
- return {sites,colliders:museumColliders(layout),state,animate(time,reduceMotion,player){
+ // Every fixture has a stationary, always-on light. Only sound proximity
+ // follows the visitor; lighting never jumps between fixtures or switches on.
+ const lights=sites.map(p=>{const l=new THREE.PointLight(0xffc578,2.3,5,2);l.name='steady sconce light';l.position.set(p.x,p.y+.15,p.z);scene.add(l);return l;});
+ return {sites,lights,colliders:museumColliders(layout),state,animate(time,reduceMotion){
   for(const f of flames){const flicker=reduceMotion?1:1+.08*Math.sin(time*3.7+f.phase)+.035*Math.sin(time*7.3+f.phase);f.mesh.scale.set(f.scale*(2-flicker),f.scale*flicker,f.scale);}
-  const nearest=[...sites].sort((a,b)=>Math.hypot(a.x-player.x,a.z-player.z)-Math.hypot(b.x-player.x,b.z-player.z));
-  for(let i=0;i<2;i++){const p=nearest[i];lights[i].position.set(p.x,p.y+.15,p.z);lights[i].intensity=2.3;}
  }};
 }

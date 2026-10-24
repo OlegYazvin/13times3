@@ -8,13 +8,19 @@ record rejected experiments; they are not an authoring workflow and do not
 supersede the current character acceptance requirements.
 
 Current shared-hub standard, October 24: **Jane's Year Exhibit** replaces the
-plain hallway with five broad museum salons. Keep the physical exhibit entrance
+plain hallway with museum salons. The active exhibition is three galleries for
+twelve published memories plus the planned La Jolla canvas; unused IDs remain
+stored rather than filling the walls. `gallery.exhibit.sections` controls the
+curated display order independently of canonical frame records. Keep the physical exhibit entrance
 and direct start; instructions are optional Help, rather than an initial modal.
 Stone architecture, paintings, sculpture islands, benches and flame sconces
 belong to this shared world. Central sculptures do not consume memory-frame IDs.
 Keep their actual footprints, including wall-pilaster feet, in hall collision;
 room collision remains independent. Nearby flame crackle shares Sound, stays
-silent inside memories and releases on exit. See [museum notes](museum-gallery-notes.md)
+silent inside memories and releases on exit. Every sconce casts stationary light
+at all distances; do not move a pool of lights between fixtures near the player.
+Scene piano plays without a visible provider overlay and uses the global Sound
+control; attribution remains on Credits. See [museum notes](museum-gallery-notes.md)
 for sources, observed review, art prompts and release status.
 
 These are decisions and corrections from developing frame `01`. Read them with the [scene registry](scene-registry.md) before building another room. Apply the interaction lessons to every room; choose each new room's own visual theme from its memory.

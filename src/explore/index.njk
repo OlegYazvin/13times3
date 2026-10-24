@@ -22,18 +22,17 @@ eleventyExcludeFromCollections: true
       <div class="topbar">
         <a class="site-link" href="{{ '/' | url }}" aria-label="Return to 13 Times 3">13 Times 3</a>
         <div class="topbar-right">
-          <span class="section-status" id="section-status" aria-live="polite">Gallery 1 / 5</span>
+          <span class="section-status" id="section-status" aria-live="polite">Gallery 1 / {{ gallery.exhibit.sections.length }}</span>
           <button class="music-button" id="music-button" type="button" aria-label="Turn sound on" aria-pressed="false">Sound off</button>
           <button class="icon-button" id="help-button" type="button" aria-label="Show instructions">?</button>
         </div>
       </div>
       <div class="room-title" id="room-title" hidden></div>
 
-      <aside class="scene-music" id="scene-music" aria-label="Music in Zephrine's first stage" data-track-url="https://api.soundcloud.com/tracks/231167340" hidden>
-        <a class="scene-music-credit" href="https://soundcloud.com/bennymartinpianist/disney-the-little-mermaid-part-of-your-world-piano-instrumental-cover" target="_blank" rel="noopener">Piano by Benny Martin <span aria-hidden="true">↗</span></a>
+      <div class="scene-audio" id="scene-music" aria-hidden="true" inert data-track-url="https://api.soundcloud.com/tracks/231167340" hidden>
         <div class="scene-music-player"></div>
-        <p class="scene-music-status" role="status"></p>
-      </aside>
+        <p class="scene-music-status"></p>
+      </div>
 
       <div class="reticle" aria-hidden="true"></div>
       <div class="look-hint" id="look-hint" aria-hidden="true" hidden></div>
@@ -45,7 +44,7 @@ eleventyExcludeFromCollections: true
         <div class="welcome-card">
           <p class="eyebrow">Visiting the exhibit</p>
           <h1 id="welcome-title">Jane's Year Exhibit</h1>
-          <p>Explore the paintings and sculptures across five museum galleries. Twelve paintings open into memories; the numbered canvases leave room for more.</p>
+          <p>Explore three museum galleries: Growing Together, Holding Each Other, and Out in the World. Twelve paintings open into memories. One blank canvas is reserved for La Jolla.</p>
           <p>Walk through a finished painting to explore its frozen scene, then turn around and walk through the gold-edged doorway to return to the gallery.</p>
           <p class="control-note"><strong>On your phone:</strong> move with the joystick. Drag anywhere else on the scene and hold left or right to keep turning; lift to stop. Drag up or down to look. <strong>On a computer:</strong> use W A S D or arrow keys and drag to look.</p>
           <p class="music-note">Sound begins with your first movement or touch. Approach a flame to hear its gentle crackle. Use Sound to turn all audio off or on.</p>
@@ -58,13 +57,13 @@ eleventyExcludeFromCollections: true
         <div class="fallback-card">
           <p class="eyebrow">The gallery</p>
           <h1>The gallery is waiting.</h1>
-          <p>This browser could not open the 3D exhibit. Twelve paintings are available below; the other numbered frames leave room for more.</p>
+          <p>This browser could not open the 3D exhibit. Twelve paintings are available below. The La Jolla memory is planned.</p>
           <div class="fallback-previews">
             {% for frame in gallery.frames %}{% if frame.room.modelUrl %}
               <figure><img class="fallback-preview" src="{{ frame.room.previewImage | url }}?v={{ galleryRoomVersion }}" alt="{{ frame.room.caption }}"><figcaption>{{ frame.room.caption }}</figcaption></figure>
             {% endif %}{% endfor %}
           </div>
-          <ol class="frame-list">{% for frame in gallery.frames %}<li>{% if frame.room.modelUrl %}{{ frame.room.caption }}{% else %}{{ frame.label }}{% endif %}</li>{% endfor %}</ol>
+          <ol class="frame-list">{% for section in gallery.exhibit.sections %}{% for id in section.frames %}{% for frame in gallery.frames %}{% if frame.id == id %}<li>{% if frame.room.modelUrl %}{{ frame.room.caption }}{% else %}{{ frame.planned.title }} — planned{% endif %}</li>{% endif %}{% endfor %}{% endfor %}{% endfor %}</ol>
           <button class="retry-button" type="button" onclick="window.location.reload()">Try again</button>
           <a class="primary-button" href="{{ '/' | url }}">Return to 13 Times 3</a>
         </div>

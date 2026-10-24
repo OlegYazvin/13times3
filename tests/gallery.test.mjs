@@ -11,10 +11,15 @@ import { collidersFromScene, RoomManager, roomIsReady } from "../client/explore/
 const manifest = JSON.parse(readFileSync(new URL("../src/_data/gallery.json", import.meta.url)));
 const layout = buildLayout(manifest);
 
-test("41 stable frame slots follow five connected winding sections", () => {
-  assert.equal(layout.frames.length, 41);
-  assert.deepEqual(layout.frames.map((frame) => frame.id), Array.from({ length: 41 }, (_, index) => String(index + 1).padStart(2, "0")));
-  assert.deepEqual(layout.sections.map((section) => section.index), [0, 1, 2, 3, 4]);
+test("41 stable records support thirteen exhibited frames in three connected galleries", () => {
+  assert.equal(layout.storedFrameCount, 41);
+  assert.deepEqual(manifest.frames.map(frame=>frame.id),Array.from({length:41},(_,i)=>String(i+1).padStart(2,'0')));
+  assert.deepEqual(layout.frames.map((frame) => frame.id), Array.from({ length: 13 }, (_, index) => String(index + 1).padStart(2, "0")));
+  assert.deepEqual(layout.sections.map((section) => section.index), [0, 1, 2]);
+  assert.deepEqual(layout.sections.map(s=>s.title),['Growing Together','Holding Each Other','Out in the World']);
+  assert.equal(layout.frames.filter(f=>f.room.modelUrl).length,12);
+  assert.equal(roomIsReady(layout.frames.at(-1)),false,'La Jolla is reserved without a rendered scene');
+  assert.equal(layout.frames.at(-1).planned.location,'La Jolla, San Diego, California');
   for (let index = 1; index < PATH.length - 1; index += 1) {
     assert.equal(isWalkable(PATH[index], layout), true, `turn ${index} must connect`);
   }
@@ -85,7 +90,7 @@ test("frames 01–12 have room-sized openings and the other frames stay solid", 
   assert.equal(roomIsReady(layout.frames[11]), true);
   assert.deepEqual(portalOpening(layout.frames[11]), { width: 3.35, height: 4.1 });
   assert.equal(framePlaqueText(layout.frames[11]), "A place in the circle");
-  assert.equal(framePlaqueText(layout.frames[12]), "13");
+  assert.equal(framePlaqueText(layout.frames[12]), "La Jolla · planned");
 });
 
 function roomManager(colliders = layout.frames[0].room.colliders) {
@@ -110,7 +115,7 @@ test("walking through frame 01 keeps one world position in both directions", () 
   assert.equal(manager.canStand({ x: leftWall, z: manager.player.z + 2 }), false,
     "the wall beside the opening remains solid");
   assert.equal(manager.canStand({ x: HALL_WIDTH / 2, z: manager.player.z }), false,
-    "the blank frame on the opposite wall stays solid");
+    "the opposite painting stays solid while room 01 is active");
 });
 
 test("room 01 stage, desk, people, and boundary block movement", () => {

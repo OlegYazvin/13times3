@@ -1,5 +1,5 @@
-// Five broad museum salons. Frame identities and their assignments stay stable
-// while the architecture gives paintings and sculpture room to breathe.
+// Three curated galleries for twelve memories and one planned trip. All 41
+// canonical frame records remain in the manifest, independently of exhibition.
 export const HALL_WIDTH = 10.8;
 export const HALL_HEIGHT = 6.6;
 export const FRAME_WIDTH = 3.35;
@@ -8,7 +8,7 @@ export const EYE_HEIGHT = 1.65;
 export const PLAYER_RADIUS = 0.45;
 
 export function framePlaqueText(frame) {
-  return frame.room?.modelUrl ? frame.room.caption : frame.label;
+  return frame.room?.modelUrl ? frame.room.caption : frame.planned ? `${frame.planned.title} · planned` : frame.label;
 }
 
 export function portalOpening(frame) {
@@ -27,11 +27,9 @@ export function portalCanvas(room) {
 
 export const PATH = Object.freeze([
   { x: 0, z: 0 },
-  { x: 0, z: -36 },
-  { x: 40, z: -36 },
-  { x: 40, z: 2 },
-  { x: 78, z: 2 },
-  { x: 78, z: -38 },
+  { x: 0, z: -26 },
+  { x: 28, z: -26 },
+  { x: 28, z: 4 },
 ]);
 
 const dot = (a, b) => a.x * b.x + a.z * b.z;
@@ -44,8 +42,13 @@ export function buildLayout(manifest) {
   if (!Array.isArray(manifest?.frames) || manifest.frames.length !== 41) {
     throw new Error("The gallery requires exactly 41 frames.");
   }
-  if (manifest.sectionCounts?.join(",") !== "8,8,8,8,9") {
-    throw new Error("The five gallery sections must contain 8, 8, 8, 8, and 9 frames.");
+  // These are the original storage slots, retained for compatibility. The
+  // exhibit list controls which records are hung and where visitors find them.
+  if (manifest.sectionCounts?.join(",") !== "8,8,8,8,9") throw new Error("Preserve the 41 canonical storage slots.");
+  const exhibition = manifest.exhibit?.sections;
+  if (!Array.isArray(exhibition) || exhibition.length !== PATH.length-1 ||
+      exhibition.some(s=>!s.title || !Array.isArray(s.frames) || s.frames.length<4)) {
+    throw new Error("The exhibit needs three titled galleries with explicit frame orders.");
   }
 
   const sections = PATH.slice(0, -1).map((start, index) => {
@@ -55,6 +58,7 @@ export function buildLayout(manifest) {
     const forward = multiply(delta, 1 / length);
     return {
       index,
+      title: exhibition[index].title,
       start,
       end,
       length,
@@ -67,17 +71,15 @@ export function buildLayout(manifest) {
   const ids = new Set();
   const slots = new Set();
   const sectionCounts = [0, 0, 0, 0, 0];
-  const frames = manifest.frames.map((record, index) => {
+  for (const [index,record] of manifest.frames.entries()) {
     const expectedId = String(index + 1).padStart(2, "0");
     if (record.id !== expectedId || ids.has(record.id) || record.label !== expectedId) {
       throw new Error(`Frame ${index + 1} needs a stable, unique two-digit ID and label.`);
     }
     ids.add(record.id);
-    const section = sections[record.section];
-    if (!section || !["left", "right"].includes(record.side) || !Number.isInteger(record.bay)) {
+    if (!Number.isInteger(record.section) || record.section<0 || record.section>4 || !["left", "right"].includes(record.side) || !Number.isInteger(record.bay)) {
       throw new Error(`Frame ${record.id} has an invalid section, side, or bay.`);
     }
-    const side = record.side === "right" ? 1 : -1;
     const baysOnSide = record.side === "left"
       ? Math.ceil(manifest.sectionCounts[record.section] / 2)
       : Math.floor(manifest.sectionCounts[record.section] / 2);
@@ -105,23 +107,26 @@ export function buildLayout(manifest) {
       !record.room.caption.trim() || record.room.caption.length > 48)) {
       throw new Error(`Frame ${record.id} needs a short painting caption.`);
     }
-    // Keep the full painting inside the straight wall at each turn.
-    const endMargin = HALL_WIDTH / 2 + FRAME_WIDTH / 2 + .4;
-    // Give the two galleries around the first turn room for their large worlds:
-    // frame 08 needs clear space before the bend, and frame 10 needs to begin
-    // beyond the preceding passage. The paintings still read in ID order.
-    const startMargin = section.index === 1 ? 11 : endMargin;
-    const farMargin = section.index === 0 ? endMargin + 5 : endMargin;
-    const along = startMargin + record.bay *
-      ((section.length - farMargin - startMargin) / Math.max(1, baysOnSide - 1));
-    const center = add(add(section.start, multiply(section.forward, along)), multiply(section.right, side * HALL_WIDTH / 2));
     sectionCounts[record.section] += 1;
-    return { ...record, sectionData: section, sideSign: side, along, center };
-  });
+  }
   if (sectionCounts.some((count, index) => count !== manifest.sectionCounts[index])) {
     throw new Error("Frame section counts do not match the gallery layout.");
   }
-  return { sections, frames, outline: corridorOutline(sections) };
+  const placements=new Map();
+  for (const [index,s] of exhibition.entries()) for (const [slot,id] of s.frames.entries()) {
+    if (!ids.has(id) || placements.has(id)) throw new Error(`Invalid or duplicate exhibited frame ${id}.`);
+    placements.set(id,{section:index,side:slot%2?'right':'left',bay:Math.floor(slot/2)});
+  }
+  if (manifest.frames.some(f=>f.room.modelUrl&&!placements.has(f.id))) throw new Error("Every published memory must remain exhibited.");
+  const frames=manifest.frames.filter(f=>placements.has(f.id)).map(record=>{
+    const placement=placements.get(record.id),section=sections[placement.section],side=placement.side==='right'?1:-1;
+    const bays=Math.ceil((exhibition[placement.section].frames.length-(side===1?1:0))/2);
+    const margin=HALL_WIDTH/2+FRAME_WIDTH/2+.4;
+    const along=margin+placement.bay*(section.length-2*margin)/Math.max(1,bays-1);
+    const center=add(add(section.start,multiply(section.forward,along)),multiply(section.right,side*HALL_WIDTH/2));
+    return {...record,...placement,sectionData:section,sideSign:side,along,center};
+  });
+  return { sections, frames, exhibitionOrder:exhibition.flatMap(s=>s.frames), storedFrameCount:manifest.frames.length, outline: corridorOutline(sections) };
 }
 
 function intersectLines(pointA, directionA, pointB, directionB) {

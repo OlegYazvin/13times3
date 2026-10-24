@@ -18,10 +18,19 @@ The gallery has 41 stable frame IDs. The 39 original achievement pages are a sep
 | `10` | Published | “We visited maggie daley park for the first time with Zephrine!” | Oleg, Jane, Zephrine, friends and their two children (names unconfirmed) | Three children share a curving play ribbon while both sets of adults gather around them. The walkable garden echoes Maggie Daley's whale, ship, lighthouse, wave play surface, trees and skyline without claiming the group used any particular structure. Separate from frame `08`'s architectural route. | [author](../scripts/room10_author.mjs), [manifest](../src/_data/gallery.json), [live room](https://13times3.com/explore/); private [photo and park notes](scene-10-maggie-daley-notes.md) |
 | `11` | Published | “We took zephrine to the Shedd aquairum with G” | Oleg, Jane, Zephrine, G (Oleg's mother) | G and Zephrine wonder together between saltwater and freshwater aquariums holding gently drifting sculpted fish. The current revision gives the exhibits enclosed water volumes and relocates the exposed overhead inhabitants into tanks. A small Ariel from Disney's original 1989 film is hidden deeper among dimensional coral in the right-hand reef. Exported acceptance and release status are tracked in the notes. The actual hallway portal stands freely inside the aquarium; Jane can walk around either post and behind it while remaining in the room. G is distinct from Anna, Jane's mother. | [author](../scripts/room11_author.mjs), [manifest](../src/_data/gallery.json), [live room](https://13times3.com/explore/); private [photo and design notes](scene-11-shedd-notes.md) |
 | `12` | Published | “Jane discovered her folk jam community” | Jane, Zephrine, her unnamed child friend, Oleg, Jonas Friddle and community musicians | One continuous dream interior joining Beat Kitchen upstairs and Borelli’s behind the walk-around entry portal. The venue-detail revision furnishes both bars and café perimeter, and opens the upstairs windows onto a modeled neighborhood one storey below. Jane listens while the children connect; review and release evidence are tracked in the notes. | [author](../scripts/room12_author.mjs), [venue details](../scripts/scene12_venues.mjs), [manifest](../src/_data/gallery.json), [live room](https://13times3.com/explore/); user brief, private photos and public venue references; [notes](scene-12-folk-jam-notes.md) |
+| `13` | Planned | “our trip to La Jolla, San Diego, California” | Participants and activities not yet specified | Reserved as the user's only additional planned scene. A labeled blank canvas is exhibited; no world, preview, people or trip details are rendered. A distinct California trip, separate from the Chicago outings and fruit-picking memories. | User brief, October 24; [planning notes](scene-13-la-jolla-notes.md), [manifest](../src/_data/gallery.json) |
 
-Frames `01`–`12` have published scene assignments. Frame `12`’s furnished venue revision and upstairs street views are deployed and verified against their reviewed assets; frames `13`–`41` remain unassigned blank portals.
+Frames `01`–`12` have published scene assignments. Frame `13` is reserved for La Jolla and remains unrendered. Frames `14`–`41` retain their stable blank manifest records but are not hung in the current exhibit.
 
-The shared museum hub is published as **Jane's Year Exhibit**: five broad
+Current museum follow-up: the exhibition order now groups the twelve published
+memories and one planned canvas across three galleries: **Growing Together**
+(`01`, `03`, `04`, `06`), **Holding Each Other** (`02`, `05`, `12`, `10`),
+and **Out in the World** (`07`, `09`, `08`, `11`, `13`). All room assignments
+remain attached to their original IDs. The stage piano has no visible provider
+overlay, and every flame fixture has steady light; only crackling follows
+distance. Current inspection and publication status are in the museum notes.
+
+The shared museum hub is published as **Jane's Year Exhibit**. Its initial release used five broad
 galleries with paintings, stone architecture, sculpture islands, benches and
 flame sconces with nearby crackling. **The Dishwasher Dilemma** is a standalone
 monochrome stone assemblage of Jane sweating beside an open, loaded dishwasher,

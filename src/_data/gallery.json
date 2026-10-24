@@ -4053,6 +4053,10 @@
           ],
           "fov": 65
         }
+      },
+      "planned": {
+        "title": "La Jolla",
+        "location": "La Jolla, San Diego, California"
       }
     },
     {
@@ -5091,5 +5095,37 @@
         }
       }
     }
-  ]
+  ],
+  "exhibit": {
+    "sections": [
+      {
+        "title": "Growing Together",
+        "frames": [
+          "01",
+          "03",
+          "04",
+          "06"
+        ]
+      },
+      {
+        "title": "Holding Each Other",
+        "frames": [
+          "02",
+          "05",
+          "12",
+          "10"
+        ]
+      },
+      {
+        "title": "Out in the World",
+        "frames": [
+          "07",
+          "09",
+          "08",
+          "11",
+          "13"
+        ]
+      }
+    ]
+  }
 }

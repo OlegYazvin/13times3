@@ -59,6 +59,17 @@ same sculpted joy expression already inspected in the car and playground.
 
 ### Scene piano, October 23
 
+October 24 follow-up: the same stream now plays without a visible SoundCloud
+overlay. The provider iframe is clipped off-screen, inert and excluded from
+keyboard focus. The global Sound button controls playback; artist attribution
+and the recording link remain on Credits. A genuine later movement or touch
+retries a browser-blocked player. The October 23 screenshots below document
+the previous visible-player version, not the current interface.
+The [current evidence](scene-evidence/museum-followup/index.html) and
+[verification record](scene-evidence/museum-followup/verification.json) show
+actual provider PLAY/progress on desktop and portrait touch, no overlay, mute
+persistence, restored hall music, other-room silence and provider-failure recovery.
+
 The user requested a slow, mellow instrumental of “Part of Your World” inside
 this existing scene. The selected source is [Benny Martin’s solo-piano cover](https://soundcloud.com/bennymartinpianist/disney-the-little-mermaid-part-of-your-world-piano-instrumental-cover),
 SoundCloud track `231167340`, duration 208.529 seconds. It is on the pianist’s

@@ -191,10 +191,12 @@ function frameMesh(frame, placeholderMaterials) {
   sectionGroup.rotation.y = -section.yaw;
 
   const root = new THREE.Group();
-  const descriptive = Boolean(frame.room?.modelUrl);
-  const canvas=descriptive?portalCanvas(frame.room):{width:FRAME_WIDTH,height:FRAME_HEIGHT,bottom:.08};
+  const descriptive = Boolean(frame.room?.modelUrl || frame.planned);
+  const canvas=frame.room?.modelUrl?portalCanvas(frame.room):{width:FRAME_WIDTH,height:FRAME_HEIGHT,bottom:.08};
   const frameHeight=canvas.height,frameWidth=canvas.width;
-  root.position.set(frame.sideSign * (HALL_WIDTH / 2 - .14), frameHeight / 2 + canvas.bottom, -frame.along);
+  // A solid blank canvas sits in front of the continuous museum dado cap.
+  // Finished portals instead interrupt that trim and keep their proven plane.
+  root.position.set(frame.sideSign * (HALL_WIDTH / 2 - (frame.room?.modelUrl ? .14 : .20)), frameHeight / 2 + canvas.bottom, -frame.along);
   root.rotation.y = frame.sideSign === 1 ? -Math.PI / 2 : Math.PI / 2;
   sectionGroup.add(root);
 
@@ -223,7 +225,7 @@ function frameMesh(frame, placeholderMaterials) {
     new THREE.PlaneGeometry(descriptive ? 2.95 : .76, descriptive ? .28 : .32),
     new THREE.MeshBasicMaterial({ map: labelTexture(framePlaqueText(frame), descriptive), transparent: true, depthWrite: false }),
   );
-  label.name = descriptive ? `painting caption: ${frame.room.caption}` : `frame number: ${frame.label}`;
+  label.name = descriptive ? `painting caption: ${framePlaqueText(frame)}` : `frame number: ${frame.label}`;
   label.position.set(0, plaqueY, .163);
   root.add(label);
   return { group: sectionGroup, surface, root };

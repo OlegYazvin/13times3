@@ -53,6 +53,10 @@ export class SceneMusic {
     this.widget = null;
   }
 
+  resumeFromGesture() {
+    if (this.active && this.ready && !this.playing) this.widget?.play();
+  }
+
   setActive(active) {
     if (this.active === active) return;
     this.active = active;
@@ -86,6 +90,8 @@ export class SceneMusic {
       iframe.allow = "autoplay; encrypted-media";
       iframe.referrerPolicy = "strict-origin-when-cross-origin";
       iframe.height = "166";
+      iframe.width = "320";
+      iframe.tabIndex = -1;
       this.mount.append(iframe);
       const widget = Widget(iframe);
       this.widget = widget;
@@ -100,7 +106,7 @@ export class SceneMusic {
         widget.play();
         this.status.textContent = "";
         this.playTimeout = window.setTimeout(() => {
-          if (current() && !this.playing) this.status.textContent = "Tap Play for piano.";
+          if (current() && !this.playing) this.status.textContent = "Piano is waiting for your next movement or touch.";
         }, 3500);
       });
       widget.bind(Widget.Events.PLAY, () => {
@@ -138,6 +144,6 @@ export class SceneMusic {
     this.removePlayer();
     this.ready = false;
     this.playing = false;
-    this.status.textContent = "Piano unavailable here. Listen using the link above.";
+    this.status.textContent = "Piano unavailable here. Source recording is linked in Credits.";
   }
 }
