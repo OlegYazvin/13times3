@@ -1,0 +1,102 @@
+{
+  "verifiedAt": "2026-10-24T03:42:55.899Z",
+  "url": "https://13times3.com/explore/",
+  "applicationCommit": "bee59dae820f2cdacbb14a0316498804b29888b8",
+  "workflow": {
+    "id": 40059204433,
+    "url": "https://github.com/OlegYazvin/13times3/actions/runs/40059204433",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "liveHashes": {
+    "at": "2026-10-24T03:41:28.592Z",
+    "results": [
+      {
+        "path": "assets/explore/app.js",
+        "url": "https://13times3.com/assets/explore/app.js?review=f0ee7b911b78",
+        "query": true,
+        "status": 200,
+        "sha256": "f0ee7b911b7860d59a49619e66aa5c3cba6aeef4810c49530fa8990e0be946d9",
+        "match": true
+      },
+      {
+        "path": "assets/explore.css",
+        "url": "https://13times3.com/assets/explore.css?review=9f07b2fb7b9e",
+        "query": true,
+        "status": 200,
+        "sha256": "9f07b2fb7b9e0fc84f0f0cbf14dd134ffba2314c51359a331d1a09985746c7c7",
+        "match": true
+      },
+      {
+        "path": "assets/explore/room02/room.glb",
+        "url": "https://13times3.com/assets/explore/room02/room.glb?review=b7e302d40124",
+        "query": true,
+        "status": 200,
+        "sha256": "b7e302d40124f389932d51f728188ff05f30e87df61c288c73deb7f65f531c42",
+        "match": true
+      },
+      {
+        "path": "assets/explore/room02/preview.webp",
+        "url": "https://13times3.com/assets/explore/room02/preview.webp?review=8f6175285acc",
+        "query": true,
+        "status": 200,
+        "sha256": "8f6175285acc434a850fd1f404edad3516e49f98ea535988921ec3bff581bc4f",
+        "match": true
+      },
+      {
+        "path": "assets/explore/app.js",
+        "url": "https://13times3.com/assets/explore/app.js?v=f0ee7b911b78",
+        "query": false,
+        "status": 200,
+        "sha256": "f0ee7b911b7860d59a49619e66aa5c3cba6aeef4810c49530fa8990e0be946d9",
+        "match": true
+      },
+      {
+        "path": "assets/explore.css",
+        "url": "https://13times3.com/assets/explore.css?v=9f07b2fb7b9e",
+        "query": false,
+        "status": 200,
+        "sha256": "9f07b2fb7b9e0fc84f0f0cbf14dd134ffba2314c51359a331d1a09985746c7c7",
+        "match": true
+      },
+      {
+        "path": "assets/explore/room02/room.glb",
+        "url": "https://13times3.com/assets/explore/room02/room.glb",
+        "query": false,
+        "status": 200,
+        "sha256": "b7e302d40124f389932d51f728188ff05f30e87df61c288c73deb7f65f531c42",
+        "match": true
+      },
+      {
+        "path": "assets/explore/room02/preview.webp",
+        "url": "https://13times3.com/assets/explore/room02/preview.webp",
+        "query": false,
+        "status": 200,
+        "sha256": "8f6175285acc434a850fd1f404edad3516e49f98ea535988921ec3bff581bc4f",
+        "match": true
+      }
+    ]
+  },
+  "productionSmoke": [
+    {
+      "viewport": "desktop",
+      "galleryLoaded": true,
+      "frameCount": 41,
+      "firstModelLoaded": true,
+      "webglCanvas": true,
+      "noFallback": true,
+      "pageErrors": []
+    },
+    {
+      "viewport": "phone",
+      "galleryLoaded": true,
+      "frameCount": 41,
+      "firstModelLoaded": true,
+      "webglCanvas": true,
+      "noFallback": true,
+      "pageErrors": []
+    }
+  ],
+  "liveFrame02ManifestMatches": true,
+  "scope": "Fresh desktop and portrait-emulation production gallery loads with an exact comparison of live frame 02 data. The complete frame 02 entry, desk views from side/front/rear, closer portrait view, point/shoulder geometry, collision, return and cleanup were reviewed locally against the identical deployed model, painting and application hashes. Physical-phone performance is not claimed."
+}

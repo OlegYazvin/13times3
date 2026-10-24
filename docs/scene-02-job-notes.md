@@ -107,10 +107,12 @@ Current checklist:
 - [x] Confirm laptop, notebook and drinking glass do not overlap.
 - [x] Align fallback collision with the packed bodies and verify movement/return.
 - [x] Run site, geometry and relevant unit checks.
-- [ ] Publish the reviewed model and verify the live files.
+- [x] Publish the reviewed model and verify the live files.
 
 Reviewed export: model **6,650,528 bytes**, SHA-256 `b7e302d40124f389932d51f728188ff05f30e87df61c288c73deb7f65f531c42`, plus a 25,938-byte painting. The actual index points inside the modeled laptop display from 0.736 m away. That is a deliberate pointing gap; the hand is not intended to touch the screen. The supporting hand clears the shoulder by 0.450 mm, and the selected full-vertex hand/sleeve checks find no penetration deeper than 1 mm. Both head directions attend to the same display. These geometry samples supplement the front, side and rear views, rather than proving that every mesh contact is finished.
 
 All 37 browser collision footprints exactly match the revised fallback. Current-hash desktop and fresh portrait-emulation checks pass entry, keyboard movement, sustained touch turning, continuous return and cleanup, with the room 02 portal-depth isolation regression retained. Site and packed-geometry checks pass with 39 original achievement URLs, 41 frame IDs, twelve assigned rooms and 27 unit tests. Physical-phone performance is not claimed; the shared likeness and broader environment art backlog remain open.
 
 Evidence: [entered view](scene-evidence/02-advice/entry.webp), [desk exchange](scene-evidence/02-advice/advisor-screen.webp), [front](scene-evidence/02-advice/advisor-front.webp), [rear](scene-evidence/02-advice/advisor-rear.webp), [phone](scene-evidence/02-advice/phone.webp), [closer portrait view](scene-evidence/02-advice/advisor-phone.webp), [before painting](scene-evidence/02-advice/before-painting.webp), and [verification](scene-evidence/02-advice/verification.json).
+
+Published in `bee59da` through [the successful Pages release](https://github.com/OlegYazvin/13times3/actions/runs/40059204433). The normal live model/preview and the actual app/CSS URLs referenced by the gallery match the reviewed build. Fresh desktop and portrait-emulation production loads pass without fallback or page errors; live frame 02 data exactly matches the reviewed manifest. Full room exploration was tested locally against those identical deployed bytes. See [publication evidence](scene-evidence/02-advice/publication.json).

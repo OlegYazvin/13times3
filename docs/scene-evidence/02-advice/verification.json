@@ -194,5 +194,9 @@
     "judgment": "Jane looks over Oleg’s shoulder, points at the laptop and rests her other hand on his clothed shoulder. Both attend to that display; the notebook, laptop and glass occupy clear areas on the real curved desk.",
     "remaining": "Shared-character likeness and wider environmental finish remain on the larger art checklist. This targeted pose revision does not close those items. Physical-phone frame rate was not tested."
   },
-  "publication": "pending"
+  "publication": {
+    "status": "verified",
+    "applicationCommit": "bee59dae820f2cdacbb14a0316498804b29888b8",
+    "evidence": "publication.json"
+  }
 }
