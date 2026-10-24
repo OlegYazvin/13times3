@@ -19,7 +19,7 @@ export function sculptSanctuary(root){
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(p,3));g.setAttribute('color',new THREE.Float32BufferAttribute(c,3));g.setIndex(indices);g.computeVertexNormals();
   const shell=new THREE.Mesh(g,new THREE.MeshStandardMaterial({vertexColors:true,side:THREE.DoubleSide,roughness:1,emissive:0xa9a0a1,emissiveIntensity:.08}));shell.name='continuous folded fabric cocoon opening from blue dusk into warm linen';root.add(shell);
   const outline=new THREE.Shape();outline.moveTo(-4.70,0);outline.lineTo(4.70,0);for(let i=0;i<=64;i++){const a=i/64*Math.PI;outline.lineTo(Math.cos(a)*4.70,.035+Math.sin(a)*5.20);}outline.closePath();
-  const end=new THREE.Mesh(new THREE.ShapeGeometry(outline,64),new THREE.MeshStandardMaterial({color:0xc9bab5,roughness:1,side:THREE.DoubleSide}));end.position.z=-3.80;end.userData.solidFootprint=true;end.name='arched linen end wall completing the sanctuary';root.add(end);
+  const end=new THREE.Mesh(new THREE.ExtrudeGeometry(outline,{depth:.08,bevelEnabled:false,curveSegments:64}),new THREE.MeshStandardMaterial({color:0xc9bab5,roughness:1,side:THREE.DoubleSide}));end.position.z=-3.88;end.userData.solidFootprint=true;end.name='arched linen end wall completing the sanctuary';root.add(end);
   const window=new THREE.CircleGeometry(1,96),v=window.attributes.position,colors=[];
   for(let i=0;i<v.count;i++){const x=v.getX(i),y=v.getY(i);v.setXYZ(i,x*2.65+.65,y*1.80+2.43,-3.75+.045*(1-x*x-y*y));const color=new THREE.Color(0xabbacb).lerp(new THREE.Color(0xffdbac),THREE.MathUtils.smoothstep(x,-.8,.55));colors.push(color.r,color.g,color.b);}
   window.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));window.computeVertexNormals();

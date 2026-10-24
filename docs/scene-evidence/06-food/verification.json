@@ -1,0 +1,344 @@
+{
+  "id": "06",
+  "modelSha256": "5c201d26ae8fabfdfb893a445204e6f68bf15be248ad8cfac1e1e7812b8e0d5c",
+  "paintingSha256": "1015f094eada4dbeef8515cc4f7b721ed3e4e5b1c36abaf966267e650fa1ee0a",
+  "appSha256": "f0ee7b911b7860d59a49619e66aa5c3cba6aeef4810c49530fa8990e0be946d9",
+  "recordedAt": "2026-10-24T03:07:33.732Z",
+  "caption": "Zephrine eats all the food",
+  "modelBytes": 2861688,
+  "previewBytes": 21056,
+  "foodMemories": [
+    "nigiri",
+    "avocado",
+    "blueberries",
+    "rice",
+    "smoothie",
+    "chicken"
+  ],
+  "functional": {
+    "siteChecksPassed": true,
+    "unitTests": 27,
+    "frameCount": 41,
+    "originalAchievementUrls": 39,
+    "publishedRooms": 12,
+    "contactPairs": [
+      {
+        "food": "nigiri",
+        "part": "hand-right",
+        "label": "hand and carried food",
+        "minimumSurfaceDistanceM": 0.00045079845237337664,
+        "verticesDeeperThan1mm": 0,
+        "maxSampledPenetrationM": 0
+      },
+      {
+        "food": "nigiri",
+        "part": "trousers",
+        "label": "seated thigh support",
+        "minimumSurfaceDistanceM": 0.000007440347394756451,
+        "verticesDeeperThan1mm": 0,
+        "maxSampledPenetrationM": 0
+      },
+      {
+        "food": "avocado",
+        "part": "hand-right",
+        "label": "hand and carried food",
+        "minimumSurfaceDistanceM": 0.00045001772195123825,
+        "verticesDeeperThan1mm": 0,
+        "maxSampledPenetrationM": 0
+      },
+      {
+        "food": "avocado",
+        "part": "trousers",
+        "label": "seated thigh support",
+        "minimumSurfaceDistanceM": 0.000007444124476255496,
+        "verticesDeeperThan1mm": 0,
+        "maxSampledPenetrationM": 0
+      },
+      {
+        "food": "blueberries",
+        "part": "hand-right",
+        "label": "hand and carried food",
+        "minimumSurfaceDistanceM": 0.0004496351757534004,
+        "verticesDeeperThan1mm": 0,
+        "maxSampledPenetrationM": 0
+      },
+      {
+        "food": "blueberries",
+        "part": "trousers",
+        "label": "seated thigh support",
+        "minimumSurfaceDistanceM": 0.000007447660751476282,
+        "verticesDeeperThan1mm": 0,
+        "maxSampledPenetrationM": 0
+      },
+      {
+        "food": "rice",
+        "part": "hand-right",
+        "label": "thumb/index against spoon handle",
+        "minimumSurfaceDistanceM": 0.00007880219839280958,
+        "verticesDeeperThan1mm": 0,
+        "maxSampledPenetrationM": 0
+      },
+      {
+        "food": "rice",
+        "part": "trousers",
+        "label": "seated thigh support",
+        "minimumSurfaceDistanceM": 0.000007450512603569427,
+        "verticesDeeperThan1mm": 0,
+        "maxSampledPenetrationM": 0
+      },
+      {
+        "food": "smoothie",
+        "part": "hand-left",
+        "label": "palm/cup",
+        "minimumSurfaceDistanceM": 0.00045020233765749146,
+        "verticesDeeperThan1mm": 0,
+        "maxSampledPenetrationM": 0
+      },
+      {
+        "food": "smoothie",
+        "part": "hand-right",
+        "label": "palm/cup",
+        "minimumSurfaceDistanceM": 0.00045023222738822214,
+        "verticesDeeperThan1mm": 0,
+        "maxSampledPenetrationM": 0
+      },
+      {
+        "food": "smoothie",
+        "part": "trousers",
+        "label": "seated thigh support",
+        "minimumSurfaceDistanceM": 0.000007445401890586786,
+        "verticesDeeperThan1mm": 0,
+        "maxSampledPenetrationM": 0
+      },
+      {
+        "food": "chicken",
+        "part": "hand-right",
+        "label": "hand and carried food",
+        "minimumSurfaceDistanceM": 0.00044995141261823453,
+        "verticesDeeperThan1mm": 0,
+        "maxSampledPenetrationM": 0
+      },
+      {
+        "food": "chicken",
+        "part": "trousers",
+        "label": "seated thigh support",
+        "minimumSurfaceDistanceM": 0.0000074348150761523046,
+        "verticesDeeperThan1mm": 0,
+        "maxSampledPenetrationM": 0
+      }
+    ],
+    "contactMethod": "Full exported hand/trouser vertices against food and chair surfaces. Distances and closed-mesh containment supplement visual inspection; they do not prove all contact coverage. Spoon handle distance is measured without containment because its tube ends are open.",
+    "noSelectedVerticesDeeperThan1mm": true,
+    "collisionFootprints": 45,
+    "maxBrowserVsFallbackCollisionDeltaM": 0,
+    "desktopAndPortraitEmulation": [
+      {
+        "id": "06",
+        "name": "entry",
+        "x": 0,
+        "z": 5.3500000000000005,
+        "yaw": 0,
+        "pitch": 0,
+        "stand": true
+      },
+      {
+        "id": "06",
+        "name": "front",
+        "x": 0,
+        "z": 3,
+        "yaw": 0,
+        "pitch": -0.44,
+        "stand": true
+      },
+      {
+        "id": "06",
+        "name": "profile-left",
+        "x": -2,
+        "z": -0.4,
+        "yaw": 1.9936502529278375,
+        "pitch": -0.32,
+        "stand": true
+      },
+      {
+        "id": "06",
+        "name": "profile-right",
+        "x": 2,
+        "z": -0.4,
+        "yaw": -1.9936502529278375,
+        "pitch": -0.32,
+        "stand": true
+      },
+      {
+        "id": "06",
+        "name": "left",
+        "x": -1.1,
+        "z": 2.2,
+        "yaw": 0.5743048301747018,
+        "pitch": -0.32,
+        "stand": true
+      },
+      {
+        "id": "06",
+        "name": "right",
+        "x": 1.1,
+        "z": 2.2,
+        "yaw": -0.5743048301747018,
+        "pitch": -0.32,
+        "stand": true
+      },
+      {
+        "id": "06",
+        "name": "rear",
+        "x": 1.8,
+        "z": -1.3,
+        "yaw": -2.356194490192345,
+        "pitch": -0.32,
+        "stand": true
+      },
+      {
+        "id": "06",
+        "name": "close",
+        "x": 0,
+        "z": 1.9,
+        "yaw": 0,
+        "pitch": -0.44,
+        "stand": true
+      },
+      {
+        "id": "06",
+        "name": "food-nigiri",
+        "x": -2.25,
+        "z": 2.359375,
+        "yaw": 0,
+        "pitch": -0.53,
+        "stand": true
+      },
+      {
+        "id": "06",
+        "name": "food-avocado",
+        "x": -1.35,
+        "z": 1.873375,
+        "yaw": 0,
+        "pitch": -0.53,
+        "stand": true
+      },
+      {
+        "id": "06",
+        "name": "food-blueberries",
+        "x": -0.44999999999999996,
+        "z": 1.630375,
+        "yaw": 0,
+        "pitch": -0.53,
+        "stand": true
+      },
+      {
+        "id": "06",
+        "name": "food-rice",
+        "x": 0.4500000000000002,
+        "z": 1.630375,
+        "yaw": 0,
+        "pitch": -0.53,
+        "stand": true
+      },
+      {
+        "id": "06",
+        "name": "food-smoothie",
+        "x": 1.35,
+        "z": 1.873375,
+        "yaw": 0,
+        "pitch": -0.53,
+        "stand": true
+      },
+      {
+        "id": "06",
+        "name": "food-chicken",
+        "x": 2.25,
+        "z": 2.359375,
+        "yaw": 0,
+        "pitch": -0.53,
+        "stand": true
+      },
+      {
+        "id": "06",
+        "name": "food-side",
+        "x": 3.9,
+        "z": 0.1,
+        "yaw": -1.5707963267948966,
+        "pitch": -0.3,
+        "stand": true
+      },
+      {
+        "id": "06",
+        "name": "food-rear",
+        "x": 0,
+        "z": -1.8,
+        "yaw": 3.141592653589793,
+        "pitch": -0.34,
+        "stand": true
+      },
+      {
+        "id": "06",
+        "name": "family-corner",
+        "x": -1.4,
+        "z": -0.6000000000000001,
+        "yaw": 2.2367655641740063,
+        "pitch": -0.32,
+        "stand": true
+      },
+      {
+        "id": "06",
+        "viewport": "desktop",
+        "entry": true,
+        "collisionSamples": 40,
+        "return": true,
+        "continuousCamera": true,
+        "controls": true,
+        "cleanup": true
+      },
+      {
+        "id": "06",
+        "name": "phone",
+        "x": 0,
+        "z": 5.3500000000000005,
+        "yaw": 0,
+        "pitch": 0,
+        "stand": true
+      },
+      {
+        "id": "06",
+        "viewport": "phone",
+        "entry": true,
+        "collisionSamples": 40,
+        "return": true,
+        "continuousCamera": true,
+        "controls": true,
+        "cleanup": true
+      }
+    ],
+    "globalControlsAndFallback": {
+      "dragLook": true,
+      "resize": true,
+      "webglLossFallback": true,
+      "noWebglFallback": true,
+      "failedRoomStaysInHall": true,
+      "frameCount": 41,
+      "previewCount": 12
+    }
+  },
+  "visual": {
+    "reviewed": [
+      "hallway",
+      "partial reveal",
+      "entry",
+      "six food close views",
+      "side",
+      "rear",
+      "original family arrangement",
+      "fresh portrait-phone",
+      "return"
+    ],
+    "judgment": "Six separately posed toddler food memories share a curving table; the narrower arrangement brings all six into the portrait doorway. Hands hold their carried food, rice has a fitted spoon, and both hands support the smoothie cup. The original fully clothed embrace remains in its own corner.",
+    "remaining": "The shared stylized cast and fabric room retain the wider gallery art backlog; this revision does not claim final likeness acceptance or physical-phone frame-rate testing."
+  },
+  "publication": "pending"
+}

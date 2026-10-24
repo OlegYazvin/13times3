@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { createRoomArt } from "./room_art.mjs";
 import { addJanePortrait } from "./oleg_portrait.mjs";
 import { sculptSleevedArm } from "./sculpted_arm.mjs";
+import {composeFoodMemories} from "./scene06_food.mjs";
 
 // A private transition rendered with tenderness. Jane's sweater covers her
 // chest completely; Zephrine is nestled against the outside of the cloth.
@@ -330,4 +331,4 @@ child.position.y = .48;
 child.rotation.z = .6;
 child.scale.setScalar(.9);
 
-window.__authorRoom = () => exportRoom();
+window.__authorRoom = () => exportRoom({afterCompose:composeFoodMemories});

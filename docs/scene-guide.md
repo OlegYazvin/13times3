@@ -228,3 +228,19 @@ For ongoing refinement of the published rooms, use the [visual quality audit](vi
   ruffled plates; check outward face winding so a brain coral cannot become
   a hollow ring. Keep foreground cover physically clear of the mermaid even
   where their silhouettes overlap from the aisle.
+
+
+## Repeated toddler food memories
+
+- Compose repeated versions of one person as a shared arrangement, with distinct
+  actions and food silhouettes. Check the portrait doorway before accepting a
+  wide table: its end seats can disappear while desktop still shows every child.
+- Fit the supported seat to the actual clothed thigh surfaces. A plausible hip
+  height alone left almost 3 cm of trouser/seat penetration in the first study.
+- Fit carried food against the actual hand surface and rebuild the whole arm
+  from the resulting wrist. Test both hands on a cup, not just one favorable side.
+- Internal coplanar caps between adjacent tabletop sections can produce dark
+  triangles. Keep one continuous visible surface with shared boundary positions
+  and physical collision segments that preserve its walkable concavity.
+- Move a coupled mother/child/chair arrangement together to preserve contact,
+  but recheck independent nearby furniture and the rug against their new corner.

@@ -268,7 +268,7 @@ def main() -> None:
                    for node in office_json["nodes"]), "Office room should not depict or label identifiable management"
     weaning_room = frames[5]["room"]
     assert weaning_room["title"] == "Jane ended breast feeding"
-    assert weaning_room["caption"] == "A tender ending"
+    assert weaning_room["caption"] == "Zephrine eats all the food"
     assert weaning_room["dimensionsM"] == [9.4, 5.2, 11.8]
     weaning_preview = OUTPUT / weaning_room["previewImage"].lstrip("/")
     weaning_model = OUTPUT / weaning_room["modelUrl"].lstrip("/")
@@ -291,12 +291,16 @@ def main() -> None:
                for node in weaning_json["nodes"]) == 3
     assert any("continuous folded fabric cocoon" in node.get("name", "") for node in weaning_json["nodes"])
     assert any("broad folded daylight" in node.get("name", "") for node in weaning_json["nodes"])
-    assert sum(bool(node.get("extras", {}).get("storyFigure")) for node in weaning_json["nodes"]) == 2
+    assert sum(bool(node.get("extras", {}).get("storyFigure")) for node in weaning_json["nodes"]) == 8
     assert any(node.get("extras", {}).get("identity") == "Jane" for node in weaning_json["nodes"])
     assert any("small turned side table beside the nursing chair" in node.get("name", "") for node in weaning_json["nodes"])
     assert not any("continuous modest sweater front" in node.get("name", "") or
                    "solid empty ottoman" in node.get("name", "") for node in weaning_json["nodes"])
     assert not any("overlapping linen sail under" in node.get("name", "") for node in weaning_json["nodes"])
+    foods = {"nigiri", "avocado", "blueberries", "rice", "smoothie", "chicken"}
+    assert {node.get("extras", {}).get("foodMemory") for node in weaning_json["nodes"] if node.get("extras", {}).get("foodMemory")} == foods, "Room 06 needs six different toddler food memories"
+    assert sum(bool(node.get("extras", {}).get("foodMemory")) for node in weaning_json["nodes"]) == 6
+    assert any("one curving family table" in node.get("name", "") for node in weaning_json["nodes"])
     berry_room = frames[6]["room"]
     assert berry_room["title"] == "The time we went blueberry picking"
     assert berry_room["caption"] == "Blueberries with G"

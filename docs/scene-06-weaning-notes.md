@@ -1,4 +1,8 @@
-# Frame 06: The end of breastfeeding
+# Frame 06: Zephrine eats all the food
+
+The latest brief adds six toddler food memories and renames the painting; see
+the current review section at the end. The following notes retain the original
+brief and development history.
 
 Oleg wants Jane and Zephrine together in a breastfeeding moment, with Jane's clothing covering her body and no exposed anatomy. The room should recognize sadness and loss at the end of a chapter while also expressing Jane's return to bodily autonomy. Keep the scene tender, domestic, and non-sexual. Do not suggest a date, medical reason, or particular difficulty that Oleg has not described.
 
@@ -63,3 +67,43 @@ The latest native embrace has tested supporting-palm clearances of 0.315 and 0.4
 The farther-back arrangement now shows the full chair, mother, child and feet from the fresh portrait-phone doorway capture. The selected full-vertex contact clearances remain 0.315/0.409 mm at the supporting palms and 0.440 mm at the clothed lap, without tested penetration deeper than 1 mm. Jane’s soles remain within 0.47 mm of the rug. The child’s feet are carried intentionally. The continuous fabric sanctuary replaces the old repeated roof panels and support cage.
 
 Final contact follow-up: the broad inter-actor scan found a real supporting-sleeve/child-trouser crossing that the original selected pairs omitted. The forearm and cuff are retapered around the same wrist/palm arrangement. The raw study now has zero tested edge crossings for that pair; packed-export checks remain the acceptance evidence. Other open neck/wrist containment flags require edge classification rather than being reported as clipping.
+
+## “Zephrine eats all the food” — six toddler food memories
+
+Oleg replaces the hallway caption “A tender ending” with **“Zephrine eats all
+the food”**. This revises frame 06; it does not add a frame or change the
+original achievement URL. Six additional versions of the same toddler enjoy
+nigiri, avocado, blueberries, rice, a smoothie and chicken. The original clothed
+Jane/Zephrine arrangement, chair, rug and side table move together into a quiet
+corner, preserving their internal supporting contacts.
+
+The six food moments share one curved, low family table, with distinct clothing
+colors and eating gestures, fitted toddler chairs, ceramic dishes and formed
+foods. Zephrine retains the shared dimensional face and abundant curls guided
+by her private references. No reference pixels or metadata enter the model.
+The light is warmer and broader across the dining area.
+
+The first exported study exposed food/hand gaps, an exposed original side table
+in the middle of the new composition, and actual thigh/seat penetration. The
+side table now stays beside Jane. The hands are refitted against the carried
+food surfaces by rebuilding the complete arm; the chair seats are shaped under
+the clothed thighs. Coplanar caps at internal tabletop joins produced dark
+seam triangles and have been removed. A pointed single-finger berry pose was
+replaced with a cupped handful.
+
+Current review checklist:
+
+- [x] Verify the new caption, same frame ID and original achievement URL.
+- [x] Inspect all six eating arrangements from the doorway and close up.
+- [x] Inspect side/rear views, full figures, chairs, table and walking routes.
+- [x] Check hand/food and thigh/seat distances in the packed model.
+- [x] Review a fresh portrait-phone load and touch controls.
+- [x] Match current exported and fallback collision; test entry, return and cleanup.
+- [x] Run site/geometry checks and the relevant unit tests.
+- [ ] Publish the reviewed result and verify the live files.
+
+Reviewed export: model **2,861,688 bytes**, SHA-256 `5c201d26ae8fabfdfb893a445204e6f68bf15be248ad8cfac1e1e7812b8e0d5c`, plus a 21,056-byte painting. The seven hand/food contacts and six thigh/seat pairs have no tested vertices penetrating deeper than 1 mm; the largest measured minimum surface gap is 0.451 mm. These selected surface samples supplement the close views; they are not a proof that every mesh contact is perfect. The old end-wall plane now has actual 80 mm depth so its collision footprint is valid. All 45 exported footprints exactly match the browser and manifest fallback.
+
+The current-hash desktop and fresh portrait-emulation review passes entry, keyboard movement, sustained touch turning, camera continuity, return and cleanup. The wider control, resize and fallback checks pass, along with all 27 unit tests, packed geometry validation, and the 39 original achievement pages / 41 frame checks. The six eating poses were inspected from the front, side and rear; the new caption is readable in the hallway. The phone view contains all six faces and food gestures together, with the outer furniture near the edges. Physical-phone performance and final shared-character likeness acceptance remain unclaimed.
+
+Evidence: [hallway caption](scene-evidence/06-food/hallway.webp), [entered view](scene-evidence/06-food/entry.webp), [nigiri](scene-evidence/06-food/food-nigiri.webp), [avocado](scene-evidence/06-food/food-avocado.webp), [blueberries](scene-evidence/06-food/food-blueberries.webp), [rice](scene-evidence/06-food/food-rice.webp), [smoothie](scene-evidence/06-food/food-smoothie.webp), [chicken](scene-evidence/06-food/food-chicken.webp), [side](scene-evidence/06-food/food-side.webp), [rear](scene-evidence/06-food/food-rear.webp), [phone](scene-evidence/06-food/phone.webp), and [verification](scene-evidence/06-food/verification.json).

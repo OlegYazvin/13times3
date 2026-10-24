@@ -75,7 +75,7 @@ test("frames 01–12 have room-sized openings and the other frames stay solid", 
   assert.equal(framePlaqueText(layout.frames[2]), "A friendship Jane made room for");
   assert.equal(framePlaqueText(layout.frames[3]), "Zephrine's blue car");
   assert.equal(framePlaqueText(layout.frames[4]), "Jane held her ground");
-  assert.equal(framePlaqueText(layout.frames[5]), "A tender ending");
+  assert.equal(framePlaqueText(layout.frames[5]), "Zephrine eats all the food");
   assert.equal(framePlaqueText(layout.frames[6]), "Blueberries with G");
   assert.equal(framePlaqueText(layout.frames[7]), "Jane's chosen city route");
   assert.equal(framePlaqueText(layout.frames[8]), "First apples with friends");

@@ -50,7 +50,7 @@ if(process.argv.includes('--global')){
 }else if(process.argv.includes('--functional')){
   const r=await promisify(execFile)(process.execPath,['scripts/browser_check.mjs'],{env:{...process.env,GALLERY_TEST_BASE:base,GALLERY_BROWSER_EXECUTABLE:executablePath},maxBuffer:8e6});console.log(r.stdout);if(r.stderr)console.log(r.stderr.slice(-2000));
 }else{
- const targets={'01':[-.3,0],'02':[-1.0,4.8],'03':[0,5.1],'04':[0,5.5],'05':[-.2,4.9],'06':[0,3.15],'07':[-.58,5.3],'08':[0,7.6],'09':[0,3.05],'10':[-.23,4.37],'11':[-.55,6.6],'12':[.45,-1.8]};
+ const targets={'01':[-.3,0],'02':[-1.0,4.8],'03':[0,5.1],'04':[0,5.5],'05':[-.2,4.9],'06':[0,.5],'07':[-.58,5.3],'08':[0,7.6],'09':[0,3.05],'10':[-.23,4.37],'11':[-.55,6.6],'12':[.45,-1.8]};
  const selected=process.argv.filter(x=>/^\d\d$/.test(x));
  const results=[];
  for(const f of frames.filter(f=>!selected.length||selected.includes(f.id))){
@@ -112,6 +112,13 @@ if(process.argv.includes('--global')){
    if(profilesOnly&&f.id==='03')profiles.unshift(['front',tx,Math.min(portal-.55,tz+2.5),0,-.28]);
    const shots=(returnsOnly||process.argv.includes('--checks'))?[]:profilesOnly?profiles:phone?[['phone',0,portal-.55,0]]:[['entry',0,portal-.55,0],['front',tx,Math.min(portal-.55,tz+2.5),0],...profiles,['left',tx-2,tz+1.7,Math.atan2(2,1.7)],['right',tx+2,tz+1.7,Math.atan2(-2,1.7)],['rear',tx+1.8,tz-1.8,Math.atan2(-1.8,-1.8)],['close',tx,Math.min(portal-.55,tz+1.4),0,-.28]];
    if(!phone&&!profilesOnly&&!returnsOnly&&!process.argv.includes('--checks')){
+    if(f.id==='06'){
+      for(const [i,food] of ['nigiri','avocado','blueberries','rice','smoothie','chicken'].entries()){
+        const x=-2.25+i*.90,z=.10+.15*x*x;
+        shots.push(['food-'+food,x,z+1.50,0,-.53]);
+      }
+      shots.push(['food-side',3.9,.1,-Math.PI/2,-.30],['food-rear',0,-1.8,Math.PI,-.34],['family-corner',-1.4,.3,-.50,-.32]);
+    }
     if(f.id==='02')shots.push(['care',-3.3,-1.2,0],['household',-3.1,-4.6,-Math.PI/2,-.25],['contacts',2.5,4.2,0],['embrace',0,-2.7,0],['embrace-rear',-1,-7.8,2.75]);
     if(f.id==='12')shots.push(['borellis',0,4.5,Math.PI,-.08],['borellis-side',-4.3,7.5,Math.PI/2,-.12],['portal-back',0,5.0,0],['children',.60,.6,0,-.40],['jonas',1.70,-.65,-.2,-.06],['beat-windows',-4,-5.8,0]);
     if(f.id==='11'){
@@ -146,7 +153,7 @@ if(process.argv.includes('--global')){
     if(name==='front'&&f.id==='03')pitch=-.28;
     if(name==='front'&&f.id==='04')pitch=-.22;
     if(f.id==='06'&&['front','profile-left','profile-right','left','right','rear','close'].includes(name))pitch=name==='front'||name==='close'?-.44:-.32;
-    const focal=f.id==='02'?({care:[-3.5,-3.3],household:[-4.16,-4.50],contacts:[3.1,1.9],embrace:[-.1,-5.65],'embrace-rear':[-.1,-5.65]}[name]||[tx,tz]):f.id==='08'?({'route-pullman':[-3.8,7.05],'route-avalon':[4.25,5.8],'route-arts-bank':[-4.25,2.1],'route-narrow-bridge':[4.25,-1.65],'route-palmisano':[-4.25,-5.4],'route-saint-ignatius':[4.25,-9.15],'route-temple':[-4.25,-12.05]}[name]||[tx,tz]):[tx,tz];
+    const focal=f.id==='06'&&name.startsWith('food-')&&['nigiri','avocado','blueberries','rice','smoothie','chicken'].includes(name.slice(5))?(()=>{const i=['nigiri','avocado','blueberries','rice','smoothie','chicken'].indexOf(name.slice(5)),x=-2.25+i*.90;return[x,.10+.15*x*x];})():f.id==='02'?({care:[-3.5,-3.3],household:[-4.16,-4.50],contacts:[3.1,1.9],embrace:[-.1,-5.65],'embrace-rear':[-.1,-5.65]}[name]||[tx,tz]):f.id==='08'?({'route-pullman':[-3.8,7.05],'route-avalon':[4.25,5.8],'route-arts-bank':[-4.25,2.1],'route-narrow-bridge':[4.25,-1.65],'route-palmisano':[-4.25,-5.4],'route-saint-ignatius':[4.25,-9.15],'route-temple':[-4.25,-12.05]}[name]||[tx,tz]):[tx,tz];
     let stand=await p.evaluate(([x,z])=>window.__galleryTestRoomCanStand(x,z),[x,z]);
     if(!stand){for(const [dx,dz] of [[.9,0],[-.9,0],[0,.9],[0,-.9],[1.4,0],[-1.4,0],[2.5,0],[-2.5,0]])if(await p.evaluate(([x,z])=>window.__galleryTestRoomCanStand(x,z),[x+dx,z+dz])){x+=dx;z+=dz;yaw=Math.atan2(focal[0]-x,z-focal[1]);stand=true;break;}}
     if(!stand){results.push({id:f.id,name,unreachable:true});continue;}
