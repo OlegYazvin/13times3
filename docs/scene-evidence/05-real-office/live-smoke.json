@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-10-25T00:43:17.500Z",
+  "note": "Compositor screenshot timed out on software WebGL; capture uses completed canvas readback with a preserved review buffer. Direct production initial-load smoke. Office walkaround and stair route are separately recorded against identical reviewed bytes.",
+  "results": [
+    {
+      "viewport": "desktop",
+      "liveInitialLoad": true,
+      "noFallback": true,
+      "noInitialControlOverlay": true,
+      "roomVersion": "288c8ab4f2b5",
+      "pageErrors": []
+    },
+    {
+      "viewport": "portrait-phone",
+      "liveInitialLoad": true,
+      "noFallback": true,
+      "noInitialControlOverlay": true,
+      "roomVersion": "288c8ab4f2b5",
+      "pageErrors": []
+    }
+  ]
+}

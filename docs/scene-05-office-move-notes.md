@@ -106,3 +106,11 @@ the current review. The complete current-hash checklist, screenshots, exact
 source assumptions and publication status are in the
 [office evidence](scene-evidence/05-real-office/README.md). This office revision
 does not close the wider cast likeness or emotional-expression backlog.
+
+
+Publication verified: source `22ea6c0`, successful Pages run `40147446839`.
+The live room model, preview, client and inline manifest match the reviewed
+files. Fresh production desktop/portrait initial-load checks pass. Full office
+walkthroughs and separate control/cleanup checks are recorded against these
+same bytes in the [office evidence](scene-evidence/05-real-office/README.md).
+The source assumptions and broader character-art backlog remain explicit.

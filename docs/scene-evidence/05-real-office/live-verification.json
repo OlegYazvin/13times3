@@ -1,0 +1,30 @@
+{
+  "verifiedAt": "2026-10-25T00:40:14.843648+00:00",
+  "sourceCommit": "22ea6c0",
+  "pagesRun": 40147446839,
+  "url": "https://13times3.com/explore/",
+  "roomVersion": "288c8ab4f2b5",
+  "files": [
+    {
+      "url": "https://13times3.com/assets/explore/room05/room.glb",
+      "bytes": 4191616,
+      "sha256": "bee68b6c8e125e12f4dab36c68de89b3360c319123b9778c52bd019def19934e",
+      "matchesReviewedBuild": true
+    },
+    {
+      "url": "https://13times3.com/assets/explore/room05/preview.webp",
+      "bytes": 28620,
+      "sha256": "6455c98f4dcb859a505adc09018fa7f2b0e178a36ae37fe9d1f54cf7deff2389",
+      "matchesReviewedBuild": true
+    },
+    {
+      "url": "https://13times3.com/assets/explore/app.js",
+      "bytes": 754701,
+      "sha256": "32433878d95a4b480569ffcf69b3abb153bb301e8bd9933340c0fbca8d2f4a7b",
+      "matchesReviewedBuild": true
+    }
+  ],
+  "inlineManifestMatches": true,
+  "stableFrameCount": 41,
+  "officeFloorHeight": 3.2
+}

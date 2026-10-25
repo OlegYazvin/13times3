@@ -4,7 +4,8 @@ This revision follows Oleg’s direction to mirror the office layout left/right
 and then build the complete office, stairs and catalpa view. It revises the
 existing office-move memory; it adds no scene assignment or achievement URL.
 
-Publication status is recorded below after deployment verification.
+Published and verified at [13times3.com/explore](https://13times3.com/explore/).
+Publication details and exact live hashes are recorded below.
 
 ## What changed
 
@@ -90,5 +91,15 @@ measurement. The botanical tree and distant architecture remain stylized.
 
 ## Publication
 
-All local checks and visual review above are complete. Release deployment and
-live file verification are pending.
+Published source: `22ea6c0`, [Pages run 40147446839](https://github.com/OlegYazvin/13times3/actions/runs/40147446839), completed successfully.
+
+The live GLB, preview, client and full inline manifest match the reviewed build.
+Room asset version: `288c8ab4f2b5`. See
+[live file verification](live-verification.json). Fresh direct production
+[desktop](live-desktop.png) and [portrait](live-phone.png) initial loads show
+no fallback, initial controls overlay or page errors; see [live smoke](live-smoke.json).
+The compositor screenshot tool timed out under software WebGL. Completed
+canvas readbacks with a preserved review buffer succeeded; this was a capture
+problem, not a confirmed product defect. The production initial-load images
+show the shared entrance; the office/stair walkthrough above uses identical
+reviewed model/client bytes locally. Physical-phone performance remains unmeasured.
