@@ -185,6 +185,19 @@ h1 { margin: 0 0 1.2rem; font-family: Ojuju, Archivo, sans-serif; font-size: cla
 .welcome-card p:not(.eyebrow), .fallback-card p:not(.eyebrow) { max-width: 48ch; line-height: 1.55; color: #d7e3e8; }
 .control-note { padding-top: .5rem; font-size: .9rem; }
 .control-note strong { color: #fff; }
+.look-setting {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  min-height: 44px;
+  padding: .75rem;
+  border: 1px solid rgb(185 218 226 / 28%);
+  border-radius: .6rem;
+  cursor: pointer;
+}
+.look-setting input { flex: none; width: 1.25rem; height: 1.25rem; margin: 0; accent-color: #b8dfe2; }
+.look-setting small { display: block; margin-top: .3rem; color: #d7e3e8; font-size: .78rem; line-height: 1.4; }
+.look-setting:focus-within { outline: 2px solid #b8dfe2; outline-offset: 3px; }
 .welcome-card .music-note { font-size: .83rem; }
 .primary-button {
   display: inline-flex;

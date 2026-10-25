@@ -18,6 +18,7 @@ export class GalleryControls {
     this.enabled = false;
     this.yaw = 0;
     this.pitch = 0;
+    this.reverseLookX = false;
     this.keys = new Set();
     this.joy = { x: 0, y: 0 };
     this.joyPointer = null;
@@ -75,7 +76,7 @@ export class GalleryControls {
       }
       const dx = event.clientX - this.lastLook.x;
       const dy = event.clientY - this.lastLook.y;
-      this.yaw += dx * LOOK_SENSITIVITY;
+      this.yaw += dx * LOOK_SENSITIVITY * (this.reverseLookX ? -1 : 1);
       this.pitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT, this.pitch - dy * LOOK_SENSITIVITY));
       this.lastLook = { x: event.clientX, y: event.clientY };
     });
@@ -97,6 +98,10 @@ export class GalleryControls {
     if (!enabled) this.resetInputs();
   }
 
+  setReverseLookX(reversed) {
+    this.reverseLookX = Boolean(reversed);
+  }
+
   resetInputs() {
     this.keys.clear();
     this.clearJoystick();
@@ -108,7 +113,7 @@ export class GalleryControls {
 
   updateLook(dt) {
     if (!this.enabled || !this.lookOrigin) return;
-    this.yaw += lookAxis(this.lookOffset.x) * MAX_TURN_SPEED * dt;
+    this.yaw += lookAxis(this.lookOffset.x) * MAX_TURN_SPEED * dt * (this.reverseLookX ? -1 : 1);
     this.pitch = Math.max(-PITCH_LIMIT, Math.min(PITCH_LIMIT,
       this.pitch - lookAxis(this.lookOffset.y) * MAX_PITCH_SPEED * dt));
   }

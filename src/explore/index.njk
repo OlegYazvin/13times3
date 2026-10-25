@@ -28,7 +28,7 @@ eleventyExcludeFromCollections: true
         <div class="topbar-right">
           <span class="section-status" id="section-status" aria-live="polite">Gallery 1 / {{ gallery.exhibit.sections.length }}</span>
           <button class="music-button" id="music-button" type="button" aria-label="Turn sound on" aria-pressed="false">Sound off</button>
-          <button class="icon-button" id="help-button" type="button" aria-label="Show instructions">?</button>
+          <button class="icon-button" id="help-button" type="button" aria-label="Show instructions and settings" title="Instructions and settings">?</button>
         </div>
       </div>
       <div class="room-title" id="room-title" hidden></div>
@@ -51,6 +51,10 @@ eleventyExcludeFromCollections: true
           <p>Explore three museum galleries: Growing Together, Holding Each Other, and Out in the World. Twelve paintings open into memories. One blank canvas is reserved for La Jolla.</p>
           <p>Walk through a finished painting to explore its frozen scene, then turn around and walk through the gold-edged doorway to return to the gallery.</p>
           <p class="control-note"><strong>On your phone:</strong> move with the joystick. Drag anywhere else on the scene and hold left or right to keep turning; lift to stop. Drag up or down to look. <strong>On a computer:</strong> use W A S D or arrow keys and drag to look.</p>
+          <label class="look-setting" for="reverse-look-x">
+            <input id="reverse-look-x" type="checkbox" aria-describedby="reverse-look-description">
+            <span>Reverse left/right look<small id="reverse-look-description">For mouse and touch. Saved on this browser.</small></span>
+          </label>
           <p class="music-note">Sound begins with your first movement or touch. Approach a flame to hear its gentle crackle. Use Sound to turn all audio off or on.</p>
           <button class="primary-button" id="begin-button" type="button">Return to exhibit <span aria-hidden="true">→</span></button>
           <a class="back-link" href="{{ '/' | url }}">Back to the site</a>
