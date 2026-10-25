@@ -1,0 +1,10 @@
+{
+  "dragLook": true,
+  "resize": true,
+  "webglLossFallback": true,
+  "noWebglFallback": true,
+  "failedRoomStaysInHall": true,
+  "storedFrameCount": 41,
+  "exhibitedFrameCount": 13,
+  "previewCount": 12
+}

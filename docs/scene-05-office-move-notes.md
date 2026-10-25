@@ -55,3 +55,54 @@ return-wall spandrel following the vault. The return aperture remains clear.
 The last side window previously extended beyond the actual room front; the
 corrected front corner closes it within the existing world. This is part of the
 same abstract office move, with no new people or factual claims.
+
+## Real office layout study, October 24 — corrected and authorized to build
+
+Oleg requests a recreation of Jane's actual second-floor office within this
+existing scene, reached by stairs informed by Expansive North Center photos.
+The catalpa immediately outside the tall windows is essential to the views.
+This extends frame `05`; it does not create another office memory or frame.
+The initial request was a labeled overhead schematic before implementation.
+It was delivered without changing scene code or publishing. Oleg then corrected
+the left/right orientation and explicitly asked to build the complete revision.
+The corrected diagram puts the sofa on the left and desk/bookcase/chair/entry
+on the right; it keeps the stair and tree-height insets unchanged.
+
+The [schematic and source notes](scene-evidence/05-office-layout-proposal/README.md)
+record the five newly supplied photographs and a public stair reference. The
+window wall, deep white sill, blue sofa, white bookcase, small wood desk,
+rounded green chair, botanical prints and ribbed wall panels are observed.
+Furniture shown on different visits is not assumed to have been simultaneous.
+The inferred door position and swing, long mint/gold table position, room
+proportions, full stair turn and corridor connection require confirmation.
+The tree-height inset explicitly keeps the street and roots below the office
+floor, with branches and canopy beside the glass. The photos and decoded
+inspection copies remain in ignored private storage.
+
+
+## Built second-floor office revision, October 24
+
+The current candidate replaces the vacant abstract rear hall with two joined
+wood-and-black-steel stair flights, an upper landing, a composed corridor and
+Jane’s furnished office. The foyer retains Jane’s family, open architecture
+and the moving trolley. The office follows Oleg’s corrected orientation:
+blue sofa and three botanical prints on the left, bookcase, green/white shell
+chair, small desk, shelves and entry on the right. It includes the long
+mint/gold table, grey carpet, pink visit mat, blank certificate frames and
+deep white sill. The planted catalpa has a rooted trunk, connected branches
+and broad heart-shaped leaves immediately outside real glazing; the street,
+parked cars and opposite building sit below/beyond the second-floor window.
+
+Walking surfaces raise the camera continuously through both flights to a
+3.2 m upper floor. Optional vertical bounds keep upstairs furniture from
+blocking the ground floor; flat rooms retain their existing movement behavior.
+The existing portal stays at z=8.9 and its opening/camera projection are
+preserved. Model and manifest collision derive from the same packed geometry.
+
+The first visual review rejected the closed helmet-like chair shell, missing
+bookcase top, door/ottoman overlap, noisy wall materials, excessive leaf stems,
+a stretched floor texture and ceiling hotspot. These were corrected before
+the current review. The complete current-hash checklist, screenshots, exact
+source assumptions and publication status are in the
+[office evidence](scene-evidence/05-real-office/README.md). This office revision
+does not close the wider cast likeness or emotional-expression backlog.

@@ -108,6 +108,7 @@ export function buildLayout(manifest) {
       throw new Error(`Frame ${record.id} needs a short painting caption.`);
     }
     if(record.room.walkablePolygon&&(!Array.isArray(record.room.walkablePolygon)||record.room.walkablePolygon.length<3||record.room.walkablePolygon.some(p=>!Array.isArray(p)||p.length!==2||!p.every(Number.isFinite))))throw new Error(`Frame ${record.id} has an invalid floor boundary.`);
+    if(record.room.walkSurfaces&&(!Array.isArray(record.room.walkSurfaces)||!record.room.walkSurfaces.length||record.room.walkSurfaces.some(s=>!['minX','maxX','minZ','maxZ','y'].every(k=>Number.isFinite(s[k]))||s.minX>=s.maxX||s.minZ>=s.maxZ||['slopeX','slopeZ','originX','originZ'].some(k=>s[k]!==undefined&&!Number.isFinite(s[k])))))throw new Error(`Frame ${record.id} has invalid walking surfaces.`);
     sectionCounts[record.section] += 1;
   }
   if (sectionCounts.some((count, index) => count !== manifest.sectionCounts[index])) {

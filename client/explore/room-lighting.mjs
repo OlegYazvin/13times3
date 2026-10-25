@@ -7,7 +7,7 @@ export function addRoomLighting(parent, roomId = '01') {
   const settings = {
     '01':[0xf6c9a0,0x88b5bc,1.9,.65], '02':[0xffd2a1,0x91b1bb,2.2,.64],
     '03':[0xffdfb6,0x9cbfc1,2.2,.67], '04':[0xffd3a1,0x8faebf,2.4,.60],
-    '05':[0xffd291,0x879aaf,2.7,.44], '06':[0xffd7ad,0xc5d5d6,2.35,.96],
+    '05':[0xffdfb4,0xb6cbcc,2.3,.84], '06':[0xffd7ad,0xc5d5d6,2.35,.96],
     '07':[0xffd7a1,0xb0cfcc,2.75,.96], '08':[0xffcc97,0x8eacc1,2.3,.55],
     '09':[0xffd6a0,0x9aafad,2.25,.60], '10':[0xffdfb7,0x98bdc7,2.3,.64],
     '11':[0xd9eee2,0x75a9b9,1.8,.67],
@@ -22,7 +22,7 @@ export function addRoomLighting(parent, roomId = '01') {
     '02':[[-1,.8,0],[-7,11,9],9],
     '03':[[0,.8,0],[-6,11.2,10],8],
     '04':[[0,.8,5],[-3,5.2,5],5],
-    '05':[[0,1,3],[-4.5,7,6],7],
+    '05':[[0,2,-2],[-4.5,12,8],16],
     '06':[[0,.8,.6],[-3,5.2,5],5],
     '07':[[-.2,1,5.1],[-5,7,8],6],
     '08':[[0,1,0],[-6,10,10],15],
@@ -44,7 +44,11 @@ export function addRoomLighting(parent, roomId = '01') {
   fill.position.set(3, 2.5, -2);
   parent.add(fill, fill.target);
   if(roomId==='12'){for(const [x,y,z,power] of [[-3.4,3.45,-3.2,4.5],[0,3.8,7.5,14]]){const glow=new THREE.PointLight(0xffd3a3,power,10,2);glow.position.set(x,y,z);parent.add(glow);}}
-  if(roomId==='05'){const focus=new THREE.SpotLight(0xffd6a2,30,12,.70,.9,2);focus.position.set(-1.5,5.4,3.6);focus.target.position.set(-.25,1.1,5.1);parent.add(focus,focus.target);}
+  if(roomId==='05'){
+    const focus=new THREE.SpotLight(0xffd6a2,30,12,.70,.9,2);focus.position.set(-1.5,5.4,3.6);focus.target.position.set(-.25,1.1,5.1);parent.add(focus,focus.target);
+    const daylight=new THREE.PointLight(0xe1eee2,12,12,2);daylight.position.set(-.8,5.0,-14.7);parent.add(daylight);
+    const landing=new THREE.PointLight(0xffdfb3,8,11,2);landing.position.set(1.5,5.7,-4.7);parent.add(landing);
+  }
   if(roomId==='02'){const bounce=new THREE.PointLight(0xffe5c1,12,9,2);bounce.position.set(-2.6,2.6,4.2);parent.add(bounce);}
   if(roomId==='11'){
     // Light the actual water from the exhibit hoods. The visitor hall remains

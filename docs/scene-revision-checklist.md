@@ -289,3 +289,25 @@ Frame 12’s venue revision is published and byte-verified: [before/after images
 and completed checks](scene-evidence/12-venues/index.html),
 [release record](scene-evidence/12-venues/publication.json). The broader character
 acceptance above remains open.
+
+
+## October 24 — real second-floor office follow-up
+
+- [x] Correct the proposed office plan left/right at Oleg's direction and
+  implement after his explicit build request. Sofa left, bookcase/desk/chair
+  and entry right. This revises frame `05` only.
+- [x] Build two joined wood/black-steel stair flights with a turn, supported
+  landings, upper-floor movement and height-specific collision. Check the
+  exported climb/descent route and real mesh support, not only source metadata.
+- [x] Furnish the photo-informed office and model the catalpa outside real
+  second-floor glazing, with the street and parked cars below the sill.
+- [x] Inspect normal, side, rear, doorway, tree, downward street, desktop and
+  portrait-emulation views; correct the rejected chair shell, missing bookcase
+  support and door/ottoman overlap before the final current-hash review.
+- [x] Site/model checks and 37 tests pass. Separate desktop/phone controls,
+  entry, return, FOV and cleanup checks pass.
+- [ ] A measured office/corridor survey is unavailable; the unverified spacing
+  and connecting corridor remain composed. Broader family likeness/expression
+  acceptance is still open.
+
+See [office evidence and publication status](scene-evidence/05-real-office/README.md).

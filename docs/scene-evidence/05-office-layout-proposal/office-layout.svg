@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1340" viewBox="0 0 1600 1340" role="img" aria-labelledby="title desc">
+<title id="title">Jane’s office — labeled overhead layout for confirmation</title>
+<desc id="desc">Reference-based schematic of the existing frame 05 office revision, not to scale. The tall window wall and deep sill are at the top, with a catalpa outside at second-floor height. The bookcase, small wood desk and rounded green chair occupy the right end; the blue sofa and botanical prints occupy the left end. The door on the lower wall, long table and floor mat are tentative. A separate arrival diagram records the photographed wood and black metal stairs without claiming a verified corridor connection.</desc>
+<defs>
+ <pattern id="carpet" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="10" fill="#eeece7"/><path d="M1 2h2M6 7h2" stroke="#dfdcd4" stroke-width=".8"/></pattern>
+ <pattern id="books" width="16" height="20" patternUnits="userSpaceOnUse"><rect width="16" height="20" fill="#eee7d3"/><path d="M2 0v20M8 0v20M13 0v20" stroke="#a97c5e" stroke-width="3"/></pattern>
+ <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L8 4.5L0 9" fill="none" stroke="#35796f" stroke-width="1.5"/></marker>
+ <marker id="amberArrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0L7 4L0 8" fill="none" stroke="#b47836" stroke-width="1.5"/></marker>
+ <style>text{font-family:DejaVu Sans,Arial,sans-serif;fill:#293a3b} .h{font-weight:700;letter-spacing:1.6px}.small{fill:#576465}.label{font-weight:600}.sub{fill:#576465}.amber{fill:#95612c}.note{fill:#95612c}.teal{fill:#27685f}.line{fill:none;stroke:#516d69;stroke-width:2}.uncertain{fill:none;stroke:#b47836;stroke-width:3;stroke-dasharray:9 7}</style>
+</defs>
+<rect width="1600" height="1340" fill="#faf8f2"/>
+<rect x="0" y="0" width="1600" height="12" fill="#2c625b"/>
+
+<text x="65" y="76" font-size="42" class="h">JANE’S OFFICE</text>
+<text x="67" y="113" font-size="23">Frame 05 · Overhead layout study from your five photos</text>
+<text x="1535" y="65" font-size="19" class="h" text-anchor="end">CORRECTED LEFT / RIGHT</text>
+<text x="1535" y="96" font-size="20" class="teal" text-anchor="end">Office layout reference</text>
+<path d="M65 139H1535" fill="none" stroke="#d7d9d1" stroke-width="1" />
+<text x="65" y="183" font-size="23" class="h">OFFICE · SECOND FLOOR</text>
+<text x="65" y="213" font-size="18" class="small">Window wall ↑ · Not to scale</text>
+<g id="office-plan" transform="translate(1100 0) scale(-1 1)">
+<rect x="110" y="252" width="240" height="70" rx="4" fill="#e8ece8" stroke="#d5dcd6" stroke-width="2" />
+<rect x="127" y="264" width="25" height="35" rx="0" fill="#f8f8f1" stroke="#d5dcd6" stroke-width="2" />
+<rect x="174" y="264" width="25" height="35" rx="0" fill="#f8f8f1" stroke="#d5dcd6" stroke-width="2" />
+<rect x="221" y="264" width="25" height="35" rx="0" fill="#f8f8f1" stroke="#d5dcd6" stroke-width="2" />
+<rect x="268" y="264" width="25" height="35" rx="0" fill="#f8f8f1" stroke="#d5dcd6" stroke-width="2" />
+<rect x="315" y="264" width="25" height="35" rx="0" fill="#f8f8f1" stroke="#d5dcd6" stroke-width="2" />
+<text x="110" y="349" font-size="18" class="small" text-anchor="end" transform="translate(220 0) scale(-1 1)">Building across the street</text>
+<path d="M510 308C481 265 514 225 557 235C562 189 622 189 645 211C688 171 748 203 752 229C809 215 853 243 844 279C882 304 852 346 811 343C780 369 730 355 712 343C657 367 628 344 611 341C572 364 523 348 510 308Z" fill="#d6e1cd" stroke="#b5c7ae" stroke-width="2"/>
+<path d="M791 360Q781 331 760 318M770 331Q728 328 679 321M760 318Q794 311 817 300" fill="none" stroke="#8c8268" stroke-width="6" />
+<text x="565" y="244" font-size="23" class="h" text-anchor="end" transform="translate(1130 0) scale(-1 1)">CATALPA</text>
+<text x="565" y="274" font-size="17" class="small" text-anchor="end" transform="translate(1130 0) scale(-1 1)">Close branches / canopy at window height</text>
+<text x="565" y="298" font-size="17" class="small" text-anchor="end" transform="translate(1130 0) scale(-1 1)">Exact trunk position is diagrammatic</text>
+<rect x="180" y="420" width="800" height="590" rx="0" fill="url(#carpet)" />
+<path d="M180 1010V420H980V1010" fill="none" stroke="#35494a" stroke-width="12" />
+<path d="M180 1010H300M410 1010H980" fill="none" stroke="#b47836" stroke-width="7" stroke-dasharray="12 7"/>
+<rect x="212" y="411" width="735" height="20" rx="0" fill="#d0e4e5" stroke="#35796f" stroke-width="2" />
+<path d="M212 415H947M212 426H947" fill="none" stroke="#35796f" stroke-width="2" />
+<path d="M212 407V433" fill="none" stroke="#2f4245" stroke-width="5" />
+<path d="M457 407V433" fill="none" stroke="#2f4245" stroke-width="5" />
+<path d="M702 407V433" fill="none" stroke="#2f4245" stroke-width="5" />
+<path d="M947 407V433" fill="none" stroke="#2f4245" stroke-width="5" />
+<rect x="213" y="436" width="733" height="32" rx="0" fill="#fcfcf4" stroke="#d9d5c9" stroke-width="2" />
+<text x="595" y="392" font-size="19" class="h" text-anchor="middle" transform="translate(1190 0) scale(-1 1)">TALL BLACK-FRAMED WINDOWS + DEEP WHITE SILL</text>
+<path d="M395 580Q475 466 700 350" fill="none" stroke="#35796f" stroke-width="3" stroke-dasharray="7 7" marker-end="url(#arrow)" opacity=".65"/>
+<path d="M820 638Q790 510 768 363" fill="none" stroke="#35796f" stroke-width="3" stroke-dasharray="7 7" marker-end="url(#arrow)" opacity=".65"/>
+<rect x="189" y="438" width="65" height="150" rx="3" fill="#faf8ef" stroke="#b9b8ac" stroke-width="2" />
+<rect x="198" y="447" width="47" height="132" rx="0" fill="url(#books)" />
+<path d="M193 477H249" fill="none" stroke="#f5f2e6" stroke-width="5" />
+<path d="M193 514H249" fill="none" stroke="#f5f2e6" stroke-width="5" />
+<path d="M193 551H249" fill="none" stroke="#f5f2e6" stroke-width="5" />
+<circle cx="228" cy="426" r="15" fill="#91a485"/>
+<text x="275" y="477" font-size="20" class="label" text-anchor="end" transform="translate(550 0) scale(-1 1)">Bookcase + plants</text>
+<circle cx="399" cy="548" r="65" fill="#fcfcf4" stroke="#a8aaa0" stroke-width="2"/>
+<path d="M346 530Q354 488 398 488Q442 488 453 530Q440 550 399 550Q359 550 346 530Z" fill="#697b4e"/>
+<ellipse cx="399" cy="562" rx="45" ry="28" fill="#637447"/>
+<text x="398" y="643" font-size="20" class="label" text-anchor="middle" transform="translate(796 0) scale(-1 1)">Rounded green chair</text>
+<rect x="191" y="668" width="138" height="91" rx="4" fill="#d5ac7c" stroke="#a4845c" stroke-width="2" />
+<text x="260" y="705" font-size="19" class="label" text-anchor="middle" transform="translate(520 0) scale(-1 1)">Small</text>
+<text x="260" y="730" font-size="19" class="label" text-anchor="middle" transform="translate(520 0) scale(-1 1)">wood desk</text>
+<rect x="358" y="682" width="59" height="62" rx="12" fill="#b9b8ae" stroke="#777c75" stroke-width="2" />
+<path d="M370 748H404M371 675V746M407 675V746" fill="none" stroke="#3d4947" stroke-width="3" />
+<text x="354" y="781" font-size="18" class="small" text-anchor="end" transform="translate(708 0) scale(-1 1)">Desk chair</text>
+<path d="M170 636H120V608" fill="none" stroke="#8d8975" stroke-width="2" />
+<text x="66" y="573" font-size="15" class="small" text-anchor="end" transform="translate(132 0) scale(-1 1)">Ribbed panels</text>
+<text x="66" y="596" font-size="15" class="small" text-anchor="end" transform="translate(132 0) scale(-1 1)">Shelves +</text>
+<text x="66" y="619" font-size="15" class="small" text-anchor="end" transform="translate(132 0) scale(-1 1)">certificates</text>
+<rect x="169" y="821" width="13" height="99" rx="0" fill="#dde5df" stroke="#a28e6e" stroke-width="2" />
+<path d="M168 865H127" fill="none" stroke="#8d8975" stroke-width="2" />
+<text x="66" y="819" font-size="18" class="small" text-anchor="end" transform="translate(132 0) scale(-1 1)">Mirror +</text>
+<text x="66" y="844" font-size="18" class="small" text-anchor="end" transform="translate(132 0) scale(-1 1)">coat hooks</text>
+<rect x="235" y="852" width="58" height="59" rx="11" fill="#4d5653" stroke="#6a7169" stroke-width="2" />
+<text x="226" y="942" font-size="17" class="small" text-anchor="end" transform="translate(452 0) scale(-1 1)">Pouf / baskets</text>
+<rect x="837" y="482" width="130" height="315" rx="14" fill="#365c75" stroke="#233f56" stroke-width="2" />
+<rect x="931" y="495" width="28" height="289" rx="7" fill="#2e5067" stroke="#234052" stroke-width="2" />
+<rect x="849" y="498" width="77" height="85" rx="5" fill="#426c87" stroke="#2f526d" stroke-width="2" />
+<rect x="849" y="590" width="77" height="85" rx="5" fill="#426c87" stroke="#2f526d" stroke-width="2" />
+<rect x="849" y="682" width="77" height="85" rx="5" fill="#426c87" stroke="#2f526d" stroke-width="2" />
+<rect x="835" y="481" width="129" height="25" rx="7" fill="#31546c" stroke="#234052" stroke-width="2" />
+<rect x="835" y="773" width="129" height="25" rx="7" fill="#31546c" stroke="#234052" stroke-width="2" />
+<text x="895" y="608" font-size="19" class="h" style="fill:#ffffff" text-anchor="middle" transform="translate(1790 0) scale(-1 1)">BLUE</text>
+<text x="895" y="636" font-size="19" class="h" style="fill:#ffffff" text-anchor="middle" transform="translate(1790 0) scale(-1 1)">VELVET</text>
+<text x="895" y="664" font-size="19" class="h" style="fill:#ffffff" text-anchor="middle" transform="translate(1790 0) scale(-1 1)">SOFA</text>
+<rect x="983" y="500" width="13" height="70" rx="2" fill="#bba782" stroke="#746e5a" stroke-width="2" />
+<rect x="983" y="608" width="13" height="70" rx="2" fill="#bba782" stroke="#746e5a" stroke-width="2" />
+<rect x="983" y="715" width="13" height="70" rx="2" fill="#bba782" stroke="#746e5a" stroke-width="2" />
+<text x="805" y="833" font-size="18" class="small" text-anchor="end" transform="translate(1610 0) scale(-1 1)">Three botanical prints</text>
+<text x="805" y="857" font-size="18" class="small" text-anchor="end" transform="translate(1610 0) scale(-1 1)">above the sofa</text>
+<circle cx="777" cy="659" r="35" fill="#c6d6a6" stroke="#a7915c" stroke-width="2"/>
+<circle cx="777" cy="659" r="27" fill="#d4dcb8" stroke="#aa9b68" stroke-width="2"/>
+<text x="525" y="549" font-size="18" class="small" text-anchor="end" transform="translate(1050 0) scale(-1 1)">Small mint / gold</text>
+<text x="525" y="574" font-size="18" class="small" text-anchor="end" transform="translate(1050 0) scale(-1 1)">round side table</text>
+<path d="M703 568L758 624" fill="none" stroke="#8d8975" stroke-width="2" />
+<rect x="517" y="680" width="176" height="145" rx="8" fill="#efd6cf" stroke="#b47836" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="605" y="739" font-size="20" class="label" text-anchor="middle" transform="translate(1210 0) scale(-1 1)">Zephrine’s</text>
+<text x="605" y="767" font-size="20" class="label" text-anchor="middle" transform="translate(1210 0) scale(-1 1)">pink floor mat</text>
+<text x="605" y="796" font-size="16" class="amber" text-anchor="middle" transform="translate(1210 0) scale(-1 1)">Seen in IMG_5927</text>
+<rect x="566" y="908" width="331" height="57" rx="5" fill="#dbe6d6" stroke="#b47836" stroke-width="2" stroke-dasharray="8 6"/>
+<path d="M595 921Q627 951 659 923T735 938T815 924" fill="none" stroke="#bd9a54" stroke-width="5" />
+<text x="732" y="999" font-size="17" class="amber" text-anchor="middle" transform="translate(1464 0) scale(-1 1)">Long mint / gold table · position tentative</text>
+<path d="M300 1010V907M300 907A103 103 0 0 1 403 1010" fill="none" stroke="#b47836" stroke-width="2" stroke-dasharray="7 5"/>
+<path d="M351 1090V1027" fill="none" stroke="#b47836" stroke-width="3" marker-end="url(#amberArrow)"/>
+</g>
+<text x="180" y="1130" font-size="18" class="amber">Frosted wood-framed door: inferred on wall opposite the windows, near the desk end.</text>
+<text x="180" y="1157" font-size="18" class="amber">Door position / swing and this partly unseen wall remain inferred.</text>
+<rect x="1070" y="170" width="465" height="445" rx="12" fill="#f0f1e9" stroke="#d5dbd2" stroke-width="2" />
+<text x="1097" y="207" font-size="23" class="h">ARRIVAL / STAIRS</text>
+<rect x="1099" y="235" width="124" height="146" rx="2" fill="#e0bc8e" stroke="#4b5552" stroke-width="2" />
+<path d="M1104 250H1218" fill="none" stroke="#b19065" stroke-width="2" />
+<path d="M1104 268H1218" fill="none" stroke="#b19065" stroke-width="2" />
+<path d="M1104 286H1218" fill="none" stroke="#b19065" stroke-width="2" />
+<path d="M1104 304H1218" fill="none" stroke="#b19065" stroke-width="2" />
+<path d="M1104 322H1218" fill="none" stroke="#b19065" stroke-width="2" />
+<path d="M1104 340H1218" fill="none" stroke="#b19065" stroke-width="2" />
+<path d="M1104 358H1218" fill="none" stroke="#b19065" stroke-width="2" />
+<path d="M1104 376H1218" fill="none" stroke="#b19065" stroke-width="2" />
+<path d="M1100 381V235M1222 381V235" fill="none" stroke="#344342" stroke-width="6" />
+<path d="M1100 379V233M1222 379V233" fill="none" stroke="#bc9869" stroke-width="2" />
+<path d="M1161 367V252" fill="none" stroke="#35796f" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="1245" y="260" font-size="20" class="label">Wood treads</text>
+<text x="1245" y="292" font-size="20" class="label">Black metal rails</text>
+<text x="1245" y="324" font-size="20" class="label">Wood handrails</text>
+<text x="1099" y="410" font-size="17" class="small">Stair finishes confirmed in Expansive’s photo.</text>
+<text x="1099" y="451" font-size="19" class="label">Foyer → turning stair → second floor</text>
+<text x="1099" y="481" font-size="19" class="label">→ shared corridor → Jane’s office</text>
+<text x="1099" y="533" font-size="18" class="amber">This is a route diagram, not a stair plan.</text>
+<text x="1099" y="559" font-size="18" class="amber">The full turn and the corridor-to-office</text>
+<text x="1099" y="585" font-size="18" class="amber">connection are not established by the photos.</text>
+<rect x="1070" y="640" width="465" height="517" rx="12" fill="#edf3ef" stroke="#d2ddd4" stroke-width="2" />
+<text x="1097" y="680" font-size="22" class="h">CATALPA / WINDOW VIEW</text>
+<text x="1099" y="711" font-size="17" class="small">Height relationship · not to scale</text>
+<path d="M1103 927H1249" fill="none" stroke="#485d58" stroke-width="7" />
+<rect x="1234" y="762" width="15" height="158" rx="0" fill="#bddde0" stroke="#3c6a64" stroke-width="2" />
+<path d="M1231 771H1252M1231 914H1252" fill="none" stroke="#304b49" stroke-width="5" />
+<text x="1100" y="952" font-size="17" class="small">Office floor</text>
+<text x="1100" y="976" font-size="17" class="h">SECOND FLOOR</text>
+<path d="M1391 1078Q1386 983 1382 908Q1379 842 1348 795M1382 914Q1430 855 1462 819M1378 871Q1336 842 1303 840" fill="none" stroke="#847b60" stroke-width="12" />
+<circle cx="1346" cy="788" r="44" fill="#c7d9b8" stroke="#aec2a2" stroke-width="2"/>
+<circle cx="1307" cy="831" r="42" fill="#c7d9b8" stroke="#aec2a2" stroke-width="2"/>
+<circle cx="1421" cy="842" r="52" fill="#c7d9b8" stroke="#aec2a2" stroke-width="2"/>
+<circle cx="1464" cy="810" r="38" fill="#c7d9b8" stroke="#aec2a2" stroke-width="2"/>
+<circle cx="1386" cy="783" r="45" fill="#c7d9b8" stroke="#aec2a2" stroke-width="2"/>
+<path d="M1257 829H1326" fill="none" stroke="#35796f" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="1278" y="745" font-size="17" class="teal">Canopy beside the glass</text>
+<path d="M1277 1080H1508" fill="none" stroke="#9aa292" stroke-width="3" />
+<text x="1282" y="1112" font-size="17" class="small">Street / roots one storey below</text>
+<path d="M65 1190H1535" fill="none" stroke="#d7d9d1" stroke-width="1" />
+<path d="M66 1228H112" fill="none" stroke="#35796f" stroke-width="5" />
+<text x="127" y="1234" font-size="19">Solid / teal: relationships visible in the references</text>
+<path d="M66 1265H112" fill="none" stroke="#b47836" stroke-width="4" stroke-dasharray="8 6"/>
+<text x="127" y="1271" font-size="19">Dashed / amber: inference, variable furniture, or a detail to confirm</text>
+<text x="1535" y="1308" font-size="18" class="h" text-anchor="end">CORRECTED REFERENCE LAYOUT · Not a measured building plan</text>
+</svg>

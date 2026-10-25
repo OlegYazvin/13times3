@@ -77,7 +77,7 @@ try {
   if (["localhost", "127.0.0.1"].includes(window.location.hostname)) {
     window.__galleryTestSubjectMeshes = () => rooms.active?subjectMeshesInRoot(rooms.active.group):[];
     window.__galleryDebug = () => ({
-      x: player.x, z: player.z, yaw: controls.yaw,
+      x: player.x, y: player.y, z: player.z, yaw: controls.yaw,
       section: nearestSection(player, gallery.layout.sections).section.index + 1,
       mode: rooms.mode,
       activeRoom: rooms.active?.frame.id || null,
@@ -122,6 +122,7 @@ try {
       controls.yaw = yaw;
       controls.pitch = pitch;
       rooms.setMode("room");
+      rooms.syncElevation(true);
     };
     window.__galleryTestRoomCanStand = (x, z) =>
       rooms.canStand(rooms.roomToWorld({ x, z }), "room");

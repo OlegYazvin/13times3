@@ -240,7 +240,9 @@ def main() -> None:
     office_room = frames[4]["room"]
     assert office_room["title"] == "Jane moved offices"
     assert office_room["caption"] == "Jane held her ground"
-    assert office_room["dimensionsM"] == [12.6, 6.5, 17.8]
+    assert office_room["dimensionsM"] == [12.6, 9, 34]
+    assert office_room["portalZ"] == 8.9
+    assert len(office_room["walkSurfaces"]) == 8
     office_preview = OUTPUT / office_room["previewImage"].lstrip("/")
     office_model = OUTPUT / office_room["modelUrl"].lstrip("/")
     assert office_preview.read_bytes()[:4] == b"RIFF"
@@ -252,14 +254,11 @@ def main() -> None:
     assert sum(bool(node.get("extras", {}).get("solidFootprint")) for node in office_json["nodes"]) >= 20, "Room 05 needs solid figures and architecture"
     assert any("Jane" in node.get("name", "") for node in office_json["nodes"])
     assert any("continuous plaster vault" in node.get("name", "") for node in office_json["nodes"])
-    assert any("arched industrial daylight window" in node.get("name", "") for node in office_json["nodes"])
-    assert any("solid shaped timber moving trolley deck" in node.get("name", "") for node in office_json["nodes"])
-    assert any("rubber caster attached beneath the cart" in node.get("name", "") for node in office_json["nodes"])
-    for detail in ("widening hand-laid terrazzo path through the office",
-                   "solid chamfered communal worktop",
-                   "continuous curved acoustic canopy over the work pod",
-                   "slender glazed office pod door"):
-        assert any(detail in node.get("name", "") for node in office_json["nodes"]), detail
+    for detail in ("first flight rising from the foyer", "second flight turning toward the upper landing",
+                   "grey carpeted office floor", "blue velvet three cushion sofa",
+                   "white bookcase at right hand window end", "catalpa immediately outside",
+                   "continuous clear glass inside real second floor window", "solid shaped timber moving trolley deck"):
+        assert any(detail.replace(" ", "_") in node.get("name", "").replace(" ", "_") for node in office_json["nodes"]), detail
     assert any(c["minX"] <= 0 <= c["maxX"] and c["minZ"] <= 5.05 <= c["maxZ"]
                for c in office_room["colliders"]), "Room 05 collision must cover Jane's revised torso"
     assert any("solid chamfered masonry pier" in node.get("name", "") and

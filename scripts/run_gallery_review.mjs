@@ -190,7 +190,8 @@ if(process.argv.includes('--global')){
    if(!phone)await writeFile(`${output}/${f.id}-colliders.json`,JSON.stringify(state.roomColliders,null,2));
    assert.equal(state.loadedWorldCount,1,`frame ${f.id}: one isolated world`);
    assert.ok(state.modelColliderCount>=2,`frame ${f.id}: exported model collision`);
-   const interior=state.roomColliders.filter(c=>c.minX>-f.room.dimensionsM[0]/2&&c.maxX<f.room.dimensionsM[0]/2&&c.minZ>-f.room.dimensionsM[2]/2&&c.maxZ<f.room.dimensionsM[2]/2);
+   const footY=(state.y??1.65)-1.65;
+   const interior=state.roomColliders.filter(c=>(!Number.isFinite(c.minY)||(c.minY<footY+1.8&&c.maxY>footY+.04))&&c.minX>-f.room.dimensionsM[0]/2&&c.maxX<f.room.dimensionsM[0]/2&&c.minZ>-f.room.dimensionsM[2]/2&&c.maxZ<f.room.dimensionsM[2]/2);
    const permitted=await p.evaluate(cs=>cs.map(c=>window.__galleryTestRoomCanStand((c.minX+c.maxX)/2,(c.minZ+c.maxZ)/2)),interior.slice(0,40));
    assert.ok(permitted.every(x=>x===false),`frame ${f.id}: cannot stand inside solid`);
    if(f.id==='02'){

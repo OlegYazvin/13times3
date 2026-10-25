@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
-import { nearestFrame, PLAYER_RADIUS, isWalkable, portalOpening } from "./layout.mjs";
+import { nearestFrame, PLAYER_RADIUS, EYE_HEIGHT, isWalkable, portalOpening } from "./layout.mjs";
+import { roomFloorHeight } from "./room-floors.mjs";
 import { addRoomLighting, prepareRoomShadows } from "./room-lighting.mjs";
 
 const LOAD_DISTANCE = 12;
@@ -30,8 +31,10 @@ function portalDepth(frame) {
   return frame.room.portalZ ?? frame.room.dimensionsM[2] / 2;
 }
 
-function hitsObstacle(x, z, colliders = []) {
+function hitsObstacle(x, z, colliders = [], floorY = 0) {
   return colliders.some((collider) => {
+    if (Number.isFinite(collider.minY) &&
+      (collider.minY >= floorY + 1.8 || collider.maxY <= floorY + .04)) return false;
     if (collider.shape === "circle") {
       return Math.hypot(x - collider.x, z - collider.z) < collider.radius + PLAYER_RADIUS;
     }
@@ -50,6 +53,7 @@ export function collidersFromScene(scene) {
     colliders.push({
       minX: bounds.min.x, maxX: bounds.max.x,
       minZ: bounds.min.z, maxZ: bounds.max.z,
+      ...(object.userData.heightAwareCollision ? { minY: bounds.min.y, maxY: bounds.max.y } : {}),
     });
   });
   return colliders;
@@ -185,6 +189,7 @@ export class RoomManager {
   }
 
   setMode(nextMode) {
+    if (nextMode === 'hall') this.player.y = EYE_HEIGHT;
     if (nextMode === this.mode) return;
     this.mode = nextMode;
     this.onModeChange?.(nextMode, this.active?.frame);
@@ -293,6 +298,9 @@ export class RoomManager {
     if (!this.active) return false;
     const local = this.worldToRoom(position);
     const { frame, colliders } = this.active;
+    const floor = roomFloorHeight(frame.room, local.x, local.z,
+      (position.y ?? this.player.y ?? EYE_HEIGHT) - EYE_HEIGHT);
+    if (floor === null) return false;
     if(frame.room.walkablePolygon&&!insideRoomPolygon(local.x,local.z,frame.room.walkablePolygon))return false;
     const halfX = frame.room.dimensionsM[0] / 2;
     const halfZ = frame.room.dimensionsM[2] / 2;
@@ -302,7 +310,15 @@ export class RoomManager {
       local.z > halfZ + (portalDepth(frame) === halfZ ? PLAYER_RADIUS : -PLAYER_RADIUS)) return false;
     if (portalDepth(frame) === halfZ && local.z > halfZ - PLAYER_RADIUS &&
       Math.abs(local.x) > opening.width / 2 - PLAYER_RADIUS) return false;
-    return !hitsObstacle(local.x, local.z, colliders);
+    return !hitsObstacle(local.x, local.z, colliders, floor);
+  }
+
+  syncElevation(unrestricted = false) {
+    if (this.mode !== 'room' || !this.active) { this.player.y = EYE_HEIGHT; return; }
+    const local = this.worldToRoom(this.player);
+    const floor = roomFloorHeight(this.active.frame.room, local.x, local.z,
+      (this.player.y ?? EYE_HEIGHT) - EYE_HEIGHT, unrestricted ? Infinity : .26);
+    if (floor !== null) this.player.y = floor + EYE_HEIGHT;
   }
 
   regionAfterStep(from, to, region) {
@@ -317,7 +333,7 @@ export class RoomManager {
   }
 
   move(intended) {
-    const start = { x: this.player.x, z: this.player.z };
+    const start = { x: this.player.x, z: this.player.z, y: this.player.y ?? EYE_HEIGHT };
     let next = { ...start };
     let region = this.mode;
     const steps = Math.max(1, Math.ceil(Math.hypot(intended.x - start.x, intended.z - start.z) / .075));
@@ -327,21 +343,24 @@ export class RoomManager {
       // Advance from the last accepted location. Interpolating each candidate
       // from the original start lets a later candidate land beyond a thin
       // obstacle after earlier candidates were rejected.
-      const alongX = { x: next.x + dx, z: next.z };
+      const alongX = { x: next.x + dx, z: next.z, y: next.y };
       const nextXRegion = this.regionAfterStep(next, alongX, region);
       if (this.canStand(alongX, nextXRegion)) {
         next.x = alongX.x;
         region = nextXRegion;
+        if (region === 'room') { const p = this.worldToRoom(next); next.y = EYE_HEIGHT + roomFloorHeight(this.active.frame.room, p.x, p.z, next.y - EYE_HEIGHT); }
       }
-      const alongZ = { x: next.x, z: next.z + dz };
+      const alongZ = { x: next.x, z: next.z + dz, y: next.y };
       const nextZRegion = this.regionAfterStep(next, alongZ, region);
       if (this.canStand(alongZ, nextZRegion)) {
         next.z = alongZ.z;
         region = nextZRegion;
+        if (region === 'room') { const p = this.worldToRoom(next); next.y = EYE_HEIGHT + roomFloorHeight(this.active.frame.room, p.x, p.z, next.y - EYE_HEIGHT); }
       }
     }
     this.player.x = next.x;
     this.player.z = next.z;
+    this.player.y = next.y;
     this.setMode(region);
   }
 

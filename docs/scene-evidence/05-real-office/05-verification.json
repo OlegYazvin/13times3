@@ -1,0 +1,22 @@
+[
+  {
+    "id": "05",
+    "viewport": "desktop",
+    "entry": true,
+    "collisionSamples": 37,
+    "return": true,
+    "continuousCamera": true,
+    "controls": true,
+    "cleanup": true
+  },
+  {
+    "id": "05",
+    "viewport": "phone",
+    "entry": true,
+    "collisionSamples": 37,
+    "return": true,
+    "continuousCamera": true,
+    "controls": true,
+    "cleanup": true
+  }
+]

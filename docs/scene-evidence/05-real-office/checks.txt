@@ -1,0 +1,257 @@
+
+> 13times3@1.0.0 check
+> python3 scripts/check_site.py && node scripts/validate_gallery_geometry.mjs --published && node scripts/validate_gallery_geometry.mjs src/assets/explore/museum/dishwasher.glb src/assets/explore/museum/cat-whisperer.glb && node scripts/check_aquarium_habitats.mjs && node scripts/check_food_memories.mjs && node scripts/check_desk_advice.mjs && node scripts/check_sprout_rejection.mjs && node scripts/check_folk_floorplan.mjs && node scripts/check_office_geometry.mjs && node --test tests/*.test.mjs
+
+Verified 39 detail pages, 2 grid routes, credits, 41 gallery frames (rooms 01–12 live), 39 unique card images, sitemap, and local fonts (121.7 MB).
+{"path":"src/assets/explore/room01/room.glb","sha256":"84421a5c228abbe01bbfc5a79163b453ef136b6d48a1ad47cddaf7669a8946fb","meshes":620,"primitives":620,"vertices":211503,"triangles":352686,"valid":true}
+{"path":"src/assets/explore/room02/room.glb","sha256":"c48503a8c2e176996d985e973fc39ddc3348caf4e8f132c246f3fefeb5b99cff","meshes":918,"primitives":918,"vertices":632901,"triangles":1173144,"valid":true}
+{"path":"src/assets/explore/room03/room.glb","sha256":"41aa0f96a91e678cc1e2b4ce9b92d5ade1917bb31068499a7e491fb1f20b5a46","meshes":223,"primitives":223,"vertices":402219,"triangles":658507,"valid":true}
+{"path":"src/assets/explore/room04/room.glb","sha256":"1948243b2b4b1f6eec5041b1404bcb9f75936828f13a927236d157701ae86c9a","meshes":3221,"primitives":3221,"vertices":405481,"triangles":574994,"valid":true}
+{"path":"src/assets/explore/room05/room.glb","sha256":"bee68b6c8e125e12f4dab36c68de89b3360c319123b9778c52bd019def19934e","meshes":260,"primitives":260,"vertices":375066,"triangles":603456,"valid":true}
+{"path":"src/assets/explore/room06/room.glb","sha256":"5c201d26ae8fabfdfb893a445204e6f68bf15be248ad8cfac1e1e7812b8e0d5c","meshes":466,"primitives":466,"vertices":547365,"triangles":1030086,"valid":true}
+{"path":"src/assets/explore/room07/room.glb","sha256":"20eecb83e707ec8739ab6b170e1b6793c859d23c1d7daeac020ff0398fea7854","meshes":185,"primitives":185,"vertices":611759,"triangles":974184,"valid":true}
+{"path":"src/assets/explore/room08/room.glb","sha256":"dac4ce805c7da8fb135c570ac796659f16ecfca26994d3b9d1f1ab71f705f94a","meshes":639,"primitives":639,"vertices":150871,"triangles":273190,"valid":true}
+{"path":"src/assets/explore/room09/room.glb","sha256":"465e8211c11903fec753f17dc422de53a573c44c1d063ba14fd57e4c8e222c0d","meshes":1648,"primitives":1648,"vertices":701397,"triangles":1021880,"valid":true}
+{"path":"src/assets/explore/room10/room.glb","sha256":"1cd5f9908da889f2002b650b5396076fba87950612301e3732a0120c2a0df1e2","meshes":435,"primitives":439,"vertices":484559,"triangles":858149,"valid":true}
+{"path":"src/assets/explore/room11/room.glb","sha256":"8acfbe4b848a2736d2297e26d8868932d11db6b8e287d37ebd2b28697aa1413f","meshes":441,"primitives":441,"vertices":1072658,"triangles":1395800,"valid":true}
+{"path":"src/assets/explore/room12/room.glb","sha256":"ee600a91073bca27ad2b5edece83bad8effb0e3e80a77ddd7e507af6c5a9475a","meshes":865,"primitives":865,"vertices":1122664,"triangles":1739649,"valid":true}
+{"path":"src/assets/explore/museum/dishwasher.glb","sha256":"0100869e1814c9fe32143bec426f93a4d9cb507363bf9c505e60b5f850bf1c31","meshes":3,"primitives":3,"vertices":84981,"triangles":171028,"valid":true}
+{"path":"src/assets/explore/museum/cat-whisperer.glb","sha256":"ef4573efb8a19ec61d5fb39171ca9d4c22b614dfb053ee9556111c29a151a9b6","meshes":12,"primitives":12,"vertices":124187,"triangles":247208,"valid":true}
+{"sha256":"8acfbe4b848a2736d2297e26d8868932d11db6b8e287d37ebd2b28697aa1413f","tanks":6,"animalGroups":95,"verticesChecked":13284105,"collisionFootprints":69,"contained":true}
+{"modelSha256":"5c201d26ae8fabfdfb893a445204e6f68bf15be248ad8cfac1e1e7812b8e0d5c","foodMemories":6,"contactPairs":13,"noSelectedPenetrationOver1mm":true,"maxContactGapM":0.00045079845237337664,"collisionFootprints":45}
+{"modelSha256":"c48503a8c2e176996d985e973fc39ddc3348caf4e8f132c246f3fefeb5b99cff","pointing":{"actualFingertipErrorM":7.333691830219734e-8,"screenHit":[-1.1092169795689149,1.4162210427882649,3.297674887959003],"distanceToScreenM":0.7356076973059715},"gazes":[{"identity":"Jane","angleDeg":0.47532306536749086},{"identity":"Oleg","angleDeg":2.1246871048572507}],"contacts":[{"label":"supporting palm on the clothed shoulder","minimumVertexSurfaceDistanceM":0.00045043215631271723,"verticesDeeperThan1mm":0,"maximumSampledPenetrationM":0},{"label":"pointing hand clears Oleg","minimumVertexSurfaceDistanceM":0.3899735262984745,"verticesDeeperThan1mm":0,"maximumSampledPenetrationM":0},{"label":"advising sleeves and shirt clear Oleg","minimumVertexSurfaceDistanceM":0.0418851738393426,"verticesDeeperThan1mm":0,"maximumSampledPenetrationM":0}],"collisionFootprints":42}
+{"recordedAt":"2026-10-25T00:29:21.751Z","modelSha256":"c48503a8c2e176996d985e973fc39ddc3348caf4e8f132c246f3fefeb5b99cff","gazeAngleDeg":0.22583897627961314,"fistSizeM":[0.07694697380065918,0.11888015270233154,0.06179642677307129],"shoeBottomsM":[2.6743288117359043e-7,2.6743288117359043e-7],"contacts":[{"hand":"hand-left","target":"head","minimumVertexSurfaceDistanceM":0.14477241149644543,"verticesDeeperThan1mm":0,"maximumSampledPenetrationM":0},{"hand":"hand-left","target":"shirt","minimumVertexSurfaceDistanceM":0.0009381367753958648,"verticesDeeperThan1mm":0,"maximumSampledPenetrationM":0},{"hand":"hand-left","target":"trousers","minimumVertexSurfaceDistanceM":0.6544326497733047,"verticesDeeperThan1mm":0,"maximumSampledPenetrationM":0},{"hand":"hand-right","target":"head","minimumVertexSurfaceDistanceM":0.5260354787442428,"verticesDeeperThan1mm":0,"maximumSampledPenetrationM":0},{"hand":"hand-right","target":"shirt","minimumVertexSurfaceDistanceM":0.007236434782151642,"verticesDeeperThan1mm":0,"maximumSampledPenetrationM":0},{"hand":"hand-right","target":"trousers","minimumVertexSurfaceDistanceM":0.05861164590192276,"verticesDeeperThan1mm":0,"maximumSampledPenetrationM":0}],"method":"Packed posed surfaces; full hand-vertex distances/containment against head, shirt and trousers, excluding the lower 30 mm wrist/cuff insertion measured from the actual open wrist boundary. Compact fist bounds and head attention supplement multi-angle visual inspection; these checks do not establish artistic likeness or exhaustively prove finger self-contact."}
+{"barServiceEntranceAndExitClear":true,"barStoolsClearWalls":true,"stairwellEnclosed":true,"packedFloorMatchesIrregularPlan":true,"stairCutoutHasNoFloor":true,"barServiceWellOpen":true,"barCornersAreAngled":true,"floorVertices":20}
+{"modelCollisionCount":66,"correctedLeftRight":true,"doorClearsOttoman":true,"bookcaseTopSupportsPlant":true,"stairsAndFloorsSupported":true,"upstairsEyeHeight":4.85,"bothDirectionsTraversable":true,"catalpaOutsideGlass":true,"windowHasRealOpening":true}
+TAP version 13
+# Subtest: the brain coral is an outward-facing solid, including its upper surface
+ok 1 - the brain coral is an outward-facing solid, including its upper surface
+  ---
+  duration_ms: 151.111187
+  type: 'test'
+  ...
+# Subtest: the lettuce coral has closed, outward-facing thick plates
+ok 2 - the lettuce coral has closed, outward-facing thick plates
+  ---
+  duration_ms: 90.43989
+  type: 'test'
+  ...
+# Subtest: the upstairs boundary admits its bays and rejects the former rectangular corners and stair recess
+ok 3 - the upstairs boundary admits its bays and rejects the former rectangular corners and stair recess
+  ---
+  duration_ms: 2.270348
+  type: 'test'
+  ...
+# Subtest: room movement respects the authored footprint even within the old outer dimensions
+ok 4 - room movement respects the authored footprint even within the old outer dimensions
+  ---
+  duration_ms: 16.991309
+  type: 'test'
+  ...
+# Subtest: the bar has angled returns and a real open inner well
+ok 5 - the bar has angled returns and a real open inner well
+  ---
+  duration_ms: 0.708959
+  type: 'test'
+  ...
+# Subtest: the piano is lazy and exclusive to entered room 01; returning restores the hall
+ok 6 - the piano is lazy and exclusive to entered room 01; returning restores the hall
+  ---
+  duration_ms: 7.717857
+  type: 'test'
+  ...
+# Subtest: Sound off survives portal transitions, and stale READY/FINISH cannot restart removed audio
+ok 7 - Sound off survives portal transitions, and stale READY/FINISH cannot restart removed audio
+  ---
+  duration_ms: 1.827104
+  type: 'test'
+  ...
+# Subtest: exiting while the widget API is pending never creates a late player
+ok 8 - exiting while the widget API is pending never creates a late player
+  ---
+  duration_ms: 1.157198
+  type: 'test'
+  ...
+# Subtest: backgrounding and fallback stop the piano; hallway audio failure does not disable it
+ok 9 - backgrounding and fallback stop the piano; hallway audio failure does not disable it
+  ---
+  duration_ms: 1.704079
+  type: 'test'
+  ...
+# Subtest: a provider failure removes its media and records the credits source
+ok 10 - a provider failure removes its media and records the credits source
+  ---
+  duration_ms: 1.932725
+  type: 'test'
+  ...
+# Subtest: a blocked background player retries on a genuine gesture without claiming playback
+ok 11 - a blocked background player retries on a genuine gesture without claiming playback
+  ---
+  duration_ms: 18.800753
+  type: 'test'
+  ...
+# Subtest: 41 stable records support thirteen exhibited frames in three connected galleries
+ok 12 - 41 stable records support thirteen exhibited frames in three connected galleries
+  ---
+  duration_ms: 4.32753
+  type: 'test'
+  ...
+# Subtest: rooms render in a separate world so their floor plans may overlap
+ok 13 - rooms render in a separate world so their floor plans may overlap
+  ---
+  duration_ms: 3.214811
+  type: 'test'
+  ...
+# Subtest: movement stays inside the hallway and slides along its walls
+ok 14 - movement stays inside the hallway and slides along its walls
+  ---
+  duration_ms: 1.079982
+  type: 'test'
+  ...
+# Subtest: frames 01–12 have room-sized openings and the other frames stay solid
+ok 15 - frames 01–12 have room-sized openings and the other frames stay solid
+  ---
+  duration_ms: 0.922557
+  type: 'test'
+  ...
+# Subtest: walking through frame 01 keeps one world position in both directions
+ok 16 - walking through frame 01 keeps one world position in both directions
+  ---
+  duration_ms: 13.456961
+  type: 'test'
+  ...
+# Subtest: room 01 stage, desk, people, and boundary block movement
+ok 17 - room 01 stage, desk, people, and boundary block movement
+  ---
+  duration_ms: 1.625485
+  type: 'test'
+  ...
+# Subtest: room collision wins where an independent world overlaps hallway coordinates
+ok 18 - room collision wins where an independent world overlaps hallway coordinates
+  ---
+  duration_ms: 0.67788
+  type: 'test'
+  ...
+# Subtest: a long movement stops at a thin post instead of resuming beyond it
+ok 19 - a long movement stops at a thin post instead of resuming beyond it
+  ---
+  duration_ms: 0.84991
+  type: 'test'
+  ...
+# Subtest: solid footprints travel with authored 3D model parts
+ok 20 - solid footprints travel with authored 3D model parts
+  ---
+  duration_ms: 4.502101
+  type: 'test'
+  ...
+# Subtest: the folk jam keeps both interiors accessible around its freestanding portal
+ok 21 - the folk jam keeps both interiors accessible around its freestanding portal
+  ---
+  duration_ms: 70.020892
+  type: 'test'
+  ...
+# Subtest: museum paintings have clear wall space and the sculpture islands leave two walking routes
+ok 22 - museum paintings have clear wall space and the sculpture islands leave two walking routes
+  ---
+  duration_ms: 31.976523
+  type: 'test'
+  ...
+# Subtest: fire fades with distance and stereo follows the visitor heading
+ok 23 - fire fades with distance and stereo follows the visitor heading
+  ---
+  duration_ms: 1.170084
+  type: 'test'
+  ...
+# Subtest: original crackle samples are quiet, finite, repeatable and have a smooth loop seam
+ok 24 - original crackle samples are quiet, finite, repeatable and have a smooth loop seam
+  ---
+  duration_ms: 98.7893
+  type: 'test'
+  ...
+# Subtest: fire audio is lazy, shares mute, fades out inside rooms, and releases its sources
+ok 25 - fire audio is lazy, shares mute, fades out inside rooms, and releases its sources
+  ---
+  duration_ms: 21.533312
+  type: 'test'
+  ...
+# Subtest: the visitor climbs both turning flights continuously and returns to the foyer
+ok 26 - the visitor climbs both turning flights continuously and returns to the foyer
+  ---
+  duration_ms: 53.832113
+  type: 'test'
+  ...
+# Subtest: the upper floor cannot be reached by stepping across the void or a floor-height jump
+ok 27 - the upper floor cannot be reached by stepping across the void or a floor-height jump
+  ---
+  duration_ms: 9.635519
+  type: 'test'
+  ...
+# Subtest: upper furniture blocks at the office floor, with height-specific collision
+ok 28 - upper furniture blocks at the office floor, with height-specific collision
+  ---
+  duration_ms: 4.011038
+  type: 'test'
+  ...
+# Subtest: painting corners project through the physical opening, including the short cave
+ok 29 - painting corners project through the physical opening, including the short cave
+  ---
+  duration_ms: 14.763485
+  type: 'test'
+  ...
+# Subtest: sculpt fitting finds the same visible surface as the Three.js raycaster
+ok 30 - sculpt fitting finds the same visible surface as the Three.js raycaster
+  ---
+  duration_ms: 2180.047545
+  type: 'test'
+  ...
+# Subtest: nearest-surface and inside queries agree with simple closed geometry
+ok 31 - nearest-surface and inside queries agree with simple closed geometry
+  ---
+  duration_ms: 3.63317
+  type: 'test'
+  ...
+# Subtest: contact poses retain the upper-arm and forearm lengths
+ok 32 - contact poses retain the upper-arm and forearm lengths
+  ---
+  duration_ms: 2.551601
+  type: 'test'
+  ...
+# Subtest: an explicit supporting palm keeps its contact normal while the wrist flexes
+ok 33 - an explicit supporting palm keeps its contact normal while the wrist flexes
+  ---
+  duration_ms: 444.684236
+  type: 'test'
+  ...
+# Subtest: the child fingertip meets the berry surface without embedding the palm
+ok 34 - the child fingertip meets the berry surface without embedding the palm
+  ---
+  duration_ms: 301.013297
+  type: 'test'
+  ...
+# Subtest: the writing grip encloses a pencil above the paper with its point on the page
+ok 35 - the writing grip encloses a pencil above the paper with its point on the page
+  ---
+  duration_ms: 355.455853
+  type: 'test'
+  ...
+# Subtest: a resting hand meets a desk plane without any finger passing through it
+ok 36 - a resting hand meets a desk plane without any finger passing through it
+  ---
+  duration_ms: 241.42554
+  type: 'test'
+  ...
+# Subtest: turning the head keeps the lower neck seated and turns the facial structure
+ok 37 - turning the head keeps the lower neck seated and turns the facial structure
+  ---
+  duration_ms: 886.07128
+  type: 'test'
+  ...
+1..37
+# tests 37
+# suites 0
+# pass 37
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2861.743337
